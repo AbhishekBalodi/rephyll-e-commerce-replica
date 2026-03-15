@@ -83,6 +83,7 @@ const Footer = () => {
                 { label: "Testimonials", path: "/testimonials" },
                 { label: "FAQs", path: "/faqs" },
                 { label: "Contact Us", path: "/contact" },
+                { label: "Track Your Order", path: "/contact" },
               ].map((link) => (
                 <button key={link.label} onClick={() => handleNav(link.path)} className="text-sm text-muted-foreground hover:text-foreground transition-colors text-left">
                   {link.label}
@@ -97,9 +98,9 @@ const Footer = () => {
             <div className="flex flex-col gap-2.5">
               {[
                 { label: "Terms of Service", path: "/terms" },
-                { label: "Privacy Policy", path: "/terms" },
+                { label: "Privacy Policy", path: "/privacy-policy" },
+                { label: "Refund & Return Policy", path: "/refund-policy" },
                 { label: "Shipping Policy", path: "/terms" },
-                { label: "Refund Policy", path: "/terms" },
               ].map((link) => (
                 <button key={link.label} onClick={() => handleNav(link.path)} className="text-sm text-muted-foreground hover:text-foreground transition-colors text-left">
                   {link.label}
@@ -137,7 +138,8 @@ const Footer = () => {
           <p className="text-xs text-muted-foreground">
             Copyright © Rephyll Personal Care Private Limited 2026 |{" "}
             <button onClick={() => handleNav("/terms")} className="hover:text-foreground transition-colors">Terms of Service</button> |{" "}
-            <button onClick={() => handleNav("/terms")} className="hover:text-foreground transition-colors">Privacy Policy</button>
+            <button onClick={() => handleNav("/privacy-policy")} className="hover:text-foreground transition-colors">Privacy Policy</button> |{" "}
+            <button onClick={() => handleNav("/refund-policy")} className="hover:text-foreground transition-colors">Refund & Return Policy</button>
           </p>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronLeft, ChevronRight, Star, Minus, Plus } from "lucide-react";
+import { ChevronLeft, ChevronRight, Star, Minus, Plus, Leaf, ShieldCheck, Baby, Droplets } from "lucide-react";
 import { Product } from "@/data/products";
 
 interface ProductDetailProps {
@@ -24,6 +24,13 @@ const renderStars = (rating: number, size = 16) => {
   }
   return stars;
 };
+
+const WHATS_IN_ICONS = [
+  { label: "Plant-Based", icon: Leaf },
+  { label: "Non-Toxic", icon: ShieldCheck },
+  { label: "Child & Pet Safe", icon: Baby },
+  { label: "Biodegradable", icon: Droplets },
+];
 
 const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
   const [activeImg, setActiveImg] = useState(0);
@@ -99,63 +106,85 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
 
         {/* Product info */}
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
-            {product.name}
-          </h1>
-
-          {/* Badges */}
-          <div className="flex flex-wrap gap-2 mb-4">
-            {product.keyFeatures.slice(0, 3).map((f) => (
-              <span
-                key={f}
-                className="text-xs px-3 py-1 rounded-full bg-secondary text-secondary-foreground border border-primary/20"
-              >
-                {f}
-              </span>
-            ))}
-          </div>
-
-          {/* Rating */}
-          <div className="flex items-center gap-2 mb-4">
-            <div className="flex items-center gap-0.5 bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded">
-              {product.rating} <Star size={10} className="fill-current ml-0.5" />
+          {/* Rating on top */}
+          <div className="flex items-center gap-3 mb-3">
+            <div className="flex items-center gap-1 bg-primary/10 text-primary text-sm font-bold px-3 py-1.5 rounded-full">
+              {renderStars(product.rating, 14)}
+              <span className="ml-1">{product.rating}/5</span>
             </div>
             <span className="text-sm text-muted-foreground">
               {product.reviews} reviews
             </span>
           </div>
 
-          {/* Price */}
-          <div className="mb-2">
+          {/* Bold product name */}
+          <h1 className="text-2xl md:text-3xl font-display font-bold text-foreground mb-3">
+            {product.name}
+          </h1>
+
+          {/* Overview / short description */}
+          <p className="text-foreground/70 text-sm leading-relaxed mb-4">
+            {product.description.length > 160
+              ? product.description.substring(0, 160) + "..."
+              : product.description}
+            {product.description.length > 160 && (
+              <button
+                onClick={() => setActiveTab("description")}
+                className="text-primary font-semibold ml-1 hover:underline"
+              >
+                Read More
+              </button>
+            )}
+          </p>
+
+          {/* What's In icons row */}
+          <div className="grid grid-cols-2 gap-3 mb-6">
+            {WHATS_IN_ICONS.map(({ label, icon: Icon }) => (
+              <div key={label} className="flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-full border border-border flex items-center justify-center">
+                  <Icon size={18} className="text-foreground" />
+                </div>
+                <span className="text-sm text-foreground font-medium">{label}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Price - bold and big */}
+          <div className="mb-1">
             <span className="text-3xl font-bold text-foreground">₹{product.price}</span>
             {product.discount > 0 && (
-              <span className="text-lg text-muted-foreground line-through ml-3">
-                ₹{product.originalPrice}
-              </span>
+              <>
+                <span className="text-lg text-muted-foreground line-through ml-3">
+                  ₹{product.originalPrice}
+                </span>
+                <span className="ml-2 text-sm font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">
+                  Save {product.discount}%
+                </span>
+              </>
             )}
           </div>
-          <p className="text-xs text-muted-foreground mb-6">Inclusive of all taxes</p>
+          <p className="text-xs text-muted-foreground mb-5">Inclusive of all taxes</p>
 
           {/* Quantity + Add to cart */}
           <div className="flex items-center gap-4 mb-8">
-            <div className="flex items-center border border-border rounded-lg overflow-hidden">
+            <div className="flex items-center border-2 border-primary/30 rounded-full overflow-hidden">
               <button
                 onClick={() => setQty((q) => Math.max(1, q - 1))}
-                className="px-3 py-2 hover:bg-muted transition-colors"
+                className="px-4 py-2.5 hover:bg-muted transition-colors"
               >
                 <Minus size={16} />
               </button>
-              <span className="px-4 py-2 text-sm font-medium min-w-[40px] text-center">
+              <span className="px-5 py-2.5 text-sm font-bold min-w-[48px] text-center">
                 {qty}
               </span>
               <button
                 onClick={() => setQty((q) => q + 1)}
-                className="px-3 py-2 hover:bg-muted transition-colors"
+                className="px-4 py-2.5 hover:bg-muted transition-colors"
               >
                 <Plus size={16} />
               </button>
             </div>
-            <button className="flex-1 btn-add-to-cart rounded-lg text-center">
+            <button className="flex-1 py-3 border-2 border-foreground rounded-full text-foreground font-bold text-sm uppercase tracking-wider hover:bg-foreground hover:text-background transition-colors">
               ADD TO CART
             </button>
           </div>
@@ -194,13 +223,27 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
             </ul>
           )}
           {activeTab === "whatsIn" && (
-            <ul className="space-y-2">
-              {product.whatsIn.map((w) => (
-                <li key={w} className="flex items-start gap-2 text-foreground/80">
-                  <span className="text-primary mt-1">•</span> {w}
-                </li>
-              ))}
-            </ul>
+            <div>
+              {/* Icons grid */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                {WHATS_IN_ICONS.map(({ label, icon: Icon }) => (
+                  <div key={label} className="flex flex-col items-center gap-2 p-4 rounded-lg bg-secondary/50">
+                    <div className="w-12 h-12 rounded-full border border-border flex items-center justify-center">
+                      <Icon size={22} className="text-foreground" />
+                    </div>
+                    <span className="text-xs text-foreground font-medium text-center">{label}</span>
+                  </div>
+                ))}
+              </div>
+              {/* Ingredient list */}
+              <ul className="space-y-2">
+                {product.whatsIn.map((w) => (
+                  <li key={w} className="flex items-start gap-2 text-foreground/80">
+                    <span className="text-primary mt-1">•</span> {w}
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
           {activeTab === "details" && (
             <p className="text-foreground/80 leading-relaxed">{product.moreDetails}</p>
@@ -212,7 +255,6 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
       <div className="mt-8 border-t border-border pt-8">
         <h2 className="text-2xl font-bold text-foreground mb-6">Customer Reviews</h2>
 
-        {/* Summary */}
         <div className="flex items-center gap-4 mb-8">
           <div className="flex items-center gap-1">{renderStars(product.rating)}</div>
           <span className="text-sm text-muted-foreground">
@@ -220,7 +262,6 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
           </span>
         </div>
 
-        {/* Individual reviews */}
         <div className="space-y-6">
           {product.customerReviews.map((review, i) => (
             <div key={i} className="border-b border-border pb-6">
