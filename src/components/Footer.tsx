@@ -1,0 +1,77 @@
+import { Instagram, Facebook, Youtube } from "lucide-react";
+
+const Footer = () => {
+  return (
+    <footer className="mt-16">
+      {/* Wave SVG separator */}
+      <div className="w-full">
+        <svg viewBox="0 0 1440 120" className="w-full" preserveAspectRatio="none" style={{ height: "80px" }}>
+          <path
+            d="M0,60 C360,120 720,0 1080,60 C1260,90 1380,80 1440,60 L1440,120 L0,120 Z"
+            className="fill-primary"
+          />
+        </svg>
+      </div>
+
+      <div className="bg-primary text-primary-foreground">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            {/* Left: social */}
+            <div>
+              <p className="font-bold text-sm uppercase tracking-wider mb-4">
+                SHOW US SOME ❤️ ON SOCIAL MEDIA
+              </p>
+              <div className="flex items-center gap-4 mb-6">
+                <Instagram size={24} className="cursor-pointer hover:opacity-80" />
+                <Facebook size={24} className="cursor-pointer hover:opacity-80" />
+                <Youtube size={24} className="cursor-pointer hover:opacity-80" />
+              </div>
+              <p className="text-sm opacity-90">care@rephyll.in</p>
+              <p className="text-sm opacity-90">+91 7539987773</p>
+            </div>
+
+            {/* Center: brand */}
+            <div className="flex flex-col items-center justify-center">
+              <h2 className="text-4xl font-extrabold tracking-tight">REPHYLL</h2>
+              <p className="text-xs uppercase tracking-[0.3em] mt-1 opacity-80">
+                Have a Clean Day!
+              </p>
+            </div>
+
+            {/* Right: links */}
+            <div className="flex flex-col items-start md:items-end gap-3">
+              {[
+                "About Us",
+                "We Are Eco-friendly",
+                "We Care",
+                "FAQs",
+                "Contact Us",
+                "Shipping Policy",
+                "Refund Policy",
+              ].map((link) => (
+                <a
+                  key={link}
+                  href="#"
+                  className="text-sm font-semibold hover:opacity-80 transition-opacity"
+                >
+                  {link}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Bottom */}
+          <div className="mt-12 pt-6 border-t border-primary-foreground/20 text-center">
+            <p className="text-xs opacity-70">
+              Copyright © Rephyll Personal Care Private Limited 2026 |{" "}
+              <a href="#" className="hover:opacity-100">Terms of Service</a> |{" "}
+              <a href="#" className="hover:opacity-100">Privacy Policy</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;

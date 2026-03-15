@@ -47,6 +47,13 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        brand: {
+          green: "hsl(var(--brand-green))",
+          "green-dark": "hsl(var(--brand-green-dark))",
+          mint: "hsl(var(--brand-mint))",
+          teal: "hsl(var(--brand-teal))",
+        },
+        discount: "hsl(var(--discount-green))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -57,6 +64,9 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+      },
+      fontFamily: {
+        sans: ['Poppins', 'sans-serif'],
       },
       borderRadius: {
         lg: "var(--radius)",
