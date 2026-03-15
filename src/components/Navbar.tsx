@@ -98,10 +98,10 @@ const Navbar = () => {
 
           {/* Center: brand */}
           <h1
-            className="text-2xl md:text-3xl font-extrabold tracking-tight text-primary cursor-pointer uppercase"
+            className="text-2xl md:text-3xl font-extrabold tracking-tight text-primary cursor-pointer"
             onClick={() => handleNav("/")}
           >
-            REPHYLL
+            rePhyl
           </h1>
 
           {/* Right: icons */}
