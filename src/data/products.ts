@@ -5,6 +5,12 @@ import product1Alt3 from "@/assets/product-1-alt3.jpg";
 import product2 from "@/assets/product-2.jpg";
 import product3 from "@/assets/product-3.jpg";
 import product4 from "@/assets/product-4.jpg";
+import product5 from "@/assets/product-5.jpg";
+import product5Alt1 from "@/assets/product-5-alt1.jpg";
+import product5Alt2 from "@/assets/product-5-alt2.jpg";
+import product5Alt3 from "@/assets/product-5-alt3.jpg";
+import product5Alt4 from "@/assets/product-5-alt4.jpg";
+import product5Alt5 from "@/assets/product-5-alt5.jpg";
 
 export interface Product {
   id: number;
