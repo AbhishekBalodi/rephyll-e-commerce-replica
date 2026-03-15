@@ -50,7 +50,7 @@ const ProductCard = ({ product, onClick }: ProductCardProps) => {
       </div>
 
       {/* Title */}
-      <h3 className="text-sm font-medium text-foreground leading-snug mb-2 line-clamp-3">
+      <h3 className="text-sm font-medium text-foreground leading-snug mb-2 line-clamp-2 min-h-[2.5rem]">
         {product.name.toLowerCase()}
       </h3>
 
