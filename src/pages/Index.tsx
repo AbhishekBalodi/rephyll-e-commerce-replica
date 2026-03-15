@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import HeroCarousel from "@/components/HeroCarousel";
+import CategoryBar from "@/components/CategoryBar";
 import ProductCard from "@/components/ProductCard";
 import ProductDetail from "@/components/ProductDetail";
 import Footer from "@/components/Footer";
@@ -29,6 +30,7 @@ const Index = () => {
       ) : (
         <>
           <HeroCarousel />
+          <CategoryBar />
 
           {/* Products section */}
           <section className="max-w-7xl mx-auto px-4 md:px-6 py-16">
