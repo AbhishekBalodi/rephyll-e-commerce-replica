@@ -79,6 +79,7 @@ class App {
     this.app.use('/api/auth', authRoutes);
     this.app.use('/api/contact', contactRoutes);
     this.app.use('/api/newsletter', newsletterRoutes);
+    this.app.use('/api/reviews', reviewRoutes);
 
     this.logger.info('All routes registered.');
   }
