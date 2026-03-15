@@ -33,7 +33,7 @@ const Index = () => {
           {/* Products section */}
           <section className="max-w-7xl mx-auto px-4 md:px-6 py-16">
             <h2 className="text-3xl md:text-4xl font-bold text-center text-foreground mb-2">
-              evergreen classics
+              refill products
             </h2>
             <p className="text-center text-muted-foreground mb-12">
               Meet our most loved plant-based cleaners

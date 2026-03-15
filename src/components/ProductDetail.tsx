@@ -80,12 +80,12 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
           </div>
 
           {/* Thumbnails */}
-          <div className="flex gap-3">
+          <div className="flex gap-2">
             {product.images.map((img, i) => (
               <button
                 key={i}
                 onClick={() => setActiveImg(i)}
-                className={`w-20 h-20 rounded-md overflow-hidden border-2 transition-all ${
+                className={`w-16 h-16 rounded-md overflow-hidden border-2 transition-all ${
                   activeImg === i
                     ? "border-primary"
                     : "border-transparent opacity-60 hover:opacity-100"
