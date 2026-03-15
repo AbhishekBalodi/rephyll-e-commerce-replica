@@ -45,8 +45,8 @@ const Navbar = () => {
               </SheetTrigger>
               <SheetContent side="left" className="w-80 p-0">
                 <SheetHeader className="p-6 pb-4 border-b border-border">
-                  <SheetTitle className="text-2xl font-extrabold text-primary tracking-tight uppercase">
-                    REPHYLL
+                  <SheetTitle className="text-2xl font-extrabold text-primary tracking-tight">
+                    rePhyl
                   </SheetTitle>
                 </SheetHeader>
                 <div className="py-4">
