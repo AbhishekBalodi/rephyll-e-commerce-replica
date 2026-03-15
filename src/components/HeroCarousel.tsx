@@ -17,7 +17,7 @@ const HeroCarousel = () => {
   }, []);
 
   return (
-    <div className="relative w-full overflow-hidden" style={{ height: "500px" }}>
+    <div className="relative w-full overflow-hidden" style={{ height: "350px" }}>
       <AnimatePresence mode="wait">
         <motion.img
           key={index}
@@ -27,7 +27,7 @@ const HeroCarousel = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.6 }}
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover object-center"
         />
       </AnimatePresence>
 

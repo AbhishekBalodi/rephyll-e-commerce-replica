@@ -41,7 +41,7 @@ const ProductCard = ({ product, onClick }: ProductCardProps) => {
       </div>
 
       {/* Image */}
-      <div className="relative aspect-[4/5] overflow-hidden rounded-lg mb-3 product-card-shadow transition-all duration-300 group-hover:shadow-lg">
+      <div className="relative aspect-[4/4] overflow-hidden rounded-lg mb-3 product-card-shadow transition-all duration-300 group-hover:shadow-lg">
         <img
           src={product.images[0]}
           alt={product.name}

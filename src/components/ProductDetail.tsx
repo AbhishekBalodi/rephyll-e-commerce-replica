@@ -52,10 +52,10 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
         ← Back to products
       </button>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
         {/* Image gallery */}
-        <div className="space-y-4">
-          <div className="relative aspect-square overflow-hidden rounded-lg bg-muted">
+        <div className="space-y-3">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-muted">
             <img
               src={product.images[activeImg]}
               alt={product.name}
@@ -80,12 +80,12 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
           </div>
 
           {/* Thumbnails */}
-          <div className="flex gap-3">
+          <div className="flex gap-2">
             {product.images.map((img, i) => (
               <button
                 key={i}
                 onClick={() => setActiveImg(i)}
-                className={`w-20 h-20 rounded-md overflow-hidden border-2 transition-all ${
+                className={`w-16 h-16 rounded-md overflow-hidden border-2 transition-all ${
                   activeImg === i
                     ? "border-primary"
                     : "border-transparent opacity-60 hover:opacity-100"
