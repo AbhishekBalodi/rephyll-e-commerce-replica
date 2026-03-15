@@ -13,6 +13,7 @@ const authRoutes = require('./routes/authRoutes');
 const contactRoutes = require('./routes/contactRoutes');
 const newsletterRoutes = require('./routes/newsletterRoutes');
 const healthRoutes = require('./routes/healthRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
 
 // Middleware imports
 const errorHandler = require('./middleware/errorHandler');
