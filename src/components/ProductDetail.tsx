@@ -52,10 +52,10 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
         ← Back to products
       </button>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
         {/* Image gallery */}
-        <div className="space-y-4">
-          <div className="relative aspect-square overflow-hidden rounded-lg bg-muted">
+        <div className="space-y-3">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-muted">
             <img
               src={product.images[activeImg]}
               alt={product.name}
