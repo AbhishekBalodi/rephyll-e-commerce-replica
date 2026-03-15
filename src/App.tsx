@@ -10,6 +10,7 @@ import ContactUs from "./pages/ContactUs.tsx";
 import TermsOfService from "./pages/TermsOfService.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import WhyChooseUsPage from "./pages/WhyChooseUsPage.tsx";
+import TestimonialsPage from "./pages/TestimonialsPage.tsx";
 
 const queryClient = new QueryClient();
 
