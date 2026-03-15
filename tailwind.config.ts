@@ -66,7 +66,8 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Poppins', 'sans-serif'],
+        sans: ['"Nunito Sans"', 'sans-serif'],
+        display: ['"Cormorant Garamond"', 'serif'],
       },
       borderRadius: {
         lg: "var(--radius)",
