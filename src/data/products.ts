@@ -5,6 +5,12 @@ import product1Alt3 from "@/assets/product-1-alt3.jpg";
 import product2 from "@/assets/product-2.jpg";
 import product3 from "@/assets/product-3.jpg";
 import product4 from "@/assets/product-4.jpg";
+import product5 from "@/assets/product-5.jpg";
+import product5Alt1 from "@/assets/product-5-alt1.jpg";
+import product5Alt2 from "@/assets/product-5-alt2.jpg";
+import product5Alt3 from "@/assets/product-5-alt3.jpg";
+import product5Alt4 from "@/assets/product-5-alt4.jpg";
+import product5Alt5 from "@/assets/product-5-alt5.jpg";
 
 export interface Product {
   id: number;
@@ -205,6 +211,50 @@ export const PRODUCTS: Product[] = [
         verified: true,
         comment:
           "Really effective on hard water stains. Love that it's eco-friendly.",
+      },
+    ],
+  },
+  {
+    id: 5,
+    name: "Plant-Based Floor Cleaner - Citrus - 500ml Bottle",
+    price: 199,
+    originalPrice: 299,
+    discount: 33,
+    rating: 4.6,
+    reviews: 87,
+    images: [product5, product5Alt1, product5Alt2, product5Alt3, product5Alt4, product5Alt5],
+    description:
+      "Rephyll Plant-Based Floor Cleaner with natural citrus extracts delivers sparkling clean floors while being safe for pets and kids. Powered by nature, it kills 99.9% germs without harsh chemicals.",
+    keyFeatures: [
+      "Plant-powered formula",
+      "Kills 99.9% germs",
+      "Pet & child safe",
+      "Made with natural citrus extracts",
+      "Pure essential oils",
+      "Non-toxic & biodegradable",
+    ],
+    whatsIn: [
+      "Plant-based surfactants",
+      "Natural citrus extracts",
+      "Pure essential oils",
+      "Purified water",
+    ],
+    moreDetails:
+      "Shelf Life: 24 months. Usage: Pour 1 capful in half a bucket of water. Mop regularly. Storage: Store in a cool, dry place. Packaging: Recyclable bottle. Made in India.",
+    customerReviews: [
+      {
+        name: "Roshni Gupta",
+        rating: 5,
+        date: "10/03/2026",
+        verified: true,
+        comment: "Love the citrus fragrance! Floors are sparkling clean and safe for my dog.",
+      },
+      {
+        name: "Vikram Singh",
+        rating: 4,
+        date: "25/02/2026",
+        verified: true,
+        comment: "Great eco-friendly floor cleaner. Works really well on tiles.",
       },
     ],
   },
