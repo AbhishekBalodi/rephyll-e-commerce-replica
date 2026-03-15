@@ -1,4 +1,4 @@
-import { Search, User, ShoppingCart, Menu, X, ChevronDown, ChevronRight } from "lucide-react";
+import { Search, Heart, User, ShoppingBag, Menu, X, ChevronDown, ChevronRight } from "lucide-react";
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -22,6 +22,17 @@ interface NavCategory {
 
 const NAV_CATEGORIES: NavCategory[] = [
   {
+    label: "SHOP ALL",
+    path: "/",
+    subcategories: [
+      { label: "Laundry Detergent", path: "/" },
+      { label: "Glass Cleaner", path: "/" },
+      { label: "Fabric Whitener", path: "/" },
+      { label: "Toilet Cleaner", path: "/" },
+      { label: "Floor Cleaner", path: "/" },
+    ],
+  },
+  {
     label: "PRODUCTS",
     path: "/",
     subcategories: [
@@ -30,7 +41,6 @@ const NAV_CATEGORIES: NavCategory[] = [
       { label: "Fabric Whitener", path: "/" },
       { label: "Toilet Cleaner", path: "/" },
       { label: "Floor Cleaner", path: "/" },
-      { label: "Shop All", path: "/" },
     ],
   },
   {
@@ -41,6 +51,23 @@ const NAV_CATEGORIES: NavCategory[] = [
       { label: "We Are Eco-friendly", path: "/about" },
       { label: "We Care", path: "/about" },
     ],
+  },
+  {
+    label: "KITS",
+    path: "/",
+    subcategories: [
+      { label: "Starter Kit", path: "/" },
+      { label: "Complete Home Kit", path: "/" },
+      { label: "Office Kit", path: "/" },
+    ],
+  },
+  {
+    label: "BLOGS",
+    path: "/",
+  },
+  {
+    label: "B2B ORDERS",
+    path: "/contact",
   },
   {
     label: "HELP",
@@ -55,9 +82,8 @@ const NAV_CATEGORIES: NavCategory[] = [
 const Navbar = () => {
   const navigate = useNavigate();
   const [sheetOpen, setSheetOpen] = useState(false);
-  const [companyOpen, setCompanyOpen] = useState(false);
-  const [helpOpen, setHelpOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
+  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleNav = (path: string) => {
@@ -76,6 +102,10 @@ const Navbar = () => {
     timeoutRef.current = setTimeout(() => setActiveMenu(null), 150);
   };
 
+  const toggleMobileExpand = (label: string) => {
+    setMobileExpanded(mobileExpanded === label ? null : label);
+  };
+
   return (
     <>
       {/* Top announcement bar */}
@@ -86,10 +116,9 @@ const Navbar = () => {
       {/* Main navbar */}
       <nav className="sticky top-0 z-50 bg-background border-b border-border">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          {/* Top row: logo centered, search + icons on sides */}
           <div className="h-16 flex items-center justify-between">
-            {/* Left: hamburger (mobile) + search */}
-            <div className="flex items-center gap-4">
+            {/* Left: Logo */}
+            <div className="flex items-center gap-8">
               {/* Mobile hamburger */}
               <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
                 <SheetTrigger asChild>
@@ -103,123 +132,92 @@ const Navbar = () => {
                       rePhyl
                     </SheetTitle>
                   </SheetHeader>
-                  <div className="py-4">
-                    <button
-                      onClick={() => handleNav("/")}
-                      className="flex items-center justify-between w-full px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider text-foreground hover:bg-accent/50 transition-colors"
-                    >
-                      <span>Products</span>
-                      <ChevronRight size={16} className="text-muted-foreground" />
-                    </button>
-
-                    <Collapsible open={companyOpen} onOpenChange={setCompanyOpen}>
-                      <CollapsibleTrigger className="flex items-center justify-between w-full px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider text-foreground hover:bg-accent/50 transition-colors">
-                        <span>About Us</span>
-                        <ChevronRight
-                          size={16}
-                          className={`text-muted-foreground transition-transform ${companyOpen ? "rotate-90" : ""}`}
-                        />
-                      </CollapsibleTrigger>
-                      <CollapsibleContent>
-                        <div className="bg-accent/30">
-                          {[
-                            { label: "Our Story", path: "/about" },
-                            { label: "We Are Eco-friendly", path: "/about" },
-                          ].map((item) => (
-                            <button
-                              key={item.label}
-                              onClick={() => handleNav(item.path)}
-                              className="block w-full text-left pl-10 pr-6 py-2.5 text-sm text-foreground hover:bg-accent/50 transition-colors"
-                            >
-                              {item.label}
-                            </button>
-                          ))}
-                        </div>
-                      </CollapsibleContent>
-                    </Collapsible>
-
-                    <Collapsible open={helpOpen} onOpenChange={setHelpOpen}>
-                      <CollapsibleTrigger className="flex items-center justify-between w-full px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider text-foreground hover:bg-accent/50 transition-colors">
-                        <span>Help</span>
-                        <ChevronRight
-                          size={16}
-                          className={`text-muted-foreground transition-transform ${helpOpen ? "rotate-90" : ""}`}
-                        />
-                      </CollapsibleTrigger>
-                      <CollapsibleContent>
-                        <div className="bg-accent/30">
-                          {[
-                            { label: "FAQs", path: "/faqs" },
-                            { label: "Contact Us", path: "/contact" },
-                            { label: "Terms of Service", path: "/terms" },
-                          ].map((item) => (
-                            <button
-                              key={item.label}
-                              onClick={() => handleNav(item.path)}
-                              className="block w-full text-left pl-10 pr-6 py-2.5 text-sm text-foreground hover:bg-accent/50 transition-colors"
-                            >
-                              {item.label}
-                            </button>
-                          ))}
-                        </div>
-                      </CollapsibleContent>
-                    </Collapsible>
+                  <div className="py-4 overflow-y-auto max-h-[calc(100vh-80px)]">
+                    {NAV_CATEGORIES.map((cat) => (
+                      <div key={cat.label}>
+                        {cat.subcategories ? (
+                          <Collapsible
+                            open={mobileExpanded === cat.label}
+                            onOpenChange={() => toggleMobileExpand(cat.label)}
+                          >
+                            <CollapsibleTrigger className="flex items-center justify-between w-full px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider text-foreground hover:bg-accent/50 transition-colors">
+                              <span>{cat.label}</span>
+                              <ChevronRight
+                                size={16}
+                                className={`text-muted-foreground transition-transform ${mobileExpanded === cat.label ? "rotate-90" : ""}`}
+                              />
+                            </CollapsibleTrigger>
+                            <CollapsibleContent>
+                              <div className="bg-accent/30">
+                                {cat.subcategories.map((sub) => (
+                                  <button
+                                    key={sub.label}
+                                    onClick={() => handleNav(sub.path)}
+                                    className="block w-full text-left pl-10 pr-6 py-2.5 text-sm text-foreground hover:bg-accent/50 transition-colors"
+                                  >
+                                    {sub.label}
+                                  </button>
+                                ))}
+                              </div>
+                            </CollapsibleContent>
+                          </Collapsible>
+                        ) : (
+                          <button
+                            onClick={() => cat.path && handleNav(cat.path)}
+                            className="flex items-center justify-between w-full px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider text-foreground hover:bg-accent/50 transition-colors"
+                          >
+                            <span>{cat.label}</span>
+                          </button>
+                        )}
+                      </div>
+                    ))}
                   </div>
                 </SheetContent>
               </Sheet>
 
-              <div className="hidden md:flex items-center gap-2 text-muted-foreground">
-                <Search size={16} />
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  className="text-sm bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground w-32 focus:w-48 transition-all"
-                />
-              </div>
+              <h1
+                className="font-display text-3xl md:text-4xl font-light tracking-wide text-foreground cursor-pointer"
+                onClick={() => handleNav("/")}
+              >
+                rePhyl
+              </h1>
             </div>
 
-            {/* Center: brand name */}
-            <h1
-              className="font-display text-3xl md:text-4xl font-light tracking-wide text-foreground cursor-pointer"
-              onClick={() => handleNav("/")}
-            >
-              rePhyl
-            </h1>
+            {/* Center: nav links (desktop) */}
+            <div className="hidden md:flex items-center gap-6">
+              {NAV_CATEGORIES.map((cat) => (
+                <div
+                  key={cat.label}
+                  className="relative"
+                  onMouseEnter={() => cat.subcategories && handleMouseEnter(cat.label)}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <button
+                    onClick={() => cat.path && handleNav(cat.path)}
+                    className={`text-xs font-semibold uppercase tracking-[0.12em] py-2 transition-colors ${
+                      activeMenu === cat.label
+                        ? "text-foreground"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {cat.label}
+                  </button>
+                </div>
+              ))}
+            </div>
 
             {/* Right: icons */}
             <div className="flex items-center gap-5">
-              <Search size={18} className="md:hidden text-foreground cursor-pointer" />
-              <User size={18} className="text-foreground cursor-pointer" />
+              <Search size={18} className="text-foreground cursor-pointer hover:text-muted-foreground transition-colors" />
+              <Heart size={18} className="text-foreground cursor-pointer hover:text-muted-foreground transition-colors" />
+              <User size={18} className="text-foreground cursor-pointer hover:text-muted-foreground transition-colors" />
               <div className="relative cursor-pointer">
-                <ShoppingCart size={18} className="text-foreground" />
+                <ShoppingBag size={18} className="text-foreground hover:text-muted-foreground transition-colors" />
                 <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
                   0
                 </span>
               </div>
             </div>
-          </div>
-
-          {/* Bottom row: horizontal nav links (desktop only) */}
-          <div className="hidden md:flex items-center justify-center gap-8 pb-3 -mt-1">
-            {NAV_CATEGORIES.map((cat) => (
-              <div
-                key={cat.label}
-                className="relative"
-                onMouseEnter={() => handleMouseEnter(cat.label)}
-                onMouseLeave={handleMouseLeave}
-              >
-                <button
-                  onClick={() => cat.path && handleNav(cat.path)}
-                  className={`text-xs font-semibold uppercase tracking-[0.15em] py-2 border-b-2 transition-colors ${
-                    activeMenu === cat.label
-                      ? "text-foreground border-foreground"
-                      : "text-muted-foreground border-transparent hover:text-foreground"
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              </div>
-            ))}
           </div>
         </div>
 
