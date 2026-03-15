@@ -1,4 +1,4 @@
-import { Instagram, Facebook, Youtube } from "lucide-react";
+import { Instagram, Facebook, Youtube, Mail, Phone } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -22,12 +22,42 @@ const Footer = () => {
                 SHOW US SOME ❤️ ON SOCIAL MEDIA
               </p>
               <div className="flex items-center gap-4 mb-6">
-                <Instagram size={24} className="cursor-pointer hover:opacity-80" />
-                <Facebook size={24} className="cursor-pointer hover:opacity-80" />
+                <a 
+                  href="https://www.instagram.com/rephyl.life?igsh=MTl2djZka2o5MHE3aA%3D%3D" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="hover:opacity-80 transition-opacity"
+                >
+                  <Instagram size={24} />
+                </a>
+                <a 
+                  href="https://www.facebook.com/people/rePhyl/61583757478743/?mibextid=wwXIfr&rdid=SRTVJ4AdT7BTfmxo&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F18EqdFprat%2F%3Fmibextid%3DwwXIfr" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="hover:opacity-80 transition-opacity"
+                >
+                  <Facebook size={24} />
+                </a>
                 <Youtube size={24} className="cursor-pointer hover:opacity-80" />
               </div>
-              <p className="text-sm opacity-90">care@rephyll.in</p>
-              <p className="text-sm opacity-90">+91 7539987773</p>
+              <div className="flex items-center gap-2 mb-2">
+                <Mail size={16} className="opacity-90" />
+                <a 
+                  href="mailto:care@rephyl.com" 
+                  className="text-sm opacity-90 hover:opacity-100 transition-opacity"
+                >
+                  care@rephyl.com
+                </a>
+              </div>
+              <div className="flex items-center gap-2">
+                <Phone size={16} className="opacity-90" />
+                <a 
+                  href="tel:9313984685" 
+                  className="text-sm opacity-90 hover:opacity-100 transition-opacity"
+                >
+                  +91 9313984685
+                </a>
+              </div>
             </div>
 
             {/* Center: brand */}
