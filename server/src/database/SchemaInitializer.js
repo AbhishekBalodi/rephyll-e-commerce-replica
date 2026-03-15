@@ -25,6 +25,7 @@ class SchemaInitializer {
     await this._createUsersTable();
     await this._createContactMessagesTable();
     await this._createNewsletterSubscribersTable();
+    await this._createReviewsTable();
 
     this.logger.info('All tables created/verified successfully.');
   }
