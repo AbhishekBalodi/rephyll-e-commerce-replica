@@ -70,6 +70,7 @@ const Index = () => {
           </section>
 
           <WhyChooseUs />
+          <TrustStrips />
         </>
       )}
 
