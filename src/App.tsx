@@ -10,6 +10,7 @@ import ContactUs from "./pages/ContactUs.tsx";
 import TermsOfService from "./pages/TermsOfService.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import WhyChooseUsPage from "./pages/WhyChooseUsPage.tsx";
+import TestimonialsPage from "./pages/TestimonialsPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/faqs" element={<FAQs />} />
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/terms" element={<TermsOfService />} />
+          <Route path="/testimonials" element={<TestimonialsPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

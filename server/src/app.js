@@ -13,6 +13,7 @@ const authRoutes = require('./routes/authRoutes');
 const contactRoutes = require('./routes/contactRoutes');
 const newsletterRoutes = require('./routes/newsletterRoutes');
 const healthRoutes = require('./routes/healthRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
 
 // Middleware imports
 const errorHandler = require('./middleware/errorHandler');
@@ -78,6 +79,7 @@ class App {
     this.app.use('/api/auth', authRoutes);
     this.app.use('/api/contact', contactRoutes);
     this.app.use('/api/newsletter', newsletterRoutes);
+    this.app.use('/api/reviews', reviewRoutes);
 
     this.logger.info('All routes registered.');
   }

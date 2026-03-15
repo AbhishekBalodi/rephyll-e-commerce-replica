@@ -25,6 +25,7 @@ class SchemaInitializer {
     await this._createUsersTable();
     await this._createContactMessagesTable();
     await this._createNewsletterSubscribersTable();
+    await this._createReviewsTable();
 
     this.logger.info('All tables created/verified successfully.');
   }
@@ -98,6 +99,25 @@ class SchemaInitializer {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `);
     this.logger.info('Newsletter subscribers table is ready.');
+  }
+  /**
+   * Create reviews table for customer testimonials.
+   */
+  async _createReviewsTable() {
+    this.logger.info('Creating reviews table if not exists...');
+    await this.dbManager.rawQuery(`
+      CREATE TABLE IF NOT EXISTS reviews (
+        id VARCHAR(36) PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        rating DECIMAL(2,1) NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        content TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_reviews_rating (rating),
+        INDEX idx_reviews_created (created_at)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+    this.logger.info('Reviews table is ready.');
   }
 }
 
