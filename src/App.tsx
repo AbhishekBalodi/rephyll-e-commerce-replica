@@ -8,6 +8,8 @@ import AboutUs from "./pages/AboutUs.tsx";
 import FAQs from "./pages/FAQs.tsx";
 import ContactUs from "./pages/ContactUs.tsx";
 import TermsOfService from "./pages/TermsOfService.tsx";
+import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
+import RefundPolicy from "./pages/RefundPolicy.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import WhyChooseUsPage from "./pages/WhyChooseUsPage.tsx";
 import TestimonialsPage from "./pages/TestimonialsPage.tsx";
@@ -27,6 +29,8 @@ const App = () => (
           <Route path="/faqs" element={<FAQs />} />
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/terms" element={<TermsOfService />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/refund-policy" element={<RefundPolicy />} />
           <Route path="/testimonials" element={<TestimonialsPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
