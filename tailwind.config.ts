@@ -48,10 +48,10 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         brand: {
-          green: "hsl(var(--brand-green))",
-          "green-dark": "hsl(var(--brand-green-dark))",
-          mint: "hsl(var(--brand-mint))",
-          teal: "hsl(var(--brand-teal))",
+          warm: "hsl(var(--brand-warm))",
+          "warm-dark": "hsl(var(--brand-warm-dark))",
+          cream: "hsl(var(--brand-cream))",
+          gold: "hsl(var(--brand-gold))",
         },
         discount: "hsl(var(--discount-green))",
         sidebar: {
@@ -66,7 +66,8 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Poppins', 'sans-serif'],
+        sans: ['"Nunito Sans"', 'sans-serif'],
+        display: ['"Cormorant Garamond"', 'serif'],
       },
       borderRadius: {
         lg: "var(--radius)",
