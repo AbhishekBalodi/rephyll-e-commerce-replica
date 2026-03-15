@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import HeroCarousel from "@/components/HeroCarousel";
 import ProductCard from "@/components/ProductCard";
@@ -21,7 +22,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Navbar onNavigateHome={handleBack} />
+      <Navbar />
 
       {selectedProduct ? (
         <ProductDetail product={selectedProduct} onBack={handleBack} />

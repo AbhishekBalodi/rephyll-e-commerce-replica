@@ -1,12 +1,29 @@
-import { Search, User, ShoppingCart, Menu, X } from "lucide-react";
+import { Search, User, ShoppingCart, Menu, X, ChevronRight } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
-interface NavbarProps {
-  onNavigateHome: () => void;
-}
+const Navbar = () => {
+  const navigate = useNavigate();
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [companyOpen, setCompanyOpen] = useState(false);
 
-const Navbar = ({ onNavigateHome }: NavbarProps) => {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const handleNav = (path: string) => {
+    setSheetOpen(false);
+    navigate(path);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <>
@@ -20,12 +37,59 @@ const Navbar = ({ onNavigateHome }: NavbarProps) => {
         <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
           {/* Left: hamburger + search */}
           <div className="flex items-center gap-4">
-            <button
-              className="md:hidden text-foreground"
-              onClick={() => setMenuOpen(!menuOpen)}
-            >
-              {menuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+            <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+              <SheetTrigger asChild>
+                <button className="text-foreground">
+                  <Menu size={24} />
+                </button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-80 p-0">
+                <SheetHeader className="p-6 pb-4 border-b border-border">
+                  <SheetTitle className="text-2xl font-extrabold text-primary tracking-tight uppercase">
+                    REPHYLL
+                  </SheetTitle>
+                </SheetHeader>
+                <div className="py-4">
+                  {/* Products */}
+                  <button
+                    onClick={() => handleNav("/")}
+                    className="flex items-center justify-between w-full px-6 py-3 text-left text-base font-semibold text-foreground hover:bg-accent/50 transition-colors"
+                  >
+                    <span>Products</span>
+                    <ChevronRight size={18} className="text-muted-foreground" />
+                  </button>
+
+                  {/* Our Company - collapsible */}
+                  <Collapsible open={companyOpen} onOpenChange={setCompanyOpen}>
+                    <CollapsibleTrigger className="flex items-center justify-between w-full px-6 py-3 text-left text-base font-semibold text-foreground hover:bg-accent/50 transition-colors">
+                      <span>Our Company</span>
+                      <ChevronRight
+                        size={18}
+                        className={`text-muted-foreground transition-transform ${companyOpen ? "rotate-90" : ""}`}
+                      />
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <div className="bg-accent/10">
+                        {[
+                          { label: "About Us", path: "/about" },
+                          { label: "FAQs", path: "/faqs" },
+                          { label: "Contact Us", path: "/contact" },
+                          { label: "Terms of Service", path: "/terms" },
+                        ].map((item) => (
+                          <button
+                            key={item.path}
+                            onClick={() => handleNav(item.path)}
+                            className="block w-full text-left pl-10 pr-6 py-2.5 text-sm font-medium text-foreground hover:bg-accent/30 transition-colors"
+                          >
+                            {item.label}
+                          </button>
+                        ))}
+                      </div>
+                    </CollapsibleContent>
+                  </Collapsible>
+                </div>
+              </SheetContent>
+            </Sheet>
             <div className="hidden md:flex items-center gap-2 text-muted-foreground">
               <Search size={18} />
               <span className="text-sm">Search shop...</span>
@@ -35,7 +99,7 @@ const Navbar = ({ onNavigateHome }: NavbarProps) => {
           {/* Center: brand */}
           <h1
             className="text-2xl md:text-3xl font-extrabold tracking-tight text-primary cursor-pointer uppercase"
-            onClick={onNavigateHome}
+            onClick={() => handleNav("/")}
           >
             REPHYLL
           </h1>
@@ -52,15 +116,6 @@ const Navbar = ({ onNavigateHome }: NavbarProps) => {
             </div>
           </div>
         </div>
-
-        {/* Mobile menu */}
-        {menuOpen && (
-          <div className="md:hidden border-t border-border px-4 py-4 space-y-3 bg-background">
-            <a href="#" className="block text-sm font-medium text-foreground">Shop All</a>
-            <a href="#" className="block text-sm font-medium text-foreground">Our Story</a>
-            <a href="#" className="block text-sm font-medium text-foreground">Contact</a>
-          </div>
-        )}
       </nav>
     </>
   );
