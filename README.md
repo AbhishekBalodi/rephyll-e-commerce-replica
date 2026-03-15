@@ -1,73 +1,76 @@
-# Welcome to your Lovable project
+# rePhyl - Plant-Based Cleaning Products
 
-## Project info
+hey, this is my e-commerce project for rePhyl — a plant-based cleaning products brand. still a work in progress tbh but it's coming along.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+built by **Abhishek Bilodi**
 
-## How can I edit this code?
+## what is this
 
-There are several ways of editing your application.
+an e-commerce frontend (and backend) for rePhyl, a company that makes eco-friendly, plant-based cleaners. the site has product listings, a contact form, newsletter signup, and basic auth.
 
-**Use Lovable**
+## tech stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+- React + TypeScript + Vite (frontend)
+- Tailwind CSS + shadcn/ui (styling)
+- Express.js + Node.js (backend API)
+- MySQL (database)
 
-Changes made via Lovable will be committed automatically to this repo.
+## how to run
 
-**Use your preferred IDE**
+### frontend
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```bash
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+opens at `http://localhost:8080`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### backend
 
-**Use GitHub Codespaces**
+```bash
+cd server
+npm install
+npm run dev
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+runs on `http://localhost:5000`
 
-## What technologies are used for this project?
+make sure you have MySQL set up and update `server/.env` with your db credentials.
 
-This project is built with:
+## project structure
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```
+├── src/                  # react frontend
+│   ├── components/       # reusable components
+│   ├── pages/            # route pages
+│   ├── services/         # api calls
+│   └── data/             # product data
+├── server/               # express backend
+│   ├── src/
+│   │   ├── controllers/  # request handlers
+│   │   ├── services/     # business logic
+│   │   ├── repositories/ # database queries
+│   │   ├── database/     # db connection & schema
+│   │   ├── middleware/    # auth, validation, etc
+│   │   └── routes/       # api routes
+│   └── .env              # backend env vars
+└── .env                  # frontend env vars
+```
 
-## How can I deploy this project?
+## api endpoints
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+- `GET /api/health` — health check
+- `POST /api/auth/register` — sign up
+- `POST /api/auth/login` — log in
+- `GET /api/auth/me` — get profile (needs token)
+- `POST /api/contact` — submit contact form
+- `POST /api/newsletter/subscribe` — subscribe to newsletter
 
-## Can I connect a custom domain to my Lovable project?
+## status
 
-Yes, you can!
+still working on it. some stuff might be broken, some pages are half done. will keep updating as i go.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+---
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+made with lots of chai and mass debugging sessions ☕
