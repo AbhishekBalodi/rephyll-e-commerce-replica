@@ -62,7 +62,7 @@ const Footer = () => {
 
             {/* Center: brand */}
             <div className="flex flex-col items-center justify-center">
-              <h2 className="text-4xl font-extrabold tracking-tight">REPHYLL</h2>
+              <h2 className="text-4xl font-extrabold tracking-tight">rePhyl</h2>
               <p className="text-xs uppercase tracking-[0.3em] mt-1 opacity-80">
                 Have a Clean Day!
               </p>
