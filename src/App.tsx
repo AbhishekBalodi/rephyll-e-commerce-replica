@@ -9,6 +9,7 @@ import FAQs from "./pages/FAQs.tsx";
 import ContactUs from "./pages/ContactUs.tsx";
 import TermsOfService from "./pages/TermsOfService.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import WhyChooseUsPage from "./pages/WhyChooseUsPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -21,10 +22,10 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/about" element={<AboutUs />} />
+          <Route path="/why-choose-us" element={<WhyChooseUsPage />} />
           <Route path="/faqs" element={<FAQs />} />
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/terms" element={<TermsOfService />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

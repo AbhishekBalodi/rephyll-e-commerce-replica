@@ -70,6 +70,10 @@ const NAV_CATEGORIES: NavCategory[] = [
     path: "/contact",
   },
   {
+    label: "WHY CHOOSE US",
+    path: "/why-choose-us",
+  },
+  {
     label: "HELP",
     subcategories: [
       { label: "FAQs", path: "/faqs" },
