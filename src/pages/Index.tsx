@@ -30,6 +30,7 @@ const Index = () => {
       ) : (
         <>
           <HeroCarousel />
+          <CategoryBar />
 
           {/* Products section */}
           <section className="max-w-7xl mx-auto px-4 md:px-6 py-16">
