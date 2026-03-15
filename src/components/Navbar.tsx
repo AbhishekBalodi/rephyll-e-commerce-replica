@@ -92,7 +92,11 @@ const Navbar = () => {
             </Sheet>
             <div className="hidden md:flex items-center gap-2 text-muted-foreground">
               <Search size={18} />
-              <span className="text-sm">Search shop...</span>
+              <input
+                type="text"
+                placeholder="Search shop..."
+                className="text-sm bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground w-40 focus:w-56 transition-all"
+              />
             </div>
           </div>
 
