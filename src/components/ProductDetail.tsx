@@ -41,7 +41,7 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
     { id: "description", label: "Description" },
     { id: "features", label: "Key Features" },
     { id: "whatsIn", label: "What's in?" },
-    { id: "details", label: "More Details" },
+    { id: "details", label: "How to Use" },
   ];
 
   const prevImg = () =>

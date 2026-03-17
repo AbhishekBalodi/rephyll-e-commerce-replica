@@ -1,12 +1,9 @@
 import {
-  Tag,
-  Sparkles,
-  Package,
-  Droplets,
-  SprayCan,
-  Shrub,
+  ShowerHead,
+  Layers,
+  CookingPot,
   Shirt,
-  Home,
+  PackageOpen,
 } from "lucide-react";
 import { ProductCategory } from "@/data/products";
 
@@ -16,14 +13,11 @@ interface Category {
 }
 
 const CATEGORIES: Category[] = [
-  { label: "Sale", icon: <Tag size={28} strokeWidth={1.5} /> },
-  { label: "New In", icon: <Sparkles size={28} strokeWidth={1.5} /> },
-  { label: "Laundry", icon: <Shirt size={28} strokeWidth={1.5} /> },
-  { label: "Glass Care", icon: <Droplets size={28} strokeWidth={1.5} /> },
-  { label: "Floor Care", icon: <Home size={28} strokeWidth={1.5} /> },
-  { label: "Toilet Care", icon: <SprayCan size={28} strokeWidth={1.5} /> },
-  { label: "Eco Kits", icon: <Package size={28} strokeWidth={1.5} /> },
-  { label: "Plant-Based", icon: <Shrub size={28} strokeWidth={1.5} /> },
+  { label: "Washroom Care", icon: <ShowerHead size={28} strokeWidth={1.5} /> },
+  { label: "Floor & Surface Care", icon: <Layers size={28} strokeWidth={1.5} /> },
+  { label: "Kitchen Care", icon: <CookingPot size={28} strokeWidth={1.5} /> },
+  { label: "Laundry Care", icon: <Shirt size={28} strokeWidth={1.5} /> },
+  { label: "Home Care Kits", icon: <PackageOpen size={28} strokeWidth={1.5} /> },
 ];
 
 interface CategoryBarProps {
