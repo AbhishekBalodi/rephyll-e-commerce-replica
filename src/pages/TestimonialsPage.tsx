@@ -1,9 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Star } from "lucide-react";
 import { DUMMY_REVIEWS, Review } from "@/data/reviews";
 import { useToast } from "@/hooks/use-toast";
+
+const STORAGE_KEY = "rephyl_user_reviews";
+
+const getStoredReviews = (): Review[] => {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
+};
+
+const saveReviews = (reviews: Review[]) => {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(reviews));
+};
 
 const StarRating = ({ rating, interactive, onRate }: { rating: number; interactive?: boolean; onRate?: (r: number) => void }) => {
   return (
@@ -43,7 +58,10 @@ const ReviewCard = ({ review }: { review: Review }) => (
 );
 
 const TestimonialsPage = () => {
-  const [reviews, setReviews] = useState<Review[]>(DUMMY_REVIEWS);
+  const [reviews, setReviews] = useState<Review[]>(() => {
+    const userReviews = getStoredReviews();
+    return [...userReviews, ...DUMMY_REVIEWS];
+  });
   const [showForm, setShowForm] = useState(false);
   const [name, setName] = useState("");
   const [rating, setRating] = useState(5);
@@ -67,7 +85,11 @@ const TestimonialsPage = () => {
       date: new Date().toLocaleDateString("en-US"),
     };
 
-    setReviews([newReview, ...reviews]);
+    const userReviews = getStoredReviews();
+    const updatedUserReviews = [newReview, ...userReviews];
+    saveReviews(updatedUserReviews);
+
+    setReviews([...updatedUserReviews, ...DUMMY_REVIEWS]);
     setName("");
     setRating(5);
     setTitle("");
@@ -98,7 +120,6 @@ const TestimonialsPage = () => {
           </button>
         </div>
 
-        {/* Write Review Form */}
         {showForm && (
           <div className="bg-card border border-border rounded-xl p-6 md:p-8 mb-12 max-w-2xl">
             <h3 className="text-lg font-bold text-foreground mb-6">Write a Review</h3>
@@ -153,7 +174,6 @@ const TestimonialsPage = () => {
           </div>
         )}
 
-        {/* Masonry Reviews Grid */}
         <div className="columns-1 md:columns-2 lg:columns-3 gap-4">
           {reviews.map((review) => (
             <ReviewCard key={review.id} review={review} />
