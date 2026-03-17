@@ -6,6 +6,7 @@ import ProductCard from "@/components/ProductCard";
 import ProductDetail from "@/components/ProductDetail";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import TrustStrips from "@/components/TrustStrips";
+import BlogsSection from "@/components/BlogsSection";
 import Footer from "@/components/Footer";
 import { PRODUCTS, Product, ProductCategory } from "@/data/products";
 
@@ -71,6 +72,7 @@ const Index = () => {
 
           <WhyChooseUs />
           <TrustStrips />
+          <BlogsSection />
         </>
       )}
 
