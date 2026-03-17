@@ -27,10 +27,10 @@ const BlogsSection = () => {
           Watch our eco-friendly cleaning tips and tricks
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
           {BLOG_VIDEOS.map((video, i) => (
-            <div key={i} className="rounded-xl overflow-hidden border border-border bg-card">
-              <div className="aspect-[9/16] max-h-[420px] bg-muted">
+            <div key={i} className="rounded-xl overflow-hidden border border-border bg-card w-fit">
+              <div className="w-[280px] sm:w-[260px] lg:w-[280px] aspect-[9/16] bg-muted">
                 <video
                   src={video.src}
                   className="w-full h-full object-cover"
@@ -41,9 +41,9 @@ const BlogsSection = () => {
                   preload="metadata"
                 />
               </div>
-              <div className="p-4">
-                <h3 className="text-base font-bold text-foreground mb-1">{video.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{video.desc}</p>
+              <div className="w-[280px] sm:w-[260px] lg:w-[280px] p-3">
+                <h3 className="text-sm font-bold text-foreground mb-1">{video.title}</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">{video.desc}</p>
               </div>
             </div>
           ))}
