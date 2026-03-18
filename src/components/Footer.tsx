@@ -128,10 +128,10 @@ const Footer = () => {
               </a>
             </div>
 
-            <div className="mt-auto flex flex-col items-start md:items-end gap-3">
-              <img src={cloverLime} alt="rePhyl clover" className="w-20 h-20" />
-              <img src={logoBlack} alt="rePhyl" className="h-14 w-auto" />
-              <p className="text-sm uppercase tracking-[0.25em] text-muted-foreground mt-1">Have a Clean Day!</p>
+            <div className="mt-auto flex flex-col items-start md:items-end gap-1">
+              <img src={cloverLime} alt="rePhyl clover" className="w-16 h-16" />
+              <img src={logoBlack} alt="rePhyl" className="h-28 w-auto -my-8" />
+              <p className="text-sm uppercase tracking-[0.25em] text-muted-foreground">Have a Clean Day!</p>
             </div>
           </div>
         </div>
