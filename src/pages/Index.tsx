@@ -42,14 +42,9 @@ const Index = () => {
 
             {/* Products section */}
             <section id="products-section" className="max-w-7xl mx-auto px-4 md:px-6 py-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-center text-foreground mb-2">
-                Products
+              <h2 className="text-3xl md:text-5xl font-bold text-center text-foreground mb-12" style={{ fontFamily: "'Source Sans 3', sans-serif" }}>
+                Most Loved by <span className="text-primary">10,000+</span> Homes
               </h2>
-              <p className="text-center text-muted-foreground mb-12">
-                {isLoading
-                  ? "Loading products..."
-                  : `Showing ${products.length} product${products.length !== 1 ? "s" : ""}`}
-              </p>
 
               {isLoading ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
