@@ -129,8 +129,8 @@ const Footer = () => {
             </div>
 
             <div className="mt-auto flex flex-col items-start md:items-end gap-3">
-              <img src={cloverLime} alt="rePhyl clover" className="w-16 h-16" />
-              <img src={logoBlack} alt="rePhyl" className="h-12 w-auto" />
+              <img src={cloverLime} alt="rePhyl clover" className="w-20 h-20" />
+              <img src={logoBlack} alt="rePhyl" className="h-14 w-auto" />
               <p className="text-sm uppercase tracking-[0.25em] text-muted-foreground mt-1">Have a Clean Day!</p>
             </div>
           </div>
