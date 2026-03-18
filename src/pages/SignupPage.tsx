@@ -5,6 +5,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff } from "lucide-react";
+import cloverGreen from "@/assets/clover-green.png";
+import logoBlack from "@/assets/logo-black.png";
 
 const SignupPage = () => {
   const [fullName, setFullName] = useState("");
