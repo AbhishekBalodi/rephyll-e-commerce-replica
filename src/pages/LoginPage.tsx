@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff } from "lucide-react";
 import cloverGreen from "@/assets/clover-green.png";
-import logoBlack from "@/assets/logo-black.png";
+import logoBlack from "@/assets/logo-green-cropped.png";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");

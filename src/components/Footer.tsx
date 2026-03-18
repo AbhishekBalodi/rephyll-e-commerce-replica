@@ -1,7 +1,7 @@
 import { Instagram, Facebook, Youtube, Mail, Phone, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import logoBlack from "@/assets/logo-black.png";
+import logoBlack from "@/assets/logo-green-cropped.png";
 import cloverLime from "@/assets/clover-lime.png";
 import { apiService } from "@/services/apiService";
 import { useToast } from "@/hooks/use-toast";

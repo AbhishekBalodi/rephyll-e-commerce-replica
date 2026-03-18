@@ -1,7 +1,7 @@
 import { Search, Heart, User, ShoppingBag, Menu, X, ChevronDown, ChevronRight, LogOut } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import logoBlack from "@/assets/logo-black.png";
+import logoBlack from "@/assets/logo-green-cropped.png";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSearchSuggestions } from "@/hooks/useProducts";

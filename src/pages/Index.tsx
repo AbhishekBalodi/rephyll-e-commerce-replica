@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import logoBlack from "@/assets/logo-black.png";
+import logoBlack from "@/assets/logo-green-cropped.png";
 import Navbar from "@/components/Navbar";
 import HeroCarousel from "@/components/HeroCarousel";
 import CategoryBar from "@/components/CategoryBar";
