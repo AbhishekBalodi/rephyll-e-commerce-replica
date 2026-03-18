@@ -45,7 +45,7 @@ const HomecareKitsSection = () => {
   };
 
   return (
-    <>
+    <div id="homecare-kits-section">
       {/* CTA Banner */}
       <section className="bg-primary py-16 px-4">
         <div className="max-w-4xl mx-auto text-center">
