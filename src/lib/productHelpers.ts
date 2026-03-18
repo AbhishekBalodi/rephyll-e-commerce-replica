@@ -3,24 +3,31 @@
  */
 import type { ApiProduct, ApiVariant } from "@/types/api";
 
+const ASSET_BASE = import.meta.env.VITE_BASE_URL || "https://www.brandingidiots.tech";
+
+/** Prepend base URL to relative image paths (e.g. /api/files/...) */
+export function resolveImageUrl(path: string | null | undefined): string {
+  if (!path) return "/placeholder.svg";
+  if (path.startsWith("http")) return path;
+  return `${ASSET_BASE}${path}`;
+}
+
 /** Get the best display image for a product. */
 export function getProductImage(product: ApiProduct): string {
-  // Product-level image first
-  if (product.productImage) return product.productImage;
-  // Fallback to first variant image
+  if (product.productImage) return resolveImageUrl(product.productImage);
   const variantImg = product.variants.find((v) => v.imageUrl)?.imageUrl;
-  if (variantImg) return variantImg;
-  // Placeholder
+  if (variantImg) return resolveImageUrl(variantImg);
   return "/placeholder.svg";
 }
 
 /** Get all available images for gallery. */
 export function getProductImages(product: ApiProduct): string[] {
   const imgs: string[] = [];
-  if (product.productImage) imgs.push(product.productImage);
-  if (product.stickerImage) imgs.push(product.stickerImage);
+  if (product.productImage) imgs.push(resolveImageUrl(product.productImage));
+  if (product.stickerImage) imgs.push(resolveImageUrl(product.stickerImage));
   product.variants.forEach((v) => {
-    if (v.imageUrl && !imgs.includes(v.imageUrl)) imgs.push(v.imageUrl);
+    const resolved = resolveImageUrl(v.imageUrl);
+    if (v.imageUrl && !imgs.includes(resolved)) imgs.push(resolved);
   });
   return imgs.length > 0 ? imgs : ["/placeholder.svg"];
 }

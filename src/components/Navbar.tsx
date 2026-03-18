@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useSearchSuggestions } from "@/hooks/useProducts";
 import { listProducts } from "@/services/productApi";
 import type { ApiProduct } from "@/types/api";
+import { resolveImageUrl } from "@/lib/productHelpers";
 import {
   Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger,
 } from "@/components/ui/sheet";
@@ -277,7 +278,7 @@ const Navbar = () => {
                             className="flex items-center gap-3 w-full px-3 py-3 hover:bg-accent transition-colors text-left border-b border-border last:border-0"
                           >
                             <img
-                              src={p.productImage || "/placeholder.svg"}
+                              src={resolveImageUrl(p.productImage) || "/placeholder.svg"}
                               alt={p.name}
                               className="w-12 h-12 rounded-md object-cover bg-muted flex-shrink-0"
                               onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg"; }}

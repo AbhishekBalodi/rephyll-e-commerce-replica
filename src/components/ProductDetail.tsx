@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, Star, Leaf, ShieldCheck, Baby, Droplets } from "lucide-react";
 import type { ApiProduct, ApiVariant } from "@/types/api";
-import { getProductImages, getSellingPrice, getMrp, getDiscount, parseVariantAttributes, isInStock } from "@/lib/productHelpers";
+import { getProductImages, getSellingPrice, getMrp, getDiscount, parseVariantAttributes, isInStock, resolveImageUrl } from "@/lib/productHelpers";
 import { useCart } from "@/contexts/CartContext";
 import PackSelector, { generatePacks } from "./PackSelector";
 import QuantityCapsule from "./QuantityCapsule";
@@ -258,7 +258,7 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
                 return (
                   <div key={v.id} className="flex items-center gap-4 p-4 rounded-lg border border-border">
                     {v.imageUrl && (
-                      <img src={v.imageUrl} alt={v.variantName} className="w-16 h-16 rounded-md object-cover" onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg"; }} />
+                      <img src={resolveImageUrl(v.imageUrl)} alt={v.variantName} className="w-16 h-16 rounded-md object-cover" onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg"; }} />
                     )}
                     <div className="flex-1">
                       <p className="font-semibold text-foreground">{v.variantName}</p>
