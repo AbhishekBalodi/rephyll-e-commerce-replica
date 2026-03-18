@@ -1,6 +1,8 @@
-import { Search, Heart, User, ShoppingBag, Menu, X, ChevronDown, ChevronRight } from "lucide-react";
+import { Search, Heart, User, ShoppingBag, Menu, X, ChevronDown, ChevronRight, LogOut } from "lucide-react";
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   Sheet,
   SheetContent,
@@ -13,6 +15,11 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 interface NavCategory {
   label: string;
@@ -61,22 +68,10 @@ const NAV_CATEGORIES: NavCategory[] = [
       { label: "Office Kit", path: "/" },
     ],
   },
-  {
-    label: "BLOGS",
-    path: "/",
-  },
-  {
-    label: "B2B ORDERS",
-    path: "/contact",
-  },
-  {
-    label: "WHY CHOOSE US",
-    path: "/why-choose-us",
-  },
-  {
-    label: "TESTIMONIALS",
-    path: "/testimonials",
-  },
+  { label: "BLOGS", path: "/" },
+  { label: "B2B ORDERS", path: "/contact" },
+  { label: "WHY CHOOSE US", path: "/why-choose-us" },
+  { label: "TESTIMONIALS", path: "/testimonials" },
   {
     label: "HELP",
     subcategories: [
@@ -89,6 +84,8 @@ const NAV_CATEGORIES: NavCategory[] = [
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const { totalItems } = useCart();
+  const { user, logout, isAdmin } = useAuth();
   const [sheetOpen, setSheetOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
@@ -218,12 +215,66 @@ const Navbar = () => {
             <div className="flex items-center gap-5">
               <Search size={18} className="text-foreground cursor-pointer hover:text-muted-foreground transition-colors" />
               <Heart size={18} className="text-foreground cursor-pointer hover:text-muted-foreground transition-colors" />
-              <User size={18} className="text-foreground cursor-pointer hover:text-muted-foreground transition-colors" />
-              <div className="relative cursor-pointer">
+
+              {/* User icon with popover */}
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className="relative">
+                    <User size={18} className="text-foreground cursor-pointer hover:text-muted-foreground transition-colors" />
+                    {user && (
+                      <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-primary rounded-full" />
+                    )}
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-56 p-2" align="end">
+                  {user ? (
+                    <div className="space-y-1">
+                      <p className="px-3 py-2 text-sm font-semibold text-foreground truncate">
+                        {user.full_name || user.email}
+                      </p>
+                      <hr className="border-border" />
+                      {isAdmin && (
+                        <button
+                          onClick={() => handleNav("/admin/add-product")}
+                          className="w-full text-left px-3 py-2 text-sm text-foreground hover:bg-accent rounded transition-colors"
+                        >
+                          Add Product
+                        </button>
+                      )}
+                      <button
+                        onClick={() => { logout(); }}
+                        className="w-full text-left px-3 py-2 text-sm text-foreground hover:bg-accent rounded transition-colors flex items-center gap-2"
+                      >
+                        <LogOut size={14} /> Log Out
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="space-y-1">
+                      <button
+                        onClick={() => handleNav("/login")}
+                        className="w-full text-left px-3 py-2 text-sm font-semibold text-foreground hover:bg-accent rounded transition-colors"
+                      >
+                        Log In
+                      </button>
+                      <button
+                        onClick={() => handleNav("/signup")}
+                        className="w-full text-left px-3 py-2 text-sm text-foreground hover:bg-accent rounded transition-colors"
+                      >
+                        Create Account
+                      </button>
+                    </div>
+                  )}
+                </PopoverContent>
+              </Popover>
+
+              {/* Cart icon */}
+              <div className="relative cursor-pointer" onClick={() => handleNav("/cart")}>
                 <ShoppingBag size={18} className="text-foreground hover:text-muted-foreground transition-colors" />
-                <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
-                  0
-                </span>
+                {totalItems > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold animate-in zoom-in-50 duration-200">
+                    {totalItems > 99 ? "99+" : totalItems}
+                  </span>
+                )}
               </div>
             </div>
           </div>

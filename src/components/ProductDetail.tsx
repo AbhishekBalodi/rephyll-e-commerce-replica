@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, Star, Minus, Plus, Leaf, ShieldCheck, Baby, Droplets } from "lucide-react";
 import { Product } from "@/data/products";
+import { useCart } from "@/contexts/CartContext";
 
 interface ProductDetailProps {
   product: Product;
@@ -36,6 +37,7 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
   const [activeImg, setActiveImg] = useState(0);
   const [activeTab, setActiveTab] = useState("description");
   const [qty, setQty] = useState(1);
+  const { addToCart } = useCart();
 
   const tabs = [
     { id: "description", label: "Description" },
@@ -184,7 +186,10 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
                 <Plus size={16} />
               </button>
             </div>
-            <button className="flex-1 py-3 border-2 border-foreground rounded-full text-foreground font-bold text-sm uppercase tracking-wider hover:bg-foreground hover:text-background transition-colors">
+            <button
+              onClick={() => addToCart({ productId: product.id, name: product.name, price: product.price, originalPrice: product.originalPrice, image: product.images[0] }, qty)}
+              className="flex-1 py-3 border-2 border-foreground rounded-full text-foreground font-bold text-sm uppercase tracking-wider hover:bg-foreground hover:text-background transition-colors"
+            >
               ADD TO CART
             </button>
           </div>
