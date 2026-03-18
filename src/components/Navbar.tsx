@@ -194,7 +194,7 @@ const Navbar = () => {
               <img
                 src={logoBlack}
                 alt="rePhyl"
-                className="h-36 md:h-44 w-auto cursor-pointer -my-12"
+                className="h-[120px] md:h-[160px] w-auto cursor-pointer -my-[45px] md:-my-[60px]"
                 onClick={() => handleNav("/")}
               />
             </div>
