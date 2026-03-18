@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import logoBlack from "@/assets/logo-black.png";
 import Navbar from "@/components/Navbar";
 import HeroCarousel from "@/components/HeroCarousel";
