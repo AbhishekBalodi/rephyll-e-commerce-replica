@@ -1,41 +1,35 @@
-import { Stethoscope, Flag, ShieldCheck, Droplets, Baby } from "lucide-react";
+import { ShieldCheck, Leaf, Baby, Heart, Recycle, FlaskConical, PawPrint } from "lucide-react";
 
 const BADGES = [
-  { icon: <Stethoscope size={24} />, title: "Designed", subtitle: "by doctors" },
-  { icon: <Flag size={24} />, title: "Proudly", subtitle: "Made in India" },
-  { icon: <ShieldCheck size={24} />, title: "Dermatologically", subtitle: "Approved" },
-  { icon: <Droplets size={24} />, title: "No Added", subtitle: "Colors" },
-  { icon: <Baby size={24} />, title: "Baby Safe", subtitle: "Products" },
+  { icon: <ShieldCheck size={32} />, title: "Non-Toxic", subtitle: "No harsh chemicals" },
+  { icon: <FlaskConical size={32} />, title: "IFRA Certified", subtitle: "Safe fragrance standards" },
+  { icon: <Leaf size={32} />, title: "100% Natural", subtitle: "Plant-based formulas" },
+  { icon: <Baby size={32} />, title: "Child Safe", subtitle: "Gentle and safe" },
+  { icon: <PawPrint size={32} />, title: "Pet Friendly", subtitle: "No harmful ingredients" },
+  { icon: <Recycle size={32} />, title: "Biodegradable", subtitle: "Eco-friendly formulas" },
+  { icon: <Heart size={32} />, title: "Dermatologically Safe", subtitle: "Tested and approved" },
 ];
 
 const WhyChooseUs = () => {
   return (
-    <section className="bg-secondary/50 py-16 px-4 md:px-6">
+    <section className="bg-background py-16 px-4 md:px-6">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-10">
-          <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-3">
-            Why We're Different?
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-md">
-            Discover essential cleaning solutions that keep your home safe and fresh.
-          </p>
-        </div>
+        <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground text-center mb-12">
+          Why rePhyl is Different
+        </h2>
 
-        <div className="bg-secondary/80 rounded-2xl p-6 md:p-8">
-          <div className="flex flex-wrap items-center justify-between gap-6">
-            {BADGES.map((badge, i) => (
-              <div
-                key={i}
-                className={`flex items-center gap-3 ${i < BADGES.length - 1 ? "md:border-r md:border-border md:pr-8" : ""}`}
-              >
-                <div className="text-primary">{badge.icon}</div>
-                <div>
-                  <p className="text-sm font-semibold text-foreground leading-tight">{badge.title}</p>
-                  <p className="text-sm text-muted-foreground leading-tight">{badge.subtitle}</p>
-                </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-8">
+          {BADGES.map((badge, i) => (
+            <div key={i} className="flex flex-col items-center text-center gap-3">
+              <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center text-primary">
+                {badge.icon}
               </div>
-            ))}
-          </div>
+              <div>
+                <p className="text-sm font-semibold text-foreground leading-tight">{badge.title}</p>
+                <p className="text-xs text-muted-foreground leading-tight mt-1">{badge.subtitle}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
