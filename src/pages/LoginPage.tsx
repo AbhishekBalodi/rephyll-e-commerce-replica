@@ -23,7 +23,7 @@ const LoginPage = () => {
     try {
       await login(email, password);
       toast({ title: "Welcome back!", description: "You've logged in successfully." });
-      navigate("/");
+      navigate("/", { replace: true });
     } catch (err: any) {
       toast({ title: "Login Failed", description: err.message, variant: "destructive" });
     } finally {
