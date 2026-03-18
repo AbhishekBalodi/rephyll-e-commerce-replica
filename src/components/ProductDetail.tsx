@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, Star, Minus, Plus, Leaf, ShieldCheck, Baby, Droplets } from "lucide-react";
 import { Product } from "@/data/products";
+import { useCart } from "@/contexts/CartContext";
 
 interface ProductDetailProps {
   product: Product;
