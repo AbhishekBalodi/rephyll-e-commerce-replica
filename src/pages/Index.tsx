@@ -52,7 +52,7 @@ const Index = () => {
             <h2 className="text-3xl md:text-4xl font-bold text-center text-foreground mb-2 flex items-center justify-center gap-3">
               {activeCategory ? `${activeCategory}` : (
                 <>
-                  <img src={logoBlack} alt="rePhyl" className="h-10 md:h-12 w-auto inline-block" />
+                  <img src={logoBlack} alt="rePhyl" className="h-28 w-auto inline-block -my-8" />
                   <span>products</span>
                 </>
               )}

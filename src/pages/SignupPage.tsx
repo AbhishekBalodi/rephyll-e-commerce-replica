@@ -47,8 +47,8 @@ const SignupPage = () => {
       <Navbar />
       <section className="max-w-md mx-auto px-4 py-20">
         <div className="flex flex-col items-center mb-8">
-          <img src={cloverGreen} alt="rePhyl" className="w-16 h-16 mb-3" />
-          <img src={logoBlack} alt="rePhyl" className="h-12 w-auto mb-2" />
+          <img src={cloverGreen} alt="rePhyl" className="w-20 h-20 mb-2" />
+          <img src={logoBlack} alt="rePhyl" className="h-28 w-auto -my-6" />
           <p className="text-muted-foreground">Join rePhyl for a cleaner, greener home</p>
         </div>
 
