@@ -48,12 +48,11 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         brand: {
-          warm: "hsl(var(--brand-warm))",
-          "warm-dark": "hsl(var(--brand-warm-dark))",
-          cream: "hsl(var(--brand-cream))",
-          gold: "hsl(var(--brand-gold))",
+          deep: "hsl(var(--brand-deep))",
+          stream: "hsl(var(--brand-stream))",
+          white: "hsl(var(--brand-white))",
+          lime: "hsl(var(--brand-lime))",
         },
-        discount: "hsl(var(--discount-green))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -66,8 +65,8 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['"Nunito Sans"', 'sans-serif'],
-        display: ['"Cormorant Garamond"', 'serif'],
+        sans: ['"Source Sans 3"', 'sans-serif'],
+        display: ['"Source Sans 3"', 'sans-serif'],
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -76,20 +75,12 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
         },
       },
       animation: {
