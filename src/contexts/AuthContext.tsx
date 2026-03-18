@@ -1,11 +1,9 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 interface AuthUser {
-  id: string;
   email: string;
-  full_name: string;
-  phone?: string;
-  is_admin?: boolean;
+  username: string;
+  role: string;
 }
 
 interface AuthContextType {
@@ -20,32 +18,28 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const API_BASE = import.meta.env.VITE_API_URL || "https://www.brandingidiots.tech/api";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [token, setToken] = useState<string | null>(() => localStorage.getItem("rephyl_token"));
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    if (token) {
-      fetch(`${API_BASE}/auth/me`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-        .then((r) => r.json())
-        .then((res) => {
-          if (res.success) {
-            setUser({ id: res.data.userId, email: res.data.email, full_name: res.data.fullName || res.data.email });
-          } else {
-            logout();
-          }
-        })
-        .catch(() => logout())
-        .finally(() => setIsLoading(false));
-    } else {
-      setIsLoading(false);
+  const [user, setUser] = useState<AuthUser | null>(() => {
+    try {
+      const stored = localStorage.getItem("rephyl_user");
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
     }
-  }, []);
+  });
+  const [token, setToken] = useState<string | null>(() => localStorage.getItem("rephyl_token"));
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Persist user data
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem("rephyl_user", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("rephyl_user");
+    }
+  }, [user]);
 
   const login = async (email: string, password: string) => {
     const res = await fetch(`${API_BASE}/auth/login`, {
@@ -55,9 +49,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Login failed");
-    localStorage.setItem("rephyl_token", data.data.token);
-    setToken(data.data.token);
-    setUser(data.data.user);
+
+    // Spring Boot response: { token, username, role, tenantId, tenantType, permissions }
+    const authToken = data.token;
+    const authUser: AuthUser = {
+      email,
+      username: data.username,
+      role: data.role,
+    };
+
+    localStorage.setItem("rephyl_token", authToken);
+    setToken(authToken);
+    setUser(authUser);
   };
 
   const register = async (regData: { email: string; password: string; fullName: string; phone?: string }) => {
@@ -68,19 +71,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Registration failed");
-    localStorage.setItem("rephyl_token", data.data.token);
-    setToken(data.data.token);
-    setUser(data.data.user);
+
+    // If register also returns a token, log them in
+    if (data.token) {
+      localStorage.setItem("rephyl_token", data.token);
+      setToken(data.token);
+      setUser({
+        email: regData.email,
+        username: data.username || regData.fullName,
+        role: data.role || "ROLE_CUSTOMER",
+      });
+    }
   };
 
   const logout = () => {
     localStorage.removeItem("rephyl_token");
+    localStorage.removeItem("rephyl_user");
     setToken(null);
     setUser(null);
   };
 
-  // For now, admin is determined by email (can be extended with roles table later)
-  const isAdmin = user?.email === "admin@rephyl.com" || (user as any)?.is_admin === true;
+  const isAdmin = user?.role === "ROLE_ADMIN";
 
   return (
     <AuthContext.Provider value={{ user, token, isLoading, login, register, logout, isAdmin }}>
