@@ -2,7 +2,7 @@ import { Instagram, Facebook, Youtube, Mail, Phone, ArrowRight } from "lucide-re
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logoBlack from "@/assets/logo-green-cropped.png";
-import cloverLime from "@/assets/clover-lime.png";
+import cloverDark from "@/assets/clover-green-dark.png";
 import { apiService } from "@/services/apiService";
 import { useToast } from "@/hooks/use-toast";
 
@@ -128,8 +128,8 @@ const Footer = () => {
               </a>
             </div>
 
-            <div className="mt-auto flex flex-col items-start md:items-end gap-1">
-              <img src={cloverLime} alt="rePhyl clover" className="w-20 h-20" />
+            <div className="mt-auto flex flex-col items-center gap-1">
+              <img src={cloverDark} alt="rePhyl clover" className="w-20 h-20" />
               <img src={logoBlack} alt="rePhyl" className="h-[240px] w-auto -my-[85px]" />
               <p className="text-sm uppercase tracking-[0.25em] text-muted-foreground">Have a Clean Day!</p>
             </div>

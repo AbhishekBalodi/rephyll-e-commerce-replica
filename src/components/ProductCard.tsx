@@ -119,12 +119,13 @@ const ProductCard = ({ product, onClick }: ProductCardProps) => {
 
       {/* Add to cart / Quantity capsule */}
       {cartQty > 0 ? (
-        <div className="mt-3 flex justify-center">
+        <div className="mt-3 w-full">
           <QuantityCapsule
             quantity={cartQty}
             onIncrement={handleIncrement}
             onDecrement={handleDecrement}
             size="sm"
+            fullWidth
           />
         </div>
       ) : (
