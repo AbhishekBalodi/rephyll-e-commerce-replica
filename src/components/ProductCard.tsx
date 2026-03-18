@@ -1,4 +1,5 @@
 import { Star, ShoppingCart } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import type { ApiProduct } from "@/types/api";
 import { getProductImage, getSellingPrice, getMrp, getDiscount } from "@/lib/productHelpers";
 import { useCart } from "@/contexts/CartContext";
@@ -6,7 +7,7 @@ import QuantityCapsule from "./QuantityCapsule";
 
 interface ProductCardProps {
   product: ApiProduct;
-  onClick: (product: ApiProduct) => void;
+  onClick?: (product: ApiProduct) => void;
 }
 
 const ProductCard = ({ product, onClick }: ProductCardProps) => {
