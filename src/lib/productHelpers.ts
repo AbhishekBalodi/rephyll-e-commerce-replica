@@ -3,19 +3,22 @@
  */
 import type { ApiProduct, ApiVariant } from "@/types/api";
 
-/** Get the best display image for a product. */
-export function getProductImage(product: ApiProduct): string {
-  // Product-level image first
-  if (product.productImage) return product.productImage;
-  // Fallback to first variant image
-  const variantImg = product.variants.find((v) => v.imageUrl)?.imageUrl;
-  if (variantImg) return variantImg;
-  // Placeholder
-  return "/placeholder.svg";
+const ASSET_BASE = import.meta.env.VITE_BASE_URL || "https://www.brandingidiots.tech";
+
+/** Prepend base URL to relative image paths (e.g. /api/files/...) */
+export function resolveImageUrl(path: string | null | undefined): string {
+  if (!path) return "/placeholder.svg";
+  if (path.startsWith("http")) return path;
+  return `${ASSET_BASE}${path}`;
 }
 
-/** Get all available images for gallery. */
-export function getProductImages(product: ApiProduct): string[] {
+/** Get the best display image for a product. */
+export function getProductImage(product: ApiProduct): string {
+  if (product.productImage) return resolveImageUrl(product.productImage);
+  const variantImg = product.variants.find((v) => v.imageUrl)?.imageUrl;
+  if (variantImg) return resolveImageUrl(variantImg);
+  return "/placeholder.svg";
+}
   const imgs: string[] = [];
   if (product.productImage) imgs.push(product.productImage);
   if (product.stickerImage) imgs.push(product.stickerImage);

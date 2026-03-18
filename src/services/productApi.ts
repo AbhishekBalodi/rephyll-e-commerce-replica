@@ -8,7 +8,7 @@ import type {
   PaginatedData,
 } from "@/types/api";
 
-const BASE_URL = "https://brandingidiots.tech/api/customer/products";
+const BASE_URL = (import.meta.env.VITE_BASE_URL || "https://www.brandingidiots.tech") + "/api/customer/products";
 
 async function fetchJson<T>(url: string): Promise<T> {
   const res = await fetch(url);

@@ -2,7 +2,7 @@
  * API Service - Handles all HTTP requests to the Express backend.
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://www.brandingidiots.tech/api';
+const API_BASE_URL = (import.meta.env.VITE_BASE_URL || 'https://www.brandingidiots.tech') + '/api';
 
 interface ApiResponse<T = unknown> {
   success: boolean;
