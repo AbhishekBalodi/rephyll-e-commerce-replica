@@ -135,8 +135,8 @@ const Navbar = () => {
                 </SheetTrigger>
                 <SheetContent side="left" className="w-80 p-0">
                   <SheetHeader className="p-6 pb-4 border-b border-border">
-                    <SheetTitle className="font-display text-3xl font-light text-foreground tracking-wide">
-                      rePhyl
+                    <SheetTitle>
+                      <img src={logoBlack} alt="rePhyl" className="h-8 w-auto" />
                     </SheetTitle>
                   </SheetHeader>
                   <div className="py-4 overflow-y-auto max-h-[calc(100vh-80px)]">
