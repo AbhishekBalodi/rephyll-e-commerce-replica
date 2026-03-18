@@ -39,21 +39,6 @@ const TOP_REVIEWS = DUMMY_REVIEWS.filter((r) => r.rating >= 4).slice(0, 4);
 const TrustStrips = () => {
   return (
     <div className="mt-16">
-      {/* Certifications strip */}
-      <div className="bg-background border-y border-border py-10 px-4">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-center gap-8 md:gap-12">
-          {CERTIFICATIONS.map((cert, i) => (
-            <div key={i} className="flex flex-col items-center gap-2 text-center min-w-[100px]">
-              <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center text-primary border-2 border-primary/20">
-                {cert.icon}
-              </div>
-              <p className="text-xs font-semibold text-foreground uppercase tracking-wide leading-tight">
-                {cert.label}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
 
       {/* Promotional Banner - More Cleaning, Less Spending */}
       <div className="bg-gradient-to-r from-brand-stream via-brand-lime/30 to-brand-stream py-12 md:py-16 px-4">

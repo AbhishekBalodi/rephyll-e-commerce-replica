@@ -51,7 +51,7 @@ const NAV_CATEGORIES: NavCategory[] = [
   { label: "BLOGS", path: "/" },
   { label: "B2B ORDERS", path: "/contact" },
   { label: "WHY CHOOSE US", path: "/why-choose-us" },
-  { label: "TESTIMONIALS", path: "/testimonials" },
+  { label: "REVIEWS", path: "/testimonials" },
   {
     label: "HELP",
     subcategories: [
