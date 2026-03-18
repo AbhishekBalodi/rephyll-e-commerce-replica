@@ -56,7 +56,7 @@ const TrustStrips = () => {
       </div>
 
       {/* Promotional Banner - More Cleaning, Less Spending */}
-      <div className="bg-gradient-to-r from-[hsl(35,80%,85%)] via-[hsl(35,70%,90%)] to-[hsl(35,80%,85%)] py-12 md:py-16 px-4">
+      <div className="bg-gradient-to-r from-brand-stream via-brand-lime/30 to-brand-stream py-12 md:py-16 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <span className="inline-block bg-background/80 text-foreground text-xs font-semibold uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">
             Buy Together
