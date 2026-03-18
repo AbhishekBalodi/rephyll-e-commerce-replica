@@ -37,6 +37,7 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
   const [activeImg, setActiveImg] = useState(0);
   const [activeTab, setActiveTab] = useState("description");
   const [qty, setQty] = useState(1);
+  const { addToCart } = useCart();
 
   const tabs = [
     { id: "description", label: "Description" },
