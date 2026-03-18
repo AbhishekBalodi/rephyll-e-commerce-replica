@@ -16,6 +16,7 @@ import NotFound from "./pages/NotFound.tsx";
 import WhyChooseUsPage from "./pages/WhyChooseUsPage.tsx";
 import TestimonialsPage from "./pages/TestimonialsPage.tsx";
 import BlogPost from "./pages/BlogPost.tsx";
+import BlogsPage from "./pages/BlogsPage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
 import SignupPage from "./pages/SignupPage.tsx";
 import CartPage from "./pages/CartPage.tsx";
@@ -42,6 +43,7 @@ const App = () => (
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/refund-policy" element={<RefundPolicy />} />
               <Route path="/testimonials" element={<TestimonialsPage />} />
+              <Route path="/blogs" element={<BlogsPage />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignupPage />} />

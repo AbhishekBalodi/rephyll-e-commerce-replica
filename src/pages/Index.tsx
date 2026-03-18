@@ -33,8 +33,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-muted/50 text-foreground">
-      <div className="max-w-[1440px] mx-auto my-0 md:my-4 bg-background rounded-none md:rounded-2xl shadow-none md:shadow-[0_4px_40px_rgba(6,71,52,0.08)] overflow-hidden">
+    <div className="min-h-screen bg-background text-foreground">
         <Navbar />
 
         <>
@@ -88,7 +87,6 @@ const Index = () => {
 
 
         <Footer />
-      </div>
     </div>
   );
 };
