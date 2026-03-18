@@ -192,7 +192,6 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
             >
               ADD TO CART
             </button>
-            </button>
           </div>
         </div>
       </div>
