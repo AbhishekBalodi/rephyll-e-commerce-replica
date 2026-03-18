@@ -1,5 +1,6 @@
 import { ShoppingCart, Check } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
+import QuantityCapsule from "./QuantityCapsule";
 
 const KITS = [
   {
@@ -31,7 +32,7 @@ const KITS = [
 ];
 
 const HomecareKitsSection = () => {
-  const { addToCart } = useCart();
+  const { items, addToCart, updateQuantity, removeFromCart } = useCart();
 
   const handleAddKit = (kit: typeof KITS[0]) => {
     addToCart({
@@ -67,49 +68,66 @@ const HomecareKitsSection = () => {
       <section id="kits-section" className="bg-background py-16 px-4 md:px-6">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {KITS.map((kit) => (
-              <div
-                key={kit.id}
-                className={`relative rounded-xl border p-6 flex flex-col ${
-                  kit.badge ? "border-primary bg-primary/5" : "border-border bg-card"
-                }`}
-              >
-                {kit.badge && (
-                  <span className="absolute top-4 right-4 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
-                    {kit.badge}
-                  </span>
-                )}
+            {KITS.map((kit) => {
+              const cartItem = items.find((i) => i.productId === kit.id);
+              const cartQty = cartItem?.quantity ?? 0;
 
-                <h3 className="text-xl font-bold text-foreground mb-4">{kit.name}</h3>
-
-                <div className="flex flex-col gap-2 mb-6 flex-1">
-                  {kit.items.map((item, i) => (
-                    <div key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Check size={16} className="text-primary flex-shrink-0" />
-                      {item}
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="text-2xl font-bold text-foreground">₹{kit.price}</span>
-                  <span className="text-sm text-muted-foreground line-through">₹{kit.originalPrice}</span>
-                  {kit.discount && (
-                    <span className="text-xs font-bold text-accent-foreground bg-accent px-2 py-0.5 rounded">
-                      Save {kit.discount}%
+              return (
+                <div
+                  key={kit.id}
+                  className={`relative rounded-xl border p-6 flex flex-col ${
+                    kit.badge ? "border-primary bg-primary/5" : "border-border bg-card"
+                  }`}
+                >
+                  {kit.badge && (
+                    <span className="absolute top-4 right-4 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
+                      {kit.badge}
                     </span>
                   )}
-                </div>
 
-                <button
-                  onClick={() => handleAddKit(kit)}
-                  className="w-full bg-primary text-primary-foreground font-bold py-3 rounded-lg flex items-center justify-center gap-2 hover:opacity-90 transition-colors"
-                >
-                  <ShoppingCart size={16} />
-                  Add to Cart
-                </button>
-              </div>
-            ))}
+                  <h3 className="text-xl font-bold text-foreground mb-4">{kit.name}</h3>
+
+                  <div className="flex flex-col gap-2 mb-6 flex-1">
+                    {kit.items.map((item, i) => (
+                      <div key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Check size={16} className="text-primary flex-shrink-0" />
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="flex items-center gap-2 mb-4">
+                    <span className="text-2xl font-bold text-foreground">₹{kit.price}</span>
+                    <span className="text-sm text-muted-foreground line-through">₹{kit.originalPrice}</span>
+                    {kit.discount && (
+                      <span className="text-xs font-bold text-accent-foreground bg-accent px-2 py-0.5 rounded">
+                        Save {kit.discount}%
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="mt-auto">
+                    {cartQty > 0 ? (
+                      <QuantityCapsule
+                        quantity={cartQty}
+                        onIncrement={(e) => { e.stopPropagation(); updateQuantity(kit.id, cartQty + 1); }}
+                        onDecrement={(e) => { e.stopPropagation(); cartQty <= 1 ? removeFromCart(kit.id) : updateQuantity(kit.id, cartQty - 1); }}
+                        size="sm"
+                        fullWidth
+                      />
+                    ) : (
+                      <button
+                        onClick={() => handleAddKit(kit)}
+                        className="w-full bg-primary text-primary-foreground font-bold py-3 rounded-lg flex items-center justify-center gap-2 hover:opacity-90 transition-colors"
+                      >
+                        <ShoppingCart size={16} />
+                        Add to Cart
+                      </button>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
