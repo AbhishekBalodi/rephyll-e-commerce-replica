@@ -2,6 +2,7 @@ import { Instagram, Facebook, Youtube } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import cloverDark from "@/assets/clover-green-dark.png";
+import logoGreen from "@/assets/logo-green-cropped.png";
 import { apiService } from "@/services/apiService";
 import { useToast } from "@/hooks/use-toast";
 
