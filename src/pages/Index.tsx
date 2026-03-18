@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Navbar from "@/components/Navbar";
 import HeroCarousel from "@/components/HeroCarousel";
 import CategoryBar from "@/components/CategoryBar";
 import ProductCard from "@/components/ProductCard";
-import ProductDetail from "@/components/ProductDetail";
 import HomecareKitsSection from "@/components/HomecareKitsSection";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import TrustStrips from "@/components/TrustStrips";
 import BlogsSection from "@/components/BlogsSection";
 import VideoReelsSection from "@/components/VideoReelsSection";
 import Footer from "@/components/Footer";
-import { useProductList, useProductDetail } from "@/hooks/useProducts";
+import { useProductList } from "@/hooks/useProducts";
 import type { ApiProduct } from "@/types/api";
 
 const Index = () => {
