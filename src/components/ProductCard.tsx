@@ -1,9 +1,11 @@
 import { Star } from "lucide-react";
-import { Product } from "@/data/products";
+import type { ApiProduct } from "@/types/api";
+import { getProductImage, getSellingPrice, getMrp, getDiscount } from "@/lib/productHelpers";
+import { useCart } from "@/contexts/CartContext";
 
 interface ProductCardProps {
-  product: Product;
-  onClick: (product: Product) => void;
+  product: ApiProduct;
+  onClick: (product: ApiProduct) => void;
 }
 
 const renderStars = (rating: number) => {
@@ -27,6 +29,23 @@ const renderStars = (rating: number) => {
 };
 
 const ProductCard = ({ product, onClick }: ProductCardProps) => {
+  const { addToCart } = useCart();
+  const image = getProductImage(product);
+  const price = getSellingPrice(product);
+  const mrp = getMrp(product);
+  const discount = getDiscount(product);
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    addToCart({
+      productId: product.id,
+      name: product.name,
+      price,
+      originalPrice: mrp,
+      image,
+    });
+  };
+
   return (
     <div
       className="cursor-pointer group"
@@ -34,43 +53,57 @@ const ProductCard = ({ product, onClick }: ProductCardProps) => {
     >
       {/* Rating row */}
       <div className="flex items-center gap-1 mb-2">
-        {renderStars(product.rating)}
+        {renderStars(product.featured ? 5 : 4)}
         <span className="text-sm text-muted-foreground ml-1">
-          {product.reviews} reviews
+          {product.variantCount > 0 ? `${product.variantCount} variants` : ""}
         </span>
       </div>
 
       {/* Image */}
-      <div className="relative aspect-[4/4] overflow-hidden rounded-lg mb-3 product-card-shadow transition-all duration-300 group-hover:shadow-lg">
+      <div className="relative aspect-[4/4] overflow-hidden rounded-lg mb-3 product-card-shadow transition-all duration-300 group-hover:shadow-lg bg-muted">
         <img
-          src={product.images[0]}
+          src={image}
           alt={product.name}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg"; }}
         />
+        {product.featured && (
+          <span className="absolute top-2 left-2 text-[10px] font-bold bg-primary text-primary-foreground px-2 py-0.5 rounded-sm uppercase">
+            Featured
+          </span>
+        )}
       </div>
 
       {/* Title */}
-      <h3 className="text-sm font-medium text-foreground leading-snug mb-2 line-clamp-2 min-h-[2.5rem]">
+      <h3 className="text-sm font-medium text-foreground leading-snug mb-1 line-clamp-2 min-h-[2.5rem]">
         {product.name.toLowerCase()}
       </h3>
 
+      {/* Brand & Category */}
+      <p className="text-xs text-muted-foreground mb-2">
+        {product.brandName} · {product.categoryName}
+      </p>
+
       {/* Price row */}
       <div className="flex items-center gap-2 flex-wrap">
-        <span className="text-base font-bold text-foreground">₹ {product.price}</span>
-        {product.discount > 0 && (
+        <span className="text-base font-bold text-foreground">₹{price.toFixed(0)}</span>
+        {discount > 0 && (
           <>
             <span className="text-sm text-muted-foreground line-through">
-              ₹ {product.originalPrice}
+              ₹{mrp.toFixed(0)}
             </span>
             <span className="text-sm font-semibold text-discount">
-              ({product.discount}% Off)
+              ({discount}% Off)
             </span>
           </>
         )}
       </div>
 
       {/* Add to cart button */}
-      <button className="w-full mt-3 btn-add-to-cart rounded-sm bg-primary text-primary-foreground">
+      <button
+        onClick={handleAddToCart}
+        className="w-full mt-3 btn-add-to-cart rounded-sm bg-primary text-primary-foreground"
+      >
         ADD TO CART
       </button>
     </div>
