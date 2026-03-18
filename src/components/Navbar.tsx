@@ -182,12 +182,12 @@ const Navbar = () => {
                 </SheetContent>
               </Sheet>
 
-              <h1
-                className="font-display text-3xl md:text-4xl font-light tracking-wide text-foreground cursor-pointer"
+              <img
+                src={logoBlack}
+                alt="rePhyl"
+                className="h-8 md:h-10 w-auto cursor-pointer"
                 onClick={() => handleNav("/")}
-              >
-                rePhyl
-              </h1>
+              />
             </div>
 
             {/* Center: nav links (desktop) */}
