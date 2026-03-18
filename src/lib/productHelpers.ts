@@ -19,11 +19,15 @@ export function getProductImage(product: ApiProduct): string {
   if (variantImg) return resolveImageUrl(variantImg);
   return "/placeholder.svg";
 }
+
+/** Get all available images for gallery. */
+export function getProductImages(product: ApiProduct): string[] {
   const imgs: string[] = [];
-  if (product.productImage) imgs.push(product.productImage);
-  if (product.stickerImage) imgs.push(product.stickerImage);
+  if (product.productImage) imgs.push(resolveImageUrl(product.productImage));
+  if (product.stickerImage) imgs.push(resolveImageUrl(product.stickerImage));
   product.variants.forEach((v) => {
-    if (v.imageUrl && !imgs.includes(v.imageUrl)) imgs.push(v.imageUrl);
+    const resolved = resolveImageUrl(v.imageUrl);
+    if (v.imageUrl && !imgs.includes(resolved)) imgs.push(resolved);
   });
   return imgs.length > 0 ? imgs : ["/placeholder.svg"];
 }
