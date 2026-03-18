@@ -30,6 +30,7 @@ const WHATS_IN_ICONS = [
 ];
 
 const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
+  const navigate = useNavigate();
   const [activeImg, setActiveImg] = useState(0);
   const [activeTab, setActiveTab] = useState("description");
   const [selectedVariant, setSelectedVariant] = useState<ApiVariant | undefined>(
