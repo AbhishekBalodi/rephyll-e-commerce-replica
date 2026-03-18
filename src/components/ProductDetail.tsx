@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { ChevronLeft, ChevronRight, Star, Minus, Plus, Leaf, ShieldCheck, Baby, Droplets } from "lucide-react";
+import { ChevronLeft, ChevronRight, Star, Leaf, ShieldCheck, Baby, Droplets } from "lucide-react";
 import type { ApiProduct, ApiVariant } from "@/types/api";
 import { getProductImages, getSellingPrice, getMrp, getDiscount, parseVariantAttributes, isInStock } from "@/lib/productHelpers";
 import { useCart } from "@/contexts/CartContext";
+import PackSelector, { generatePacks } from "./PackSelector";
+import QuantityCapsule from "./QuantityCapsule";
 
 interface ProductDetailProps {
   product: ApiProduct;
@@ -29,17 +31,25 @@ const WHATS_IN_ICONS = [
 const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
   const [activeImg, setActiveImg] = useState(0);
   const [activeTab, setActiveTab] = useState("description");
-  const [qty, setQty] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState<ApiVariant | undefined>(
     product.variants.length > 0 ? product.variants[0] : undefined
   );
-  const { addToCart } = useCart();
+  const [selectedPackId, setSelectedPackId] = useState<number>(1);
+  const { items, addToCart, updateQuantity, removeFromCart } = useCart();
 
   const images = getProductImages(product);
   const price = getSellingPrice(product, selectedVariant);
   const mrp = getMrp(product, selectedVariant);
   const discount = getDiscount(product, selectedVariant);
   const inStock = isInStock(product, selectedVariant);
+
+  const packs = generatePacks(price, mrp);
+  const activePack = packs.find((p) => p.id === selectedPackId) ?? packs[0];
+
+  // Cart item key includes pack info
+  const cartKey = product.id * 100 + selectedPackId;
+  const cartItem = items.find((i) => i.productId === cartKey);
+  const cartQty = cartItem?.quantity ?? 0;
 
   const description = product.ingredients || product.metaDescription || product.productDetails || "No description available.";
 
@@ -55,12 +65,20 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
 
   const handleAddToCart = () => {
     addToCart({
-      productId: product.id,
-      name: selectedVariant ? `${product.name} - ${selectedVariant.variantName}` : product.name,
-      price,
-      originalPrice: mrp,
+      productId: cartKey,
+      name: selectedVariant
+        ? `${product.name} - ${selectedVariant.variantName} (${activePack.label})`
+        : `${product.name} (${activePack.label})`,
+      price: activePack.totalPrice,
+      originalPrice: activePack.originalPrice,
       image: images[0],
-    }, qty);
+    }, 1);
+  };
+
+  const handleIncrement = () => updateQuantity(cartKey, cartQty + 1);
+  const handleDecrement = () => {
+    if (cartQty <= 1) removeFromCart(cartKey);
+    else updateQuantity(cartKey, cartQty - 1);
   };
 
   return (
@@ -159,13 +177,24 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
             </div>
           )}
 
+          {/* Pack selector */}
+          <div className="mb-6">
+            <p className="text-sm font-semibold text-foreground mb-3">Select Pack</p>
+            <PackSelector
+              basePrice={price}
+              baseMrp={mrp}
+              selectedPack={selectedPackId}
+              onSelectPack={setSelectedPackId}
+            />
+          </div>
+
           {/* Price */}
           <div className="mb-1">
-            <span className="text-3xl font-bold text-foreground">₹{price.toFixed(0)}</span>
-            {discount > 0 && (
+            <span className="text-3xl font-bold text-foreground">₹{activePack.totalPrice.toFixed(0)}</span>
+            {activePack.originalPrice > activePack.totalPrice && (
               <>
-                <span className="text-lg text-muted-foreground line-through ml-3">₹{mrp.toFixed(0)}</span>
-                <span className="ml-2 text-sm font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">Save {discount}%</span>
+                <span className="text-lg text-muted-foreground line-through ml-3">₹{activePack.originalPrice.toFixed(0)}</span>
+                <span className="ml-2 text-sm font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">Save {activePack.discount}%</span>
               </>
             )}
           </div>
@@ -178,22 +207,26 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
 
           {/* Quantity + Add to cart */}
           <div className="flex items-center gap-4 mt-4 mb-8">
-            <div className="flex items-center border-2 border-primary/30 rounded-full overflow-hidden">
-              <button onClick={() => setQty((q) => Math.max(1, q - 1))} className="px-4 py-2.5 hover:bg-muted transition-colors">
-                <Minus size={16} />
+            {cartQty > 0 ? (
+              <>
+                <QuantityCapsule
+                  quantity={cartQty}
+                  onIncrement={handleAddToCart}
+                  onDecrement={handleDecrement}
+                />
+                <div className="flex-1 py-3 border-2 border-primary/30 rounded-full text-center text-primary font-bold text-sm uppercase tracking-wider">
+                  {cartQty} × {activePack.label} in Cart
+                </div>
+              </>
+            ) : (
+              <button
+                onClick={handleAddToCart}
+                disabled={!inStock}
+                className="flex-1 py-3 border-2 border-foreground rounded-full text-foreground font-bold text-sm uppercase tracking-wider hover:bg-foreground hover:text-background transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {inStock ? "ADD TO CART" : "OUT OF STOCK"}
               </button>
-              <span className="px-5 py-2.5 text-sm font-bold min-w-[48px] text-center">{qty}</span>
-              <button onClick={() => setQty((q) => q + 1)} className="px-4 py-2.5 hover:bg-muted transition-colors">
-                <Plus size={16} />
-              </button>
-            </div>
-            <button
-              onClick={handleAddToCart}
-              disabled={!inStock}
-              className="flex-1 py-3 border-2 border-foreground rounded-full text-foreground font-bold text-sm uppercase tracking-wider hover:bg-foreground hover:text-background transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {inStock ? "ADD TO CART" : "OUT OF STOCK"}
-            </button>
+            )}
           </div>
         </div>
       </div>

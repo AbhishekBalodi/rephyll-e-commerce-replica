@@ -2,6 +2,7 @@ import { Star } from "lucide-react";
 import type { ApiProduct } from "@/types/api";
 import { getProductImage, getSellingPrice, getMrp, getDiscount } from "@/lib/productHelpers";
 import { useCart } from "@/contexts/CartContext";
+import QuantityCapsule from "./QuantityCapsule";
 
 interface ProductCardProps {
   product: ApiProduct;
@@ -29,11 +30,14 @@ const renderStars = (rating: number) => {
 };
 
 const ProductCard = ({ product, onClick }: ProductCardProps) => {
-  const { addToCart } = useCart();
+  const { items, addToCart, updateQuantity, removeFromCart } = useCart();
   const image = getProductImage(product);
   const price = getSellingPrice(product);
   const mrp = getMrp(product);
   const discount = getDiscount(product);
+
+  const cartItem = items.find((i) => i.productId === product.id);
+  const cartQty = cartItem?.quantity ?? 0;
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -44,6 +48,20 @@ const ProductCard = ({ product, onClick }: ProductCardProps) => {
       originalPrice: mrp,
       image,
     });
+  };
+
+  const handleIncrement = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    updateQuantity(product.id, cartQty + 1);
+  };
+
+  const handleDecrement = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (cartQty <= 1) {
+      removeFromCart(product.id);
+    } else {
+      updateQuantity(product.id, cartQty - 1);
+    }
   };
 
   return (
@@ -99,13 +117,24 @@ const ProductCard = ({ product, onClick }: ProductCardProps) => {
         )}
       </div>
 
-      {/* Add to cart button */}
-      <button
-        onClick={handleAddToCart}
-        className="w-full mt-3 btn-add-to-cart rounded-sm bg-primary text-primary-foreground"
-      >
-        ADD TO CART
-      </button>
+      {/* Add to cart / Quantity capsule */}
+      {cartQty > 0 ? (
+        <div className="mt-3 flex justify-center">
+          <QuantityCapsule
+            quantity={cartQty}
+            onIncrement={handleIncrement}
+            onDecrement={handleDecrement}
+            size="sm"
+          />
+        </div>
+      ) : (
+        <button
+          onClick={handleAddToCart}
+          className="w-full mt-3 btn-add-to-cart rounded-sm bg-primary text-primary-foreground"
+        >
+          ADD TO CART
+        </button>
+      )}
     </div>
   );
 };
