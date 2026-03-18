@@ -37,55 +37,58 @@ const Index = () => {
     : PRODUCTS;
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Navbar />
+    <div className="min-h-screen bg-muted/50 text-foreground">
+      {/* Elevated card wrapper for entire page */}
+      <div className="max-w-[1440px] mx-auto my-0 md:my-4 bg-background rounded-none md:rounded-2xl shadow-none md:shadow-[0_4px_40px_rgba(6,71,52,0.08)] overflow-hidden">
+        <Navbar />
 
-      {selectedProduct ? (
-        <ProductDetail product={selectedProduct} onBack={handleBack} />
-      ) : (
-        <>
-          <HeroCarousel />
-          <CategoryBar activeCategory={activeCategory} onCategoryClick={handleCategoryClick} />
+        {selectedProduct ? (
+          <ProductDetail product={selectedProduct} onBack={handleBack} />
+        ) : (
+          <>
+            <HeroCarousel />
+            <CategoryBar activeCategory={activeCategory} onCategoryClick={handleCategoryClick} />
 
-          {/* Products section */}
-          <section className="max-w-7xl mx-auto px-4 md:px-6 py-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-center text-foreground mb-2 flex items-center justify-center gap-3">
-              {activeCategory ? `${activeCategory}` : (
-                <>
-                  <img src={logoBlack} alt="rePhyl" className="h-28 w-auto inline-block -my-8" />
-                  <span>products</span>
-                </>
+            {/* Products section */}
+            <section className="max-w-7xl mx-auto px-4 md:px-6 py-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-center text-foreground mb-2 flex items-center justify-center gap-3">
+                {activeCategory ? `${activeCategory}` : (
+                  <>
+                    <img src={logoBlack} alt="rePhyl" className="h-28 w-auto inline-block -my-8" />
+                    <span>products</span>
+                  </>
+                )}
+              </h2>
+              <p className="text-center text-muted-foreground mb-12">
+                {activeCategory
+                  ? `Showing ${filteredProducts.length} product${filteredProducts.length !== 1 ? "s" : ""} in ${activeCategory}`
+                  : "Meet our most loved plant-based cleaners"}
+              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                {filteredProducts.map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    onClick={handleProductClick}
+                  />
+                ))}
+              </div>
+
+              {filteredProducts.length === 0 && (
+                <p className="text-center text-muted-foreground py-12">No products found in this category.</p>
               )}
-            </h2>
-            <p className="text-center text-muted-foreground mb-12">
-              {activeCategory
-                ? `Showing ${filteredProducts.length} product${filteredProducts.length !== 1 ? "s" : ""} in ${activeCategory}`
-                : "Meet our most loved plant-based cleaners"}
-            </p>
+            </section>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              {filteredProducts.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  onClick={handleProductClick}
-                />
-              ))}
-            </div>
+            <WhyChooseUs />
+            <TrustStrips />
+            <VideoReelsSection />
+            <BlogsSection />
+          </>
+        )}
 
-            {filteredProducts.length === 0 && (
-              <p className="text-center text-muted-foreground py-12">No products found in this category.</p>
-            )}
-          </section>
-
-          <WhyChooseUs />
-          <TrustStrips />
-          <VideoReelsSection />
-          <BlogsSection />
-        </>
-      )}
-
-      <Footer />
+        <Footer />
+      </div>
     </div>
   );
 };
