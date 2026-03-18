@@ -136,7 +136,7 @@ const Navbar = () => {
                 <SheetContent side="left" className="w-80 p-0">
                   <SheetHeader className="p-6 pb-4 border-b border-border">
                     <SheetTitle>
-                      <img src={logoBlack} alt="rePhyl" className="h-8 w-auto" />
+                      <img src={logoBlack} alt="rePhyl" className="h-12 w-auto" />
                     </SheetTitle>
                   </SheetHeader>
                   <div className="py-4 overflow-y-auto max-h-[calc(100vh-80px)]">
