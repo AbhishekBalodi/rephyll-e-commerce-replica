@@ -85,7 +85,7 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 md:px-6 py-8">
-      <button onClick={onBack} className="text-sm text-muted-foreground hover:text-foreground mb-6 inline-block">
+      <button onClick={() => { onBack(); navigate("/"); }} className="text-sm text-muted-foreground hover:text-foreground mb-6 inline-block">
         ← Back to products
       </button>
 
