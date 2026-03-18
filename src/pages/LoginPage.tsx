@@ -5,6 +5,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff } from "lucide-react";
+import cloverGreen from "@/assets/clover-green.png";
+import logoBlack from "@/assets/logo-black.png";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -33,8 +35,11 @@ const LoginPage = () => {
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
       <section className="max-w-md mx-auto px-4 py-20">
-        <h1 className="text-3xl font-display font-bold text-foreground mb-2">Welcome Back</h1>
-        <p className="text-muted-foreground mb-8">Log in to your rePhyl account</p>
+        <div className="flex flex-col items-center mb-8">
+          <img src={cloverGreen} alt="rePhyl" className="w-12 h-12 mb-3" />
+          <img src={logoBlack} alt="rePhyl" className="h-8 w-auto mb-2" />
+          <p className="text-muted-foreground">Log in to your account</p>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>

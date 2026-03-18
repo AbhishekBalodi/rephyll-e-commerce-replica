@@ -1,6 +1,8 @@
 import { Search, Heart, User, ShoppingBag, Menu, X, ChevronDown, ChevronRight, LogOut } from "lucide-react";
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import logoBlack from "@/assets/logo-black.png";
+import cloverGreen from "@/assets/clover-green.png";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
 import {
@@ -133,8 +135,8 @@ const Navbar = () => {
                 </SheetTrigger>
                 <SheetContent side="left" className="w-80 p-0">
                   <SheetHeader className="p-6 pb-4 border-b border-border">
-                    <SheetTitle className="font-display text-3xl font-light text-foreground tracking-wide">
-                      rePhyl
+                    <SheetTitle>
+                      <img src={logoBlack} alt="rePhyl" className="h-8 w-auto" />
                     </SheetTitle>
                   </SheetHeader>
                   <div className="py-4 overflow-y-auto max-h-[calc(100vh-80px)]">
@@ -180,12 +182,12 @@ const Navbar = () => {
                 </SheetContent>
               </Sheet>
 
-              <h1
-                className="font-display text-3xl md:text-4xl font-light tracking-wide text-foreground cursor-pointer"
+              <img
+                src={logoBlack}
+                alt="rePhyl"
+                className="h-8 md:h-10 w-auto cursor-pointer"
                 onClick={() => handleNav("/")}
-              >
-                rePhyl
-              </h1>
+              />
             </div>
 
             {/* Center: nav links (desktop) */}
