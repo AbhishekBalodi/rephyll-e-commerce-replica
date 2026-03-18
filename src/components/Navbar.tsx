@@ -136,7 +136,7 @@ const Navbar = () => {
                 <SheetContent side="left" className="w-80 p-0">
                   <SheetHeader className="p-6 pb-4 border-b border-border">
                     <SheetTitle>
-                      <img src={logoBlack} alt="rePhyl" className="h-12 w-auto" />
+                      <img src={logoBlack} alt="rePhyl" className="h-24 w-auto -my-6" />
                     </SheetTitle>
                   </SheetHeader>
                   <div className="py-4 overflow-y-auto max-h-[calc(100vh-80px)]">
@@ -185,7 +185,7 @@ const Navbar = () => {
               <img
                 src={logoBlack}
                 alt="rePhyl"
-                className="h-10 md:h-12 w-auto cursor-pointer"
+                className="h-24 md:h-28 w-auto cursor-pointer -my-6"
                 onClick={() => handleNav("/")}
               />
             </div>
