@@ -270,10 +270,7 @@ const Navbar = () => {
                             onClick={() => {
                               setSearchOpen(false);
                               setSearchQuery("");
-                              // Navigate to home and select product
-                              navigate("/");
-                              // Use custom event to select product
-                              window.dispatchEvent(new CustomEvent("selectProduct", { detail: p.id }));
+                              navigate(`/product/${p.id}`);
                             }}
                             className="flex items-center gap-3 w-full px-3 py-3 hover:bg-accent transition-colors text-left border-b border-border last:border-0"
                           >

@@ -1,67 +1,43 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Navbar from "@/components/Navbar";
 import HeroCarousel from "@/components/HeroCarousel";
 import CategoryBar from "@/components/CategoryBar";
 import ProductCard from "@/components/ProductCard";
-import ProductDetail from "@/components/ProductDetail";
 import HomecareKitsSection from "@/components/HomecareKitsSection";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import TrustStrips from "@/components/TrustStrips";
 import BlogsSection from "@/components/BlogsSection";
 import VideoReelsSection from "@/components/VideoReelsSection";
 import Footer from "@/components/Footer";
-import { useProductList, useProductDetail } from "@/hooks/useProducts";
+import { useProductList } from "@/hooks/useProducts";
 import type { ApiProduct } from "@/types/api";
 
 const Index = () => {
-  const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+  const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
 
   const { data: productsData, isLoading } = useProductList({
     category: activeCategory ?? undefined,
   });
 
-  const { data: productDetail } = useProductDetail(selectedProductId);
-
   const products = productsData?.content ?? [];
 
   const handleProductClick = (product: ApiProduct) => {
-    setSelectedProductId(product.id);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const handleBack = () => {
-    setSelectedProductId(null);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    navigate(`/product/${product.id}`);
   };
 
   const handleCategoryClick = (categoryId: number) => {
     setActiveCategory(activeCategory === categoryId ? null : categoryId);
-    setSelectedProductId(null);
   };
-
-  useEffect(() => {
-    const handler = (e: Event) => {
-      const productId = (e as CustomEvent).detail;
-      if (typeof productId === "number") {
-        setSelectedProductId(productId);
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-    };
-    window.addEventListener("selectProduct", handler);
-    return () => window.removeEventListener("selectProduct", handler);
-  }, []);
 
   return (
     <div className="min-h-screen bg-muted/50 text-foreground">
       <div className="max-w-[1440px] mx-auto my-0 md:my-4 bg-background rounded-none md:rounded-2xl shadow-none md:shadow-[0_4px_40px_rgba(6,71,52,0.08)] overflow-hidden">
         <Navbar />
 
-        {selectedProductId && productDetail ? (
-          <ProductDetail product={productDetail} onBack={handleBack} />
-        ) : (
-          <>
+        <>
             <HeroCarousel />
             <CategoryBar activeCategory={activeCategory} onCategoryClick={handleCategoryClick} />
 
@@ -109,7 +85,7 @@ const Index = () => {
             <VideoReelsSection />
             <BlogsSection />
           </>
-        )}
+
 
         <Footer />
       </div>

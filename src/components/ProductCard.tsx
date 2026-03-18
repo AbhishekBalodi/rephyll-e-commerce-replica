@@ -1,4 +1,5 @@
 import { Star, ShoppingCart } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import type { ApiProduct } from "@/types/api";
 import { getProductImage, getSellingPrice, getMrp, getDiscount } from "@/lib/productHelpers";
 import { useCart } from "@/contexts/CartContext";
@@ -6,10 +7,11 @@ import QuantityCapsule from "./QuantityCapsule";
 
 interface ProductCardProps {
   product: ApiProduct;
-  onClick: (product: ApiProduct) => void;
+  onClick?: (product: ApiProduct) => void;
 }
 
 const ProductCard = ({ product, onClick }: ProductCardProps) => {
+  const navigate = useNavigate();
   const { items, addToCart, updateQuantity, removeFromCart } = useCart();
   const image = getProductImage(product);
   const price = getSellingPrice(product);
@@ -51,7 +53,7 @@ const ProductCard = ({ product, onClick }: ProductCardProps) => {
   return (
     <div
       className="cursor-pointer group rounded-xl border border-border bg-card p-3 flex flex-col"
-      onClick={() => onClick(product)}
+      onClick={() => { onClick?.(product); navigate(`/product/${product.id}`); }}
     >
       {/* Image */}
       <div className="relative aspect-square overflow-hidden rounded-lg mb-3 bg-muted">

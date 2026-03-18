@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight, Star, Leaf, ShieldCheck, Baby, Droplets } from "lucide-react";
 import type { ApiProduct, ApiVariant } from "@/types/api";
 import { getProductImages, getSellingPrice, getMrp, getDiscount, parseVariantAttributes, isInStock, resolveImageUrl } from "@/lib/productHelpers";
@@ -29,6 +30,7 @@ const WHATS_IN_ICONS = [
 ];
 
 const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
+  const navigate = useNavigate();
   const [activeImg, setActiveImg] = useState(0);
   const [activeTab, setActiveTab] = useState("description");
   const [selectedVariant, setSelectedVariant] = useState<ApiVariant | undefined>(
@@ -83,7 +85,7 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 md:px-6 py-8">
-      <button onClick={onBack} className="text-sm text-muted-foreground hover:text-foreground mb-6 inline-block">
+      <button onClick={() => { onBack(); navigate("/"); }} className="text-sm text-muted-foreground hover:text-foreground mb-6 inline-block">
         ← Back to products
       </button>
 
