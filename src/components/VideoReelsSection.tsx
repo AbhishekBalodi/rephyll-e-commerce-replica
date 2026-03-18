@@ -3,6 +3,7 @@ import { X, Info, ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { PRODUCTS } from "@/data/products";
 import { useCart } from "@/contexts/CartContext";
+import QuantityCapsule from "./QuantityCapsule";
 
 const REEL_VIDEOS = [
   { src: "/videos/cleaning-1.mp4", title: "Natural Dishwashing Liquid", productId: 2 },
@@ -13,7 +14,7 @@ const REEL_VIDEOS = [
 const VideoReelsSection = () => {
   const [activeVideo, setActiveVideo] = useState<number | null>(null);
   const [showProductInfo, setShowProductInfo] = useState(false);
-  const { addToCart } = useCart();
+  const { items, addToCart, updateQuantity, removeFromCart } = useCart();
   const navigate = useNavigate();
 
   const activeReel = activeVideo !== null ? REEL_VIDEOS[activeVideo] : null;
@@ -27,6 +28,11 @@ const VideoReelsSection = () => {
   const handleClose = () => {
     setActiveVideo(null);
     setShowProductInfo(false);
+  };
+
+  const getCartQty = (productId: number) => {
+    const item = items.find((i) => i.productId === productId);
+    return item?.quantity ?? 0;
   };
 
   const handleAddToCart = (e: React.MouseEvent) => {
@@ -46,6 +52,9 @@ const VideoReelsSection = () => {
     handleClose();
     navigate("/cart");
   };
+
+  const cartQty = activeProduct ? getCartQty(activeProduct.id) : 0;
+  const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
 
   return (
     <>
@@ -130,18 +139,39 @@ const VideoReelsSection = () => {
                 >
                   <Info size={14} /> MORE INFO
                 </button>
-                <button
-                  onClick={handleAddToCart}
-                  className="bg-primary text-primary-foreground text-xs font-bold px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-1"
-                >
-                  <ShoppingCart size={14} /> ADD TO CART
-                </button>
+
+                {/* Add to Cart or Quantity Capsule */}
+                {cartQty > 0 ? (
+                  <div className="min-w-[140px]">
+                    <QuantityCapsule
+                      quantity={cartQty}
+                      onIncrement={(e) => { e.stopPropagation(); updateQuantity(activeProduct.id, cartQty + 1); }}
+                      onDecrement={(e) => { e.stopPropagation(); cartQty <= 1 ? removeFromCart(activeProduct.id) : updateQuantity(activeProduct.id, cartQty - 1); }}
+                      size="sm"
+                      fullWidth
+                    />
+                  </div>
+                ) : (
+                  <button
+                    onClick={handleAddToCart}
+                    className="bg-primary text-primary-foreground text-xs font-bold px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-1"
+                  >
+                    <ShoppingCart size={14} /> ADD TO CART
+                  </button>
+                )}
+
+                {/* Cart icon with badge */}
                 <button
                   onClick={handleGoToCart}
-                  className="bg-accent text-accent-foreground text-xs font-bold p-2 rounded-lg hover:opacity-90 transition-colors"
+                  className="relative bg-primary text-primary-foreground text-xs font-bold p-2 rounded-lg hover:opacity-90 transition-colors"
                   title="Go to Cart"
                 >
                   <ShoppingCart size={16} />
+                  {totalItems > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-accent text-accent-foreground text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                      {totalItems}
+                    </span>
+                  )}
                 </button>
               </div>
 
