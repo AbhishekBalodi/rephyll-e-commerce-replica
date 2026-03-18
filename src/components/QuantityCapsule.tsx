@@ -5,12 +5,13 @@ interface QuantityCapsuleProps {
   onIncrement: (e: React.MouseEvent) => void;
   onDecrement: (e: React.MouseEvent) => void;
   size?: "sm" | "md";
+  fullWidth?: boolean;
 }
 
-const QuantityCapsule = ({ quantity, onIncrement, onDecrement, size = "md" }: QuantityCapsuleProps) => {
+const QuantityCapsule = ({ quantity, onIncrement, onDecrement, size = "md", fullWidth = false }: QuantityCapsuleProps) => {
   const isSmall = size === "sm";
   return (
-    <div className={`inline-flex items-center border-2 border-primary rounded-full overflow-hidden ${isSmall ? "" : ""}`}>
+    <div className={`${fullWidth ? "flex w-full" : "inline-flex"} items-center border-2 border-primary rounded-full overflow-hidden`}>
       <button
         onClick={onDecrement}
         className={`hover:bg-muted transition-colors ${isSmall ? "px-3 py-2" : "px-5 py-3"}`}
