@@ -85,7 +85,7 @@ const Index = () => {
             <VideoReelsSection />
             <BlogsSection />
           </>
-        )}
+
 
         <Footer />
       </div>
