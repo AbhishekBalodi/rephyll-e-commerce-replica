@@ -130,7 +130,7 @@ const Footer = () => {
 
             <div className="mt-auto flex flex-col items-start md:items-end gap-1">
               <img src={cloverLime} alt="rePhyl clover" className="w-20 h-20" />
-              <img src={logoBlack} alt="rePhyl" className="h-[180px] w-auto -my-[65px]" />
+              <img src={logoBlack} alt="rePhyl" className="h-[240px] w-auto -my-[85px]" />
               <p className="text-sm uppercase tracking-[0.25em] text-muted-foreground">Have a Clean Day!</p>
             </div>
           </div>
