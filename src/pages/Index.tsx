@@ -41,7 +41,7 @@ const Index = () => {
             <CategoryBar activeCategory={activeCategory} onCategoryClick={handleCategoryClick} />
 
             {/* Products section */}
-            <section className="max-w-7xl mx-auto px-4 md:px-6 py-16">
+            <section id="products-section" className="max-w-7xl mx-auto px-4 md:px-6 py-16">
               <h2 className="text-3xl md:text-4xl font-bold text-center text-foreground mb-2">
                 Products
               </h2>
