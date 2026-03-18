@@ -1,7 +1,7 @@
 import { Search, Heart, User, ShoppingBag, Menu, X, ChevronDown, ChevronRight, LogOut } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import logoBlack from "@/assets/logo-black.png";
+import logoBlack from "@/assets/logo-green-cropped.png";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSearchSuggestions } from "@/hooks/useProducts";
@@ -158,7 +158,7 @@ const Navbar = () => {
                 <SheetContent side="left" className="w-80 p-0">
                   <SheetHeader className="p-6 pb-4 border-b border-border">
                     <SheetTitle>
-                      <img src={logoBlack} alt="rePhyl" className="h-36 w-auto -my-10" />
+                      <img src={logoBlack} alt="rePhyl" className="h-[120px] w-auto -my-[40px]" />
                     </SheetTitle>
                   </SheetHeader>
                   <div className="py-4 overflow-y-auto max-h-[calc(100vh-80px)]">
@@ -194,7 +194,7 @@ const Navbar = () => {
               <img
                 src={logoBlack}
                 alt="rePhyl"
-                className="h-36 md:h-44 w-auto cursor-pointer -my-12"
+                className="h-[120px] md:h-[160px] w-auto cursor-pointer -my-[45px] md:-my-[60px]"
                 onClick={() => handleNav("/")}
               />
             </div>
