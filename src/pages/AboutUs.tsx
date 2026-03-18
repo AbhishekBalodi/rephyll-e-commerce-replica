@@ -10,7 +10,7 @@ const AboutUs = () => {
       {/* Hero */}
       <section className="bg-primary text-primary-foreground py-20">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <img src={cloverLime} alt="" className="w-14 h-14 mx-auto mb-4" />
+          <img src={cloverLime} alt="" className="w-20 h-20 mx-auto mb-4" />
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">our story</h1>
           <p className="text-lg md:text-xl font-semibold">
             Keep your home forever fresh and your planet looking new. All with the power of nature.
