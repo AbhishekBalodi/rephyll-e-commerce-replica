@@ -1,6 +1,5 @@
 import { useState } from "react";
 import logoBlack from "@/assets/logo-black.png";
-import cloverGreen from "@/assets/clover-green.png";
 import Navbar from "@/components/Navbar";
 import HeroCarousel from "@/components/HeroCarousel";
 import CategoryBar from "@/components/CategoryBar";
@@ -11,39 +10,43 @@ import TrustStrips from "@/components/TrustStrips";
 import BlogsSection from "@/components/BlogsSection";
 import VideoReelsSection from "@/components/VideoReelsSection";
 import Footer from "@/components/Footer";
-import { PRODUCTS, Product, ProductCategory } from "@/data/products";
+import { useProductList, useProductDetail } from "@/hooks/useProducts";
+import type { ApiProduct } from "@/types/api";
 
 const Index = () => {
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [activeCategory, setActiveCategory] = useState<ProductCategory | null>(null);
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+  const [activeCategory, setActiveCategory] = useState<number | null>(null);
 
-  const handleProductClick = (product: Product) => {
-    setSelectedProduct(product);
+  const { data: productsData, isLoading } = useProductList({
+    category: activeCategory ?? undefined,
+  });
+
+  const { data: productDetail } = useProductDetail(selectedProductId);
+
+  const products = productsData?.content ?? [];
+
+  const handleProductClick = (product: ApiProduct) => {
+    setSelectedProductId(product.id);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleBack = () => {
-    setSelectedProduct(null);
+    setSelectedProductId(null);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleCategoryClick = (category: ProductCategory) => {
-    setActiveCategory(activeCategory === category ? null : category);
-    setSelectedProduct(null);
+  const handleCategoryClick = (categoryId: number) => {
+    setActiveCategory(activeCategory === categoryId ? null : categoryId);
+    setSelectedProductId(null);
   };
-
-  const filteredProducts = activeCategory
-    ? PRODUCTS.filter((p) => p.categories.includes(activeCategory))
-    : PRODUCTS;
 
   return (
     <div className="min-h-screen bg-muted/50 text-foreground">
-      {/* Elevated card wrapper for entire page */}
       <div className="max-w-[1440px] mx-auto my-0 md:my-4 bg-background rounded-none md:rounded-2xl shadow-none md:shadow-[0_4px_40px_rgba(6,71,52,0.08)] overflow-hidden">
         <Navbar />
 
-        {selectedProduct ? (
-          <ProductDetail product={selectedProduct} onBack={handleBack} />
+        {selectedProductId && productDetail ? (
+          <ProductDetail product={productDetail} onBack={handleBack} />
         ) : (
           <>
             <HeroCarousel />
@@ -52,31 +55,39 @@ const Index = () => {
             {/* Products section */}
             <section className="max-w-7xl mx-auto px-4 md:px-6 py-16">
               <h2 className="text-3xl md:text-4xl font-bold text-center text-foreground mb-2 flex items-center justify-center gap-3">
-                {activeCategory ? `${activeCategory}` : (
-                  <>
-                    <img src={logoBlack} alt="rePhyl" className="h-28 w-auto inline-block -my-8" />
-                    <span>products</span>
-                  </>
-                )}
+                <img src={logoBlack} alt="rePhyl" className="h-28 w-auto inline-block -my-8" />
+                <span>products</span>
               </h2>
               <p className="text-center text-muted-foreground mb-12">
-                {activeCategory
-                  ? `Showing ${filteredProducts.length} product${filteredProducts.length !== 1 ? "s" : ""} in ${activeCategory}`
-                  : "Meet our most loved plant-based cleaners"}
+                {isLoading
+                  ? "Loading products..."
+                  : `Showing ${products.length} product${products.length !== 1 ? "s" : ""}`}
               </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                {filteredProducts.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    onClick={handleProductClick}
-                  />
-                ))}
-              </div>
+              {isLoading ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div key={i} className="animate-pulse space-y-3">
+                      <div className="aspect-square rounded-lg bg-muted" />
+                      <div className="h-4 w-3/4 rounded bg-muted" />
+                      <div className="h-4 w-1/2 rounded bg-muted" />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                  {products.map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      onClick={handleProductClick}
+                    />
+                  ))}
+                </div>
+              )}
 
-              {filteredProducts.length === 0 && (
-                <p className="text-center text-muted-foreground py-12">No products found in this category.</p>
+              {!isLoading && products.length === 0 && (
+                <p className="text-center text-muted-foreground py-12">No products found.</p>
               )}
             </section>
 
