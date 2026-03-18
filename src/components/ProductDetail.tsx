@@ -258,7 +258,7 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
                 return (
                   <div key={v.id} className="flex items-center gap-4 p-4 rounded-lg border border-border">
                     {v.imageUrl && (
-                      <img src={v.imageUrl} alt={v.variantName} className="w-16 h-16 rounded-md object-cover" onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg"; }} />
+                      <img src={resolveImageUrl(v.imageUrl)} alt={v.variantName} className="w-16 h-16 rounded-md object-cover" onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg"; }} />
                     )}
                     <div className="flex-1">
                       <p className="font-semibold text-foreground">{v.variantName}</p>
