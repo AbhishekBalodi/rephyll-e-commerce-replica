@@ -310,7 +310,7 @@ const Navbar = () => {
                 <PopoverContent className="w-56 p-2" align="end">
                   {user ? (
                     <div className="space-y-1">
-                      <p className="px-3 py-2 text-sm font-semibold text-foreground truncate">{user.full_name || user.email}</p>
+                      <p className="px-3 py-2 text-sm font-semibold text-foreground truncate">{user.username || user.email}</p>
                       <hr className="border-border" />
                       {isAdmin && (
                         <button onClick={() => handleNav("/admin/add-product")} className="w-full text-left px-3 py-2 text-sm text-foreground hover:bg-accent rounded transition-colors">
