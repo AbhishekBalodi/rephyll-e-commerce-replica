@@ -1,4 +1,6 @@
 import { useState } from "react";
+import logoBlack from "@/assets/logo-black.png";
+import cloverGreen from "@/assets/clover-green.png";
 import Navbar from "@/components/Navbar";
 import HeroCarousel from "@/components/HeroCarousel";
 import CategoryBar from "@/components/CategoryBar";
