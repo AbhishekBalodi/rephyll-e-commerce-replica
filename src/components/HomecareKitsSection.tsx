@@ -131,7 +131,7 @@ const HomecareKitsSection = () => {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 
