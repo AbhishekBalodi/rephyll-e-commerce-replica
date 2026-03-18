@@ -15,43 +15,22 @@ import { useProductList } from "@/hooks/useProducts";
 import type { ApiProduct } from "@/types/api";
 
 const Index = () => {
-  const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+  const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
 
   const { data: productsData, isLoading } = useProductList({
     category: activeCategory ?? undefined,
   });
 
-  const { data: productDetail } = useProductDetail(selectedProductId);
-
   const products = productsData?.content ?? [];
 
   const handleProductClick = (product: ApiProduct) => {
-    setSelectedProductId(product.id);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const handleBack = () => {
-    setSelectedProductId(null);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    navigate(`/product/${product.id}`);
   };
 
   const handleCategoryClick = (categoryId: number) => {
     setActiveCategory(activeCategory === categoryId ? null : categoryId);
-    setSelectedProductId(null);
   };
-
-  useEffect(() => {
-    const handler = (e: Event) => {
-      const productId = (e as CustomEvent).detail;
-      if (typeof productId === "number") {
-        setSelectedProductId(productId);
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-    };
-    window.addEventListener("selectProduct", handler);
-    return () => window.removeEventListener("selectProduct", handler);
-  }, []);
 
   return (
     <div className="min-h-screen bg-muted/50 text-foreground">

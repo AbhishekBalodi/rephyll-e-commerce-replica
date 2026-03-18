@@ -11,6 +11,7 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product, onClick }: ProductCardProps) => {
+  const navigate = useNavigate();
   const { items, addToCart, updateQuantity, removeFromCart } = useCart();
   const image = getProductImage(product);
   const price = getSellingPrice(product);
