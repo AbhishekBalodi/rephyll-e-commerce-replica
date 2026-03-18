@@ -57,13 +57,16 @@ const CategoryBar = ({ activeCategory, onCategoryClick }: CategoryBarProps) => {
               className="flex flex-col items-center gap-2 min-w-[70px] group cursor-pointer"
             >
               <div
-                className={`w-16 h-16 rounded-full flex items-center justify-center transition-all ${
+                className={`w-[72px] h-[72px] rounded-full flex items-center justify-center transition-all ${
                   activeCategory === cat.id
                     ? "bg-primary text-primary-foreground"
-                    : "bg-secondary text-primary group-hover:bg-secondary/70"
+                    : "text-primary group-hover:opacity-80"
                 }`}
+                style={activeCategory !== cat.id ? {
+                  background: 'radial-gradient(circle, hsl(158 100% 94%) 40%, hsl(158 80% 85%) 100%)',
+                } : undefined}
               >
-                <Icon size={28} strokeWidth={1.5} />
+                <Icon size={30} strokeWidth={2} />
               </div>
               <span
                 className={`text-[11px] font-semibold uppercase tracking-wider transition-colors whitespace-nowrap ${
