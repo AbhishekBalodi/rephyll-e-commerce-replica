@@ -68,7 +68,7 @@ const Index = () => {
             {/* Products section */}
             <section className="max-w-7xl mx-auto px-4 md:px-6 py-16">
               <h2 className="text-3xl md:text-4xl font-bold text-center text-foreground mb-2 flex items-center justify-center gap-3">
-                <img src={logoBlack} alt="rePhyl" className="h-28 w-auto inline-block -my-8" />
+                <img src={logoBlack} alt="rePhyl" className="h-44 w-auto inline-block -my-14" />
                 <span>products</span>
               </h2>
               <p className="text-center text-muted-foreground mb-12">
