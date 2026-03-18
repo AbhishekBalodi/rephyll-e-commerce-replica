@@ -1,50 +1,47 @@
-const BLOG_VIDEOS = [
-  {
-    src: "/videos/cleaning-1.mp4",
-    title: "Quick Kitchen Cleaning Hacks",
-    desc: "Watch how rePhyl products make kitchen cleaning effortless and chemical-free.",
-  },
-  {
-    src: "/videos/cleaning-2.mp4",
-    title: "Eco-Friendly Home Care Routine",
-    desc: "A complete plant-based home cleaning routine that's safe for your family.",
-  },
-  {
-    src: "/videos/cleaning-3.mp4",
-    title: "Sparkling Floors in Minutes",
-    desc: "See the magic of our floor cleaner — streak-free, fresh, and 100% biodegradable.",
-  },
-];
+import { Link } from "react-router-dom";
+import { BLOG_POSTS } from "@/data/blogs";
 
 const BlogsSection = () => {
   return (
     <section className="bg-background py-16 px-4">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground text-center mb-3">
-          Cleaning Tips & Blogs
+        <span className="block text-center text-sm font-semibold text-foreground border border-border rounded-full w-fit mx-auto px-5 py-1.5 mb-4">
+          Blogs
+        </span>
+        <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground text-center mb-12">
+          Our Latest Insights
         </h2>
-        <p className="text-center text-muted-foreground mb-10">
-          Watch our eco-friendly cleaning tips and tricks
-        </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
-          {BLOG_VIDEOS.map((video, i) => (
-            <div key={i} className="rounded-xl overflow-hidden border border-border bg-card w-fit">
-              <div className="w-[280px] sm:w-[260px] lg:w-[280px] aspect-[9/16] bg-muted">
-                <video
-                  src={video.src}
-                  className="w-full h-full object-cover"
-                  controls
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {BLOG_POSTS.map((post) => (
+            <div key={post.id} className="group">
+              <div className="rounded-xl overflow-hidden mb-4">
+                <img
+                  src={post.image}
+                  alt={post.title}
+                  className="w-full h-[220px] object-cover group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
-              <div className="w-[280px] sm:w-[260px] lg:w-[280px] p-3">
-                <h3 className="text-sm font-bold text-foreground mb-1">{video.title}</h3>
-                <p className="text-xs text-muted-foreground leading-relaxed">{video.desc}</p>
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-[11px] font-bold uppercase tracking-wider bg-secondary text-foreground px-3 py-1 rounded-full">
+                  {post.readTime} min read
+                </span>
+                <span className="text-[11px] font-bold uppercase tracking-wider bg-secondary text-foreground px-3 py-1 rounded-full">
+                  {post.date}
+                </span>
               </div>
+              <h3 className="text-sm md:text-base font-bold text-foreground mb-2 leading-snug line-clamp-2">
+                {post.title}
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2 mb-3">
+                {post.excerpt}
+              </p>
+              <Link
+                to={`/blog/${post.slug}`}
+                className="text-sm font-semibold text-foreground underline underline-offset-4 hover:text-primary transition-colors"
+              >
+                Read More
+              </Link>
             </div>
           ))}
         </div>
