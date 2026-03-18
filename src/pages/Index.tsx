@@ -5,6 +5,7 @@ import HeroCarousel from "@/components/HeroCarousel";
 import CategoryBar from "@/components/CategoryBar";
 import ProductCard from "@/components/ProductCard";
 import ProductDetail from "@/components/ProductDetail";
+import HomecareKitsSection from "@/components/HomecareKitsSection";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import TrustStrips from "@/components/TrustStrips";
 import BlogsSection from "@/components/BlogsSection";
@@ -40,7 +41,6 @@ const Index = () => {
     setSelectedProductId(null);
   };
 
-  // Listen for search product selection from Navbar
   useEffect(() => {
     const handler = (e: Event) => {
       const productId = (e as CustomEvent).detail;
@@ -103,6 +103,7 @@ const Index = () => {
               )}
             </section>
 
+            <HomecareKitsSection />
             <WhyChooseUs />
             <TrustStrips />
             <VideoReelsSection />

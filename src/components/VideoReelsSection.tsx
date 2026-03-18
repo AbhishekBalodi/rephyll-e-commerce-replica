@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { X, Info, ShoppingCart } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { PRODUCTS } from "@/data/products";
 import { useCart } from "@/contexts/CartContext";
 
@@ -13,6 +14,7 @@ const VideoReelsSection = () => {
   const [activeVideo, setActiveVideo] = useState<number | null>(null);
   const [showProductInfo, setShowProductInfo] = useState(false);
   const { addToCart } = useCart();
+  const navigate = useNavigate();
 
   const activeReel = activeVideo !== null ? REEL_VIDEOS[activeVideo] : null;
   const activeProduct = activeReel ? PRODUCTS.find((p) => p.id === activeReel.productId) : null;
@@ -37,6 +39,12 @@ const VideoReelsSection = () => {
       originalPrice: activeProduct.originalPrice,
       image: activeProduct.images[0],
     });
+  };
+
+  const handleGoToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    handleClose();
+    navigate("/cart");
   };
 
   return (
@@ -127,6 +135,13 @@ const VideoReelsSection = () => {
                   className="bg-primary text-primary-foreground text-xs font-bold px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-1"
                 >
                   <ShoppingCart size={14} /> ADD TO CART
+                </button>
+                <button
+                  onClick={handleGoToCart}
+                  className="bg-accent text-accent-foreground text-xs font-bold p-2 rounded-lg hover:opacity-90 transition-colors"
+                  title="Go to Cart"
+                >
+                  <ShoppingCart size={16} />
                 </button>
               </div>
 
