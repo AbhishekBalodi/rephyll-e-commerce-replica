@@ -40,6 +40,19 @@ const Index = () => {
     setSelectedProductId(null);
   };
 
+  // Listen for search product selection from Navbar
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const productId = (e as CustomEvent).detail;
+      if (typeof productId === "number") {
+        setSelectedProductId(productId);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    };
+    window.addEventListener("selectProduct", handler);
+    return () => window.removeEventListener("selectProduct", handler);
+  }, []);
+
   return (
     <div className="min-h-screen bg-muted/50 text-foreground">
       <div className="max-w-[1440px] mx-auto my-0 md:my-4 bg-background rounded-none md:rounded-2xl shadow-none md:shadow-[0_4px_40px_rgba(6,71,52,0.08)] overflow-hidden">
