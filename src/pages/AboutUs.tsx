@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import cloverLime from "@/assets/clover-lime.png";
 
 const AboutUs = () => {
   return (
