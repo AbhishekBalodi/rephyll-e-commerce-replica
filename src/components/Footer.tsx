@@ -40,10 +40,13 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
           {/* Brand */}
           <div>
-            <img src={cloverDark} alt="rePhyl" className="w-12 h-12 mb-3" />
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Plant-powered cleaning for modern homes.
-            </p>
+            <div className="flex flex-col items-center md:items-start">
+              <img src={cloverDark} alt="rePhyl clover" className="w-20 h-20 mb-1" />
+              <img src={logoGreen} alt="rePhyl" className="h-[120px] -my-[40px] object-contain" />
+              <p className="text-sm text-muted-foreground leading-relaxed mt-1">
+                Plant-powered cleaning for modern homes.
+              </p>
+            </div>
           </div>
 
           {/* Quick Links */}
