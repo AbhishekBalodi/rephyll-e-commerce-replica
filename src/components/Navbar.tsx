@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useSearchSuggestions } from "@/hooks/useProducts";
 import { listProducts } from "@/services/productApi";
 import type { ApiProduct } from "@/types/api";
+import { resolveImageUrl } from "@/lib/productHelpers";
 import {
   Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger,
 } from "@/components/ui/sheet";
