@@ -3,6 +3,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { CartProvider } from "@/contexts/CartContext";
 import Index from "./pages/Index.tsx";
 import AboutUs from "./pages/AboutUs.tsx";
 import FAQs from "./pages/FAQs.tsx";
@@ -14,6 +16,10 @@ import NotFound from "./pages/NotFound.tsx";
 import WhyChooseUsPage from "./pages/WhyChooseUsPage.tsx";
 import TestimonialsPage from "./pages/TestimonialsPage.tsx";
 import BlogPost from "./pages/BlogPost.tsx";
+import LoginPage from "./pages/LoginPage.tsx";
+import SignupPage from "./pages/SignupPage.tsx";
+import CartPage from "./pages/CartPage.tsx";
+import AdminAddProduct from "./pages/AdminAddProduct.tsx";
 
 const queryClient = new QueryClient();
 
@@ -23,19 +29,27 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/about" element={<AboutUs />} />
-          <Route path="/why-choose-us" element={<WhyChooseUsPage />} />
-          <Route path="/faqs" element={<FAQs />} />
-          <Route path="/contact" element={<ContactUs />} />
-          <Route path="/terms" element={<TermsOfService />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/refund-policy" element={<RefundPolicy />} />
-          <Route path="/testimonials" element={<TestimonialsPage />} />
-          <Route path="/blog/:slug" element={<BlogPost />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AuthProvider>
+          <CartProvider>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/about" element={<AboutUs />} />
+              <Route path="/why-choose-us" element={<WhyChooseUsPage />} />
+              <Route path="/faqs" element={<FAQs />} />
+              <Route path="/contact" element={<ContactUs />} />
+              <Route path="/terms" element={<TermsOfService />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/refund-policy" element={<RefundPolicy />} />
+              <Route path="/testimonials" element={<TestimonialsPage />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignupPage />} />
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/admin/add-product" element={<AdminAddProduct />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </CartProvider>
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
