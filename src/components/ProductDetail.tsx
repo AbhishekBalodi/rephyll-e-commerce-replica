@@ -186,8 +186,12 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
                 <Plus size={16} />
               </button>
             </div>
-            <button className="flex-1 py-3 border-2 border-foreground rounded-full text-foreground font-bold text-sm uppercase tracking-wider hover:bg-foreground hover:text-background transition-colors">
+            <button
+              onClick={() => addToCart({ productId: product.id, name: product.name, price: product.price, originalPrice: product.originalPrice, image: product.images[0] }, qty)}
+              className="flex-1 py-3 border-2 border-foreground rounded-full text-foreground font-bold text-sm uppercase tracking-wider hover:bg-foreground hover:text-background transition-colors"
+            >
               ADD TO CART
+            </button>
             </button>
           </div>
         </div>
