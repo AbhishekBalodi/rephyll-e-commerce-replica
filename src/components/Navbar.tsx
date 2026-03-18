@@ -48,7 +48,7 @@ const NAV_CATEGORIES: NavCategory[] = [
     ],
   },
   { label: "ABOUT US", path: "/about" },
-  { label: "BLOGS", path: "/" },
+  { label: "BLOGS", path: "/blogs" },
   { label: "B2B ORDERS", path: "/contact" },
   { label: "WHY CHOOSE US", path: "/why-choose-us" },
   { label: "REVIEWS", path: "/testimonials" },
