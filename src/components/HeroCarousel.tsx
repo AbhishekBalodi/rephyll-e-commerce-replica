@@ -39,7 +39,7 @@ const HeroCarousel = () => {
   return (
     <section className="relative w-full overflow-hidden" aria-label="Featured products banner">
       <div
-        className="relative mx-auto h-[575px] w-full max-w-[1441px] overflow-hidden"
+        className="relative mx-auto h-[575px] w-full overflow-hidden"
         style={{
           background: "radial-gradient(13.36% 42.27% at 75.29% 56.87%, hsl(var(--accent)) 0%, hsl(var(--hero-forest)) 100%)",
         }}
