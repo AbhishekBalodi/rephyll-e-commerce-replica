@@ -156,7 +156,7 @@ const HomecareKitsSection = () => {
   return (
     <div id="homecare-kits-section">
       {/* ===== SECTION 1: Smart Bundles / Single Products ===== */}
-      <section className="relative min-h-[897px] overflow-hidden bg-accent/30 py-10">
+      <section className="relative overflow-hidden py-10" style={{ minHeight: "897px", background: "rgba(206, 241, 123, 0.3)" }}>
         <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute left-[-72px] top-[-54px] z-0 w-[240px] opacity-[0.18]" />
         <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute right-[-52px] top-[18px] z-0 w-[220px] opacity-[0.18]" />
         <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute bottom-[-58px] left-[-54px] z-0 w-[220px] opacity-[0.14]" />
@@ -164,33 +164,51 @@ const HomecareKitsSection = () => {
         <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute bottom-[126px] left-1/2 z-0 w-[180px] -translate-x-1/2 opacity-[0.1]" />
 
         <div className="relative z-[1] mx-auto max-w-[1440px] px-4 md:px-6">
-          <div className="mb-10 flex justify-center gap-3">
-            <button
-              onClick={() => setActiveTab("bundles")}
-              className={`min-w-[156px] rounded-[10px] px-8 py-2.5 text-[12px] font-semibold transition-all ${
-                activeTab === "bundles"
-                  ? "bg-primary text-primary-foreground shadow-[0_8px_20px_hsl(var(--primary)/0.18)]"
-                  : "bg-background text-primary shadow-[0_6px_16px_hsl(var(--primary)/0.08)]"
-              }`}
-              style={{ fontFamily: "'Poppins', sans-serif" }}
-            >
-              Smart Bundles
-            </button>
-            <button
-              onClick={() => setActiveTab("single")}
-              className={`min-w-[156px] rounded-[10px] px-8 py-2.5 text-[12px] font-semibold transition-all ${
-                activeTab === "single"
-                  ? "bg-primary text-primary-foreground shadow-[0_8px_20px_hsl(var(--primary)/0.18)]"
-                  : "bg-background text-primary shadow-[0_6px_16px_hsl(var(--primary)/0.08)]"
-              }`}
-              style={{ fontFamily: "'Poppins', sans-serif" }}
-            >
-              Single Products
-            </button>
+          {/* Tab Buttons - 612px wide, centered */}
+          <div className="mb-10 flex justify-center">
+            <div className="flex items-center gap-6" style={{ width: "612px" }}>
+              <button
+                onClick={() => setActiveTab("bundles")}
+                className="flex-1 flex items-center justify-center transition-all"
+                style={{
+                  width: "294px",
+                  height: "48px",
+                  borderRadius: "12px",
+                  background: activeTab === "bundles" ? "#064734" : "#FFFFFF",
+                  boxShadow: "0px 13px 25px rgba(0, 0, 0, 0.15)",
+                  fontFamily: "'Poppins', sans-serif",
+                  fontSize: "16px",
+                  fontWeight: 400,
+                  lineHeight: "24px",
+                  color: activeTab === "bundles" ? "#FFFFFF" : "#064734",
+                }}
+              >
+                Smart Bundles
+              </button>
+              <button
+                onClick={() => setActiveTab("single")}
+                className="flex-1 flex items-center justify-center transition-all"
+                style={{
+                  width: "294px",
+                  height: "48px",
+                  borderRadius: "12px",
+                  background: activeTab === "single" ? "#064734" : "#FFFFFF",
+                  boxShadow: "0px 13px 25px rgba(0, 0, 0, 0.15)",
+                  fontFamily: "'Poppins', sans-serif",
+                  fontSize: "16px",
+                  fontWeight: 400,
+                  lineHeight: "24px",
+                  color: activeTab === "single" ? "#FFFFFF" : "#064734",
+                }}
+              >
+                Single Products
+              </button>
+            </div>
           </div>
 
+          {/* Product Cards Grid */}
           {activeTab === "bundles" && (
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            <div className="flex justify-center gap-6 flex-wrap">
               {BUNDLES.map((bundle) => {
                 const cartItem = items.find((i) => i.productId === bundle.id);
                 const cartQty = cartItem?.quantity ?? 0;
@@ -198,72 +216,183 @@ const HomecareKitsSection = () => {
                 return (
                   <div
                     key={bundle.id}
-                    className="overflow-hidden rounded-2xl bg-background shadow-[0_18px_42px_hsl(var(--primary)/0.08)]"
+                    className="flex flex-col overflow-hidden"
+                    style={{
+                      width: "428px",
+                      height: "650px",
+                      background: "#FFFFFF",
+                      boxShadow: "0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1)",
+                      borderRadius: "24px",
+                    }}
                   >
+                    {/* Image Area - 428x409 */}
                     <div
-                      className="relative h-[320px] p-5"
+                      className="relative flex-shrink-0"
                       style={{
-                        background:
-                          "linear-gradient(180deg, hsl(var(--accent) / 0.58) 0%, hsl(var(--accent) / 0.38) 58%, hsl(var(--background)) 100%)",
+                        width: "428px",
+                        height: "409px",
+                        background: "linear-gradient(137.98deg, #CEF17B 0.45%, #FFFFFF 106.93%)",
+                        borderRadius: "24px 24px 0 0",
                       }}
                     >
-                      <div className="mb-3 flex items-center justify-between">
-                        <span className="rounded-full bg-background/85 px-3 py-1.5 text-xs font-bold text-primary">
+                      {/* Discount Badge */}
+                      <div
+                        className="absolute flex items-center justify-center"
+                        style={{
+                          width: "89px",
+                          height: "32px",
+                          left: "31px",
+                          top: "16px",
+                          background: "#E2FF9C",
+                          borderRadius: "9999px",
+                        }}
+                      >
+                        <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "16px", lineHeight: "24px", color: "#064734" }}>
                           {bundle.discount}% Off
                         </span>
-                        <div className="flex gap-2">
-                          <button className="flex h-9 w-9 items-center justify-center rounded-full bg-background/85 text-muted-foreground transition-colors hover:text-foreground">
-                            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>
-                          </button>
-                          <button className="flex h-9 w-9 items-center justify-center rounded-full bg-background/85 text-muted-foreground transition-colors hover:text-foreground">
-                            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
-                          </button>
-                        </div>
                       </div>
 
-                      <div className="flex h-[220px] items-center justify-center">
-                        <img src={ascFront2} alt={bundle.name} className="h-[210px] object-contain" />
-                        <button className="absolute right-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-background/85">
-                          <ChevronRight size={16} className="text-foreground" />
-                        </button>
-                      </div>
+                      {/* Share button */}
+                      <button
+                        className="absolute flex items-center justify-center"
+                        style={{
+                          width: "40px",
+                          height: "40px",
+                          left: "324px",
+                          top: "16px",
+                          background: "#FFFFFF",
+                          boxShadow: "0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -2px rgba(0, 0, 0, 0.1)",
+                          borderRadius: "9999px",
+                        }}
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="#364153" strokeWidth={1.33} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>
+                      </button>
 
-                      <div className="mt-2 flex justify-center gap-1.5">
-                        <span className="h-1.5 w-6 rounded-full bg-primary" />
-                        <span className="h-1.5 w-1.5 rounded-full bg-primary/30" />
-                        <span className="h-1.5 w-1.5 rounded-full bg-primary/30" />
+                      {/* Heart button */}
+                      <button
+                        className="absolute flex items-center justify-center"
+                        style={{
+                          width: "40px",
+                          height: "40px",
+                          left: "372px",
+                          top: "16px",
+                          background: "#FFFFFF",
+                          boxShadow: "0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -2px rgba(0, 0, 0, 0.1)",
+                          borderRadius: "9999px",
+                        }}
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="#364153" strokeWidth={1.67} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                      </button>
+
+                      {/* Product Image - 228x343, centered */}
+                      <img
+                        src={ascFront2}
+                        alt={bundle.name}
+                        className="absolute object-contain"
+                        style={{
+                          width: "228px",
+                          height: "343px",
+                          left: "calc(50% - 114px)",
+                          top: "45px",
+                        }}
+                      />
+
+                      {/* Chevron button */}
+                      <button
+                        className="absolute flex items-center justify-center"
+                        style={{
+                          width: "32px",
+                          height: "32px",
+                          left: "380px",
+                          top: "208px",
+                          background: "rgba(255, 255, 255, 0.9)",
+                          boxShadow: "0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -2px rgba(0, 0, 0, 0.1)",
+                          borderRadius: "9999px",
+                        }}
+                      >
+                        <ChevronRight size={20} color="#364153" />
+                      </button>
+
+                      {/* Carousel Dots */}
+                      <div
+                        className="absolute flex items-start gap-[6px]"
+                        style={{ width: "60px", height: "6px", left: "194px", top: "377px" }}
+                      >
+                        <span style={{ width: "24px", height: "6px", background: "#064734", borderRadius: "9999px", flex: "none" }} />
+                        <span style={{ width: "6px", height: "6px", background: "rgba(6, 71, 52, 0.3)", borderRadius: "9999px", flex: "none" }} />
+                        <span style={{ width: "6px", height: "6px", background: "rgba(6, 71, 52, 0.3)", borderRadius: "9999px", flex: "none" }} />
+                        <span style={{ width: "6px", height: "6px", background: "rgba(6, 71, 52, 0.3)", borderRadius: "9999px", flex: "none" }} />
                       </div>
                     </div>
 
-                    <div className="bg-background p-5 pt-4">
-                      <h3 className="text-lg font-bold text-foreground">{bundle.name}</h3>
-                      <p className="mb-2 text-sm text-primary">({bundle.productCount} Products)</p>
-                      <div className="mb-2 flex items-center gap-2">
-                        <StarRating rating={bundle.rating} />
-                        <span className="text-sm text-muted-foreground">{bundle.rating} ({bundle.reviewCount} reviews)</span>
-                      </div>
-                      <div className="mb-4 flex items-center gap-2">
-                        <span className="text-2xl font-bold text-foreground">₹{bundle.price}</span>
-                        <span className="text-sm text-muted-foreground line-through">₹{bundle.originalPrice}</span>
+                    {/* Info Area - 428x240 */}
+                    <div className="flex-1 flex flex-col" style={{ padding: "20px" }}>
+                      <div className="flex flex-col gap-[8px] mb-[20px]">
+                        {/* Title */}
+                        <p style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "16px", lineHeight: "24px", color: "#464646" }}>
+                          {bundle.name}
+                        </p>
+                        {/* Subtitle */}
+                        <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "16px", lineHeight: "24px", color: "#064734" }}>
+                          ({bundle.productCount} Products)
+                        </p>
+                        {/* Rating Row */}
+                        <div className="flex items-center gap-[8px]">
+                          <div className="flex items-center gap-[4px]">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <svg key={star} className="w-4 h-4" fill={star <= bundle.rating ? "#FDC700" : "none"} stroke={star <= bundle.rating ? "#FDC700" : "#8E939C"} strokeWidth={1.33} viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                              </svg>
+                            ))}
+                          </div>
+                          <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "16px", lineHeight: "24px", color: "#464646" }}>
+                            {bundle.rating.toFixed(1)}
+                          </span>
+                          <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "16px", lineHeight: "24px", color: "#8E939C" }}>
+                            ({bundle.reviewCount} reviews)
+                          </span>
+                        </div>
+                        {/* Price Row */}
+                        <div className="flex items-center gap-[12px]">
+                          <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "30px", lineHeight: "24px", color: "#064734" }}>
+                            ₹{bundle.price}
+                          </span>
+                          <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, fontSize: "16px", lineHeight: "24px", color: "#8E939C", textDecoration: "line-through" }}>
+                            ₹{bundle.originalPrice}
+                          </span>
+                        </div>
                       </div>
 
-                      {cartQty > 0 ? (
-                        <QuantityCapsule
-                          quantity={cartQty}
-                          onIncrement={(e) => { e.stopPropagation(); updateQuantity(bundle.id, cartQty + 1); }}
-                          onDecrement={(e) => { e.stopPropagation(); cartQty <= 1 ? removeFromCart(bundle.id) : updateQuantity(bundle.id, cartQty - 1); }}
-                          size="sm"
-                          fullWidth
-                        />
-                      ) : (
-                        <button
-                          onClick={() => handleAddBundle(bundle)}
-                          className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-3 font-bold text-primary-foreground transition-colors hover:opacity-90"
-                        >
-                          <ShoppingCart size={16} />
-                          Add to Cart
-                        </button>
-                      )}
+                      {/* Add to Cart Button - 388x56, 14px radius */}
+                      <div className="mt-auto">
+                        {cartQty > 0 ? (
+                          <QuantityCapsule
+                            quantity={cartQty}
+                            onIncrement={(e) => { e.stopPropagation(); updateQuantity(bundle.id, cartQty + 1); }}
+                            onDecrement={(e) => { e.stopPropagation(); cartQty <= 1 ? removeFromCart(bundle.id) : updateQuantity(bundle.id, cartQty - 1); }}
+                            size="sm"
+                            fullWidth
+                          />
+                        ) : (
+                          <button
+                            onClick={() => handleAddBundle(bundle)}
+                            className="flex w-full items-center justify-center gap-2"
+                            style={{
+                              height: "56px",
+                              background: "#064734",
+                              borderRadius: "14px",
+                              fontFamily: "'Inter', sans-serif",
+                              fontWeight: 400,
+                              fontSize: "16px",
+                              lineHeight: "24px",
+                              color: "#FFFFFF",
+                            }}
+                          >
+                            <ShoppingCart size={20} color="#FFFFFF" />
+                            Add to Cart
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 );
@@ -272,7 +401,7 @@ const HomecareKitsSection = () => {
           )}
 
           {activeTab === "single" && (
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            <div className="flex justify-center gap-6 flex-wrap">
               {SINGLE_PRODUCTS.map((product) => {
                 const cartItem = items.find((i) => i.productId === product.id);
                 const cartQty = cartItem?.quantity ?? 0;
@@ -280,54 +409,97 @@ const HomecareKitsSection = () => {
                 return (
                   <div
                     key={product.id}
-                    className="overflow-hidden rounded-2xl bg-background shadow-[0_18px_42px_hsl(var(--primary)/0.08)]"
+                    className="flex flex-col overflow-hidden"
+                    style={{
+                      width: "428px",
+                      height: "650px",
+                      background: "#FFFFFF",
+                      boxShadow: "0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1)",
+                      borderRadius: "24px",
+                    }}
                   >
+                    {/* Image Area */}
                     <div
-                      className="relative h-[320px] p-5"
+                      className="relative flex-shrink-0"
                       style={{
-                        background:
-                          "linear-gradient(180deg, hsl(var(--accent) / 0.58) 0%, hsl(var(--accent) / 0.38) 58%, hsl(var(--background)) 100%)",
+                        width: "428px",
+                        height: "409px",
+                        background: "linear-gradient(137.98deg, #CEF17B 0.45%, #FFFFFF 106.93%)",
+                        borderRadius: "24px 24px 0 0",
                       }}
                     >
-                      <span className="rounded-full bg-background/85 px-3 py-1.5 text-xs font-bold text-primary">
-                        {product.discount}% Off
-                      </span>
-                      <div className="flex h-[240px] items-center justify-center">
-                        <img src={ascFront2} alt={product.name} className="h-[210px] object-contain" />
-                        <button className="absolute right-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-background/85">
-                          <ChevronRight size={16} className="text-foreground" />
-                        </button>
+                      <div
+                        className="absolute flex items-center justify-center"
+                        style={{ width: "89px", height: "32px", left: "31px", top: "16px", background: "#E2FF9C", borderRadius: "9999px" }}
+                      >
+                        <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "16px", lineHeight: "24px", color: "#064734" }}>
+                          {product.discount}% Off
+                        </span>
                       </div>
-                      <div className="mt-2 flex justify-center gap-1.5">
-                        <span className="h-1.5 w-6 rounded-full bg-primary" />
-                        <span className="h-1.5 w-1.5 rounded-full bg-primary/30" />
-                        <span className="h-1.5 w-1.5 rounded-full bg-primary/30" />
+
+                      <button className="absolute flex items-center justify-center" style={{ width: "40px", height: "40px", left: "372px", top: "16px", background: "#FFFFFF", boxShadow: "0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -2px rgba(0, 0, 0, 0.1)", borderRadius: "9999px" }}>
+                        <svg className="w-5 h-5" fill="none" stroke="#364153" strokeWidth={1.67} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                      </button>
+
+                      <img src={ascFront2} alt={product.name} className="absolute object-contain" style={{ width: "228px", height: "343px", left: "calc(50% - 114px)", top: "45px" }} />
+
+                      <button className="absolute flex items-center justify-center" style={{ width: "32px", height: "32px", left: "380px", top: "208px", background: "rgba(255, 255, 255, 0.9)", boxShadow: "0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -2px rgba(0, 0, 0, 0.1)", borderRadius: "9999px" }}>
+                        <ChevronRight size={20} color="#364153" />
+                      </button>
+
+                      <div className="absolute flex items-start gap-[6px]" style={{ width: "60px", height: "6px", left: "194px", top: "377px" }}>
+                        <span style={{ width: "24px", height: "6px", background: "#064734", borderRadius: "9999px", flex: "none" }} />
+                        <span style={{ width: "6px", height: "6px", background: "rgba(6, 71, 52, 0.3)", borderRadius: "9999px", flex: "none" }} />
+                        <span style={{ width: "6px", height: "6px", background: "rgba(6, 71, 52, 0.3)", borderRadius: "9999px", flex: "none" }} />
+                        <span style={{ width: "6px", height: "6px", background: "rgba(6, 71, 52, 0.3)", borderRadius: "9999px", flex: "none" }} />
                       </div>
                     </div>
 
-                    <div className="bg-background p-5 pt-4">
-                      <h3 className="mb-2 text-lg font-bold text-foreground">{product.name}</h3>
-                      <div className="mb-4 flex items-center gap-2">
-                        <span className="text-2xl font-bold text-foreground">₹{product.price}</span>
-                        <span className="text-sm text-muted-foreground line-through">₹{product.originalPrice}</span>
+                    {/* Info Area */}
+                    <div className="flex-1 flex flex-col" style={{ padding: "20px" }}>
+                      <div className="flex flex-col gap-[8px] mb-[20px]">
+                        <p style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "16px", lineHeight: "24px", color: "#464646" }}>
+                          {product.name}
+                        </p>
+                        <div className="flex items-center gap-[12px]">
+                          <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "30px", lineHeight: "24px", color: "#064734" }}>
+                            ₹{product.price}
+                          </span>
+                          <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, fontSize: "16px", lineHeight: "24px", color: "#8E939C", textDecoration: "line-through" }}>
+                            ₹{product.originalPrice}
+                          </span>
+                        </div>
                       </div>
-                      {cartQty > 0 ? (
-                        <QuantityCapsule
-                          quantity={cartQty}
-                          onIncrement={(e) => { e.stopPropagation(); updateQuantity(product.id, cartQty + 1); }}
-                          onDecrement={(e) => { e.stopPropagation(); cartQty <= 1 ? removeFromCart(product.id) : updateQuantity(product.id, cartQty - 1); }}
-                          size="sm"
-                          fullWidth
-                        />
-                      ) : (
-                        <button
-                          onClick={() => addToCart({ productId: product.id, name: product.name, price: product.price, originalPrice: product.originalPrice, image: "/placeholder.svg" })}
-                          className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-3 font-bold text-primary-foreground transition-colors hover:opacity-90"
-                        >
-                          <ShoppingCart size={16} />
-                          Add to Cart
-                        </button>
-                      )}
+
+                      <div className="mt-auto">
+                        {cartQty > 0 ? (
+                          <QuantityCapsule
+                            quantity={cartQty}
+                            onIncrement={(e) => { e.stopPropagation(); updateQuantity(product.id, cartQty + 1); }}
+                            onDecrement={(e) => { e.stopPropagation(); cartQty <= 1 ? removeFromCart(product.id) : updateQuantity(product.id, cartQty - 1); }}
+                            size="sm"
+                            fullWidth
+                          />
+                        ) : (
+                          <button
+                            onClick={() => addToCart({ productId: product.id, name: product.name, price: product.price, originalPrice: product.originalPrice, image: "/placeholder.svg" })}
+                            className="flex w-full items-center justify-center gap-2"
+                            style={{
+                              height: "56px",
+                              background: "#064734",
+                              borderRadius: "14px",
+                              fontFamily: "'Inter', sans-serif",
+                              fontWeight: 400,
+                              fontSize: "16px",
+                              lineHeight: "24px",
+                              color: "#FFFFFF",
+                            }}
+                          >
+                            <ShoppingCart size={20} color="#FFFFFF" />
+                            Add to Cart
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 );
