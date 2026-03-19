@@ -156,13 +156,13 @@ const HomecareKitsSection = () => {
   return (
     <div id="homecare-kits-section">
       {/* ===== SECTION 1: Smart Bundles / Single Products ===== */}
-      <section className="relative py-16 px-4 md:px-6 overflow-hidden" style={{ background: "hsl(158 60% 94%)" }}>
+      <section className="relative py-16 px-4 md:px-6 overflow-hidden" style={{ background: "hsl(75 60% 88%)" }}>
         {/* Large clovers in section corners - NOT inside cards */}
-        <img src={cloverLime} alt="" className="absolute top-[-60px] left-[-60px] w-[280px] opacity-[0.18] pointer-events-none z-0" />
-        <img src={cloverLime} alt="" className="absolute top-[-60px] right-[-60px] w-[280px] opacity-[0.18] pointer-events-none z-0" />
-        <img src={cloverLime} alt="" className="absolute bottom-[-60px] left-[-60px] w-[280px] opacity-[0.18] pointer-events-none z-0" />
-        <img src={cloverLime} alt="" className="absolute bottom-[-60px] right-[-60px] w-[280px] opacity-[0.18] pointer-events-none z-0" />
-        <img src={cloverLime} alt="" className="absolute top-[40%] left-1/2 -translate-x-1/2 w-[220px] opacity-[0.10] pointer-events-none z-0" />
+        <img src={cloverDark} alt="" className="absolute top-[-60px] left-[-60px] w-[280px] opacity-[0.25] pointer-events-none z-0" />
+        <img src={cloverDark} alt="" className="absolute top-[-60px] right-[-60px] w-[280px] opacity-[0.25] pointer-events-none z-0" />
+        <img src={cloverDark} alt="" className="absolute bottom-[-60px] left-[-60px] w-[280px] opacity-[0.25] pointer-events-none z-0" />
+        <img src={cloverDark} alt="" className="absolute bottom-[-60px] right-[-60px] w-[280px] opacity-[0.25] pointer-events-none z-0" />
+        <img src={cloverDark} alt="" className="absolute top-[40%] left-1/2 -translate-x-1/2 w-[220px] opacity-[0.15] pointer-events-none z-0" />
 
         <div className="max-w-7xl mx-auto relative z-[1]">
           {/* Tab Switcher */}
