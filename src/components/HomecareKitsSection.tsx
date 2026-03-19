@@ -510,86 +510,197 @@ const HomecareKitsSection = () => {
       </section>
 
       {/* ===== SECTION 2: Smart Savings - Stop Buying One ===== */}
-      <section className="relative py-20 px-4 md:px-6 overflow-hidden" style={{ background: "linear-gradient(135deg, hsl(160 84% 15%) 0%, hsl(160 50% 35%) 50%, hsl(158 60% 55%) 100%)" }}>
-        {/* Clover decorations - behind all content */}
-        <img src={cloverDark} alt="" className="absolute top-[-30px] left-[-40px] w-[180px] opacity-15 pointer-events-none z-0" />
-        <img src={cloverDark} alt="" className="absolute bottom-[-40px] right-[-30px] w-[190px] opacity-15 pointer-events-none z-0" />
-        <img src={cloverDark} alt="" className="absolute top-[40%] right-[5%] w-[150px] opacity-10 pointer-events-none z-0" />
-        <img src={cloverDark} alt="" className="absolute bottom-[15%] left-[8%] w-[130px] opacity-8 pointer-events-none z-0" />
-        <img src={cloverDark} alt="" className="absolute top-[-20px] right-[35%] w-[140px] opacity-10 pointer-events-none z-0" />
-        <img src={cloverDark} alt="" className="absolute bottom-[-30px] left-[40%] w-[160px] opacity-10 pointer-events-none z-0" />
-        <img src={cloverDark} alt="" className="absolute top-[60%] left-[30%] w-[120px] opacity-6 pointer-events-none z-0" />
+      <section
+        className="relative overflow-hidden"
+        style={{
+          width: "100%",
+          height: "547px",
+          background: "linear-gradient(96.54deg, #064734 22.56%, #FFFFFF 129.53%)",
+        }}
+      >
+        {/* Clover decorations */}
+        <img src={cloverDark} alt="" className="absolute pointer-events-none z-0" style={{ width: "251.84px", height: "252px", right: "-20px", top: "-41px", opacity: 0.3 }} />
+        <img src={cloverDark} alt="" className="absolute pointer-events-none z-0" style={{ width: "220.86px", height: "221px", left: "720px", top: "266px", opacity: 0.15 }} />
+        <img src={cloverDark} alt="" className="absolute pointer-events-none z-0" style={{ width: "293px", height: "293px", right: "-40px", bottom: "-100px", opacity: 0.3 }} />
 
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-6 relative z-[1]">
-          {/* Left text */}
-          <div className="md:w-[36%] text-primary-foreground">
-            <div className="inline-flex items-center gap-2 bg-primary-foreground/10 backdrop-blur-sm rounded-full px-4 py-2 mb-6">
-              <Sparkles size={16} className="text-accent" />
-              <span className="text-sm font-semibold text-primary-foreground">Smart Savings</span>
-            </div>
-            <h2 className="text-3xl md:text-[42px] font-bold leading-tight mb-4">
-              Stop Buying One.<br />Start Saving More.
-            </h2>
-            <p className="text-primary-foreground/80 text-lg mb-6">Lower cost per use. Smarter cleaning.</p>
-            <div className="space-y-3 mb-8">
-              {["Premium formula", "Eco-friendly packaging", "Free shipping"].map((item) => (
-                <div key={item} className="flex items-center gap-3">
-                  <Check size={18} className="text-accent flex-shrink-0" />
-                  <span className="text-primary-foreground/90">{item}</span>
+        {/* Centered content container - 1313px wide */}
+        <div
+          className="absolute flex flex-col items-start"
+          style={{
+            width: "1313px",
+            left: "calc(50% - 1313px / 2)",
+            top: "calc(50% - 387px / 2)",
+            gap: "24px",
+          }}
+        >
+          {/* Row: Left text + Right cards */}
+          <div className="flex items-center" style={{ gap: "74px", width: "1313px" }}>
+            {/* Left text column - 372px */}
+            <div className="flex flex-col items-start" style={{ width: "372px", gap: "24px" }}>
+              {/* Smart Savings badge */}
+              <div
+                className="flex items-center gap-2"
+                style={{
+                  height: "36px",
+                  padding: "0 16px",
+                  background: "#EDFFC3",
+                  borderRadius: "9999px",
+                }}
+              >
+                <Sparkles size={16} color="#064734" />
+                <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500, fontSize: "14px", lineHeight: "20px", color: "#064734" }}>
+                  Smart Savings
+                </span>
+              </div>
+
+              {/* Heading + subtext + features */}
+              <div className="flex flex-col" style={{ gap: "10px", width: "372px" }}>
+                <h2 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "40px", lineHeight: "60px", color: "#FFFFFF", margin: 0 }}>
+                  Stop Buying One.<br />Start Saving More.
+                </h2>
+                <p style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, fontSize: "20px", lineHeight: "28px", color: "#FFFFFF", margin: 0 }}>
+                  Lower cost per use. Smarter cleaning.
+                </p>
+                <div className="flex flex-col" style={{ gap: "12.6px" }}>
+                  {["Premium formula", "Eco-friendly packaging", "Free shipping"].map((item) => (
+                    <div key={item} className="flex items-center" style={{ gap: "8.4px" }}>
+                      <Check size={21} color="#FFFFFF" strokeWidth={1.75} />
+                      <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, fontSize: "14px", lineHeight: "20px", color: "#FFFFFF" }}>
+                        {item}
+                      </span>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-            <button className="bg-primary-foreground text-primary font-bold px-8 py-3 rounded-full hover:opacity-90 transition-all text-sm">
-              Shop Bundles
-            </button>
-          </div>
+              </div>
 
-          {/* Right: Pricing cards - wider, taller, closer to left */}
-          <div className="md:w-[64%] grid grid-cols-3 gap-4">
-            {[
-              { qty: "1", price: 299, label: "Select 1 Bottle", save: null, id: 5001 },
-              { qty: "2", price: 274, label: "Select 2 Bottles", save: "Save 8%", id: 5002 },
-              { qty: "3+", price: 249, label: "Select 3+ Bottles", save: "Save 17%", id: 5003 },
-            ].map((tier) => {
-              const cartItem = items.find((i) => i.productId === tier.id);
-              const cartQty = cartItem?.quantity ?? 0;
-              return (
-                <div key={tier.qty} className="bg-background rounded-2xl p-5 md:p-7 text-center relative min-h-[290px] flex flex-col justify-between">
-                  {tier.save && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex items-center gap-1 bg-primary-foreground border border-border text-primary text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
-                      <TrendingDown size={12} />
-                      {tier.save}
-                    </div>
-                  )}
-                  <div>
-                    <div className={`w-24 h-24 rounded-full mx-auto mb-5 flex items-center justify-center ${tier.qty === "3+" ? "bg-primary text-primary-foreground" : "bg-secondary text-primary"}`}>
-                      <span className="text-4xl font-bold">{tier.qty}</span>
-                    </div>
-                    <div className="mb-5">
-                      <span className="text-xs text-muted-foreground align-top">₹</span>
-                      <span className="text-5xl md:text-6xl font-bold text-foreground">{tier.price}</span>
-                      <span className="text-sm text-muted-foreground">/bottle</span>
+              {/* Shop Bundles button */}
+              <button
+                style={{
+                  width: "175.57px",
+                  height: "40px",
+                  background: "#FFFFFF",
+                  border: "1px solid #FFFFFF",
+                  borderRadius: "8px",
+                  fontFamily: "'Inter', sans-serif",
+                  fontWeight: 500,
+                  fontSize: "18px",
+                  lineHeight: "28px",
+                  color: "#064734",
+                  cursor: "pointer",
+                }}
+              >
+                Shop Bundles
+              </button>
+            </div>
+
+            {/* Right: 3 pricing cards - 867px */}
+            <div className="flex items-end" style={{ gap: "20px", width: "867px" }}>
+              {[
+                { qty: "1", price: 299, label: "Select 1 Bottle", save: null, id: 5001, dark: false },
+                { qty: "2", price: 274, label: "Select 2 Bottles", save: "Save 8%", id: 5002, dark: false },
+                { qty: "3+", price: 249, label: "Select 3+ Bottles", save: "Save17%", id: 5003, dark: true },
+              ].map((tier) => {
+                const cartItem = items.find((i) => i.productId === tier.id);
+                const cartQty = cartItem?.quantity ?? 0;
+                return (
+                  <div key={tier.qty} className="relative" style={{ width: "276px", height: "307px" }}>
+                    {/* Save badge */}
+                    {tier.save && (
+                      <div
+                        className="absolute flex items-center justify-center gap-1"
+                        style={{
+                          width: "101px",
+                          height: "25px",
+                          left: "calc(50% - 50px)",
+                          top: "0px",
+                          background: "#064734",
+                          border: "0.67px solid #064734",
+                          borderRadius: "8px",
+                          zIndex: 2,
+                        }}
+                      >
+                        <TrendingDown size={16} color="#FFFFFF" strokeWidth={1.33} />
+                        <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500, fontSize: "14px", lineHeight: "20px", color: "#FFFFFF" }}>
+                          {tier.save}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Card */}
+                    <div
+                      className="absolute flex flex-col items-start"
+                      style={{
+                        width: "275px",
+                        height: "294px",
+                        left: "0px",
+                        top: "13px",
+                        background: "#FFFFFF",
+                        boxShadow: "0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1)",
+                        borderRadius: "24px",
+                        padding: "32px 32px 0px",
+                        gap: "24px",
+                      }}
+                    >
+                      {/* Circle */}
+                      <div className="flex justify-center" style={{ width: "100%" }}>
+                        <div
+                          className="flex items-center justify-center"
+                          style={{
+                            width: "96px",
+                            height: "96px",
+                            borderRadius: "9999px",
+                            background: tier.dark ? "#064734" : "#D0FAE5",
+                          }}
+                        >
+                          <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: "30px", lineHeight: "36px", color: tier.dark ? "#FFFFFF" : "#064734" }}>
+                            {tier.qty}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Price row */}
+                      <div className="flex items-start justify-center" style={{ width: "100%", position: "relative", height: "50px" }}>
+                        <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "24px", lineHeight: "32px", color: "#064734", marginTop: "16px" }}>₹</span>
+                        <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: "48px", lineHeight: "48px", color: "#064734" }}>{tier.price}</span>
+                        <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "20px", lineHeight: "28px", color: "#064734", marginTop: "20px" }}>/bottle</span>
+                      </div>
+
+                      {/* Select button */}
+                      {cartQty > 0 ? (
+                        <div style={{ width: "100%" }}>
+                          <QuantityCapsule
+                            quantity={cartQty}
+                            onIncrement={(e) => { e.stopPropagation(); updateQuantity(tier.id, cartQty + 1); }}
+                            onDecrement={(e) => { e.stopPropagation(); cartQty <= 1 ? removeFromCart(tier.id) : updateQuantity(tier.id, cartQty - 1); }}
+                            size="sm"
+                            fullWidth
+                          />
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => addToCart({ productId: tier.id, name: `Pack of ${tier.qty}`, price: tier.price, originalPrice: 299, image: "/placeholder.svg" })}
+                          style={{
+                            width: "100%",
+                            height: "36px",
+                            background: tier.dark ? "#064734" : "#CEF17B",
+                            borderRadius: "8px",
+                            border: "none",
+                            fontFamily: "'Inter', sans-serif",
+                            fontWeight: 500,
+                            fontSize: "14px",
+                            lineHeight: "20px",
+                            color: tier.dark ? "#FFFFFF" : "#064734",
+                            cursor: "pointer",
+                          }}
+                        >
+                          {tier.label}
+                        </button>
+                      )}
                     </div>
                   </div>
-                  {cartQty > 0 ? (
-                    <QuantityCapsule
-                      quantity={cartQty}
-                      onIncrement={(e) => { e.stopPropagation(); updateQuantity(tier.id, cartQty + 1); }}
-                      onDecrement={(e) => { e.stopPropagation(); cartQty <= 1 ? removeFromCart(tier.id) : updateQuantity(tier.id, cartQty - 1); }}
-                      size="sm"
-                      fullWidth
-                    />
-                  ) : (
-                    <button
-                      onClick={() => addToCart({ productId: tier.id, name: `Pack of ${tier.qty}`, price: tier.price, originalPrice: 299, image: "/placeholder.svg" })}
-                      className="w-full bg-accent text-primary font-bold py-3 rounded-full text-sm hover:opacity-90 transition-all"
-                    >
-                      {tier.label}
-                    </button>
-                  )}
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
