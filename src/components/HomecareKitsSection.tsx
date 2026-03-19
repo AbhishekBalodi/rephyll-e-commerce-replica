@@ -12,6 +12,8 @@ import bottleSurface from "@/assets/bottle-surface-cleaner.png";
 import bottleDegreaser from "@/assets/bottle-kitchen-degreaser.png";
 import bottleDishwash from "@/assets/bottle-dishwash.png";
 import bottleToilet from "@/assets/bottle-toilet-cleaner.png";
+import kitBottles from "@/assets/kit-bottles.png";
+import kitCardBg from "@/assets/kit-card-bg.png";
 
 const BUNDLES = [
   {
