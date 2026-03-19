@@ -708,69 +708,171 @@ const HomecareKitsSection = () => {
       </section>
 
       {/* ===== SECTION 3: Everything Your Home Needs In One Kit ===== */}
-      <section className="relative bg-accent/20 py-16 px-4 md:px-6 overflow-hidden">
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute left-[-72px] top-[-54px] w-[240px] opacity-[0.18] pointer-events-none z-0" />
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute right-[-72px] top-[-54px] w-[240px] opacity-[0.18] pointer-events-none z-0" />
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute left-[-72px] bottom-[-72px] w-[240px] opacity-[0.18] pointer-events-none z-0" />
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute right-[-72px] bottom-[-72px] w-[240px] opacity-[0.18] pointer-events-none z-0" />
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute left-1/2 top-[6%] w-[190px] -translate-x-1/2 opacity-[0.14] pointer-events-none z-0" />
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute left-[6%] top-[36%] w-[180px] opacity-[0.12] pointer-events-none z-0" />
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute right-[6%] top-[22%] w-[180px] opacity-[0.12] pointer-events-none z-0" />
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute left-1/2 bottom-[-24px] w-[180px] -translate-x-1/2 opacity-[0.12] pointer-events-none z-0" />
+      <section
+        className="relative overflow-hidden"
+        style={{
+          width: "100%",
+          height: "806px",
+          background: "linear-gradient(137.98deg, #CEF17B 0.45%, #FFFFFF 106.93%)",
+        }}
+      >
+        {/* Clover decorations */}
+        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "240px", left: "-72px", top: "-54px", opacity: 0.18 }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "240px", right: "-72px", top: "-54px", opacity: 0.18 }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "240px", left: "-72px", bottom: "-72px", opacity: 0.18 }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "240px", right: "-72px", bottom: "-72px", opacity: 0.18 }} />
 
-        <div className="max-w-7xl mx-auto relative z-[1]">
-          <h2 className="text-3xl md:text-5xl font-bold text-center text-foreground mb-2" style={{ fontFamily: "'Source Sans 3', sans-serif" }}>
-            Everything Your Home Needs. In One Kit.
-          </h2>
-          <p className="text-center text-muted-foreground text-lg mb-12">
-            Curated Combinations for Effortless Cleaning
-          </p>
+        <div
+          className="relative z-[1] mx-auto flex flex-col items-center"
+          style={{ maxWidth: "1440px", paddingTop: "60px", gap: "40px" }}
+        >
+          {/* Heading */}
+          <div className="flex flex-col items-center" style={{ gap: "10px" }}>
+            <h2
+              style={{
+                fontFamily: "'Poppins', sans-serif",
+                fontWeight: 600,
+                fontSize: "40px",
+                lineHeight: "60px",
+                textAlign: "center",
+                color: "#064734",
+                margin: 0,
+              }}
+            >
+              Everything Your Home Needs. In One Kit.
+            </h2>
+            <p
+              style={{
+                fontFamily: "'Poppins', sans-serif",
+                fontWeight: 400,
+                fontSize: "20px",
+                lineHeight: "28px",
+                textAlign: "center",
+                color: "#064734",
+                margin: 0,
+              }}
+            >
+              Curated Combinations for Effortless Cleaning
+            </p>
+          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+          {/* 4 Kit Cards */}
+          <div className="flex justify-center" style={{ gap: "24px", flexWrap: "wrap" }}>
             {KITS.map((kit) => {
               const cartItem = items.find((i) => i.productId === kit.id);
               const cartQty = cartItem?.quantity ?? 0;
               return (
-                <div key={kit.id} className="bg-primary rounded-[2rem] overflow-hidden shadow-[0_16px_36px_hsl(var(--primary)/0.16)]">
-                  <div className="relative h-[214px] overflow-hidden bg-primary px-4 pt-6">
-                    <div className="relative mx-auto h-[156px] w-[220px]">
-                      <img
-                        src={MINI_KIT_BOTTLES.left}
-                        alt=""
-                        aria-hidden="true"
-                        className="absolute bottom-[10px] left-[30px] z-[2] h-[110px] max-w-none origin-bottom object-contain"
-                        style={{ transform: "rotate(-18deg)" }}
-                      />
-                      <img
-                        src={MINI_KIT_BOTTLES.center}
-                        alt=""
-                        aria-hidden="true"
-                        className="absolute bottom-[18px] left-1/2 z-[4] h-[142px] max-w-none -translate-x-1/2 object-contain"
-                      />
-                      <img
-                        src={MINI_KIT_BOTTLES.right}
-                        alt=""
-                        aria-hidden="true"
-                        className="absolute bottom-[10px] right-[30px] z-[2] h-[110px] max-w-none origin-bottom object-contain"
-                        style={{ transform: "rotate(18deg)" }}
-                      />
-                    </div>
+                <div
+                  key={kit.id}
+                  className="flex flex-col items-center"
+                  style={{
+                    width: "276px",
+                    height: "450px",
+                    background: "#FFFFFF",
+                    boxShadow: "0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1)",
+                    borderRadius: "24px",
+                    overflow: "hidden",
+                  }}
+                >
+                  {/* Top: Dark green bg with bottles - 276x162 */}
+                  <div
+                    className="relative flex-shrink-0"
+                    style={{
+                      width: "276px",
+                      height: "162px",
+                      borderRadius: "24px 24px 0 0",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <img
+                      src={kitCardBg}
+                      alt=""
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                    <img
+                      src={kitBottles}
+                      alt="Kit bottles"
+                      className="absolute object-contain"
+                      style={{
+                        width: "178px",
+                        height: "141px",
+                        left: "49px",
+                        top: "11px",
+                      }}
+                    />
                   </div>
 
-                  <div className="bg-background p-5 rounded-t-[2rem] -mt-2 relative z-20">
-                    <h3 className="text-lg font-bold text-foreground mb-3">{kit.name}</h3>
-                    <div className="space-y-2 mb-4">
+                  {/* Bottom: White content area */}
+                  <div
+                    className="flex flex-col items-start"
+                    style={{
+                      width: "238px",
+                      padding: "20px 0 0 0",
+                      gap: "24px",
+                      flex: 1,
+                    }}
+                  >
+                    {/* Kit name */}
+                    <span
+                      style={{
+                        fontFamily: "'Poppins', sans-serif",
+                        fontWeight: 600,
+                        fontSize: "20px",
+                        lineHeight: "24px",
+                        color: "#064734",
+                      }}
+                    >
+                      {kit.name}
+                    </span>
+
+                    {/* Items list */}
+                    <div className="flex flex-col" style={{ gap: "12.6px", width: "238px" }}>
                       {kit.items.map((item, i) => (
-                        <div key={i} className="flex items-center gap-2 text-sm text-foreground">
-                          <Check size={16} className="text-primary flex-shrink-0" />
-                          {item}
+                        <div key={i} className="flex items-center" style={{ gap: "8.4px" }}>
+                          <Check size={21} color="#064734" strokeWidth={1.75} />
+                          <span
+                            style={{
+                              fontFamily: "'Poppins', sans-serif",
+                              fontWeight: 400,
+                              fontSize: "14px",
+                              lineHeight: "20px",
+                              color: "#064734",
+                            }}
+                          >
+                            {item}
+                          </span>
                         </div>
                       ))}
                     </div>
-                    <div className="flex items-center gap-2 mb-4">
-                      <span className="text-2xl font-bold text-foreground">₹{kit.price}</span>
-                      <span className="text-sm text-muted-foreground line-through">₹{kit.originalPrice}</span>
+
+                    {/* Price row */}
+                    <div className="flex items-center" style={{ gap: "12px" }}>
+                      <span
+                        style={{
+                          fontFamily: "'Poppins', sans-serif",
+                          fontWeight: 700,
+                          fontSize: "30px",
+                          lineHeight: "24px",
+                          color: "#064734",
+                        }}
+                      >
+                        ₹{kit.price}
+                      </span>
+                      <span
+                        style={{
+                          fontFamily: "'Poppins', sans-serif",
+                          fontWeight: 400,
+                          fontSize: "16px",
+                          lineHeight: "24px",
+                          color: "#8E939C",
+                          textDecoration: "line-through",
+                        }}
+                      >
+                        ₹{kit.originalPrice}
+                      </span>
                     </div>
+
+                    {/* Add to Cart button */}
                     {cartQty > 0 ? (
                       <QuantityCapsule
                         quantity={cartQty}
@@ -782,9 +884,22 @@ const HomecareKitsSection = () => {
                     ) : (
                       <button
                         onClick={() => handleAddKit(kit)}
-                        className="w-full border-2 border-primary text-primary font-bold py-2.5 rounded-lg flex items-center justify-center gap-2 hover:bg-primary hover:text-primary-foreground transition-colors text-sm"
+                        className="flex items-center justify-center gap-2"
+                        style={{
+                          width: "238px",
+                          height: "36px",
+                          border: "1px solid #064734",
+                          borderRadius: "8px",
+                          background: "transparent",
+                          fontFamily: "'Poppins', sans-serif",
+                          fontWeight: 500,
+                          fontSize: "14px",
+                          lineHeight: "24px",
+                          color: "#064734",
+                          cursor: "pointer",
+                        }}
                       >
-                        <ShoppingCart size={16} />
+                        <ShoppingCart size={20} color="#064734" />
                         Add to Cart
                       </button>
                     )}
@@ -794,11 +909,23 @@ const HomecareKitsSection = () => {
             })}
           </div>
 
-          <div className="text-center">
-            <button className="bg-primary text-primary-foreground font-bold px-10 py-3.5 rounded-full hover:opacity-90 transition-all text-sm">
-              Explore Kits
-            </button>
-          </div>
+          {/* Explore Kits button */}
+          <button
+            style={{
+              background: "#064734",
+              color: "#FFFFFF",
+              fontFamily: "'Poppins', sans-serif",
+              fontWeight: 600,
+              fontSize: "16px",
+              lineHeight: "24px",
+              padding: "12px 32px",
+              borderRadius: "9999px",
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
+            Explore Kits
+          </button>
         </div>
       </section>
     </div>
