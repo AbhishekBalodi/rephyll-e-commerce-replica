@@ -198,7 +198,7 @@ const HomecareKitsSection = () => {
                 return (
                   <div key={bundle.id} className="rounded-2xl overflow-hidden shadow-lg">
                     {/* Top half - diagonal gradient with bottle */}
-                    <div className="relative h-[320px] p-5" style={{ background: "linear-gradient(135deg, hsl(158 50% 82%) 0%, hsl(158 60% 92%) 60%, hsl(60 50% 92%) 100%)" }}>
+                    <div className="relative h-[320px] p-5" style={{ background: "linear-gradient(135deg, hsl(75 50% 82%) 0%, hsl(75 55% 88%) 60%, hsl(80 50% 90%) 100%)" }}>
                       {/* Discount + icons */}
                       <div className="flex items-center justify-between mb-3">
                         <span className="text-xs font-bold text-primary bg-background/80 px-3 py-1.5 rounded-full">
