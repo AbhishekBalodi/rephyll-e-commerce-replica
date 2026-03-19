@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import heroKD from "@/assets/bottle-hero-kd.png";
 import heroDL from "@/assets/bottle-hero-dl.png";
@@ -21,189 +21,192 @@ const slides = [
   },
 ];
 
+const scrollToSection = (sectionId: string) => {
+  document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+};
+
 const HeroCarousel = () => {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    const timer = setInterval(() => {
+    const timer = window.setInterval(() => {
       setIndex((prev) => (prev + 1) % slides.length);
     }, 5000);
-    return () => clearInterval(timer);
+
+    return () => window.clearInterval(timer);
   }, []);
 
   return (
-    <div
-      className="relative w-full overflow-hidden"
-      style={{
-        height: "576px",
-        background: "radial-gradient(42.27% 42.27% at 75.29% 56.87%, #CEF17B 0%, #00301D 100%)",
-      }}
-    >
-      {/* Decorative clover overlays */}
-      <img src={cloverLime} alt="" className="absolute opacity-20 pointer-events-none" style={{ width: "299px", height: "299px", left: "-85px", top: "-113px" }} />
-      <img src={cloverLime} alt="" className="absolute opacity-20 pointer-events-none" style={{ width: "293px", height: "293px", left: "496px", top: "-84px" }} />
-      <img src={cloverLime} alt="" className="absolute opacity-15 pointer-events-none" style={{ width: "267px", height: "267px", left: "642px", top: "391px" }} />
-      <img src={cloverLime} alt="" className="absolute opacity-15 pointer-events-none" style={{ width: "356px", height: "356px", right: "-90px", bottom: "-80px" }} />
-      <img src={cloverLime} alt="" className="absolute opacity-20 pointer-events-none" style={{ width: "232px", height: "232px", right: "-60px", top: "-84px" }} />
+    <section className="relative w-full overflow-hidden" aria-label="Featured products banner">
+      <div
+        className="relative mx-auto h-[576px] w-full max-w-[1440px] overflow-hidden"
+        style={{
+          background: "radial-gradient(13.36% 42.27% at 75.29% 56.87%, hsl(var(--accent)) 0%, hsl(var(--hero-forest)) 100%)",
+        }}
+      >
+        <img
+          src={cloverLime}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute opacity-20"
+          style={{ width: "299px", height: "299px", left: "-85px", top: "-113px" }}
+        />
+        <img
+          src={cloverLime}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute opacity-20"
+          style={{ width: "293px", height: "293px", left: "496px", top: "-84px" }}
+        />
+        <img
+          src={cloverLime}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute opacity-15"
+          style={{ width: "267px", height: "267px", left: "642px", top: "391px" }}
+        />
+        <img
+          src={cloverLime}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute opacity-15"
+          style={{ width: "356px", height: "356px", left: "1170.5px", top: "302px" }}
+        />
+        <img
+          src={cloverLime}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute opacity-20"
+          style={{ width: "232px", height: "232px", left: "1268.5px", top: "-84px" }}
+        />
 
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={index}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.6 }}
-          className="absolute inset-0"
-        >
-          <div className="relative w-full h-full max-w-[1440px] mx-auto">
-            {/* Left: Text - positioned absolutely like Figma */}
-            <div className="absolute z-10" style={{ left: "134px", top: "50%", transform: "translateY(-50%)" }}>
-              <div className="flex flex-col" style={{ gap: "32px", width: "442px" }}>
-                {/* Info block */}
-                <div className="flex flex-col" style={{ gap: "20px" }}>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={index}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.45 }}
+            className="absolute inset-0"
+          >
+            <div className="relative h-full w-full">
+              <div
+                className="absolute z-10 flex w-[442px] -translate-y-1/2 flex-col gap-8"
+                style={{ left: "134px", top: "50%" }}
+              >
+                <div className="flex flex-col gap-5">
                   <h1
-                    className="text-white whitespace-pre-line"
-                    style={{
-                      fontFamily: "'Poppins', sans-serif",
-                      fontWeight: 600,
-                      fontSize: "48px",
-                      lineHeight: "120%",
-                    }}
+                    className="w-[408px] whitespace-pre-line text-[48px] font-semibold leading-[120%] text-primary-foreground"
+                    style={{ fontFamily: "'Poppins', sans-serif" }}
                   >
                     {slides[index].heading}
                   </h1>
-                  <div className="flex items-center" style={{ gap: "12px" }}>
-                    <div className="flex-shrink-0" style={{ width: "2px", height: "56px", background: "#CEF17B" }} />
+
+                  <div className="flex items-center gap-3">
+                    <div className="h-14 w-[2px] bg-accent" />
                     <p
-                      style={{
-                        fontFamily: "'Poppins', sans-serif",
-                        fontWeight: 400,
-                        fontSize: "24px",
-                        lineHeight: "120%",
-                        color: "#BABABA",
-                      }}
+                      className="text-[24px] font-normal leading-[120%] text-primary-foreground/70"
+                      style={{ fontFamily: "'Poppins', sans-serif" }}
                     >
                       {slides[index].subtext}
                     </p>
                   </div>
                 </div>
 
-                {/* CTA Buttons */}
-                <div className="flex" style={{ gap: "20px" }}>
+                <div className="flex gap-5">
                   <button
-                    onClick={() => {
-                      const el = document.getElementById("products-section");
-                      el?.scrollIntoView({ behavior: "smooth" });
-                    }}
-                    className="flex items-center justify-center hover:opacity-90 transition-all"
-                    style={{
-                      fontFamily: "'Poppins', sans-serif",
-                      fontWeight: 600,
-                      fontSize: "16px",
-                      lineHeight: "120%",
-                      background: "#CEF17B",
-                      color: "#064734",
-                      padding: "16px 40px",
-                      borderRadius: "43px",
-                      gap: "16px",
-                    }}
+                    onClick={() => scrollToSection("products-section")}
+                    className="flex items-center justify-center gap-4 rounded-[43px] bg-accent px-10 py-4 text-[16px] font-semibold leading-[120%] text-primary transition-opacity hover:opacity-90"
+                    style={{ fontFamily: "'Poppins', sans-serif" }}
                   >
                     Shop now
                     <ArrowRight size={15} strokeWidth={1.5} />
                   </button>
+
                   <button
-                    onClick={() => {
-                      const el = document.getElementById("homecare-kits-section");
-                      if (el) el.scrollIntoView({ behavior: "smooth" });
-                    }}
-                    className="hover:opacity-90 transition-all"
-                    style={{
-                      fontFamily: "'Poppins', sans-serif",
-                      fontWeight: 600,
-                      fontSize: "16px",
-                      lineHeight: "120%",
-                      background: "#FFFFFF",
-                      color: "#002E1C",
-                      padding: "16px 40px",
-                      borderRadius: "43px",
-                    }}
+                    onClick={() => scrollToSection("homecare-kits-section")}
+                    className="rounded-[43px] bg-background px-10 py-4 text-[16px] font-semibold leading-[120%] text-primary transition-opacity hover:opacity-90"
+                    style={{ fontFamily: "'Poppins', sans-serif" }}
                   >
                     Explore Kits
                   </button>
                 </div>
               </div>
-            </div>
 
-            {/* Right: Bottles - exact Figma positions relative to 1440px container */}
-            <motion.div
-              key={`bottles-${index}`}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="absolute"
-              style={{ width: "620.77px", height: "493.86px", left: "745.94px", top: "48px" }}
-            >
-              {/* Left bottle (Kitchen Degreaser) - rotated left */}
-              <img
-                src={heroKD}
-                alt="Kitchen Degreaser"
-                className="absolute object-contain"
-                style={{
-                  width: "185.36px",
-                  height: "439.42px",
-                  left: "0px",
-                  top: "16.98px",
-                  transform: "rotate(-23.47deg)",
-                }}
-              />
-              {/* Center bottle (Dishwash Liquid) - tallest, in front */}
-              <img
-                src={heroDL}
-                alt="Dishwash Liquid"
-                className="absolute object-contain z-10"
-                style={{
-                  width: "178px",
-                  height: "425px",
-                  left: "230.56px",
-                  top: "0px",
-                  filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
-                }}
-              />
-              {/* Right bottle (All Surface Cleaner) - rotated right */}
-              <img
-                src={heroASC}
-                alt="All Surface Cleaner"
-                className="absolute object-contain"
-                style={{
-                  width: "177.13px",
-                  height: "440.04px",
-                  left: "331.17px",
-                  top: "10.07px",
-                  transform: "rotate(15.7deg)",
-                }}
-              />
-            </motion.div>
-
-            {/* Dots */}
-            <div className="absolute flex z-10" style={{ bottom: "113px", left: "134px", gap: "8px" }}>
-              {slides.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setIndex(i)}
-                  className="rounded-full transition-all"
+              <motion.div
+                key={`bottles-${index}`}
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -14 }}
+                transition={{ duration: 0.45, delay: 0.1 }}
+                className="absolute"
+                style={{ width: "620.77px", height: "493.86px", left: "745.94px", top: "48px" }}
+              >
+                <img
+                  src={heroKD}
+                  alt="Kitchen Degreaser bottle"
+                  draggable={false}
+                  className="absolute z-0 select-none object-contain"
                   style={{
-                    width: "10px",
-                    height: "10px",
-                    background: i === index ? "#FFFFFF" : "rgba(255, 255, 255, 0.3)",
+                    width: "185.36px",
+                    height: "439.42px",
+                    left: "0px",
+                    top: "16.98px",
+                    transform: "rotate(-23.47deg)",
+                    transformOrigin: "center center",
                   }}
                 />
-              ))}
+
+                <img
+                  src={heroASC}
+                  alt="All Surface Cleaner bottle"
+                  draggable={false}
+                  className="absolute z-0 select-none object-contain"
+                  style={{
+                    width: "177.13px",
+                    height: "440.04px",
+                    left: "331.17px",
+                    top: "10.07px",
+                    transform: "rotate(15.7deg)",
+                    transformOrigin: "center center",
+                  }}
+                />
+
+                <img
+                  src={heroDL}
+                  alt="Dishwash Liquid bottle"
+                  draggable={false}
+                  className="absolute z-10 select-none object-contain"
+                  style={{
+                    width: "178px",
+                    height: "425px",
+                    left: "230.56px",
+                    top: "0px",
+                    filter: "drop-shadow(0px 4px 4px hsl(var(--foreground) / 0.25))",
+                  }}
+                />
+              </motion.div>
+
+              <div className="absolute bottom-[113px] left-[134px] z-10 flex gap-2">
+                {slides.map((_, slideIndex) => (
+                  <button
+                    key={slideIndex}
+                    type="button"
+                    aria-label={`Go to slide ${slideIndex + 1}`}
+                    onClick={() => setIndex(slideIndex)}
+                    className="h-[10px] w-[10px] rounded-full transition-all"
+                    style={{
+                      background:
+                        slideIndex === index ? "hsl(var(--primary-foreground))" : "hsl(var(--primary-foreground) / 0.3)",
+                    }}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-        </motion.div>
-      </AnimatePresence>
-    </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </section>
   );
 };
 
