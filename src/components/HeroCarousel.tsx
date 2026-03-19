@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import bottleSurface from "@/assets/bottle-surface-cleaner.png";
-import bottleDegreaser from "@/assets/bottle-kitchen-degreaser.png";
-import bottleDishwash from "@/assets/bottle-dishwash.png";
-import bottleToilet from "@/assets/bottle-toilet-cleaner.png";
+import kdFront from "@/assets/KD_Front.png";
+import dlFront from "@/assets/DL_Front.png";
+import ascFront from "@/assets/ASC_Front.png";
 import cloverDark from "@/assets/clover-green-dark.png";
 import cloverLime from "@/assets/clover-lime.png";
 
