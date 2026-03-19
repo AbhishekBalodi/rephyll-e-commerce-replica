@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import bottleSurface from "@/assets/bottle-surface-cleaner.png";
-import bottleDegreaser from "@/assets/bottle-kitchen-degreaser.png";
-import bottleDishwash from "@/assets/bottle-dishwash.png";
-import bottleToilet from "@/assets/bottle-toilet-cleaner.png";
+import ascFront from "@/assets/ASC_Front.png";
+import dlFront from "@/assets/DL_Front.png";
+import kdFront from "@/assets/KD_Front.png";
 import cloverDark from "@/assets/clover-green-dark.png";
 import cloverLime from "@/assets/clover-lime.png";
 
@@ -12,17 +11,14 @@ const slides = [
   {
     heading: "Clean Homes.\nNo Compromise.",
     subtext: "Plant-powered cleaning that's safe for your family and the planet.",
-    bottles: [bottleDegreaser, bottleDishwash, bottleSurface],
   },
   {
     heading: "Nature-Powered\nExcellence",
     subtext: "Effective cleaning without harsh chemicals. Gentle on your home, tough on dirt.",
-    bottles: [bottleSurface, bottleToilet, bottleDegreaser],
   },
   {
     heading: "Family Safe. Pet\nFriendly.",
     subtext: "100% non-toxic formulas that make cleaning worry-free for everyone at home.",
-    bottles: [bottleDishwash, bottleSurface, bottleToilet],
   },
 ];
 
@@ -52,7 +48,7 @@ const HeroCarousel = () => {
     <>
       {/* Hero Banner */}
       <div className="relative w-full overflow-hidden bg-primary" style={{ height: "520px" }}>
-        {/* Clover decorations - large, scattered across entire banner */}
+        {/* Clover decorations */}
         <img src={cloverDark} alt="" className="absolute top-[-30px] left-[-40px] w-[200px] opacity-25 pointer-events-none z-[1]" />
         <img src={cloverDark} alt="" className="absolute bottom-[-40px] left-[-30px] w-[180px] opacity-20 pointer-events-none z-[1]" />
         <img src={cloverLime} alt="" className="absolute top-[35%] left-[25%] w-[160px] opacity-10 pointer-events-none z-[1]" />
@@ -106,37 +102,38 @@ const HeroCarousel = () => {
                 </div>
               </div>
 
-              {/* Right: Product bottles grouped together in arc with halo */}
+              {/* Right: 3 bottles tightly grouped - bottoms touching, heads fanning in arc */}
               <div className="hidden md:flex flex-1 items-end justify-center h-full relative">
-                {/* Halo glow behind bottles */}
-                <div className="absolute bottom-[15%] w-[420px] h-[420px] rounded-full opacity-25" style={{ background: 'radial-gradient(circle, hsl(82 82% 71% / 0.7) 0%, hsl(158 60% 50% / 0.3) 50%, transparent 75%)' }} />
+                {/* Halo glow */}
+                <div className="absolute bottom-[10%] w-[400px] h-[400px] rounded-full opacity-25 pointer-events-none" style={{ background: 'radial-gradient(circle, hsl(82 82% 71% / 0.7) 0%, hsl(158 60% 50% / 0.3) 50%, transparent 75%)' }} />
                 <motion.div
                   key={`bottles-${index}`}
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
-                  className="relative flex items-end justify-center pb-0"
+                  className="relative flex items-end justify-center"
+                  style={{ marginBottom: '-10px' }}
                 >
-                  {/* Left bottle - tilted left, bottoms together */}
+                  {/* Left bottle (Kitchen Degreaser) - tilted left, tight overlap */}
                   <img
-                    src={slides[index].bottles[0]}
-                    alt="rePhyl product"
-                    className="h-[300px] object-contain drop-shadow-2xl relative z-0 origin-bottom"
-                    style={{ transform: 'rotate(-12deg)', marginRight: '-30px', marginBottom: '0px' }}
+                    src={kdFront}
+                    alt="Kitchen Degreaser"
+                    className="h-[320px] object-contain drop-shadow-2xl relative z-[1] origin-bottom"
+                    style={{ transform: 'rotate(-15deg)', marginRight: '-70px', marginBottom: '0px' }}
                   />
-                  {/* Center bottle - upright, tallest */}
+                  {/* Center bottle (Dishwash Liquid) - upright, tallest, on top */}
                   <img
-                    src={slides[index].bottles[1]}
-                    alt="rePhyl product"
-                    className="h-[370px] object-contain drop-shadow-2xl relative z-10"
+                    src={dlFront}
+                    alt="Dishwash Liquid"
+                    className="h-[380px] object-contain drop-shadow-2xl relative z-[5]"
                   />
-                  {/* Right bottle - tilted right, bottoms together */}
+                  {/* Right bottle (All Surface Cleaner) - tilted right, tight overlap */}
                   <img
-                    src={slides[index].bottles[2]}
-                    alt="rePhyl product"
-                    className="h-[300px] object-contain drop-shadow-2xl relative z-0 origin-bottom"
-                    style={{ transform: 'rotate(12deg)', marginLeft: '-30px', marginBottom: '0px' }}
+                    src={ascFront}
+                    alt="All Surface Cleaner"
+                    className="h-[320px] object-contain drop-shadow-2xl relative z-[1] origin-bottom"
+                    style={{ transform: 'rotate(15deg)', marginLeft: '-70px', marginBottom: '0px' }}
                   />
                 </motion.div>
               </div>
