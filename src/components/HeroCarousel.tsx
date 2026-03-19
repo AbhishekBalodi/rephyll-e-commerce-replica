@@ -52,13 +52,15 @@ const HeroCarousel = () => {
     <>
       {/* Hero Banner */}
       <div className="relative w-full overflow-hidden bg-primary" style={{ height: "520px" }}>
-        {/* Clover decorations */}
-        <img src={cloverDark} alt="" className="absolute top-[-40px] left-[-50px] w-[140px] opacity-30 pointer-events-none" />
-        <img src={cloverDark} alt="" className="absolute bottom-[-30px] left-[15%] w-[100px] opacity-20 pointer-events-none" />
-        <img src={cloverDark} alt="" className="absolute top-[20%] right-[-40px] w-[120px] opacity-25 pointer-events-none" />
-        <img src={cloverLime} alt="" className="absolute top-[-20px] right-[30%] w-[80px] opacity-15 pointer-events-none" />
-        <img src={cloverLime} alt="" className="absolute bottom-[10%] right-[10%] w-[90px] opacity-10 pointer-events-none" />
-        <img src={cloverDark} alt="" className="absolute bottom-[-50px] right-[-30px] w-[130px] opacity-20 pointer-events-none" />
+        {/* Clover decorations - large, scattered across entire banner */}
+        <img src={cloverDark} alt="" className="absolute top-[-30px] left-[-40px] w-[200px] opacity-25 pointer-events-none z-[1]" />
+        <img src={cloverDark} alt="" className="absolute bottom-[-40px] left-[-30px] w-[180px] opacity-20 pointer-events-none z-[1]" />
+        <img src={cloverLime} alt="" className="absolute top-[35%] left-[25%] w-[160px] opacity-10 pointer-events-none z-[1]" />
+        <img src={cloverDark} alt="" className="absolute top-[-30px] right-[-30px] w-[200px] opacity-25 pointer-events-none z-[1]" />
+        <img src={cloverDark} alt="" className="absolute bottom-[-40px] right-[-30px] w-[190px] opacity-20 pointer-events-none z-[1]" />
+        <img src={cloverLime} alt="" className="absolute top-[20%] right-[20%] w-[140px] opacity-12 pointer-events-none z-[1]" />
+        <img src={cloverDark} alt="" className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[120px] opacity-8 pointer-events-none z-[1]" />
+        <img src={cloverLime} alt="" className="absolute bottom-[15%] left-[10%] w-[130px] opacity-10 pointer-events-none z-[1]" />
 
         <AnimatePresence mode="wait">
           <motion.div
@@ -67,7 +69,7 @@ const HeroCarousel = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.6 }}
-            className="absolute inset-0 flex items-center"
+            className="absolute inset-0 flex items-center z-[2]"
           >
             <div className="max-w-7xl mx-auto w-full px-6 md:px-12 flex items-center justify-between h-full">
               {/* Left: Text */}
@@ -104,35 +106,37 @@ const HeroCarousel = () => {
                 </div>
               </div>
 
-              {/* Right: Product bottles grouped together with halo */}
+              {/* Right: Product bottles grouped together in arc with halo */}
               <div className="hidden md:flex flex-1 items-end justify-center h-full relative">
                 {/* Halo glow behind bottles */}
-                <div className="absolute bottom-[10%] w-[380px] h-[380px] rounded-full opacity-20" style={{ background: 'radial-gradient(circle, hsl(82 82% 71% / 0.6) 0%, transparent 70%)' }} />
+                <div className="absolute bottom-[15%] w-[420px] h-[420px] rounded-full opacity-25" style={{ background: 'radial-gradient(circle, hsl(82 82% 71% / 0.7) 0%, hsl(158 60% 50% / 0.3) 50%, transparent 75%)' }} />
                 <motion.div
                   key={`bottles-${index}`}
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
-                  className="relative flex items-end justify-center gap-[-10px] pb-0"
+                  className="relative flex items-end justify-center pb-0"
                 >
-                  {/* Left bottle - slightly behind */}
+                  {/* Left bottle - tilted left, bottoms together */}
                   <img
                     src={slides[index].bottles[0]}
                     alt="rePhyl product"
-                    className="h-[320px] object-contain drop-shadow-2xl -mr-8 relative z-0"
+                    className="h-[300px] object-contain drop-shadow-2xl relative z-0 origin-bottom"
+                    style={{ transform: 'rotate(-12deg)', marginRight: '-30px', marginBottom: '0px' }}
                   />
-                  {/* Center bottle - tallest, in front */}
+                  {/* Center bottle - upright, tallest */}
                   <img
                     src={slides[index].bottles[1]}
                     alt="rePhyl product"
-                    className="h-[380px] object-contain drop-shadow-2xl relative z-10"
+                    className="h-[370px] object-contain drop-shadow-2xl relative z-10"
                   />
-                  {/* Right bottle - slightly behind */}
+                  {/* Right bottle - tilted right, bottoms together */}
                   <img
                     src={slides[index].bottles[2]}
                     alt="rePhyl product"
-                    className="h-[320px] object-contain drop-shadow-2xl -ml-8 relative z-0"
+                    className="h-[300px] object-contain drop-shadow-2xl relative z-0 origin-bottom"
+                    style={{ transform: 'rotate(12deg)', marginLeft: '-30px', marginBottom: '0px' }}
                   />
                 </motion.div>
               </div>
