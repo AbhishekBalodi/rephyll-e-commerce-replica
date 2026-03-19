@@ -48,9 +48,9 @@ const CategoryBar = ({ activeCategory, onCategoryClick }: CategoryBarProps) => {
   if (!categories || categories.length === 0) return null;
 
   return (
-    <section className="bg-background" style={{ boxShadow: "inset 0px -0.5px 0px #CCCCCC" }}>
-      <div className="max-w-7xl mx-auto px-4 md:px-6">
-        <div className="flex items-center justify-center gap-[50px] overflow-x-auto scrollbar-hide">
+    <section className="bg-background w-full" style={{ boxShadow: "inset 0px -0.5px 0px #CCCCCC" }}>
+      <div className="w-full px-4 md:px-6">
+        <div className="flex items-center justify-between w-full">
           {categories.map((cat: ApiCategory) => {
             const iconSrc = getCategoryIcon(cat.name);
             const isActive = activeCategory === cat.id;
@@ -58,14 +58,14 @@ const CategoryBar = ({ activeCategory, onCategoryClick }: CategoryBarProps) => {
               <button
                 key={cat.id}
                 onClick={() => onCategoryClick(cat.id)}
-                className="flex flex-col items-center gap-4 min-w-[154px] cursor-pointer group relative"
+                className="flex flex-col items-center gap-4 flex-1 cursor-pointer group relative"
                 style={{
                   padding: "30px 0",
                   ...(isActive ? { boxShadow: "inset 0px -3px 0px #064734" } : {}),
                 }}
               >
                 <div
-                  className={`w-[76px] h-[76px] rounded-full flex items-center justify-center transition-all`}
+                  className="w-[76px] h-[76px] rounded-full flex items-center justify-center transition-all"
                   style={{
                     background: isActive ? "#064734" : "rgba(206, 241, 123, 0.3)",
                   }}
@@ -80,10 +80,9 @@ const CategoryBar = ({ activeCategory, onCategoryClick }: CategoryBarProps) => {
                   />
                 </div>
                 <span
-                  className="text-lg font-semibold text-center whitespace-nowrap transition-colors"
+                  className="text-sm md:text-lg font-semibold text-center whitespace-nowrap transition-colors"
                   style={{
                     fontFamily: "'Poppins', sans-serif",
-                    fontSize: "18px",
                     lineHeight: "150%",
                     color: "#1A1A1A",
                   }}
