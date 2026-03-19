@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import heroKD from "@/assets/bottle-hero-kd.png";
-import heroDL from "@/assets/bottle-hero-dl.png";
-import heroASC from "@/assets/bottle-hero-asc.png";
+import heroBottles from "@/assets/kit-bottles-hero.png";
 import cloverLime from "@/assets/clover-lime.png";
 
 const slides = [
@@ -44,41 +42,11 @@ const HeroCarousel = () => {
           background: "radial-gradient(13.36% 42.27% at 75.29% 56.87%, hsl(var(--accent)) 0%, hsl(var(--hero-forest)) 100%)",
         }}
       >
-        <img
-          src={cloverLime}
-          alt=""
-          aria-hidden="true"
-          className="pointer-events-none absolute opacity-20"
-          style={{ width: "299px", height: "299px", left: "-85px", top: "-113px" }}
-        />
-        <img
-          src={cloverLime}
-          alt=""
-          aria-hidden="true"
-          className="pointer-events-none absolute opacity-20"
-          style={{ width: "293px", height: "293px", left: "496px", top: "-84px" }}
-        />
-        <img
-          src={cloverLime}
-          alt=""
-          aria-hidden="true"
-          className="pointer-events-none absolute opacity-15"
-          style={{ width: "267px", height: "267px", left: "642px", top: "391px" }}
-        />
-        <img
-          src={cloverLime}
-          alt=""
-          aria-hidden="true"
-          className="pointer-events-none absolute opacity-15"
-          style={{ width: "356px", height: "356px", left: "1170.5px", top: "302px" }}
-        />
-        <img
-          src={cloverLime}
-          alt=""
-          aria-hidden="true"
-          className="pointer-events-none absolute opacity-20"
-          style={{ width: "232px", height: "232px", left: "1268.5px", top: "-84px" }}
-        />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-20" style={{ width: "299px", height: "299px", left: "-85px", top: "-113px" }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-20" style={{ width: "293px", height: "293px", left: "496px", top: "-84px" }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-15" style={{ width: "267px", height: "267px", left: "642px", top: "391px" }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-15" style={{ width: "356px", height: "356px", left: "1170.5px", top: "302px" }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-20" style={{ width: "232px", height: "232px", left: "1268.5px", top: "-84px" }} />
 
         <AnimatePresence mode="wait">
           <motion.div
@@ -133,56 +101,25 @@ const HeroCarousel = () => {
                 </div>
               </div>
 
+              {/* Hero product image - single grouped bottles image */}
               <motion.div
                 key={`bottles-${index}`}
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -14 }}
                 transition={{ duration: 0.45, delay: 0.1 }}
-                className="absolute"
-                style={{ width: "560px", height: "470px", left: "807px", top: "48px" }}
+                className="absolute z-[5]"
+                style={{ right: "100px", bottom: "20px" }}
               >
                 <img
-                  src={heroKD}
-                  alt="Kitchen Degreaser bottle"
+                  src={heroBottles}
+                  alt="rePhyl cleaning products"
                   draggable={false}
-                  className="absolute z-0 select-none object-contain"
+                  className="select-none object-contain"
                   style={{
-                    width: "178px",
-                    height: "425px",
-                    left: "88px",
-                    top: "26px",
-                    transform: "rotate(-23.47deg)",
-                    transformOrigin: "center center",
-                  }}
-                />
-
-                <img
-                  src={heroASC}
-                  alt="All Surface Cleaner bottle"
-                  draggable={false}
-                  className="absolute z-0 select-none object-contain"
-                  style={{
-                    width: "178px",
-                    height: "425px",
-                    left: "300px",
-                    top: "26px",
-                    transform: "rotate(15.7deg)",
-                    transformOrigin: "center center",
-                  }}
-                />
-
-                <img
-                  src={heroDL}
-                  alt="Dishwash Liquid bottle"
-                  draggable={false}
-                  className="absolute z-10 select-none object-contain"
-                  style={{
-                    width: "178px",
-                    height: "425px",
-                    left: "194px",
-                    top: "0px",
-                    filter: "drop-shadow(0px 4px 4px hsl(var(--foreground) / 0.25))",
+                    height: "460px",
+                    width: "auto",
+                    filter: "drop-shadow(0px 8px 16px rgba(0, 0, 0, 0.25))",
                   }}
                 />
               </motion.div>
