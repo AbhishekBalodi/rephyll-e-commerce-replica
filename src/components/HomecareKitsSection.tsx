@@ -336,9 +336,9 @@ const HomecareKitsSection = () => {
         <img src={cloverDark} alt="" className="absolute bottom-[-30px] left-[40%] w-[160px] opacity-10 pointer-events-none z-0" />
         <img src={cloverDark} alt="" className="absolute top-[60%] left-[30%] w-[120px] opacity-6 pointer-events-none z-0" />
 
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12 relative z-[1]">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-6 relative z-[1]">
           {/* Left text */}
-          <div className="flex-1 text-primary-foreground">
+          <div className="md:w-[36%] text-primary-foreground">
             <div className="inline-flex items-center gap-2 bg-primary-foreground/10 backdrop-blur-sm rounded-full px-4 py-2 mb-6">
               <Sparkles size={16} className="text-accent" />
               <span className="text-sm font-semibold text-primary-foreground">Smart Savings</span>
@@ -360,33 +360,52 @@ const HomecareKitsSection = () => {
             </button>
           </div>
 
-          {/* Right: Pricing cards - larger */}
-          <div className="flex-1 grid grid-cols-3 gap-5">
+          {/* Right: Pricing cards - wider, taller, closer to left */}
+          <div className="md:w-[64%] grid grid-cols-3 gap-4">
             {[
-              { qty: "1", price: 299, label: "Select 1 Bottle", save: null },
-              { qty: "2", price: 274, label: "Select 2 Bottles", save: "Save 8%" },
-              { qty: "3+", price: 249, label: "Select 3+ Bottles", save: "Save 17%" },
-            ].map((tier) => (
-              <div key={tier.qty} className="bg-background rounded-2xl p-6 md:p-8 text-center relative">
-                {tier.save && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex items-center gap-1 bg-primary-foreground border border-border text-primary text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
-                    <TrendingDown size={12} />
-                    {tier.save}
+              { qty: "1", price: 299, label: "Select 1 Bottle", save: null, id: 5001 },
+              { qty: "2", price: 274, label: "Select 2 Bottles", save: "Save 8%", id: 5002 },
+              { qty: "3+", price: 249, label: "Select 3+ Bottles", save: "Save 17%", id: 5003 },
+            ].map((tier) => {
+              const cartItem = items.find((i) => i.productId === tier.id);
+              const cartQty = cartItem?.quantity ?? 0;
+              return (
+                <div key={tier.qty} className="bg-background rounded-2xl p-5 md:p-7 text-center relative min-h-[290px] flex flex-col justify-between">
+                  {tier.save && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex items-center gap-1 bg-primary-foreground border border-border text-primary text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
+                      <TrendingDown size={12} />
+                      {tier.save}
+                    </div>
+                  )}
+                  <div>
+                    <div className={`w-24 h-24 rounded-full mx-auto mb-5 flex items-center justify-center ${tier.qty === "3+" ? "bg-primary text-primary-foreground" : "bg-secondary text-primary"}`}>
+                      <span className="text-4xl font-bold">{tier.qty}</span>
+                    </div>
+                    <div className="mb-5">
+                      <span className="text-xs text-muted-foreground align-top">₹</span>
+                      <span className="text-5xl md:text-6xl font-bold text-foreground">{tier.price}</span>
+                      <span className="text-sm text-muted-foreground">/bottle</span>
+                    </div>
                   </div>
-                )}
-                <div className={`w-20 h-20 rounded-full mx-auto mb-5 flex items-center justify-center ${tier.qty === "3+" ? "bg-primary text-primary-foreground" : "bg-secondary text-primary"}`}>
-                  <span className="text-3xl font-bold">{tier.qty}</span>
+                  {cartQty > 0 ? (
+                    <QuantityCapsule
+                      quantity={cartQty}
+                      onIncrement={(e) => { e.stopPropagation(); updateQuantity(tier.id, cartQty + 1); }}
+                      onDecrement={(e) => { e.stopPropagation(); cartQty <= 1 ? removeFromCart(tier.id) : updateQuantity(tier.id, cartQty - 1); }}
+                      size="sm"
+                      fullWidth
+                    />
+                  ) : (
+                    <button
+                      onClick={() => addToCart({ productId: tier.id, name: `Pack of ${tier.qty}`, price: tier.price, originalPrice: 299, image: "/placeholder.svg" })}
+                      className="w-full bg-accent text-primary font-bold py-3 rounded-full text-sm hover:opacity-90 transition-all"
+                    >
+                      {tier.label}
+                    </button>
+                  )}
                 </div>
-                <div className="mb-5">
-                  <span className="text-xs text-muted-foreground align-top">₹</span>
-                  <span className="text-5xl font-bold text-foreground">{tier.price}</span>
-                  <span className="text-sm text-muted-foreground">/bottle</span>
-                </div>
-                <button className="w-full bg-accent text-primary font-bold py-3 rounded-full text-sm hover:opacity-90 transition-all">
-                  {tier.label}
-                </button>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
