@@ -52,14 +52,12 @@ const NAV_CATEGORIES: NavCategory[] = [
   { label: "B2B ORDERS", path: "/contact" },
   { label: "WHY CHOOSE US", path: "/why-choose-us" },
   { label: "REVIEWS", path: "/testimonials" },
-  {
-    label: "HELP",
-    subcategories: [
-      { label: "FAQs", path: "/faqs" },
-      { label: "Contact Us", path: "/contact" },
-      { label: "Terms of Service", path: "/terms" },
-    ],
-  },
+];
+
+const ANNOUNCEMENT_ITEMS = [
+  "🌿 Non-Toxic • Plant-Based • Family Safe",
+  "🎉 Flat 20% Off on Bundles | Code: CLEAN20",
+  "🚚 Free Shipping ₹499+ • Non-Toxic • Plant-Based • Family Safe",
 ];
 
 const Navbar = () => {
@@ -72,10 +70,10 @@ const Navbar = () => {
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Search state
-  const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<ApiProduct[]>([]);
   const [searching, setSearching] = useState(false);
+  const [searchFocused, setSearchFocused] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
 
@@ -100,26 +98,21 @@ const Navbar = () => {
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // Close search on outside click
+  // Close search dropdown on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (searchContainerRef.current && !searchContainerRef.current.contains(e.target as Node)) {
-        setSearchOpen(false);
+        setSearchFocused(false);
       }
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  // Focus input when opened
-  useEffect(() => {
-    if (searchOpen) searchInputRef.current?.focus();
-  }, [searchOpen]);
-
   const handleNav = (path: string) => {
     setSheetOpen(false);
     setActiveMenu(null);
-    setSearchOpen(false);
+    setSearchFocused(false);
     navigate(path);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -137,19 +130,29 @@ const Navbar = () => {
     setMobileExpanded(mobileExpanded === label ? null : label);
   };
 
+  // Announcement marquee
+  const announcementText = ANNOUNCEMENT_ITEMS.join("     ");
+
   return (
     <>
-      {/* Top announcement bar */}
-      <div className="w-full bg-primary text-primary-foreground text-center py-2 text-sm font-medium tracking-widest uppercase">
-        5L CANS STARTING AT ₹799
+      {/* Top announcement strip - lime green with rotating text */}
+      <div className="w-full bg-accent overflow-hidden py-2">
+        <div className="flex animate-marquee-slow whitespace-nowrap">
+          <span className="text-primary text-xs font-semibold tracking-wide mx-8">
+            {announcementText}     {announcementText}
+          </span>
+          <span className="text-primary text-xs font-semibold tracking-wide mx-8">
+            {announcementText}     {announcementText}
+          </span>
+        </div>
       </div>
 
       {/* Main navbar */}
       <nav className="sticky top-0 z-50 bg-background border-b border-border">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <div className="h-16 flex items-center justify-between">
+          <div className="h-16 flex items-center justify-between gap-4">
             {/* Left: Logo */}
-            <div className="flex items-center gap-8">
+            <div className="flex items-center gap-4 flex-shrink-0">
               <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
                 <SheetTrigger asChild>
                   <button className="md:hidden text-foreground">
@@ -201,7 +204,7 @@ const Navbar = () => {
             </div>
 
             {/* Center: nav links (desktop) */}
-            <div className="hidden md:flex items-center gap-6">
+            <div className="hidden md:flex items-center gap-5 flex-shrink-0">
               {NAV_CATEGORIES.map((cat) => (
                 <div
                   key={cat.label}
@@ -221,28 +224,26 @@ const Navbar = () => {
               ))}
             </div>
 
-            {/* Right: icons */}
-            <div className="flex items-center gap-5">
-              {/* Search */}
-              <div ref={searchContainerRef} className="relative">
-                <button onClick={() => setSearchOpen(!searchOpen)}>
-                  <Search size={18} className="text-foreground cursor-pointer hover:text-muted-foreground transition-colors" />
-                </button>
+            {/* Right: Search bar + icons */}
+            <div className="flex items-center gap-4">
+              {/* Big capsule search bar */}
+              <div ref={searchContainerRef} className="relative hidden md:block">
+                <div className="flex items-center bg-muted/60 rounded-full border border-border px-4 py-2 w-[220px] lg:w-[280px] transition-all focus-within:border-primary/40 focus-within:bg-background focus-within:shadow-sm">
+                  <Search size={16} className="text-muted-foreground flex-shrink-0 mr-2" />
+                  <input
+                    ref={searchInputRef}
+                    type="text"
+                    placeholder="Search"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onFocus={() => setSearchFocused(true)}
+                    className="bg-transparent text-sm outline-none w-full placeholder:text-muted-foreground text-foreground"
+                  />
+                </div>
 
-                {searchOpen && (
-                  <div className="absolute right-0 top-10 w-80 md:w-96 bg-background border border-border rounded-lg shadow-xl z-50 overflow-hidden">
-                    <div className="p-3 border-b border-border">
-                      <input
-                        ref={searchInputRef}
-                        type="text"
-                        placeholder="Search products..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full bg-muted/50 rounded-md px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/30 placeholder:text-muted-foreground"
-                      />
-                    </div>
-
-                    {/* Suggestions */}
+                {/* Search dropdown */}
+                {searchFocused && (searchQuery.length >= 2 || (suggestions && suggestions.length > 0)) && (
+                  <div className="absolute right-0 top-12 w-80 md:w-96 bg-background border border-border rounded-lg shadow-xl z-50 overflow-hidden">
                     {suggestions && suggestions.length > 0 && searchResults.length === 0 && (
                       <div className="p-2">
                         <p className="px-2 py-1 text-[10px] font-semibold uppercase text-muted-foreground">Suggestions</p>
@@ -257,8 +258,6 @@ const Navbar = () => {
                         ))}
                       </div>
                     )}
-
-                    {/* Search results */}
                     {searching && (
                       <p className="text-center text-sm text-muted-foreground py-4">Searching...</p>
                     )}
@@ -268,7 +267,7 @@ const Navbar = () => {
                           <button
                             key={p.id}
                             onClick={() => {
-                              setSearchOpen(false);
+                              setSearchFocused(false);
                               setSearchQuery("");
                               navigate(`/product/${p.id}`);
                             }}
@@ -294,6 +293,11 @@ const Navbar = () => {
                   </div>
                 )}
               </div>
+
+              {/* Mobile search icon */}
+              <button className="md:hidden" onClick={() => searchInputRef.current?.focus()}>
+                <Search size={18} className="text-foreground" />
+              </button>
 
               <Heart size={18} className="text-foreground cursor-pointer hover:text-muted-foreground transition-colors" />
 
