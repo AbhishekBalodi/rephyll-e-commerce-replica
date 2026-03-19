@@ -156,13 +156,13 @@ const HomecareKitsSection = () => {
   return (
     <div id="homecare-kits-section">
       {/* ===== SECTION 1: Smart Bundles / Single Products ===== */}
-      <section className="relative py-16 px-4 md:px-6 overflow-hidden" style={{ background: "hsl(158 60% 94%)" }}>
+      <section className="relative py-16 px-4 md:px-6 overflow-hidden" style={{ background: "hsl(75 60% 88%)" }}>
         {/* Large clovers in section corners - NOT inside cards */}
-        <img src={cloverLime} alt="" className="absolute top-[-60px] left-[-60px] w-[280px] opacity-[0.18] pointer-events-none z-0" />
-        <img src={cloverLime} alt="" className="absolute top-[-60px] right-[-60px] w-[280px] opacity-[0.18] pointer-events-none z-0" />
-        <img src={cloverLime} alt="" className="absolute bottom-[-60px] left-[-60px] w-[280px] opacity-[0.18] pointer-events-none z-0" />
-        <img src={cloverLime} alt="" className="absolute bottom-[-60px] right-[-60px] w-[280px] opacity-[0.18] pointer-events-none z-0" />
-        <img src={cloverLime} alt="" className="absolute top-[40%] left-1/2 -translate-x-1/2 w-[220px] opacity-[0.10] pointer-events-none z-0" />
+        <img src={cloverDark} alt="" className="absolute top-[-60px] left-[-60px] w-[280px] opacity-[0.25] pointer-events-none z-0" />
+        <img src={cloverDark} alt="" className="absolute top-[-60px] right-[-60px] w-[280px] opacity-[0.25] pointer-events-none z-0" />
+        <img src={cloverDark} alt="" className="absolute bottom-[-60px] left-[-60px] w-[280px] opacity-[0.25] pointer-events-none z-0" />
+        <img src={cloverDark} alt="" className="absolute bottom-[-60px] right-[-60px] w-[280px] opacity-[0.25] pointer-events-none z-0" />
+        <img src={cloverDark} alt="" className="absolute top-[40%] left-1/2 -translate-x-1/2 w-[220px] opacity-[0.15] pointer-events-none z-0" />
 
         <div className="max-w-7xl mx-auto relative z-[1]">
           {/* Tab Switcher */}
@@ -198,7 +198,7 @@ const HomecareKitsSection = () => {
                 return (
                   <div key={bundle.id} className="rounded-2xl overflow-hidden shadow-lg">
                     {/* Top half - diagonal gradient with bottle */}
-                    <div className="relative h-[320px] p-5" style={{ background: "linear-gradient(135deg, hsl(158 50% 82%) 0%, hsl(158 60% 92%) 60%, hsl(60 50% 92%) 100%)" }}>
+                    <div className="relative h-[320px] p-5" style={{ background: "linear-gradient(135deg, hsl(75 50% 82%) 0%, hsl(75 55% 88%) 60%, hsl(80 50% 90%) 100%)" }}>
                       {/* Discount + icons */}
                       <div className="flex items-center justify-between mb-3">
                         <span className="text-xs font-bold text-primary bg-background/80 px-3 py-1.5 rounded-full">
@@ -276,7 +276,7 @@ const HomecareKitsSection = () => {
                 return (
                   <div key={product.id} className="rounded-2xl overflow-hidden shadow-lg">
                     {/* Top half - diagonal gradient */}
-                    <div className="relative h-[320px] p-5" style={{ background: "linear-gradient(135deg, hsl(158 50% 82%) 0%, hsl(158 60% 92%) 60%, hsl(60 50% 92%) 100%)" }}>
+                    <div className="relative h-[320px] p-5" style={{ background: "linear-gradient(135deg, hsl(75 50% 82%) 0%, hsl(75 55% 88%) 60%, hsl(80 50% 90%) 100%)" }}>
                       <span className="text-xs font-bold text-primary bg-background/80 px-3 py-1.5 rounded-full">
                         {product.discount}% Off
                       </span>
@@ -336,9 +336,9 @@ const HomecareKitsSection = () => {
         <img src={cloverDark} alt="" className="absolute bottom-[-30px] left-[40%] w-[160px] opacity-10 pointer-events-none z-0" />
         <img src={cloverDark} alt="" className="absolute top-[60%] left-[30%] w-[120px] opacity-6 pointer-events-none z-0" />
 
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12 relative z-[1]">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-6 relative z-[1]">
           {/* Left text */}
-          <div className="flex-1 text-primary-foreground">
+          <div className="md:w-[36%] text-primary-foreground">
             <div className="inline-flex items-center gap-2 bg-primary-foreground/10 backdrop-blur-sm rounded-full px-4 py-2 mb-6">
               <Sparkles size={16} className="text-accent" />
               <span className="text-sm font-semibold text-primary-foreground">Smart Savings</span>
@@ -360,33 +360,52 @@ const HomecareKitsSection = () => {
             </button>
           </div>
 
-          {/* Right: Pricing cards - larger */}
-          <div className="flex-1 grid grid-cols-3 gap-5">
+          {/* Right: Pricing cards - wider, taller, closer to left */}
+          <div className="md:w-[64%] grid grid-cols-3 gap-4">
             {[
-              { qty: "1", price: 299, label: "Select 1 Bottle", save: null },
-              { qty: "2", price: 274, label: "Select 2 Bottles", save: "Save 8%" },
-              { qty: "3+", price: 249, label: "Select 3+ Bottles", save: "Save 17%" },
-            ].map((tier) => (
-              <div key={tier.qty} className="bg-background rounded-2xl p-6 md:p-8 text-center relative">
-                {tier.save && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex items-center gap-1 bg-primary-foreground border border-border text-primary text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
-                    <TrendingDown size={12} />
-                    {tier.save}
+              { qty: "1", price: 299, label: "Select 1 Bottle", save: null, id: 5001 },
+              { qty: "2", price: 274, label: "Select 2 Bottles", save: "Save 8%", id: 5002 },
+              { qty: "3+", price: 249, label: "Select 3+ Bottles", save: "Save 17%", id: 5003 },
+            ].map((tier) => {
+              const cartItem = items.find((i) => i.productId === tier.id);
+              const cartQty = cartItem?.quantity ?? 0;
+              return (
+                <div key={tier.qty} className="bg-background rounded-2xl p-5 md:p-7 text-center relative min-h-[290px] flex flex-col justify-between">
+                  {tier.save && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex items-center gap-1 bg-primary-foreground border border-border text-primary text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
+                      <TrendingDown size={12} />
+                      {tier.save}
+                    </div>
+                  )}
+                  <div>
+                    <div className={`w-24 h-24 rounded-full mx-auto mb-5 flex items-center justify-center ${tier.qty === "3+" ? "bg-primary text-primary-foreground" : "bg-secondary text-primary"}`}>
+                      <span className="text-4xl font-bold">{tier.qty}</span>
+                    </div>
+                    <div className="mb-5">
+                      <span className="text-xs text-muted-foreground align-top">₹</span>
+                      <span className="text-5xl md:text-6xl font-bold text-foreground">{tier.price}</span>
+                      <span className="text-sm text-muted-foreground">/bottle</span>
+                    </div>
                   </div>
-                )}
-                <div className={`w-20 h-20 rounded-full mx-auto mb-5 flex items-center justify-center ${tier.qty === "3+" ? "bg-primary text-primary-foreground" : "bg-secondary text-primary"}`}>
-                  <span className="text-3xl font-bold">{tier.qty}</span>
+                  {cartQty > 0 ? (
+                    <QuantityCapsule
+                      quantity={cartQty}
+                      onIncrement={(e) => { e.stopPropagation(); updateQuantity(tier.id, cartQty + 1); }}
+                      onDecrement={(e) => { e.stopPropagation(); cartQty <= 1 ? removeFromCart(tier.id) : updateQuantity(tier.id, cartQty - 1); }}
+                      size="sm"
+                      fullWidth
+                    />
+                  ) : (
+                    <button
+                      onClick={() => addToCart({ productId: tier.id, name: `Pack of ${tier.qty}`, price: tier.price, originalPrice: 299, image: "/placeholder.svg" })}
+                      className="w-full bg-accent text-primary font-bold py-3 rounded-full text-sm hover:opacity-90 transition-all"
+                    >
+                      {tier.label}
+                    </button>
+                  )}
                 </div>
-                <div className="mb-5">
-                  <span className="text-xs text-muted-foreground align-top">₹</span>
-                  <span className="text-5xl font-bold text-foreground">{tier.price}</span>
-                  <span className="text-sm text-muted-foreground">/bottle</span>
-                </div>
-                <button className="w-full bg-accent text-primary font-bold py-3 rounded-full text-sm hover:opacity-90 transition-all">
-                  {tier.label}
-                </button>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
