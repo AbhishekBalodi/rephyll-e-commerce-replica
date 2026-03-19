@@ -4,6 +4,9 @@ import { useCart } from "@/contexts/CartContext";
 import QuantityCapsule from "./QuantityCapsule";
 import cloverLime from "@/assets/clover-lime.png";
 import cloverDark from "@/assets/clover-green-dark.png";
+import ascFront from "@/assets/ASC_Front.png";
+import dlFront from "@/assets/DL_Front.png";
+import kdFront from "@/assets/KD_Front.png";
 import bottleSurface from "@/assets/bottle-surface-cleaner.png";
 import bottleDegreaser from "@/assets/bottle-kitchen-degreaser.png";
 import bottleDishwash from "@/assets/bottle-dishwash.png";
@@ -107,6 +110,12 @@ const KITS = [
   },
 ];
 
+const MINI_KIT_BOTTLES = {
+  left: kdFront,
+  center: dlFront,
+  right: ascFront,
+};
+
 const StarRating = ({ rating }: { rating: number }) => {
   return (
     <div className="flex items-center gap-1">
@@ -145,7 +154,6 @@ const HomecareKitsSection = () => {
 
   return (
     <div id="homecare-kits-section">
-
       {/* ===== SECTION 1: Smart Bundles / Single Products ===== */}
       <section className="relative bg-accent/30 py-16 px-4 md:px-6 overflow-hidden">
         {/* Clover decorations - behind content */}
@@ -206,9 +214,9 @@ const HomecareKitsSection = () => {
 
                     {/* Bottles image area */}
                     <div className="relative h-[240px] flex items-end justify-center mb-4">
-                      <img src={bundle.bottles[0]} alt="" className="h-[170px] object-contain relative z-0 origin-bottom" style={{ transform: 'rotate(-10deg)', marginRight: '-18px' }} />
+                      <img src={bundle.bottles[0]} alt="" className="h-[170px] object-contain relative z-0 origin-bottom" style={{ transform: "rotate(-10deg)", marginRight: "-18px" }} />
                       <img src={bundle.bottles[1]} alt="" className="h-[200px] object-contain relative z-10" />
-                      <img src={bundle.bottles[2]} alt="" className="h-[170px] object-contain relative z-0 origin-bottom" style={{ transform: 'rotate(10deg)', marginLeft: '-18px' }} />
+                      <img src={bundle.bottles[2]} alt="" className="h-[170px] object-contain relative z-0 origin-bottom" style={{ transform: "rotate(10deg)", marginLeft: "-18px" }} />
                       <button className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/80 flex items-center justify-center">
                         <ChevronRight size={16} className="text-foreground" />
                       </button>
@@ -301,7 +309,7 @@ const HomecareKitsSection = () => {
       </section>
 
       {/* ===== SECTION 2: Smart Savings - Stop Buying One ===== */}
-      <section className="relative py-20 px-4 md:px-6 overflow-hidden" style={{ background: 'linear-gradient(135deg, hsl(160 84% 15%) 0%, hsl(160 50% 35%) 50%, hsl(158 60% 55%) 100%)' }}>
+      <section className="relative py-20 px-4 md:px-6 overflow-hidden" style={{ background: "linear-gradient(135deg, hsl(160 84% 15%) 0%, hsl(160 50% 35%) 50%, hsl(158 60% 55%) 100%)" }}>
         {/* Clover decorations - behind all content */}
         <img src={cloverDark} alt="" className="absolute top-[-30px] left-[-40px] w-[180px] opacity-15 pointer-events-none z-0" />
         <img src={cloverDark} alt="" className="absolute bottom-[-40px] right-[-30px] w-[190px] opacity-15 pointer-events-none z-0" />
@@ -368,13 +376,14 @@ const HomecareKitsSection = () => {
 
       {/* ===== SECTION 3: Everything Your Home Needs In One Kit ===== */}
       <section className="relative bg-accent/20 py-16 px-4 md:px-6 overflow-hidden">
-        {/* Clover decorations */}
-        <img src={cloverLime} alt="" className="absolute top-[-30px] right-[-40px] w-[170px] opacity-12 pointer-events-none z-0" />
-        <img src={cloverLime} alt="" className="absolute bottom-[-40px] left-[-30px] w-[170px] opacity-12 pointer-events-none z-0" />
-        <img src={cloverLime} alt="" className="absolute top-[30%] left-[-20px] w-[130px] opacity-8 pointer-events-none z-0" />
-        <img src={cloverLime} alt="" className="absolute bottom-[20%] right-[3%] w-[140px] opacity-8 pointer-events-none z-0" />
-        <img src={cloverLime} alt="" className="absolute top-[15%] left-[45%] w-[110px] opacity-6 pointer-events-none z-0" />
-        <img src={cloverLime} alt="" className="absolute bottom-[-20px] right-[40%] w-[120px] opacity-8 pointer-events-none z-0" />
+        <img src={cloverLime} alt="" aria-hidden="true" className="absolute left-[-72px] top-[-54px] w-[240px] opacity-[0.18] pointer-events-none z-0" />
+        <img src={cloverLime} alt="" aria-hidden="true" className="absolute right-[-72px] top-[-54px] w-[240px] opacity-[0.18] pointer-events-none z-0" />
+        <img src={cloverLime} alt="" aria-hidden="true" className="absolute left-[-72px] bottom-[-72px] w-[240px] opacity-[0.18] pointer-events-none z-0" />
+        <img src={cloverLime} alt="" aria-hidden="true" className="absolute right-[-72px] bottom-[-72px] w-[240px] opacity-[0.18] pointer-events-none z-0" />
+        <img src={cloverLime} alt="" aria-hidden="true" className="absolute left-1/2 top-[6%] w-[190px] -translate-x-1/2 opacity-[0.14] pointer-events-none z-0" />
+        <img src={cloverLime} alt="" aria-hidden="true" className="absolute left-[6%] top-[36%] w-[180px] opacity-[0.12] pointer-events-none z-0" />
+        <img src={cloverLime} alt="" aria-hidden="true" className="absolute right-[6%] top-[22%] w-[180px] opacity-[0.12] pointer-events-none z-0" />
+        <img src={cloverLime} alt="" aria-hidden="true" className="absolute left-1/2 bottom-[-24px] w-[180px] -translate-x-1/2 opacity-[0.12] pointer-events-none z-0" />
 
         <div className="max-w-7xl mx-auto relative z-[1]">
           <h2 className="text-3xl md:text-5xl font-bold text-center text-foreground mb-2" style={{ fontFamily: "'Source Sans 3', sans-serif" }}>
@@ -389,16 +398,33 @@ const HomecareKitsSection = () => {
               const cartItem = items.find((i) => i.productId === kit.id);
               const cartQty = cartItem?.quantity ?? 0;
               return (
-                <div key={kit.id} className="bg-primary rounded-2xl overflow-hidden">
-                  {/* Bottles image - arc arrangement */}
-                  <div className="h-[200px] flex items-end justify-center pt-4 px-4 relative">
-                    <img src={kit.bottles[0]} alt="" className="h-[120px] object-contain relative z-0 origin-bottom" style={{ transform: 'rotate(-10deg)', marginRight: '-12px' }} />
-                    <img src={kit.bottles[1]} alt="" className="h-[145px] object-contain relative z-10" />
-                    <img src={kit.bottles[2]} alt="" className="h-[120px] object-contain relative z-0 origin-bottom" style={{ transform: 'rotate(10deg)', marginLeft: '-12px' }} />
+                <div key={kit.id} className="bg-primary rounded-[2rem] overflow-hidden shadow-[0_16px_36px_hsl(var(--primary)/0.16)]">
+                  <div className="relative h-[214px] overflow-hidden bg-primary px-4 pt-6">
+                    <div className="relative mx-auto h-[156px] w-[220px]">
+                      <img
+                        src={MINI_KIT_BOTTLES.left}
+                        alt=""
+                        aria-hidden="true"
+                        className="absolute bottom-[10px] left-[30px] z-[2] h-[110px] max-w-none origin-bottom object-contain"
+                        style={{ transform: "rotate(-18deg)" }}
+                      />
+                      <img
+                        src={MINI_KIT_BOTTLES.center}
+                        alt=""
+                        aria-hidden="true"
+                        className="absolute bottom-[18px] left-1/2 z-[4] h-[142px] max-w-none -translate-x-1/2 object-contain"
+                      />
+                      <img
+                        src={MINI_KIT_BOTTLES.right}
+                        alt=""
+                        aria-hidden="true"
+                        className="absolute bottom-[10px] right-[30px] z-[2] h-[110px] max-w-none origin-bottom object-contain"
+                        style={{ transform: "rotate(18deg)" }}
+                      />
+                    </div>
                   </div>
 
-                  {/* Card content */}
-                  <div className="bg-background p-5 rounded-t-2xl -mt-2 relative z-20">
+                  <div className="bg-background p-5 rounded-t-[2rem] -mt-2 relative z-20">
                     <h3 className="text-lg font-bold text-foreground mb-3">{kit.name}</h3>
                     <div className="space-y-2 mb-4">
                       {kit.items.map((item, i) => (
