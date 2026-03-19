@@ -7,6 +7,7 @@ import cloverDark from "@/assets/clover-green-dark.png";
 import ascFront from "@/assets/ASC_Front.png";
 import dlFront from "@/assets/DL_Front.png";
 import kdFront from "@/assets/KD_Front.png";
+import ascFront2 from "@/assets/ASC_Front-2.png";
 import bottleSurface from "@/assets/bottle-surface-cleaner.png";
 import bottleDegreaser from "@/assets/bottle-kitchen-degreaser.png";
 import bottleDishwash from "@/assets/bottle-dishwash.png";
