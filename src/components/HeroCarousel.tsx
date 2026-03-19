@@ -39,7 +39,7 @@ const HeroCarousel = () => {
   return (
     <section className="relative w-full overflow-hidden" aria-label="Featured products banner">
       <div
-        className="relative mx-auto h-[576px] w-full max-w-[1440px] overflow-hidden"
+        className="relative mx-auto h-[575px] w-full max-w-[1441px] overflow-hidden"
         style={{
           background: "radial-gradient(13.36% 42.27% at 75.29% 56.87%, hsl(var(--accent)) 0%, hsl(var(--hero-forest)) 100%)",
         }}
@@ -140,7 +140,7 @@ const HeroCarousel = () => {
                 exit={{ opacity: 0, y: -14 }}
                 transition={{ duration: 0.45, delay: 0.1 }}
                 className="absolute"
-                style={{ width: "620.77px", height: "493.86px", left: "745.94px", top: "48px" }}
+                style={{ width: "560px", height: "470px", left: "807px", top: "48px" }}
               >
                 <img
                   src={heroKD}
@@ -148,10 +148,10 @@ const HeroCarousel = () => {
                   draggable={false}
                   className="absolute z-0 select-none object-contain"
                   style={{
-                    width: "185.36px",
-                    height: "439.42px",
-                    left: "0px",
-                    top: "16.98px",
+                    width: "178px",
+                    height: "425px",
+                    left: "88px",
+                    top: "26px",
                     transform: "rotate(-23.47deg)",
                     transformOrigin: "center center",
                   }}
@@ -163,10 +163,10 @@ const HeroCarousel = () => {
                   draggable={false}
                   className="absolute z-0 select-none object-contain"
                   style={{
-                    width: "177.13px",
-                    height: "440.04px",
-                    left: "331.17px",
-                    top: "10.07px",
+                    width: "178px",
+                    height: "425px",
+                    left: "300px",
+                    top: "26px",
                     transform: "rotate(15.7deg)",
                     transformOrigin: "center center",
                   }}
@@ -180,7 +180,7 @@ const HeroCarousel = () => {
                   style={{
                     width: "178px",
                     height: "425px",
-                    left: "230.56px",
+                    left: "194px",
                     top: "0px",
                     filter: "drop-shadow(0px 4px 4px hsl(var(--foreground) / 0.25))",
                   }}
