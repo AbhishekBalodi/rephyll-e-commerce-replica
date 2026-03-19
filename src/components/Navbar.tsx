@@ -54,11 +54,7 @@ const NAV_CATEGORIES: NavCategory[] = [
   { label: "REVIEWS", path: "/testimonials" },
 ];
 
-const ANNOUNCEMENT_ITEMS = [
-  "🌿 Non-Toxic • Plant-Based • Family Safe",
-  "🎉 Flat 20% Off on Bundles | Code: CLEAN20",
-  "🚚 Free Shipping ₹499+ • Non-Toxic • Plant-Based • Family Safe",
-];
+const ANNOUNCEMENT_TEXT = "🌿 Flat 20% Off on Bundles | Code: CLEAN20 ✦ Free Shipping ₹499+ ✦ Non-Toxic • Plant-Based • Family Safe     ";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -130,19 +126,29 @@ const Navbar = () => {
     setMobileExpanded(mobileExpanded === label ? null : label);
   };
 
-  // Announcement marquee
-  const announcementText = ANNOUNCEMENT_ITEMS.join("     ");
-
   return (
     <>
-      {/* Top announcement strip - lime green with rotating text */}
-      <div className="w-full bg-accent overflow-hidden py-2">
+      {/* Top announcement strip - lime green, 40px height, marquee */}
+      <div
+        className="w-full overflow-hidden"
+        style={{
+          height: "40px",
+          background: "#CEF17B",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
         <div className="flex animate-marquee-slow whitespace-nowrap">
-          <span className="text-primary text-xs font-semibold tracking-wide mx-8">
-            {announcementText}     {announcementText}
-          </span>
-          <span className="text-primary text-xs font-semibold tracking-wide mx-8">
-            {announcementText}     {announcementText}
+          <span
+            style={{
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 400,
+              fontSize: "14px",
+              lineHeight: "20px",
+              color: "#064734",
+            }}
+          >
+            {ANNOUNCEMENT_TEXT}{ANNOUNCEMENT_TEXT}{ANNOUNCEMENT_TEXT}{ANNOUNCEMENT_TEXT}
           </span>
         </div>
       </div>
