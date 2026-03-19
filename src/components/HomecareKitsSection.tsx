@@ -148,37 +148,37 @@ const HomecareKitsSection = () => {
 
       {/* ===== SECTION 1: Smart Bundles / Single Products ===== */}
       <section className="relative bg-accent/30 py-16 px-4 md:px-6 overflow-hidden">
-        {/* Clover decorations */}
-        <img src={cloverLime} alt="" className="absolute top-[-30px] left-[-40px] w-[120px] opacity-20 pointer-events-none" />
-        <img src={cloverLime} alt="" className="absolute bottom-[-30px] right-[-40px] w-[120px] opacity-20 pointer-events-none" />
-        <img src={cloverLime} alt="" className="absolute top-[50%] right-[-20px] w-[80px] opacity-15 pointer-events-none" />
-        <img src={cloverLime} alt="" className="absolute bottom-[10%] left-[5%] w-[70px] opacity-10 pointer-events-none" />
+        {/* Clover decorations - behind content */}
+        <img src={cloverLime} alt="" className="absolute top-[-30px] left-[-40px] w-[180px] opacity-15 pointer-events-none z-0" />
+        <img src={cloverLime} alt="" className="absolute bottom-[-40px] right-[-40px] w-[180px] opacity-15 pointer-events-none z-0" />
+        <img src={cloverLime} alt="" className="absolute top-[50%] right-[-30px] w-[140px] opacity-10 pointer-events-none z-0" />
+        <img src={cloverLime} alt="" className="absolute bottom-[10%] left-[5%] w-[120px] opacity-8 pointer-events-none z-0" />
+        <img src={cloverLime} alt="" className="absolute top-[20%] left-[40%] w-[100px] opacity-6 pointer-events-none z-0" />
+        <img src={cloverLime} alt="" className="absolute top-[-20px] right-[30%] w-[130px] opacity-10 pointer-events-none z-0" />
 
-        <div className="max-w-7xl mx-auto">
-          {/* Tab Switcher */}
-          <div className="flex justify-center mb-12">
-            <div className="flex rounded-full overflow-hidden border border-primary">
-              <button
-                onClick={() => setActiveTab("bundles")}
-                className={`px-8 py-3 text-sm font-bold transition-all ${
-                  activeTab === "bundles"
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-background text-primary hover:bg-primary/5"
-                }`}
-              >
-                Smart Bundles
-              </button>
-              <button
-                onClick={() => setActiveTab("single")}
-                className={`px-8 py-3 text-sm font-bold transition-all ${
-                  activeTab === "single"
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-background text-primary hover:bg-primary/5"
-                }`}
-              >
-                Single Products
-              </button>
-            </div>
+        <div className="max-w-7xl mx-auto relative z-[1]">
+          {/* Tab Switcher - separate buttons */}
+          <div className="flex justify-center gap-4 mb-12">
+            <button
+              onClick={() => setActiveTab("bundles")}
+              className={`px-10 py-3.5 text-sm font-bold rounded-xl transition-all ${
+                activeTab === "bundles"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-background text-primary border-2 border-primary hover:bg-primary/5"
+              }`}
+            >
+              Smart Bundles
+            </button>
+            <button
+              onClick={() => setActiveTab("single")}
+              className={`px-10 py-3.5 text-sm font-bold rounded-xl transition-all ${
+                activeTab === "single"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-background text-primary border-2 border-primary hover:bg-primary/5"
+              }`}
+            >
+              Single Products
+            </button>
           </div>
 
           {/* Bundle Cards */}
@@ -206,9 +206,9 @@ const HomecareKitsSection = () => {
 
                     {/* Bottles image area */}
                     <div className="relative h-[240px] flex items-end justify-center mb-4">
-                      <img src={bundle.bottles[0]} alt="" className="h-[180px] object-contain -mr-4 relative z-0" />
-                      <img src={bundle.bottles[1]} alt="" className="h-[210px] object-contain relative z-10" />
-                      <img src={bundle.bottles[2]} alt="" className="h-[180px] object-contain -ml-4 relative z-0" />
+                      <img src={bundle.bottles[0]} alt="" className="h-[170px] object-contain relative z-0 origin-bottom" style={{ transform: 'rotate(-10deg)', marginRight: '-18px' }} />
+                      <img src={bundle.bottles[1]} alt="" className="h-[200px] object-contain relative z-10" />
+                      <img src={bundle.bottles[2]} alt="" className="h-[170px] object-contain relative z-0 origin-bottom" style={{ transform: 'rotate(10deg)', marginLeft: '-18px' }} />
                       <button className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/80 flex items-center justify-center">
                         <ChevronRight size={16} className="text-foreground" />
                       </button>
@@ -302,13 +302,16 @@ const HomecareKitsSection = () => {
 
       {/* ===== SECTION 2: Smart Savings - Stop Buying One ===== */}
       <section className="relative py-20 px-4 md:px-6 overflow-hidden" style={{ background: 'linear-gradient(135deg, hsl(160 84% 15%) 0%, hsl(160 50% 35%) 50%, hsl(158 60% 55%) 100%)' }}>
-        {/* Clover decorations */}
-        <img src={cloverDark} alt="" className="absolute top-[-20px] left-[-30px] w-[100px] opacity-15 pointer-events-none" />
-        <img src={cloverDark} alt="" className="absolute bottom-[-30px] right-[-20px] w-[110px] opacity-15 pointer-events-none" />
-        <img src={cloverDark} alt="" className="absolute top-[40%] right-[5%] w-[80px] opacity-10 pointer-events-none" />
-        <img src={cloverDark} alt="" className="absolute bottom-[20%] left-[8%] w-[70px] opacity-8 pointer-events-none" />
+        {/* Clover decorations - behind all content */}
+        <img src={cloverDark} alt="" className="absolute top-[-30px] left-[-40px] w-[180px] opacity-15 pointer-events-none z-0" />
+        <img src={cloverDark} alt="" className="absolute bottom-[-40px] right-[-30px] w-[190px] opacity-15 pointer-events-none z-0" />
+        <img src={cloverDark} alt="" className="absolute top-[40%] right-[5%] w-[150px] opacity-10 pointer-events-none z-0" />
+        <img src={cloverDark} alt="" className="absolute bottom-[15%] left-[8%] w-[130px] opacity-8 pointer-events-none z-0" />
+        <img src={cloverDark} alt="" className="absolute top-[-20px] right-[35%] w-[140px] opacity-10 pointer-events-none z-0" />
+        <img src={cloverDark} alt="" className="absolute bottom-[-30px] left-[40%] w-[160px] opacity-10 pointer-events-none z-0" />
+        <img src={cloverDark} alt="" className="absolute top-[60%] left-[30%] w-[120px] opacity-6 pointer-events-none z-0" />
 
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12 relative z-[1]">
           {/* Left text */}
           <div className="flex-1 text-primary-foreground">
             <div className="inline-flex items-center gap-2 bg-primary-foreground/10 backdrop-blur-sm rounded-full px-4 py-2 mb-6">
@@ -332,29 +335,29 @@ const HomecareKitsSection = () => {
             </button>
           </div>
 
-          {/* Right: Pricing cards */}
-          <div className="flex-1 grid grid-cols-3 gap-4">
+          {/* Right: Pricing cards - larger */}
+          <div className="flex-1 grid grid-cols-3 gap-5">
             {[
-              { qty: "1", price: 299, label: "Select 1 Bottle", save: null, bg: "bg-secondary" },
-              { qty: "2", price: 274, label: "Select 2 Bottles", save: "Save 8%", bg: "bg-secondary" },
-              { qty: "3+", price: 249, label: "Select 3+ Bottles", save: "Save 17%", bg: "bg-primary" },
+              { qty: "1", price: 299, label: "Select 1 Bottle", save: null },
+              { qty: "2", price: 274, label: "Select 2 Bottles", save: "Save 8%" },
+              { qty: "3+", price: 249, label: "Select 3+ Bottles", save: "Save 17%" },
             ].map((tier) => (
-              <div key={tier.qty} className="bg-background rounded-2xl p-5 text-center relative">
+              <div key={tier.qty} className="bg-background rounded-2xl p-6 md:p-8 text-center relative">
                 {tier.save && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex items-center gap-1 bg-primary-foreground border border-border text-primary text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
                     <TrendingDown size={12} />
                     {tier.save}
                   </div>
                 )}
-                <div className={`w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center ${tier.qty === "3+" ? "bg-primary text-primary-foreground" : "bg-secondary text-primary"}`}>
-                  <span className="text-2xl font-bold">{tier.qty}</span>
+                <div className={`w-20 h-20 rounded-full mx-auto mb-5 flex items-center justify-center ${tier.qty === "3+" ? "bg-primary text-primary-foreground" : "bg-secondary text-primary"}`}>
+                  <span className="text-3xl font-bold">{tier.qty}</span>
                 </div>
-                <div className="mb-4">
+                <div className="mb-5">
                   <span className="text-xs text-muted-foreground align-top">₹</span>
-                  <span className="text-4xl font-bold text-foreground">{tier.price}</span>
+                  <span className="text-5xl font-bold text-foreground">{tier.price}</span>
                   <span className="text-sm text-muted-foreground">/bottle</span>
                 </div>
-                <button className="w-full bg-accent text-primary font-bold py-2.5 rounded-full text-sm hover:opacity-90 transition-all">
+                <button className="w-full bg-accent text-primary font-bold py-3 rounded-full text-sm hover:opacity-90 transition-all">
                   {tier.label}
                 </button>
               </div>
@@ -366,12 +369,14 @@ const HomecareKitsSection = () => {
       {/* ===== SECTION 3: Everything Your Home Needs In One Kit ===== */}
       <section className="relative bg-accent/20 py-16 px-4 md:px-6 overflow-hidden">
         {/* Clover decorations */}
-        <img src={cloverLime} alt="" className="absolute top-[-20px] right-[-30px] w-[100px] opacity-15 pointer-events-none" />
-        <img src={cloverLime} alt="" className="absolute bottom-[-30px] left-[-20px] w-[100px] opacity-15 pointer-events-none" />
-        <img src={cloverLime} alt="" className="absolute top-[30%] left-[-15px] w-[70px] opacity-10 pointer-events-none" />
-        <img src={cloverLime} alt="" className="absolute bottom-[20%] right-[3%] w-[80px] opacity-10 pointer-events-none" />
+        <img src={cloverLime} alt="" className="absolute top-[-30px] right-[-40px] w-[170px] opacity-12 pointer-events-none z-0" />
+        <img src={cloverLime} alt="" className="absolute bottom-[-40px] left-[-30px] w-[170px] opacity-12 pointer-events-none z-0" />
+        <img src={cloverLime} alt="" className="absolute top-[30%] left-[-20px] w-[130px] opacity-8 pointer-events-none z-0" />
+        <img src={cloverLime} alt="" className="absolute bottom-[20%] right-[3%] w-[140px] opacity-8 pointer-events-none z-0" />
+        <img src={cloverLime} alt="" className="absolute top-[15%] left-[45%] w-[110px] opacity-6 pointer-events-none z-0" />
+        <img src={cloverLime} alt="" className="absolute bottom-[-20px] right-[40%] w-[120px] opacity-8 pointer-events-none z-0" />
 
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto relative z-[1]">
           <h2 className="text-3xl md:text-5xl font-bold text-center text-foreground mb-2" style={{ fontFamily: "'Source Sans 3', sans-serif" }}>
             Everything Your Home Needs. In One Kit.
           </h2>
@@ -385,11 +390,11 @@ const HomecareKitsSection = () => {
               const cartQty = cartItem?.quantity ?? 0;
               return (
                 <div key={kit.id} className="bg-primary rounded-2xl overflow-hidden">
-                  {/* Bottles image */}
+                  {/* Bottles image - arc arrangement */}
                   <div className="h-[200px] flex items-end justify-center pt-4 px-4 relative">
-                    <img src={kit.bottles[0]} alt="" className="h-[140px] object-contain -mr-3 relative z-0" />
-                    <img src={kit.bottles[1]} alt="" className="h-[160px] object-contain relative z-10" />
-                    <img src={kit.bottles[2]} alt="" className="h-[140px] object-contain -ml-3 relative z-0" />
+                    <img src={kit.bottles[0]} alt="" className="h-[120px] object-contain relative z-0 origin-bottom" style={{ transform: 'rotate(-10deg)', marginRight: '-12px' }} />
+                    <img src={kit.bottles[1]} alt="" className="h-[145px] object-contain relative z-10" />
+                    <img src={kit.bottles[2]} alt="" className="h-[120px] object-contain relative z-0 origin-bottom" style={{ transform: 'rotate(10deg)', marginLeft: '-12px' }} />
                   </div>
 
                   {/* Card content */}
