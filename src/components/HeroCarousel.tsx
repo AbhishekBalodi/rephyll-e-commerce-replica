@@ -5,6 +5,7 @@ import ascFront from "@/assets/ASC_Front.png";
 import dlFront from "@/assets/DL_Front.png";
 import kdFront from "@/assets/KD_Front.png";
 import cloverDark from "@/assets/clover-green-dark.png";
+import cloverLime from "@/assets/clover-lime.png";
 
 const slides = [
   {
@@ -33,46 +34,44 @@ const TRUST_ITEMS = [
 
 const cloverDecorations = [
   {
-    src: cloverDark,
-    alt: "",
+    src: cloverLime,
     className:
-      "absolute left-[-82px] top-[-72px] w-[240px] opacity-[0.16] pointer-events-none z-[1] select-none",
+      "absolute left-[-58px] top-[-42px] w-[230px] opacity-[0.18] pointer-events-none z-[1] select-none",
+  },
+  {
+    src: cloverLime,
+    className:
+      "absolute right-[-58px] top-[-42px] w-[230px] opacity-[0.18] pointer-events-none z-[1] select-none",
+  },
+  {
+    src: cloverLime,
+    className:
+      "absolute left-[-64px] bottom-[-64px] w-[224px] opacity-[0.16] pointer-events-none z-[1] select-none",
+  },
+  {
+    src: cloverLime,
+    className:
+      "absolute right-[-64px] bottom-[-64px] w-[224px] opacity-[0.16] pointer-events-none z-[1] select-none",
   },
   {
     src: cloverDark,
-    alt: "",
     className:
-      "absolute left-[-78px] bottom-[-82px] w-[240px] opacity-[0.16] pointer-events-none z-[1] select-none",
+      "absolute left-[19%] top-[50%] w-[148px] -translate-y-1/2 opacity-[0.16] pointer-events-none z-[1] select-none",
   },
   {
     src: cloverDark,
-    alt: "",
     className:
-      "absolute right-[-82px] top-[-72px] w-[240px] opacity-[0.16] pointer-events-none z-[1] select-none",
+      "absolute left-1/2 top-[9%] w-[212px] -translate-x-1/2 opacity-[0.15] pointer-events-none z-[1] select-none",
   },
   {
     src: cloverDark,
-    alt: "",
     className:
-      "absolute right-[-78px] bottom-[-82px] w-[240px] opacity-[0.16] pointer-events-none z-[1] select-none",
+      "absolute left-[52%] bottom-[2%] w-[198px] -translate-x-1/2 opacity-[0.14] pointer-events-none z-[1] select-none",
   },
   {
     src: cloverDark,
-    alt: "",
     className:
-      "absolute left-[20%] top-[53%] w-[168px] -translate-y-1/2 opacity-[0.14] pointer-events-none z-[1] select-none",
-  },
-  {
-    src: cloverDark,
-    alt: "",
-    className:
-      "absolute left-[47%] top-[48%] w-[148px] -translate-x-1/2 -translate-y-1/2 opacity-[0.08] pointer-events-none z-[1] select-none",
-  },
-  {
-    src: cloverDark,
-    alt: "",
-    className:
-      "absolute right-[18%] top-[30%] w-[178px] opacity-[0.12] pointer-events-none z-[1] select-none",
+      "absolute right-[18%] top-[33%] w-[150px] opacity-[0.12] pointer-events-none z-[1] select-none",
   },
 ];
 
@@ -96,12 +95,12 @@ const HeroCarousel = () => {
           className="pointer-events-none absolute inset-0 z-0"
           style={{
             background:
-              "radial-gradient(circle at 70% 48%, hsl(var(--accent) / 0.18) 0%, hsl(var(--accent) / 0.11) 22%, transparent 48%)",
+              "radial-gradient(circle at 71% 52%, hsl(var(--accent) / 0.26) 0%, hsl(var(--accent) / 0.14) 22%, transparent 47%)",
           }}
         />
 
         {cloverDecorations.map((clover, decorationIndex) => (
-          <img key={decorationIndex} src={clover.src} alt={clover.alt} className={clover.className} />
+          <img key={decorationIndex} src={clover.src} alt="" aria-hidden="true" className={clover.className} />
         ))}
 
         <AnimatePresence mode="wait">
@@ -114,7 +113,7 @@ const HeroCarousel = () => {
             className="absolute inset-0 z-[2] flex items-center"
           >
             <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between px-6 md:px-12">
-              <div className="z-10 flex-1 max-w-xl">
+              <div className="z-10 max-w-xl flex-1">
                 <h1 className="mb-4 whitespace-pre-line text-4xl font-bold leading-[1.1] text-primary-foreground md:text-[56px]">
                   {slides[index].heading}
                 </h1>
@@ -152,10 +151,10 @@ const HeroCarousel = () => {
 
               <div className="relative hidden h-full flex-1 items-end justify-center md:flex">
                 <div
-                  className="pointer-events-none absolute bottom-[7%] z-[1] h-[430px] w-[430px] rounded-full"
+                  className="pointer-events-none absolute bottom-[4%] z-[1] h-[470px] w-[470px] rounded-full"
                   style={{
                     background:
-                      "radial-gradient(circle, hsl(var(--accent) / 0.34) 0%, hsl(var(--accent) / 0.18) 34%, transparent 69%)",
+                      "radial-gradient(circle, hsl(var(--accent) / 0.34) 0%, hsl(var(--accent) / 0.2) 30%, transparent 68%)",
                   }}
                 />
 
@@ -165,37 +164,26 @@ const HeroCarousel = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -16 }}
                   transition={{ duration: 0.45, delay: 0.08 }}
-                  className="relative flex h-[420px] w-[560px] items-end justify-center overflow-visible"
+                  className="relative h-[430px] w-[590px] overflow-visible"
                 >
                   <img
                     src={kdFront}
                     alt="Kitchen Degreaser"
-                    className="relative z-[2] h-[328px] max-w-none origin-bottom object-contain drop-shadow-2xl"
-                    style={{
-                      transform: "translateX(88px) rotate(-18deg)",
-                      marginRight: "-170px",
-                      clipPath: "inset(0 15% 0 5%)",
-                    }}
+                    className="absolute bottom-[2px] left-[82px] z-[2] h-[324px] max-w-none origin-bottom object-contain drop-shadow-2xl"
+                    style={{ transform: "rotate(-18deg)" }}
                   />
 
                   <img
                     src={dlFront}
                     alt="Dishwash Liquid"
-                    className="relative z-[5] h-[392px] max-w-none object-contain drop-shadow-2xl"
-                    style={{
-                      clipPath: "inset(0 10% 0 10%)",
-                    }}
+                    className="absolute bottom-[16px] left-1/2 z-[5] h-[392px] max-w-none -translate-x-1/2 object-contain drop-shadow-2xl"
                   />
 
                   <img
                     src={ascFront}
                     alt="All Surface Cleaner"
-                    className="relative z-[2] h-[328px] max-w-none origin-bottom object-contain drop-shadow-2xl"
-                    style={{
-                      transform: "translateX(-88px) rotate(18deg)",
-                      marginLeft: "-170px",
-                      clipPath: "inset(0 5% 0 15%)",
-                    }}
+                    className="absolute bottom-[2px] right-[82px] z-[2] h-[324px] max-w-none origin-bottom object-contain drop-shadow-2xl"
+                    style={{ transform: "rotate(18deg)" }}
                   />
                 </motion.div>
               </div>
