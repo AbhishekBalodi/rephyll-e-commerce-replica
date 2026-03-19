@@ -48,37 +48,29 @@ const HeroCarousel = () => {
     <>
       {/* Hero Banner */}
       <div className="relative w-full overflow-hidden bg-primary" style={{ height: "520px" }}>
-        {/* Clover decorations */}
-        <img
-          src={cloverDark}
-          alt=""
-          className="absolute top-[-40px] left-[-50px] w-[140px] opacity-30 pointer-events-none"
-        />
-        <img
-          src={cloverDark}
-          alt=""
-          className="absolute bottom-[-30px] left-[15%] w-[100px] opacity-20 pointer-events-none"
-        />
-        <img
-          src={cloverDark}
-          alt=""
-          className="absolute top-[20%] right-[-40px] w-[120px] opacity-25 pointer-events-none"
-        />
-        <img
-          src={cloverLime}
-          alt=""
-          className="absolute top-[-20px] right-[30%] w-[80px] opacity-15 pointer-events-none"
-        />
-        <img
-          src={cloverLime}
-          alt=""
-          className="absolute bottom-[10%] right-[10%] w-[90px] opacity-10 pointer-events-none"
-        />
-        <img
-          src={cloverDark}
-          alt=""
-          className="absolute bottom-[-50px] right-[-30px] w-[130px] opacity-20 pointer-events-none"
-        />
+        {/* Large clover decorations - all four corners + middle areas */}
+        {/* Top-left corner */}
+        <img src={cloverDark} alt="" className="absolute top-[-30px] left-[-30px] w-[220px] opacity-30 pointer-events-none" />
+        {/* Top-center */}
+        <img src={cloverDark} alt="" className="absolute top-[-20px] left-[35%] w-[180px] opacity-20 pointer-events-none" />
+        {/* Top-right corner */}
+        <img src={cloverDark} alt="" className="absolute top-[-30px] right-[-30px] w-[240px] opacity-30 pointer-events-none" />
+        {/* Middle-left */}
+        <img src={cloverLime} alt="" className="absolute top-[35%] left-[-20px] w-[160px] opacity-20 pointer-events-none" />
+        {/* Center behind bottles */}
+        <img src={cloverDark} alt="" className="absolute top-[40%] left-[50%] w-[200px] opacity-15 pointer-events-none -translate-x-1/2" />
+        {/* Middle-right */}
+        <img src={cloverLime} alt="" className="absolute top-[25%] right-[-20px] w-[180px] opacity-20 pointer-events-none" />
+        {/* Bottom-left corner */}
+        <img src={cloverDark} alt="" className="absolute bottom-[-40px] left-[-20px] w-[220px] opacity-25 pointer-events-none" />
+        {/* Bottom-center */}
+        <img src={cloverDark} alt="" className="absolute bottom-[-30px] left-[45%] w-[200px] opacity-20 pointer-events-none" />
+        {/* Bottom-right corner */}
+        <img src={cloverDark} alt="" className="absolute bottom-[-40px] right-[-30px] w-[240px] opacity-30 pointer-events-none" />
+        {/* Extra fill - between top-left and center */}
+        <img src={cloverLime} alt="" className="absolute top-[10%] left-[18%] w-[140px] opacity-15 pointer-events-none" />
+        {/* Extra fill - right side mid-bottom */}
+        <img src={cloverDark} alt="" className="absolute bottom-[15%] right-[15%] w-[160px] opacity-20 pointer-events-none" />
 
         <AnimatePresence mode="wait">
           <motion.div
