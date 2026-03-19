@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import ascFront from "@/assets/ASC_Front.png";
 import dlFront from "@/assets/DL_Front.png";
 import kdFront from "@/assets/KD_Front.png";
 import cloverDark from "@/assets/clover-green-dark.png";
-import cloverLime from "@/assets/clover-lime.png";
 
 const slides = [
   {
@@ -32,6 +31,51 @@ const TRUST_ITEMS = [
   "Dermatologically Safe",
 ];
 
+const cloverDecorations = [
+  {
+    src: cloverDark,
+    alt: "",
+    className:
+      "absolute left-[-82px] top-[-72px] w-[240px] opacity-[0.16] pointer-events-none z-[1] select-none",
+  },
+  {
+    src: cloverDark,
+    alt: "",
+    className:
+      "absolute left-[-78px] bottom-[-82px] w-[240px] opacity-[0.16] pointer-events-none z-[1] select-none",
+  },
+  {
+    src: cloverDark,
+    alt: "",
+    className:
+      "absolute right-[-82px] top-[-72px] w-[240px] opacity-[0.16] pointer-events-none z-[1] select-none",
+  },
+  {
+    src: cloverDark,
+    alt: "",
+    className:
+      "absolute right-[-78px] bottom-[-82px] w-[240px] opacity-[0.16] pointer-events-none z-[1] select-none",
+  },
+  {
+    src: cloverDark,
+    alt: "",
+    className:
+      "absolute left-[20%] top-[53%] w-[168px] -translate-y-1/2 opacity-[0.14] pointer-events-none z-[1] select-none",
+  },
+  {
+    src: cloverDark,
+    alt: "",
+    className:
+      "absolute left-[47%] top-[48%] w-[148px] -translate-x-1/2 -translate-y-1/2 opacity-[0.08] pointer-events-none z-[1] select-none",
+  },
+  {
+    src: cloverDark,
+    alt: "",
+    className:
+      "absolute right-[18%] top-[30%] w-[178px] opacity-[0.12] pointer-events-none z-[1] select-none",
+  },
+];
+
 const HeroCarousel = () => {
   const [index, setIndex] = useState(0);
 
@@ -39,24 +83,26 @@ const HeroCarousel = () => {
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % slides.length);
     }, 5000);
+
     return () => clearInterval(timer);
   }, []);
 
-  const marqueeText = TRUST_ITEMS.map((t) => `${t} ✦`).join("  ");
+  const marqueeText = TRUST_ITEMS.map((item) => `${item} ✦`).join("  ");
 
   return (
     <>
-      {/* Hero Banner */}
-      <div className="relative w-full overflow-hidden bg-primary" style={{ height: "520px" }}>
-        {/* Clover decorations */}
-        <img src={cloverDark} alt="" className="absolute top-[-30px] left-[-40px] w-[200px] opacity-25 pointer-events-none z-[1]" />
-        <img src={cloverDark} alt="" className="absolute bottom-[-40px] left-[-30px] w-[180px] opacity-20 pointer-events-none z-[1]" />
-        <img src={cloverLime} alt="" className="absolute top-[35%] left-[25%] w-[160px] opacity-10 pointer-events-none z-[1]" />
-        <img src={cloverDark} alt="" className="absolute top-[-30px] right-[-30px] w-[200px] opacity-25 pointer-events-none z-[1]" />
-        <img src={cloverDark} alt="" className="absolute bottom-[-40px] right-[-30px] w-[190px] opacity-20 pointer-events-none z-[1]" />
-        <img src={cloverLime} alt="" className="absolute top-[20%] right-[20%] w-[140px] opacity-12 pointer-events-none z-[1]" />
-        <img src={cloverDark} alt="" className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[120px] opacity-8 pointer-events-none z-[1]" />
-        <img src={cloverLime} alt="" className="absolute bottom-[15%] left-[10%] w-[130px] opacity-10 pointer-events-none z-[1]" />
+      <div className="relative isolate w-full overflow-hidden bg-primary" style={{ height: "520px" }}>
+        <div
+          className="pointer-events-none absolute inset-0 z-0"
+          style={{
+            background:
+              "radial-gradient(circle at 70% 48%, hsl(var(--accent) / 0.18) 0%, hsl(var(--accent) / 0.11) 22%, transparent 48%)",
+          }}
+        />
+
+        {cloverDecorations.map((clover, decorationIndex) => (
+          <img key={decorationIndex} src={clover.src} alt={clover.alt} className={clover.className} />
+        ))}
 
         <AnimatePresence mode="wait">
           <motion.div
@@ -64,76 +110,92 @@ const HeroCarousel = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.6 }}
-            className="absolute inset-0 flex items-center z-[2]"
+            transition={{ duration: 0.45 }}
+            className="absolute inset-0 z-[2] flex items-center"
           >
-            <div className="max-w-7xl mx-auto w-full px-6 md:px-12 flex items-center justify-between h-full">
-              {/* Left: Text */}
-              <div className="flex-1 max-w-xl z-10">
-                <h1 className="text-4xl md:text-[56px] font-display font-bold text-primary-foreground leading-[1.1] whitespace-pre-line mb-4">
+            <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between px-6 md:px-12">
+              <div className="z-10 flex-1 max-w-xl">
+                <h1 className="mb-4 whitespace-pre-line text-4xl font-bold leading-[1.1] text-primary-foreground md:text-[56px]">
                   {slides[index].heading}
                 </h1>
-                <div className="flex items-start gap-3 mb-8">
-                  <div className="w-1 h-12 bg-accent rounded-full mt-1 flex-shrink-0" />
-                  <p className="text-primary-foreground/80 text-base md:text-lg max-w-md">
+
+                <div className="mb-8 flex items-start gap-3">
+                  <div className="mt-1 h-12 w-1 flex-shrink-0 rounded-full bg-accent" />
+                  <p className="max-w-md text-base text-primary-foreground/80 md:text-lg">
                     {slides[index].subtext}
                   </p>
                 </div>
+
                 <div className="flex gap-4">
                   <button
                     onClick={() => {
-                      const el = document.getElementById("products-section");
-                      el?.scrollIntoView({ behavior: "smooth" });
+                      const element = document.getElementById("products-section");
+                      element?.scrollIntoView({ behavior: "smooth" });
                     }}
-                    className="bg-accent text-primary font-bold px-8 py-3.5 rounded-full text-sm tracking-wider hover:opacity-90 transition-all flex items-center gap-2"
+                    className="flex items-center gap-2 rounded-full bg-accent px-8 py-3.5 text-sm font-bold tracking-wider text-primary transition-all hover:opacity-90"
                   >
                     Shop now
                     <ArrowRight size={16} />
                   </button>
+
                   <button
                     onClick={() => {
-                      const el = document.getElementById("homecare-kits-section");
-                      if (el) el.scrollIntoView({ behavior: "smooth" });
+                      const element = document.getElementById("homecare-kits-section");
+                      element?.scrollIntoView({ behavior: "smooth" });
                     }}
-                    className="bg-primary-foreground text-primary font-bold px-8 py-3.5 rounded-full text-sm tracking-wider hover:opacity-90 transition-all"
+                    className="rounded-full bg-primary-foreground px-8 py-3.5 text-sm font-bold tracking-wider text-primary transition-all hover:opacity-90"
                   >
                     Explore Kits
                   </button>
                 </div>
               </div>
 
-              {/* Right: 3 bottles tightly grouped - bottoms touching, heads fanning in arc */}
-              <div className="hidden md:flex flex-1 items-end justify-center h-full relative">
-                {/* Halo glow */}
-                <div className="absolute bottom-[10%] w-[400px] h-[400px] rounded-full opacity-25 pointer-events-none" style={{ background: 'radial-gradient(circle, hsl(82 82% 71% / 0.7) 0%, hsl(158 60% 50% / 0.3) 50%, transparent 75%)' }} />
+              <div className="relative hidden h-full flex-1 items-end justify-center md:flex">
+                <div
+                  className="pointer-events-none absolute bottom-[7%] z-[1] h-[430px] w-[430px] rounded-full"
+                  style={{
+                    background:
+                      "radial-gradient(circle, hsl(var(--accent) / 0.34) 0%, hsl(var(--accent) / 0.18) 34%, transparent 69%)",
+                  }}
+                />
+
                 <motion.div
                   key={`bottles-${index}`}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 24 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                  className="relative flex items-end justify-center"
-                  style={{ marginBottom: '-10px' }}
+                  exit={{ opacity: 0, y: -16 }}
+                  transition={{ duration: 0.45, delay: 0.08 }}
+                  className="relative flex h-[420px] w-[560px] items-end justify-center overflow-visible"
                 >
-                  {/* Left bottle (Kitchen Degreaser) - tilted left, tight overlap */}
                   <img
                     src={kdFront}
                     alt="Kitchen Degreaser"
-                    className="h-[320px] object-contain drop-shadow-2xl relative z-[1] origin-bottom"
-                    style={{ transform: 'rotate(-15deg)', marginRight: '-70px', marginBottom: '0px' }}
+                    className="relative z-[2] h-[328px] max-w-none origin-bottom object-contain drop-shadow-2xl"
+                    style={{
+                      transform: "translateX(88px) rotate(-18deg)",
+                      marginRight: "-170px",
+                      clipPath: "inset(0 15% 0 5%)",
+                    }}
                   />
-                  {/* Center bottle (Dishwash Liquid) - upright, tallest, on top */}
+
                   <img
                     src={dlFront}
                     alt="Dishwash Liquid"
-                    className="h-[380px] object-contain drop-shadow-2xl relative z-[5]"
+                    className="relative z-[5] h-[392px] max-w-none object-contain drop-shadow-2xl"
+                    style={{
+                      clipPath: "inset(0 10% 0 10%)",
+                    }}
                   />
-                  {/* Right bottle (All Surface Cleaner) - tilted right, tight overlap */}
+
                   <img
                     src={ascFront}
                     alt="All Surface Cleaner"
-                    className="h-[320px] object-contain drop-shadow-2xl relative z-[1] origin-bottom"
-                    style={{ transform: 'rotate(15deg)', marginLeft: '-70px', marginBottom: '0px' }}
+                    className="relative z-[2] h-[328px] max-w-none origin-bottom object-contain drop-shadow-2xl"
+                    style={{
+                      transform: "translateX(-88px) rotate(18deg)",
+                      marginLeft: "-170px",
+                      clipPath: "inset(0 5% 0 15%)",
+                    }}
                   />
                 </motion.div>
               </div>
@@ -141,30 +203,27 @@ const HeroCarousel = () => {
           </motion.div>
         </AnimatePresence>
 
-        {/* Dots */}
-        <div className="absolute bottom-6 left-6 md:left-12 flex gap-2 z-10">
-          {slides.map((_, i) => (
+        <div className="absolute bottom-6 left-6 z-10 flex gap-2 md:left-12">
+          {slides.map((_, slideIndex) => (
             <button
-              key={i}
-              onClick={() => setIndex(i)}
+              key={slideIndex}
+              onClick={() => setIndex(slideIndex)}
+              aria-label={`Go to slide ${slideIndex + 1}`}
               className={`h-3 rounded-full transition-all ${
-                i === index
-                  ? "bg-primary-foreground w-8"
-                  : "bg-primary-foreground/40 w-3"
+                slideIndex === index ? "w-8 bg-primary-foreground" : "w-3 bg-primary-foreground/40"
               }`}
             />
           ))}
         </div>
       </div>
 
-      {/* Trust Marquee Strip */}
-      <div className="bg-primary overflow-hidden py-3">
+      <div className="overflow-hidden bg-primary py-3">
         <div className="flex animate-marquee whitespace-nowrap">
-          <span className="text-primary-foreground text-sm font-semibold tracking-wide mx-4">
-            {marqueeText}  {marqueeText}
+          <span className="mx-4 text-sm font-semibold tracking-wide text-primary-foreground">
+            {marqueeText} {marqueeText}
           </span>
-          <span className="text-primary-foreground text-sm font-semibold tracking-wide mx-4">
-            {marqueeText}  {marqueeText}
+          <span className="mx-4 text-sm font-semibold tracking-wide text-primary-foreground">
+            {marqueeText} {marqueeText}
           </span>
         </div>
       </div>
