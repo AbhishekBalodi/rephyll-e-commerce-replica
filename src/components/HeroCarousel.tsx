@@ -108,8 +108,8 @@ const HeroCarousel = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -14 }}
                 transition={{ duration: 0.45, delay: 0.1 }}
-                className="absolute z-[5]"
-                style={{ right: "100px", bottom: "20px" }}
+                className="absolute z-[5] flex items-end justify-center"
+                style={{ right: "0", bottom: "20px", left: "50%", width: "50%" }}
               >
                 <img
                   src={heroBottles}
