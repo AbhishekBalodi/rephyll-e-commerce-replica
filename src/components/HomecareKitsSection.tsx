@@ -156,89 +156,93 @@ const HomecareKitsSection = () => {
   return (
     <div id="homecare-kits-section">
       {/* ===== SECTION 1: Smart Bundles / Single Products ===== */}
-      <section className="relative py-16 px-4 md:px-6 overflow-hidden" style={{ background: "hsl(75 60% 88%)" }}>
-        {/* Large clovers in section corners - NOT inside cards */}
-        <img src={cloverDark} alt="" className="absolute top-[-60px] left-[-60px] w-[280px] opacity-[0.25] pointer-events-none z-0" />
-        <img src={cloverDark} alt="" className="absolute top-[-60px] right-[-60px] w-[280px] opacity-[0.25] pointer-events-none z-0" />
-        <img src={cloverDark} alt="" className="absolute bottom-[-60px] left-[-60px] w-[280px] opacity-[0.25] pointer-events-none z-0" />
-        <img src={cloverDark} alt="" className="absolute bottom-[-60px] right-[-60px] w-[280px] opacity-[0.25] pointer-events-none z-0" />
-        <img src={cloverDark} alt="" className="absolute top-[40%] left-1/2 -translate-x-1/2 w-[220px] opacity-[0.15] pointer-events-none z-0" />
+      <section className="relative min-h-[897px] overflow-hidden bg-accent/30 py-10">
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute left-[-72px] top-[-54px] z-0 w-[240px] opacity-[0.18]" />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute right-[-52px] top-[18px] z-0 w-[220px] opacity-[0.18]" />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute bottom-[-58px] left-[-54px] z-0 w-[220px] opacity-[0.14]" />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute bottom-[-62px] right-[-44px] z-0 w-[228px] opacity-[0.14]" />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute bottom-[126px] left-1/2 z-0 w-[180px] -translate-x-1/2 opacity-[0.1]" />
 
-        <div className="max-w-7xl mx-auto relative z-[1]">
-          {/* Tab Switcher */}
-          <div className="flex justify-center gap-4 mb-12">
+        <div className="relative z-[1] mx-auto max-w-[1440px] px-4 md:px-6">
+          <div className="mb-10 flex justify-center gap-3">
             <button
               onClick={() => setActiveTab("bundles")}
-              className={`px-10 py-3.5 text-sm font-bold rounded-xl transition-all ${
+              className={`min-w-[156px] rounded-[10px] px-8 py-2.5 text-[12px] font-semibold transition-all ${
                 activeTab === "bundles"
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-background text-primary border-2 border-primary hover:bg-primary/5"
+                  ? "bg-primary text-primary-foreground shadow-[0_8px_20px_hsl(var(--primary)/0.18)]"
+                  : "bg-background text-primary shadow-[0_6px_16px_hsl(var(--primary)/0.08)]"
               }`}
+              style={{ fontFamily: "'Poppins', sans-serif" }}
             >
               Smart Bundles
             </button>
             <button
               onClick={() => setActiveTab("single")}
-              className={`px-10 py-3.5 text-sm font-bold rounded-xl transition-all ${
+              className={`min-w-[156px] rounded-[10px] px-8 py-2.5 text-[12px] font-semibold transition-all ${
                 activeTab === "single"
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-background text-primary border-2 border-primary hover:bg-primary/5"
+                  ? "bg-primary text-primary-foreground shadow-[0_8px_20px_hsl(var(--primary)/0.18)]"
+                  : "bg-background text-primary shadow-[0_6px_16px_hsl(var(--primary)/0.08)]"
               }`}
+              style={{ fontFamily: "'Poppins', sans-serif" }}
             >
               Single Products
             </button>
           </div>
 
-          {/* Bundle Cards */}
           {activeTab === "bundles" && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
               {BUNDLES.map((bundle) => {
                 const cartItem = items.find((i) => i.productId === bundle.id);
                 const cartQty = cartItem?.quantity ?? 0;
+
                 return (
-                  <div key={bundle.id} className="rounded-2xl overflow-hidden shadow-lg">
-                    {/* Top half - diagonal gradient with bottle */}
-                    <div className="relative h-[320px] p-5" style={{ background: "linear-gradient(135deg, hsl(75 50% 82%) 0%, hsl(75 55% 88%) 60%, hsl(80 50% 90%) 100%)" }}>
-                      {/* Discount + icons */}
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="text-xs font-bold text-primary bg-background/80 px-3 py-1.5 rounded-full">
+                  <div
+                    key={bundle.id}
+                    className="overflow-hidden rounded-2xl bg-background shadow-[0_18px_42px_hsl(var(--primary)/0.08)]"
+                  >
+                    <div
+                      className="relative h-[320px] p-5"
+                      style={{
+                        background:
+                          "linear-gradient(180deg, hsl(var(--accent) / 0.58) 0%, hsl(var(--accent) / 0.38) 58%, hsl(var(--background)) 100%)",
+                      }}
+                    >
+                      <div className="mb-3 flex items-center justify-between">
+                        <span className="rounded-full bg-background/85 px-3 py-1.5 text-xs font-bold text-primary">
                           {bundle.discount}% Off
                         </span>
                         <div className="flex gap-2">
-                          <button className="w-9 h-9 rounded-full bg-background/80 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>
+                          <button className="flex h-9 w-9 items-center justify-center rounded-full bg-background/85 text-muted-foreground transition-colors hover:text-foreground">
+                            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>
                           </button>
-                          <button className="w-9 h-9 rounded-full bg-background/80 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                          <button className="flex h-9 w-9 items-center justify-center rounded-full bg-background/85 text-muted-foreground transition-colors hover:text-foreground">
+                            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
                           </button>
                         </div>
                       </div>
 
-                      {/* Single bottle image */}
-                      <div className="flex items-center justify-center h-[220px]">
+                      <div className="flex h-[220px] items-center justify-center">
                         <img src={ascFront2} alt={bundle.name} className="h-[210px] object-contain" />
-                        <button className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-background/80 flex items-center justify-center">
+                        <button className="absolute right-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-background/85">
                           <ChevronRight size={16} className="text-foreground" />
                         </button>
                       </div>
 
-                      {/* Dots */}
-                      <div className="flex justify-center gap-1.5 mt-2">
-                        <span className="w-6 h-1.5 rounded-full bg-primary" />
-                        <span className="w-1.5 h-1.5 rounded-full bg-primary/30" />
-                        <span className="w-1.5 h-1.5 rounded-full bg-primary/30" />
+                      <div className="mt-2 flex justify-center gap-1.5">
+                        <span className="h-1.5 w-6 rounded-full bg-primary" />
+                        <span className="h-1.5 w-1.5 rounded-full bg-primary/30" />
+                        <span className="h-1.5 w-1.5 rounded-full bg-primary/30" />
                       </div>
                     </div>
 
-                    {/* Bottom half - white */}
                     <div className="bg-background p-5 pt-4">
                       <h3 className="text-lg font-bold text-foreground">{bundle.name}</h3>
-                      <p className="text-sm text-primary mb-2">({bundle.productCount} Products)</p>
-                      <div className="flex items-center gap-2 mb-2">
+                      <p className="mb-2 text-sm text-primary">({bundle.productCount} Products)</p>
+                      <div className="mb-2 flex items-center gap-2">
                         <StarRating rating={bundle.rating} />
                         <span className="text-sm text-muted-foreground">{bundle.rating} ({bundle.reviewCount} reviews)</span>
                       </div>
-                      <div className="flex items-center gap-2 mb-4">
+                      <div className="mb-4 flex items-center gap-2">
                         <span className="text-2xl font-bold text-foreground">₹{bundle.price}</span>
                         <span className="text-sm text-muted-foreground line-through">₹{bundle.originalPrice}</span>
                       </div>
@@ -254,7 +258,7 @@ const HomecareKitsSection = () => {
                       ) : (
                         <button
                           onClick={() => handleAddBundle(bundle)}
-                          className="w-full bg-primary text-primary-foreground font-bold py-3 rounded-lg flex items-center justify-center gap-2 hover:opacity-90 transition-colors"
+                          className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-3 font-bold text-primary-foreground transition-colors hover:opacity-90"
                         >
                           <ShoppingCart size={16} />
                           Add to Cart
@@ -267,35 +271,43 @@ const HomecareKitsSection = () => {
             </div>
           )}
 
-          {/* Single Products */}
           {activeTab === "single" && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
               {SINGLE_PRODUCTS.map((product) => {
                 const cartItem = items.find((i) => i.productId === product.id);
                 const cartQty = cartItem?.quantity ?? 0;
+
                 return (
-                  <div key={product.id} className="rounded-2xl overflow-hidden shadow-lg">
-                    {/* Top half - diagonal gradient */}
-                    <div className="relative h-[320px] p-5" style={{ background: "linear-gradient(135deg, hsl(75 50% 82%) 0%, hsl(75 55% 88%) 60%, hsl(80 50% 90%) 100%)" }}>
-                      <span className="text-xs font-bold text-primary bg-background/80 px-3 py-1.5 rounded-full">
+                  <div
+                    key={product.id}
+                    className="overflow-hidden rounded-2xl bg-background shadow-[0_18px_42px_hsl(var(--primary)/0.08)]"
+                  >
+                    <div
+                      className="relative h-[320px] p-5"
+                      style={{
+                        background:
+                          "linear-gradient(180deg, hsl(var(--accent) / 0.58) 0%, hsl(var(--accent) / 0.38) 58%, hsl(var(--background)) 100%)",
+                      }}
+                    >
+                      <span className="rounded-full bg-background/85 px-3 py-1.5 text-xs font-bold text-primary">
                         {product.discount}% Off
                       </span>
-                      <div className="flex items-center justify-center h-[240px]">
+                      <div className="flex h-[240px] items-center justify-center">
                         <img src={ascFront2} alt={product.name} className="h-[210px] object-contain" />
-                        <button className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-background/80 flex items-center justify-center">
+                        <button className="absolute right-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-background/85">
                           <ChevronRight size={16} className="text-foreground" />
                         </button>
                       </div>
-                      <div className="flex justify-center gap-1.5 mt-2">
-                        <span className="w-6 h-1.5 rounded-full bg-primary" />
-                        <span className="w-1.5 h-1.5 rounded-full bg-primary/30" />
-                        <span className="w-1.5 h-1.5 rounded-full bg-primary/30" />
+                      <div className="mt-2 flex justify-center gap-1.5">
+                        <span className="h-1.5 w-6 rounded-full bg-primary" />
+                        <span className="h-1.5 w-1.5 rounded-full bg-primary/30" />
+                        <span className="h-1.5 w-1.5 rounded-full bg-primary/30" />
                       </div>
                     </div>
-                    {/* Bottom half - white */}
+
                     <div className="bg-background p-5 pt-4">
-                      <h3 className="text-lg font-bold text-foreground mb-2">{product.name}</h3>
-                      <div className="flex items-center gap-2 mb-4">
+                      <h3 className="mb-2 text-lg font-bold text-foreground">{product.name}</h3>
+                      <div className="mb-4 flex items-center gap-2">
                         <span className="text-2xl font-bold text-foreground">₹{product.price}</span>
                         <span className="text-sm text-muted-foreground line-through">₹{product.originalPrice}</span>
                       </div>
@@ -310,7 +322,7 @@ const HomecareKitsSection = () => {
                       ) : (
                         <button
                           onClick={() => addToCart({ productId: product.id, name: product.name, price: product.price, originalPrice: product.originalPrice, image: "/placeholder.svg" })}
-                          className="w-full bg-primary text-primary-foreground font-bold py-3 rounded-lg flex items-center justify-center gap-2 hover:opacity-90 transition-colors"
+                          className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-3 font-bold text-primary-foreground transition-colors hover:opacity-90"
                         >
                           <ShoppingCart size={16} />
                           Add to Cart
