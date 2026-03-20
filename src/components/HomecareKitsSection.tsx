@@ -719,30 +719,12 @@ const HomecareKitsSection = () => {
         }}
       >
         {/* Clover decorations - exact Figma positions relative to 1440px section */}
-        {/* Top-center clover: 293x293 at left:319, top:-84 — with white overlay */}
-        <div className="absolute pointer-events-none z-0" style={{ width: "293px", height: "293px", left: "calc(50% - 720px + 319px)", top: "-84px" }}>
-          <img src={cloverDarkGreen} alt="" aria-hidden="true" className="w-full h-full" style={{ opacity: 0.15 }} />
-          <div className="absolute inset-0" style={{ background: "rgba(255, 255, 255, 0.3)", borderRadius: "50%" }} />
-        </div>
-        {/* Left clover: 293x293 at left:-61, top:63 */}
-        <div className="absolute pointer-events-none z-0" style={{ width: "293px", height: "293px", left: "calc(50% - 720px + -61px)", top: "63px" }}>
-          <img src={cloverDarkGreen} alt="" aria-hidden="true" className="w-full h-full" style={{ opacity: 0.15 }} />
-          <div className="absolute inset-0" style={{ background: "rgba(255, 255, 255, 0.3)", borderRadius: "50%" }} />
-        </div>
-        {/* Bottom-left clover: 227x227 at left:5, top:576 */}
-        <div className="absolute pointer-events-none z-0" style={{ width: "227px", height: "227px", left: "calc(50% - 720px + 5px)", top: "576px" }}>
-          <img src={cloverDarkGreen} alt="" aria-hidden="true" className="w-full h-full" style={{ opacity: 0.15 }} />
-          <div className="absolute inset-0" style={{ background: "rgba(255, 255, 255, 0.3)", borderRadius: "50%" }} />
-        </div>
-        {/* Center clover: 221x221 at left:720, top:266 */}
-        <div className="absolute pointer-events-none z-0" style={{ width: "221px", height: "221px", left: "calc(50% - 720px + 720px)", top: "266px" }}>
-          <img src={cloverDarkGreen} alt="" aria-hidden="true" className="w-full h-full" style={{ opacity: 0.12 }} />
-        </div>
-        {/* Right-top clover (lime): 245x245 at left:1250, top:50 */}
+        <img src={cloverDarkGreen} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "293px", height: "293px", left: "calc(50% - 720px + 319px)", top: "-84px", opacity: 0.08 }} />
+        <img src={cloverDarkGreen} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "293px", height: "293px", left: "calc(50% - 720px + -61px)", top: "63px", opacity: 0.08 }} />
+        <img src={cloverDarkGreen} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "227px", height: "227px", left: "calc(50% - 720px + 5px)", top: "576px", opacity: 0.08 }} />
+        <img src={cloverDarkGreen} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "221px", height: "221px", left: "calc(50% - 720px + 720px)", top: "266px", opacity: 0.07 }} />
         <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "245px", height: "245px", left: "calc(50% - 720px + 1250px)", top: "50px", opacity: 0.2 }} />
-        {/* Right-bottom clover (lime): 267x267 at left:1215, top:581 */}
         <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "267px", height: "267px", left: "calc(50% - 720px + 1215px)", top: "581px", opacity: 0.2 }} />
-        {/* Bottom-center clover (lime): 180x180 at left:891, top:600 */}
         <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "180px", height: "180px", left: "calc(50% - 720px + 891px)", top: "600px", opacity: 0.18 }} />
 
         <div
