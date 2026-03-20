@@ -4,6 +4,8 @@ import { useCart } from "@/contexts/CartContext";
 import QuantityCapsule from "./QuantityCapsule";
 import cloverLime from "@/assets/clover-lime.png";
 import cloverDark from "@/assets/clover-green-dark.png";
+import cloverDarkGreen from "@/assets/clover-dark-green.png";
+import kitsSectionBg from "@/assets/kits-section-bg.png";
 import ascFront from "@/assets/ASC_Front.png";
 import dlFront from "@/assets/DL_Front.png";
 import kdFront from "@/assets/KD_Front.png";
