@@ -153,7 +153,7 @@ const Navbar = () => {
               color: "#064734",
             }}
           >
-            {ANNOUNCEMENT_TEXT}{ANNOUNCEMENT_TEXT}{ANNOUNCEMENT_TEXT}{ANNOUNCEMENT_TEXT}
+            {`${ANNOUNCEMENT_TEXT}          ${ANNOUNCEMENT_TEXT}          ${ANNOUNCEMENT_TEXT}          ${ANNOUNCEMENT_TEXT}`}
           </span>
         </div>
       </div>
