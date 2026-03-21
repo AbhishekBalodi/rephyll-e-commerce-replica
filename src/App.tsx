@@ -50,6 +50,7 @@ const App = () => (
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/product/:slug" element={<ProductPage />} />
+              <Route path="/category/:slug" element={<CategoryPage />} />
               <Route path="/admin/add-product" element={<AdminAddProduct />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
