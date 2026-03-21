@@ -22,6 +22,7 @@ import SignupPage from "./pages/SignupPage.tsx";
 import CartPage from "./pages/CartPage.tsx";
 import AdminAddProduct from "./pages/AdminAddProduct.tsx";
 import ProductPage from "./pages/ProductPage.tsx";
+import CategoryPage from "./pages/CategoryPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +50,7 @@ const App = () => (
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/product/:slug" element={<ProductPage />} />
+              <Route path="/category/:slug" element={<CategoryPage />} />
               <Route path="/admin/add-product" element={<AdminAddProduct />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
