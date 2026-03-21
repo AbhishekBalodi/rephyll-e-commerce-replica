@@ -5,10 +5,10 @@ import ProductDetail from "@/components/ProductDetail";
 import { useProductDetail } from "@/hooks/useProducts";
 
 const ProductPage = () => {
-  const { id } = useParams<{ id: string }>();
+  const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-  const productId = id ? parseInt(id, 10) : null;
-  const { data: product, isLoading } = useProductDetail(productId);
+  // slug can be either a slug string or a numeric ID
+  const { data: product, isLoading } = useProductDetail(slug || null);
 
   const handleBack = () => {
     navigate("/");

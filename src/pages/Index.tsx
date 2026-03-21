@@ -26,7 +26,7 @@ const Index = () => {
   const products = productsData?.content ?? [];
 
   const handleProductClick = (product: ApiProduct) => {
-    navigate(`/product/${product.id}`);
+    navigate(`/product/${product.slug || product.id}`);
   };
 
   const handleCategoryClick = (categoryId: number) => {

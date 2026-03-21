@@ -137,6 +137,93 @@ class ApiService {
   async healthCheck(): Promise<ApiResponse> {
     return this.request('/health');
   }
+
+  /**
+   * Get paginated list of blogs with optional search, filter, and sorting.
+   */
+  async getBlogList(params: {
+    page?: number;
+    size?: number;
+    search?: string;
+    categoryId?: number;
+    sortBy?: string;
+    direction?: 'ASC' | 'DESC';
+  } = {}): Promise<ApiResponse> {
+    const queryParams = new URLSearchParams();
+    if (params.page !== undefined) queryParams.append('page', params.page.toString());
+    if (params.size !== undefined) queryParams.append('size', params.size.toString());
+    if (params.search) queryParams.append('search', params.search);
+    if (params.categoryId) queryParams.append('categoryId', params.categoryId.toString());
+    if (params.sortBy) queryParams.append('sortBy', params.sortBy);
+    if (params.direction) queryParams.append('direction', params.direction);
+
+    const queryString = queryParams.toString();
+    const endpoint = `/customer/blogs${queryString ? '?' + queryString : ''}`;
+    console.log('[ApiService] Fetching blog list:', endpoint);
+    return this.request(endpoint);
+  }
+
+  /**
+   * Get single blog by slug.
+   */
+  async getBlogBySlug(slug: string): Promise<ApiResponse> {
+    console.log('[ApiService] Fetching blog:', slug);
+    return this.request(`/customer/blogs/${slug}`);
+  }
+
+  /**
+   * Get all blog categories.
+   */
+  async getBlogCategories(): Promise<ApiResponse> {
+    console.log('[ApiService] Fetching blog categories');
+    return this.request('/customer/blogs/categories');
+  }
+
+  /**
+   * Get blogs by category.
+   */
+  async getBlogsByCategory(categoryId: number, params: {
+    page?: number;
+    size?: number;
+  } = {}): Promise<ApiResponse> {
+    const queryParams = new URLSearchParams();
+    if (params.page !== undefined) queryParams.append('page', params.page.toString());
+    if (params.size !== undefined) queryParams.append('size', params.size.toString());
+
+    const queryString = queryParams.toString();
+    const endpoint = `/customer/blogs/category/${categoryId}${queryString ? '?' + queryString : ''}`;
+    console.log('[ApiService] Fetching blogs by category:', endpoint);
+    return this.request(endpoint);
+  }
+
+  /**
+   * Get related blogs for a specific blog.
+   */
+  async getRelatedBlogs(slug: string, params: {
+    page?: number;
+    size?: number;
+  } = {}): Promise<ApiResponse> {
+    const queryParams = new URLSearchParams();
+    if (params.page !== undefined) queryParams.append('page', params.page.toString());
+    if (params.size !== undefined) queryParams.append('size', params.size.toString());
+
+    const queryString = queryParams.toString();
+    const endpoint = `/customer/blogs/${slug}/related${queryString ? '?' + queryString : ''}`;
+    console.log('[ApiService] Fetching related blogs:', endpoint);
+    return this.request(endpoint);
+  }
+
+  /**
+   * Get blog search suggestions (autocomplete).
+   */
+  async getBlogSearchSuggestions(query: string, limit?: number): Promise<ApiResponse> {
+    const queryParams = new URLSearchParams();
+    queryParams.append('q', query);
+    if (limit) queryParams.append('limit', limit.toString());
+
+    console.log('[ApiService] Fetching blog search suggestions:', query);
+    return this.request(`/customer/blogs/search-suggestions?${queryParams}`);
+  }
 }
 
 // Export singleton instance

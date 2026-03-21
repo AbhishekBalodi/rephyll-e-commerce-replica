@@ -35,6 +35,7 @@ export interface ApiVariant {
 // ── Product (list + detail) ──
 export interface ApiProduct {
   id: number;
+  slug: string; // URL-friendly identifier
   name: string;
   code: string;
   productTags: string | null;
@@ -95,3 +96,47 @@ export interface ApiSearchSuggestion {
   name: string;
   [key: string]: unknown;
 }
+
+// ── Blog ──
+export interface CustomerBlogCatalogDto {
+  id: number;
+  title: string;
+  slug: string;
+  shortDescription: string;
+  banner: string; // Relative path e.g. /api/files/blogs/banners/uuid.jpg
+  categoryId: number;
+  categoryName: string;
+  createdDate: string; // Format: yyyy-MM-dd HH:mm:ss
+  readingTime: number; // In minutes
+}
+
+export interface CustomerBlogDetailDto extends CustomerBlogCatalogDto {
+  description: string; // HTML content
+  metaTitle: string;
+  metaDescription: string;
+  metaImg: string; // Relative path for social media preview
+  metaKeywords: string; // Comma-separated keywords
+  updatedDate: string | null; // Format: yyyy-MM-dd HH:mm:ss
+  author: string;
+}
+
+export interface CustomerBlogCategoryDto {
+  id: number;
+  name: string;
+  blogCount: number;
+}
+
+// ── Blog API Responses ──
+export interface BlogListApiResponse {
+  content: CustomerBlogCatalogDto[];
+  number: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  first: boolean;
+  last: boolean;
+  numberOfElements: number;
+  empty: boolean;
+}
+
+export interface BlogDetailApiResponse extends CustomerBlogDetailDto {}

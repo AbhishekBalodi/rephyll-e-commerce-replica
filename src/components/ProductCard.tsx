@@ -53,7 +53,7 @@ const ProductCard = ({ product, onClick }: ProductCardProps) => {
   return (
     <div
       className="cursor-pointer group rounded-xl border border-border bg-card p-3 flex flex-col"
-      onClick={() => { onClick?.(product); navigate(`/product/${product.id}`); }}
+      onClick={() => { onClick?.(product); navigate(`/product/${product.slug || product.id}`); }}
     >
       {/* Image */}
       <div className="relative aspect-square overflow-hidden rounded-lg mb-3 bg-muted">

@@ -18,11 +18,11 @@ export function useProductList(params?: {
   });
 }
 
-export function useProductDetail(id: number | null) {
+export function useProductDetail(slugOrId: string | number | null) {
   return useQuery({
-    queryKey: ["product", id],
-    queryFn: () => getProductDetail(id!),
-    enabled: id !== null,
+    queryKey: ["product", slugOrId],
+    queryFn: () => getProductDetail(slugOrId!),
+    enabled: slugOrId !== null,
   });
 }
 

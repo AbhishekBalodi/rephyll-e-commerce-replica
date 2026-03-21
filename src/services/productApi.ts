@@ -35,9 +35,9 @@ export async function listProducts(params?: {
   return res.data;
 }
 
-/** Get single product details. */
-export async function getProductDetail(id: number): Promise<ApiProduct> {
-  const res = await fetchJson<ApiResponse<ApiProduct>>(`${BASE_URL}/${id}`);
+/** Get single product details by slug or ID. */
+export async function getProductDetail(slugOrId: string | number): Promise<ApiProduct> {
+  const res = await fetchJson<ApiResponse<ApiProduct>>(`${BASE_URL}/${slugOrId}`);
   return res.data;
 }
 
