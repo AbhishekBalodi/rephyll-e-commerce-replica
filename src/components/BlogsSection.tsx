@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import { useBlogList } from "@/hooks/useBlogList";
-import { Loader2 } from "lucide-react";
+import { Loader2, ArrowRight } from "lucide-react";
+import clover from "@/assets/clover-green.png";
 
 const BlogsSection = () => {
   const { blogs, loading, error } = useBlogList({
     page: 0,
-    size: 4, // Show 4 latest blogs on home page
+    size: 3,
     sortBy: "id",
     direction: "DESC",
   });
@@ -19,10 +20,10 @@ const BlogsSection = () => {
     try {
       const date = new Date(dateString);
       return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      }).toUpperCase();
     } catch {
       return dateString;
     }
@@ -30,111 +31,99 @@ const BlogsSection = () => {
 
   if (loading) {
     return (
-      <section className="bg-background py-16 px-4">
-        <div className="max-w-7xl mx-auto">
-          <span className="block text-center text-sm font-semibold text-foreground border border-border rounded-full w-fit mx-auto px-5 py-1.5 mb-4">
-            Blogs
-          </span>
-          <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground text-center mb-12">
-            Our Latest Insights
-          </h2>
-
-          <div className="flex items-center justify-center min-h-[400px]">
-            <div className="flex flex-col items-center gap-2">
-              <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              <p className="text-muted-foreground">Loading blogs...</p>
-            </div>
-          </div>
-        </div>
+      <section className="py-24 text-white text-center bg-[#064734]">
+        <Loader2 className="animate-spin mx-auto mb-2" />
+        Loading...
       </section>
     );
   }
 
-  if (error) {
+  if (error || !blogs || blogs.length === 0) {
     return (
-      <section className="bg-background py-16 px-4">
-        <div className="max-w-7xl mx-auto">
-          <span className="block text-center text-sm font-semibold text-foreground border border-border rounded-full w-fit mx-auto px-5 py-1.5 mb-4">
-            Blogs
-          </span>
-          <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground text-center mb-12">
-            Our Latest Insights
-          </h2>
-
-          <div className="flex items-center justify-center min-h-[400px]">
-            <div className="text-center">
-              <p className="text-destructive mb-2">Failed to load blogs</p>
-              <p className="text-sm text-muted-foreground">{error.message}</p>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  if (!blogs || blogs.length === 0) {
-    return (
-      <section className="bg-background py-16 px-4">
-        <div className="max-w-7xl mx-auto">
-          <span className="block text-center text-sm font-semibold text-foreground border border-border rounded-full w-fit mx-auto px-5 py-1.5 mb-4">
-            Blogs
-          </span>
-          <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground text-center mb-12">
-            Our Latest Insights
-          </h2>
-
-          <div className="flex items-center justify-center min-h-[400px]">
-            <p className="text-muted-foreground">No blogs available at the moment.</p>
-          </div>
-        </div>
+      <section className="py-24 text-white text-center bg-[#064734]">
+        No blogs available.
       </section>
     );
   }
 
   return (
-    <section className="bg-background py-16 px-4">
-      <div className="max-w-7xl mx-auto">
-        <span className="block text-center text-sm font-semibold text-foreground border border-border rounded-full w-fit mx-auto px-5 py-1.5 mb-4">
-          Blogs
-        </span>
-        <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground text-center mb-12">
-          Our Latest Insights
+    <section className="relative w-full overflow-hidden bg-gradient-to-r from-[#064734] to-[#cfdad5] py-28">
+
+      {/* 🌿 CLOVERS (ABSOLUTE like Figma) */}
+      <img src={clover} className="absolute w-[250px] opacity-30 top-[-40px] right-[0px]" />
+      <img src={clover} className="absolute w-[250px] opacity-30 top-[-120px] right-[300px]" />
+      <img src={clover} className="absolute w-[220px] opacity-40 bottom-[80px] left-[-80px]" />
+      <img src={clover} className="absolute w-[220px] opacity-30 bottom-[-40px] left-[350px]" />
+      <img src={clover} className="absolute w-[280px] opacity-30 bottom-[-80px] right-[0px]" />
+      <img src={clover} className="absolute w-[280px] opacity-20 top-[80px] left-[-120px]" />
+
+      {/* CONTENT CONTAINER */}
+      <div className="relative max-w-[1208px] mx-auto text-center text-white">
+
+        {/* TITLE */}
+        <h2 className="text-[40px] font-semibold leading-[60px]">
+          Clean Living, Smarter Choices
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <p className="text-[20px] mt-2 mb-12 opacity-90">
+          Curated Combinations for Effortless Cleaning
+        </p>
+
+        {/* CARDS */}
+        <div className="flex justify-center gap-[30px]">
+
           {blogs.map((post) => (
-            <div key={post.id} className="group">
-              <div className="rounded-xl overflow-hidden mb-4">
-                <img
-                  src={getImageUrl(post.banner)}
-                  alt={post.title}
-                  className="w-full h-[220px] object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
-                />
-              </div>
-              <div className="flex items-center gap-3 mb-3">
-                <span className="text-[11px] font-bold uppercase tracking-wider bg-secondary text-foreground px-3 py-1 rounded-full">
-                  {post.readingTime} min read
-                </span>
-                <span className="text-[11px] font-bold uppercase tracking-wider bg-secondary text-foreground px-3 py-1 rounded-full">
+            <div
+              key={post.id}
+              className="w-[380px] bg-white rounded-[24px] overflow-hidden shadow-md"
+            >
+              {/* IMAGE */}
+              <img
+                src={getImageUrl(post.banner)}
+                alt={post.title}
+                className="w-full h-[214px] object-cover"
+              />
+
+              {/* CONTENT */}
+              <div className="p-5 flex flex-col gap-3 text-left">
+
+                <p className="text-[14px] tracking-widest text-[#AAAAAA]">
                   {formatDate(post.createdDate)}
-                </span>
+                </p>
+
+                <h3 className="text-[18px] font-semibold text-[#121212] leading-[28px]">
+                  {post.title}
+                </h3>
+
+                <div className="border-t border-[#DEDEDE]" />
+
+                <p className="text-[16px] text-[#AAAAAA] leading-[26px] line-clamp-2">
+                  {post.shortDescription}
+                </p>
+
+                <Link
+                  to={`/blog/${post.slug}`}
+                  className="flex justify-center items-center gap-2 bg-[#CEF17B] text-[#064734] font-semibold py-3 rounded-[43px]"
+                >
+                  Read More <ArrowRight size={16} />
+                </Link>
+
               </div>
-              <h3 className="text-sm md:text-base font-bold text-foreground mb-2 leading-snug line-clamp-2">
-                {post.title}
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2 mb-3">
-                {post.shortDescription}
-              </p>
-              <Link
-                to={`/blog/${post.slug}`}
-                className="text-sm font-semibold text-foreground underline underline-offset-4 hover:text-primary transition-colors"
-              >
-                Read More
-              </Link>
             </div>
           ))}
+
         </div>
+
+        {/* BUTTON */}
+        <div className="mt-12">
+          <Link
+            to="/blogs"
+            className="bg-white text-[#064734] px-6 py-2 rounded-md text-[18px]"
+          >
+            Explore More Blogs
+          </Link>
+        </div>
+
       </div>
     </section>
   );

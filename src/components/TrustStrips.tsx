@@ -1,112 +1,103 @@
-import { Award, Factory, MapPin, BadgeCheck, Flag, Leaf, Stethoscope, Star } from "lucide-react";
+import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 import { DUMMY_REVIEWS } from "@/data/reviews";
+import clover from "@/assets/clover-green.png";
 
-const CERTIFICATIONS = [
-  { icon: <Award size={28} />, label: "IFRA Certified" },
-  { icon: <Factory size={28} />, label: "GMP Certified" },
-  { icon: <MapPin size={28} />, label: "Locally Sourced" },
-  { icon: <BadgeCheck size={28} />, label: "100% Authentic" },
-  { icon: <Flag size={28} />, label: "Made in India" },
-  { icon: <Leaf size={28} />, label: "Plant Based" },
-  { icon: <Stethoscope size={28} />, label: "Clinically Proven" },
-];
-
-const FEATURES = [
-  {
-    icon: "📦",
-    title: "Delivers in 3–5 days",
-    desc: "Your eco-friendly cleaning essentials, delivered fast within 3–5 days!",
-  },
-  {
-    icon: "👨‍👩‍👧",
-    title: "Loves kids",
-    desc: "Gentle, chemical-free products made with kids' safety in mind.",
-  },
-  {
-    icon: "🌱",
-    title: "Biodegradable",
-    desc: "Cleans your home while protecting the planet with biodegradable, eco-friendly formulas.",
-  },
-  {
-    icon: "🐕",
-    title: "Safe for pets",
-    desc: "Pet-friendly cleaning solutions that care for your furry family members.",
-  },
-];
-
-const TOP_REVIEWS = DUMMY_REVIEWS.filter((r) => r.rating >= 4).slice(0, 4);
+const TOP_REVIEWS = DUMMY_REVIEWS.filter((r) => r.rating >= 4).slice(0, 6);
 
 const TrustStrips = () => {
   return (
-    <div className="mt-16">
+    <section className="relative w-full overflow-hidden bg-gradient-to-r from-[#CEF17B] to-white py-28">
 
-      {/* Promotional Banner - More Cleaning, Less Spending */}
-      <div className="bg-gradient-to-r from-brand-stream via-brand-lime/30 to-brand-stream py-12 md:py-16 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <span className="inline-block bg-background/80 text-foreground text-xs font-semibold uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">
-            Buy Together
-          </span>
-          <h2 className="text-3xl md:text-5xl font-display font-bold text-foreground mb-3">
-            More Cleaning, Less Spending
-          </h2>
-          <p className="text-foreground/70 text-sm md:text-base max-w-xl mx-auto mb-6">
-            Bundle your favourites and save big on eco-friendly cleaning essentials for the whole home.
-          </p>
-          <span className="inline-block bg-foreground text-background font-bold text-sm px-8 py-3 rounded-full uppercase tracking-wider">
-            Shop Kits
-          </span>
-        </div>
-      </div>
+      {/* 🌿 CLOVERS (ABSOLUTE like Figma) */}
+      <img src={clover} className="absolute w-[290px] opacity-30 top-[-80px] left-[320px]" />
+      <img src={clover} className="absolute w-[290px] opacity-30 top-[60px] left-[-60px]" />
+      <img src={clover} className="absolute w-[220px] opacity-30 bottom-[40px] left-[0px]" />
+      <img src={clover} className="absolute w-[260px] opacity-20 bottom-[40px] right-[0px]" />
+      <img src={clover} className="absolute w-[240px] opacity-20 top-[50px] right-[0px]" />
+      <img src={clover} className="absolute w-[180px] opacity-20 bottom-[100px] right-[200px]" />
 
-      {/* Trusted by Families - Reviews Strip */}
-      <div className="bg-foreground py-12 md:py-16 px-4">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-display font-bold text-background text-center mb-10">
-            Trusted by Families
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {TOP_REVIEWS.map((review) => (
-              <div
-                key={review.id}
-                className="bg-card/10 backdrop-blur border border-background/10 rounded-xl p-5 flex flex-col"
-              >
-                <h4 className="text-sm font-bold text-background mb-2">{review.title}</h4>
-                <p className="text-background/70 text-sm leading-relaxed flex-1 mb-4">
-                  {review.content.length > 150 ? review.content.substring(0, 150) + "..." : review.content}
-                </p>
-                <div className="mt-auto">
-                  <span className="text-background font-semibold text-sm">{review.name}</span>
-                  <div className="flex items-center gap-0.5 mt-1">
-                    {[1, 2, 3, 4, 5].map((s) => (
-                      <Star
-                        key={s}
-                        size={14}
-                        className={s <= Math.floor(review.rating) ? "fill-primary text-primary" : "text-background/30"}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
+      {/* CONTENT */}
+      <div className="relative max-w-[1236px] mx-auto text-center">
+
+        {/* TITLE */}
+        <h2 className="text-[40px] font-semibold text-[#064734] leading-[60px]">
+          What Our Client Say About Us
+        </h2>
+
+        <p className="text-[20px] text-[#064734] mt-3 max-w-[800px] mx-auto">
+          Discover the experiences of our satisfied customers! Read their testimonials to learn how our services have made a positive impact on their businesses.
+        </p>
+
+        {/* CAROUSEL WRAPPER */}
+        <div className="relative mt-16">
+
+          {/* LEFT ARROW */}
+          <div className="absolute left-[-20px] top-1/2 -translate-y-1/2 z-10 w-[60px] h-[60px] bg-white/70 rounded-full flex items-center justify-center shadow">
+            <ChevronLeft />
           </div>
-        </div>
-      </div>
 
-      {/* Features strip */}
-      <div className="bg-secondary/40 py-12 px-4">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {FEATURES.map((feat, i) => (
-            <div key={i} className="flex flex-col items-center text-center">
-              <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center text-3xl mb-4">
-                {feat.icon}
-              </div>
-              <h3 className="text-base font-bold text-foreground mb-2">{feat.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{feat.desc}</p>
-            </div>
+          {/* RIGHT ARROW */}
+          <div className="absolute right-[-20px] top-1/2 -translate-y-1/2 z-10 w-[60px] h-[60px] bg-white/70 rounded-full flex items-center justify-center shadow">
+            <ChevronRight />
+          </div>
+
+          {/* SCROLL AREA */}
+          {/* FULL WIDTH CARDS (NO SCROLLBAR) */}
+<div className="w-full overflow-hidden mt-16">
+  <div className="flex justify-center gap-[24px] max-w-[1327px] mx-auto">
+
+    {TOP_REVIEWS.slice(0, 4).map((review) => (
+      <div
+        key={review.id}
+        className="relative w-[313px] h-[366px] bg-white rounded-[24px] shadow-md flex flex-col items-center px-6 pt-[80px] pb-6"
+      >
+
+        {/* AVATAR */}
+        <div className="absolute top-[-60px] w-[120px] h-[120px] rounded-full border-[8px] border-white overflow-hidden">
+          <img
+            src={`https://i.pravatar.cc/150?img=${review.id}`}
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+        {/* STARS */}
+        <div className="flex gap-1 mb-4">
+          {[1, 2, 3, 4, 5].map((s) => (
+            <Star
+              key={s}
+              size={20}
+              className={
+                s <= Math.floor(review.rating)
+                  ? "fill-[#FDD264] text-[#FDD264]"
+                  : "fill-[#FFEEC1] text-[#FFEEC1]"
+              }
+            />
           ))}
         </div>
+
+        {/* TEXT */}
+        <p className="text-[16px] text-[#2C2C2C] text-center leading-[22px] mb-4 line-clamp-5">
+          "{review.content}"
+        </p>
+
+        {/* NAME */}
+        <h4 className="text-[20px] font-semibold text-[#2C2C2C]">
+          {review.name}
+        </h4>
+
+        <p className="text-[16px] text-[#777777]">
+          Marketing Manager
+        </p>
+
       </div>
-    </div>
+    ))}
+
+  </div>
+</div>
+        </div>
+
+      </div>
+    </section>
   );
 };
 

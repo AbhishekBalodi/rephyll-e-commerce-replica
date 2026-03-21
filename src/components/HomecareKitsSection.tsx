@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { ShoppingCart, Check, ChevronRight, Sparkles, TrendingDown } from "lucide-react";
+
+import { ShoppingCart, Heart, Share2, Check, ChevronRight, Sparkles, TrendingDown } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import QuantityCapsule from "./QuantityCapsule";
 import cloverLime from "@/assets/clover-lime.png";
@@ -708,6 +709,106 @@ const HomecareKitsSection = () => {
           </div>
         </div>
       </section>
+
+
+      {/* ===== SECTION 2 below section:  mega pack saver section ===== */}
+      <section
+        className="relative overflow-hidden"
+        style={{
+          width: "100%",
+          paddingTop: "30px",
+          paddingBottom: "30px",
+          background: "linear-gradient(96.54deg, #064734 22.56%, #FFFFFF 129.53%)",
+        }}
+      >
+        {/* 🌿 CLOVERS (washed effect using white overlay from Figma) */}
+      <img src={cloverDark} className="absolute top-[-40px] left-[450px] w-[125px] opacity-40 mix-blend-soft-light" />
+      <img src={cloverDark} className="absolute top-[-50px] right-[300px] w-[190px] opacity-40 mix-blend-soft-light" />
+      <img src={cloverDark} className="absolute top-[-30px] right-[50px] w-[238px] opacity-30 mix-blend-soft-light" />
+      <img src={cloverDark} className="absolute top-[260px] left-[720px] w-[220px] opacity-40 mix-blend-soft-light" />
+      <img src={cloverDark} className="absolute top-[-180px] left-[-180px] w-[190px] opacity-30 mix-blend-soft-light" />
+
+      {/* 🌿 CONTENT */}
+      <div className="relative z-10 max-w-[1435px] mx-auto my-auto py-20 flex flex-col items-center gap-10">
+
+        {/* 🔥 TOP BADGE */}
+        <div className="bg-[#EDFFC3] px-5 py-2 rounded-full text-[#064734] text-sm font-medium">
+          ✨ 5L Save More
+        </div>
+
+        {/* 🔥 TITLE */}
+        <h2 className="text-white text-[40px] font-semibold leading-[60px] text-center">
+          Mega Saver Pack
+        </h2>
+
+        <p className="text-white text-[20px]">
+          Curated Combinations for Effortless Cleaning
+        </p>
+
+        {/* 🔥 PRODUCT GRID */}
+        <div className="flex gap-[30px] mb-10">
+
+          {BUNDLES.slice(0, 3).map((product, i) => (
+            <div key={i} className="w-[375px] bg-white rounded-[24px] shadow-lg overflow-hidden flex flex-col">
+
+    <div className="relative h-[246px] bg-[linear-gradient(138deg,#CEF17B_0%,#ffffff_107%)]">
+
+      <div className="absolute top-4 left-4 bg-[#E2FF9C] px-3 py-1 rounded-full text-[#064734] text-sm">
+        {product.discount}% Off
+      </div>
+
+      <div className="absolute top-4 right-4 flex gap-2">
+        <button className="w-10 h-10 bg-white rounded-full shadow flex items-center justify-center">
+          <Share2 size={16} />
+        </button>
+        <button className="w-10 h-10 bg-white rounded-full shadow flex items-center justify-center">
+          <Heart size={16} />
+        </button>
+      </div>
+
+      <img
+        src={ascFront2}
+        className="absolute left-1/2 top-[60px] -translate-x-1/2 w-[140px]"
+      />
+    </div>
+
+    <div className="p-4 flex flex-col gap-4 flex-grow">
+      <p className="font-semibold text-[#464646]">{product.name}</p>
+
+      <p className="text-[#064734]">
+        Pack Of {product.productCount}
+      </p>
+
+      <div className="flex items-center gap-2 text-sm">
+        ⭐⭐⭐⭐☆
+        <span>{product.rating}</span>
+        <span className="text-gray-400">({product.reviewCount} reviews)</span>
+      </div>
+
+      <div className="flex items-center gap-3">
+        <span className="text-[28px] font-bold text-[#064734]">
+          ₹{product.price}
+        </span>
+        <span className="line-through text-gray-400">
+          ₹{product.originalPrice}
+        </span>
+      </div>
+
+      <button className="mt-auto bg-[#064734] text-white h-[56px] rounded-[14px]">
+        Add to Cart
+      </button>
+    </div>
+
+  </div>
+          ))}
+
+        </div>
+
+      </div>
+      </section>
+
+
+
 
       {/* ===== SECTION 3: Everything Your Home Needs In One Kit ===== */}
       <section
