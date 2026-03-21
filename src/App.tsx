@@ -22,6 +22,7 @@ import SignupPage from "./pages/SignupPage.tsx";
 import CartPage from "./pages/CartPage.tsx";
 import AdminAddProduct from "./pages/AdminAddProduct.tsx";
 import ProductPage from "./pages/ProductPage.tsx";
+import CategoryPage from "./pages/CategoryPage.tsx";
 
 const queryClient = new QueryClient();
 

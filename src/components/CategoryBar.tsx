@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useCategories } from "@/hooks/useProducts";
 import type { ApiCategory } from "@/types/api";
 
@@ -7,11 +8,6 @@ import catKitchen from "@/assets/cat-kitchen-care.png";
 import catLaundry from "@/assets/cat-laundry-care.png";
 import catHomeCare from "@/assets/cat-home-care-kits.png";
 import catBundles from "@/assets/cat-smart-bundles.png";
-
-interface CategoryBarProps {
-  activeCategory: number | null;
-  onCategoryClick: (categoryId: number) => void;
-}
 
 /** Map a category name to its Figma icon */
 const getCategoryIcon = (name: string): string => {
@@ -25,7 +21,12 @@ const getCategoryIcon = (name: string): string => {
   return catHomeCare;
 };
 
-const CategoryBar = ({ activeCategory, onCategoryClick }: CategoryBarProps) => {
+/** Generate a URL-friendly slug from category name */
+const toSlug = (name: string) =>
+  name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
+const CategoryBar = () => {
+  const navigate = useNavigate();
   const { data: categories, isLoading } = useCategories();
 
   if (isLoading) {
@@ -47,40 +48,40 @@ const CategoryBar = ({ activeCategory, onCategoryClick }: CategoryBarProps) => {
 
   if (!categories || categories.length === 0) return null;
 
+  const handleCategoryClick = (cat: ApiCategory) => {
+    const slug = toSlug(cat.name);
+    navigate(`/category/${slug}`, { state: { categoryId: cat.id, categoryName: cat.name } });
+  };
+
   return (
     <section className="bg-background w-full" style={{ boxShadow: "inset 0px -0.5px 0px #CCCCCC" }}>
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         <div className="flex flex-wrap justify-center items-start" style={{ gap: "50px" }}>
           {categories.map((cat: ApiCategory) => {
             const iconSrc = getCategoryIcon(cat.name);
-            const isActive = activeCategory === cat.id;
             return (
               <button
                 key={cat.id}
-                onClick={() => onCategoryClick(cat.id)}
+                onClick={() => handleCategoryClick(cat)}
                 className="flex flex-col items-center cursor-pointer group relative"
                 style={{
                   padding: "30px 0",
                   gap: "16px",
                   width: "154px",
-                  ...(isActive ? { boxShadow: "inset 0px -3px 0px #064734" } : {}),
                 }}
               >
                 <div
-                  className="flex items-center justify-center rounded-full transition-all"
+                  className="flex items-center justify-center rounded-full transition-all group-hover:scale-105"
                   style={{
                     width: "76px",
                     height: "76px",
-                    background: isActive ? "#064734" : "rgba(206, 241, 123, 0.3)",
+                    background: "rgba(206, 241, 123, 0.3)",
                   }}
                 >
                   <img
                     src={iconSrc}
                     alt={cat.name}
                     className="w-10 h-10 object-contain transition-all"
-                    style={{
-                      filter: isActive ? "brightness(0) invert(1)" : "none",
-                    }}
                   />
                 </div>
                 <span
@@ -92,6 +93,8 @@ const CategoryBar = ({ activeCategory, onCategoryClick }: CategoryBarProps) => {
                     lineHeight: "150%",
                     color: "#1A1A1A",
                     width: "154px",
+                    wordWrap: "break-word",
+                    overflowWrap: "break-word",
                   }}
                 >
                   {cat.name}
