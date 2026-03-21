@@ -49,14 +49,14 @@ const TrustStrips = () => {
     {TOP_REVIEWS.slice(0, 4).map((review) => (
       <div
         key={review.id}
-        className="relative w-[313px] h-[366px] bg-white rounded-[24px] shadow-md flex flex-col items-center px-6 pt-[80px] pb-6"
+        className="relative w-[313px] bg-white rounded-[24px] shadow-md flex flex-col items-center px-6 pt-[80px] pb-4"
       >
 
         {/* AVATAR */}
-        <div className="absolute top-[-60px] w-[120px] h-[120px] rounded-full border-[8px] border-white overflow-hidden">
+        <div className="absolute top-[-40px] w-[100px] h-[100px] rounded-full border-[6px] border-white overflow-visible shadow-lg">
           <img
             src={`https://i.pravatar.cc/150?img=${review.id}`}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover rounded-full"
           />
         </div>
 

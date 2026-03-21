@@ -140,11 +140,16 @@ const HomecareKitsSection = () => {
     <div id="homecare-kits-section">
       {/* ===== SECTION 1: Smart Bundles / Single Products ===== */}
       <section className="relative overflow-hidden py-10" style={{ minHeight: "897px", background: "rgba(206, 241, 123, 0.3)" }}>
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute left-[-72px] top-[-54px] z-0 w-[240px] opacity-[0.18]" />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute right-[-52px] top-[18px] z-0 w-[220px] opacity-[0.18]" />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute bottom-[-58px] left-[-54px] z-0 w-[220px] opacity-[0.14]" />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute bottom-[-62px] right-[-44px] z-0 w-[228px] opacity-[0.14]" />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute bottom-[126px] left-1/2 z-0 w-[180px] -translate-x-1/2 opacity-[0.1]" />
+        {/* 9 large clovers across the section */}
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute z-0" style={{ width: "320px", left: "-90px", top: "-70px", opacity: 0.2 }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute z-0" style={{ width: "300px", right: "-70px", top: "-50px", opacity: 0.2 }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute z-0" style={{ width: "280px", left: "-80px", bottom: "-80px", opacity: 0.18 }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute z-0" style={{ width: "300px", right: "-60px", bottom: "-70px", opacity: 0.18 }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute z-0" style={{ width: "260px", left: "50%", top: "-60px", transform: "translateX(-50%)", opacity: 0.12 }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute z-0" style={{ width: "240px", left: "25%", bottom: "40px", opacity: 0.12 }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute z-0" style={{ width: "250px", right: "20%", top: "30%", opacity: 0.1 }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute z-0" style={{ width: "220px", left: "15%", top: "40%", opacity: 0.1 }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute z-0" style={{ width: "260px", left: "50%", bottom: "-50px", opacity: 0.14 }} />
 
         <div className="relative z-[1] mx-auto max-w-[1440px] px-4 md:px-6">
           {/* Tab Buttons */}
@@ -305,14 +310,16 @@ const HomecareKitsSection = () => {
           background: "linear-gradient(96.54deg, #064734 22.56%, #FFFFFF 129.53%)",
         }}
       >
-        {/* Large clovers spread across the entire merged section */}
-        <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "320px", height: "320px", right: "-80px", top: "-60px", opacity: 0.15 }} />
-        <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "280px", height: "280px", left: "-100px", top: "80px", opacity: 0.12 }} />
-        <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "260px", height: "260px", left: "720px", top: "266px", opacity: 0.1 }} />
-        <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "300px", height: "300px", right: "-60px", bottom: "-80px", opacity: 0.15 }} />
-        <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "250px", height: "250px", left: "-70px", bottom: "60px", opacity: 0.1 }} />
-        <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "220px", height: "220px", left: "50%", bottom: "-40px", opacity: 0.08 }} />
-        <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "200px", height: "200px", right: "300px", top: "100px", opacity: 0.08 }} />
+        {/* 9+ large faded clovers across the entire merged section - visible on dark & light areas */}
+        <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "320px", left: "-90px", top: "-60px", opacity: 0.18 }} />
+        <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "300px", right: "-70px", top: "-50px", opacity: 0.18 }} />
+        <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "280px", left: "-80px", bottom: "-80px", opacity: 0.15 }} />
+        <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "310px", right: "-60px", bottom: "-70px", opacity: 0.18 }} />
+        <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "260px", left: "50%", top: "-50px", transform: "translateX(-50%)", opacity: 0.12 }} />
+        <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "250px", left: "20%", top: "35%", opacity: 0.12 }} />
+        <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "270px", right: "15%", top: "25%", opacity: 0.1 }} />
+        <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "240px", left: "10%", bottom: "15%", opacity: 0.12 }} />
+        <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "260px", left: "50%", bottom: "-40px", opacity: 0.1 }} />
 
         {/* --- Part A: Stop Buying One --- */}
         <div className="relative z-[1] mx-auto flex items-center" style={{ maxWidth: "1313px", padding: "80px 20px", gap: "74px" }}>
