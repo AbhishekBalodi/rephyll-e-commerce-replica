@@ -54,7 +54,12 @@ const NAV_CATEGORIES: NavCategory[] = [
   { label: "REVIEWS", path: "/testimonials" },
 ];
 
-const ANNOUNCEMENT_TEXT = "🌿 Flat 20% Off on Bundles | Code: CLEAN20 ✦ Free Shipping ₹499+ ✦ Non-Toxic • Plant-Based • Family Safe     ";
+const ANNOUNCEMENT_SEGMENTS = [
+  "🌿 Flat 20% Off on Bundles | Code: CLEAN20",
+  "✦ Free Shipping ₹499+",
+  "✦ Non-Toxic • Plant-Based • Family Safe",
+];
+const ANNOUNCEMENT_TEXT = ANNOUNCEMENT_SEGMENTS.join("          ");
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -148,7 +153,7 @@ const Navbar = () => {
               color: "#064734",
             }}
           >
-            {ANNOUNCEMENT_TEXT}{ANNOUNCEMENT_TEXT}{ANNOUNCEMENT_TEXT}{ANNOUNCEMENT_TEXT}
+            {`${ANNOUNCEMENT_TEXT}          ${ANNOUNCEMENT_TEXT}          ${ANNOUNCEMENT_TEXT}          ${ANNOUNCEMENT_TEXT}`}
           </span>
         </div>
       </div>
