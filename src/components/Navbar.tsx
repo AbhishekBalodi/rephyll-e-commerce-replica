@@ -144,17 +144,21 @@ const Navbar = () => {
         }}
       >
         <div className="flex animate-marquee-slow whitespace-nowrap">
-          <span
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontWeight: 400,
-              fontSize: "14px",
-              lineHeight: "20px",
-              color: "#064734",
-            }}
-          >
-            {`${ANNOUNCEMENT_TEXT}          ${ANNOUNCEMENT_TEXT}          ${ANNOUNCEMENT_TEXT}          ${ANNOUNCEMENT_TEXT}`}
-          </span>
+          {[0, 1, 2, 3].map((i) => (
+            <span
+              key={i}
+              style={{
+                fontFamily: "'Inter', sans-serif",
+                fontWeight: 400,
+                fontSize: "14px",
+                lineHeight: "20px",
+                color: "#064734",
+                paddingRight: "80px",
+              }}
+            >
+              {ANNOUNCEMENT_TEXT}
+            </span>
+          ))}
         </div>
       </div>
 
