@@ -514,19 +514,22 @@ const HomecareKitsSection = () => {
         </div>
       </section>
 
-      {/* ===== SECTION 2: Smart Savings - Stop Buying One ===== */}
+      {/* ===== SECTION 2: Smart Savings + Mega Saver Pack (merged) ===== */}
       <section
         className="relative overflow-hidden"
         style={{
           width: "100%",
-          height: "547px",
           background: "linear-gradient(96.54deg, #064734 22.56%, #FFFFFF 129.53%)",
         }}
       >
-        {/* Clover decorations */}
-        <img src={cloverDark} alt="" className="absolute pointer-events-none z-0" style={{ width: "251.84px", height: "252px", right: "-20px", top: "-41px", opacity: 0.3 }} />
-        <img src={cloverDark} alt="" className="absolute pointer-events-none z-0" style={{ width: "220.86px", height: "221px", left: "720px", top: "266px", opacity: 0.15 }} />
-        <img src={cloverDark} alt="" className="absolute pointer-events-none z-0" style={{ width: "293px", height: "293px", right: "-40px", bottom: "-100px", opacity: 0.3 }} />
+        {/* Large clovers across entire merged section */}
+        <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "320px", height: "320px", right: "-80px", top: "-60px", opacity: 0.15 }} />
+        <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "280px", height: "280px", left: "-100px", top: "80px", opacity: 0.12 }} />
+        <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "260px", height: "260px", left: "720px", top: "266px", opacity: 0.1 }} />
+        <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "300px", height: "300px", right: "-60px", bottom: "-80px", opacity: 0.15 }} />
+        <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "250px", height: "250px", left: "-70px", bottom: "60px", opacity: 0.1 }} />
+        <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "220px", height: "220px", left: "50%", bottom: "-40px", opacity: 0.08 }} />
+        <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "200px", height: "200px", right: "300px", top: "100px", opacity: 0.08 }} />
 
         {/* Centered content container - 1313px wide */}
         <div
