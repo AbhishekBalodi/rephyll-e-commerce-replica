@@ -2,12 +2,16 @@ import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductDetail from "@/components/ProductDetail";
+import SimilarItemsSection from "@/components/SimilarItemsSection";
+import CertifiedProductsSection from "@/components/CertifiedProductsSection";
+import FAQSection from "@/components/FAQSection";
+import WeAreAvailableOnSection from "@/components/WeAreAvailableOnSection";
+import TrustStrips from "@/components/TrustStrips";
 import { useProductDetail } from "@/hooks/useProducts";
 
 const ProductPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-  // slug can be either a slug string or a numeric ID
   const { data: product, isLoading } = useProductDetail(slug || null);
 
   const handleBack = () => {
@@ -22,7 +26,14 @@ const ProductPage = () => {
           <p className="text-muted-foreground">Loading product...</p>
         </div>
       ) : product ? (
-        <ProductDetail product={product} onBack={handleBack} />
+        <>
+          <ProductDetail product={product} onBack={handleBack} />
+          <SimilarItemsSection currentProductId={product.id} categoryId={product.categoryId} />
+          <CertifiedProductsSection />
+          <FAQSection />
+          <WeAreAvailableOnSection />
+          <TrustStrips />
+        </>
       ) : (
         <div className="flex items-center justify-center py-32">
           <p className="text-muted-foreground">Product not found.</p>

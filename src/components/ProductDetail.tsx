@@ -6,6 +6,7 @@ import { getProductImages, getSellingPrice, getMrp, getDiscount, parseVariantAtt
 import { useCart } from "@/contexts/CartContext";
 import PackSelector, { generatePacks } from "./PackSelector";
 import QuantityCapsule from "./QuantityCapsule";
+import ProductDetailAccordion from "./ProductDetailAccordion";
 
 interface ProductDetailProps {
   product: ApiProduct;
@@ -32,7 +33,6 @@ const WHATS_IN_ICONS = [
 const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
   const navigate = useNavigate();
   const [activeImg, setActiveImg] = useState(0);
-  const [activeTab, setActiveTab] = useState("description");
   const [selectedVariant, setSelectedVariant] = useState<ApiVariant | undefined>(
     product.variants.length > 0 ? product.variants[0] : undefined
   );
@@ -54,13 +54,6 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
   const cartQty = cartItem?.quantity ?? 0;
 
   const description = product.ingredients || product.metaDescription || product.productDetails || "No description available.";
-
-  const tabs = [
-    { id: "description", label: "Description" },
-    ...(product.variants.length > 0 ? [{ id: "variants", label: "Variants" }] : []),
-    { id: "details", label: "Details" },
-    { id: "whatsIn", label: "What's in?" },
-  ];
 
   const prevImg = () => setActiveImg((p) => (p > 0 ? p - 1 : images.length - 1));
   const nextImg = () => setActiveImg((p) => (p < images.length - 1 ? p + 1 : 0));
@@ -233,87 +226,9 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
         </div>
       </div>
 
-      {/* Tabs */}
-      <div className="mt-12 border-t border-border pt-8">
-        <div className="flex gap-0 border-b border-border overflow-x-auto">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`px-6 py-3 text-sm font-medium whitespace-nowrap transition-colors ${
-                activeTab === tab.id ? "text-primary border-b-2 border-primary" : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
-
-        <div className="py-8 max-w-3xl">
-          {activeTab === "description" && (
-            <p className="text-foreground/80 leading-relaxed">{description}</p>
-          )}
-          {activeTab === "variants" && product.variants.length > 0 && (
-            <div className="space-y-4">
-              {product.variants.map((v) => {
-                const attrs = parseVariantAttributes(v.variantAttributes);
-                return (
-                  <div key={v.id} className="flex items-center gap-4 p-4 rounded-lg border border-border">
-                    {v.imageUrl && (
-                      <img src={resolveImageUrl(v.imageUrl)} alt={v.variantName} className="w-16 h-16 rounded-md object-cover" onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg"; }} />
-                    )}
-                    <div className="flex-1">
-                      <p className="font-semibold text-foreground">{v.variantName}</p>
-                      {Object.entries(attrs).map(([k, val]) => (
-                        <span key={k} className="text-xs text-muted-foreground mr-3">{k}: {val}</span>
-                      ))}
-                      <p className="text-xs text-muted-foreground mt-1">
-                        SKU: {v.sku} · {v.stock.available ? "In Stock" : "Out of Stock"}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-bold text-foreground">₹{v.sellingPrice.toFixed(0)}</p>
-                      {v.mrp > v.sellingPrice && (
-                        <p className="text-sm text-muted-foreground line-through">₹{v.mrp.toFixed(0)}</p>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-          {activeTab === "details" && (
-            <div className="space-y-3 text-foreground/80">
-              {product.productDetails && <p>{product.productDetails}</p>}
-              {product.productWeight && <p><strong>Weight:</strong> {product.productWeight}</p>}
-              {product.dimensionWidth && (
-                <p><strong>Dimensions:</strong> {product.dimensionWidth} × {product.dimensionDepth} × {product.dimensionHeight} cm</p>
-              )}
-              {product.nutritionAnalysis && <p><strong>Nutrition:</strong> {product.nutritionAnalysis}</p>}
-              {product.code && <p><strong>Product Code:</strong> {product.code}</p>}
-              {!product.productDetails && !product.productWeight && (
-                <p className="text-muted-foreground">No additional details available.</p>
-              )}
-            </div>
-          )}
-          {activeTab === "whatsIn" && (
-            <div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                {WHATS_IN_ICONS.map(({ label, icon: Icon }) => (
-                  <div key={label} className="flex flex-col items-center gap-2 p-4 rounded-lg bg-secondary/50">
-                    <div className="w-12 h-12 rounded-full border border-border flex items-center justify-center">
-                      <Icon size={22} className="text-foreground" />
-                    </div>
-                    <span className="text-xs text-foreground font-medium text-center">{label}</span>
-                  </div>
-                ))}
-              </div>
-              {product.ingredients && (
-                <p className="text-foreground/80 leading-relaxed">{product.ingredients}</p>
-              )}
-            </div>
-          )}
-        </div>
+      {/* Accordion sections replacing tabs */}
+      <div className="mt-4">
+        <ProductDetailAccordion product={product} />
       </div>
     </div>
   );
