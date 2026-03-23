@@ -191,7 +191,7 @@ const HomecareKitsSection = () => {
                 const cartItem = items.find((i) => i.productId === bundle.id);
                 const cartQty = cartItem?.quantity ?? 0;
                 return (
-                  <div key={bundle.id} className="flex flex-col overflow-hidden" style={{ width: "428px", height: "650px", background: "#FFFFFF", boxShadow: "0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1)", borderRadius: "24px" }}>
+                  <div key={bundle.id} className="flex flex-col overflow-hidden" style={{ width: "428px", height: "468px", background: "#FFFFFF", boxShadow: "0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1)", borderRadius: "24px" }}>
                     <div className="relative flex-shrink-0" style={{ width: "428px", height: "409px", background: "linear-gradient(137.98deg, #CEF17B 0.45%, #FFFFFF 106.93%)", borderRadius: "24px 24px 0 0" }}>
                       <div className="absolute flex items-center justify-center" style={{ width: "89px", height: "32px", left: "31px", top: "16px", background: "#E2FF9C", borderRadius: "9999px" }}>
                         <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "16px", lineHeight: "24px", color: "#064734" }}>{bundle.discount}% Off</span>
@@ -256,7 +256,7 @@ const HomecareKitsSection = () => {
                 const cartItem = items.find((i) => i.productId === product.id);
                 const cartQty = cartItem?.quantity ?? 0;
                 return (
-                  <div key={product.id} className="flex flex-col overflow-hidden" style={{ width: "428px", height: "650px", background: "#FFFFFF", boxShadow: "0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1)", borderRadius: "24px" }}>
+                  <div key={product.id} className="flex flex-col overflow-hidden" style={{ width: "428px", height: "468px", background: "#FFFFFF", boxShadow: "0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1)", borderRadius: "24px" }}>
                     <div className="relative flex-shrink-0" style={{ width: "428px", height: "409px", background: "linear-gradient(137.98deg, #CEF17B 0.45%, #FFFFFF 106.93%)", borderRadius: "24px 24px 0 0" }}>
                       <div className="absolute flex items-center justify-center" style={{ width: "89px", height: "32px", left: "31px", top: "16px", background: "#E2FF9C", borderRadius: "9999px" }}>
                         <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "16px", lineHeight: "24px", color: "#064734" }}>{product.discount}% Off</span>
@@ -465,7 +465,7 @@ const HomecareKitsSection = () => {
               const cartItem = items.find((i) => i.productId === kit.id);
               const cartQty = cartItem?.quantity ?? 0;
               return (
-                <div key={kit.id} className="flex flex-col items-center" style={{ width: "276px", height: "450px", background: "#FFFFFF", boxShadow: "0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1)", borderRadius: "24px", overflow: "hidden" }}>
+                <div key={kit.id} className="flex flex-col items-center" style={{ width: "276px", height: "508px", background: "#FFFFFF", boxShadow: "0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1)", borderRadius: "24px", overflow: "hidden" }}>
                   <div className="relative flex-shrink-0" style={{ width: "276px", height: "162px", borderRadius: "24px 24px 0 0", overflow: "hidden" }}>
                     <img src={kitCardBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
                     <img src={kitBottles} alt="Kit bottles" className="absolute object-contain" style={{ width: "178px", height: "141px", left: "49px", top: "11px" }} />
