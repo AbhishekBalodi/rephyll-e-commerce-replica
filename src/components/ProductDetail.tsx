@@ -33,7 +33,6 @@ const WHATS_IN_ICONS = [
 const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
   const navigate = useNavigate();
   const [activeImg, setActiveImg] = useState(0);
-  const [activeTab, setActiveTab] = useState("description");
   const [selectedVariant, setSelectedVariant] = useState<ApiVariant | undefined>(
     product.variants.length > 0 ? product.variants[0] : undefined
   );
@@ -55,13 +54,6 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
   const cartQty = cartItem?.quantity ?? 0;
 
   const description = product.ingredients || product.metaDescription || product.productDetails || "No description available.";
-
-  const tabs = [
-    { id: "description", label: "Description" },
-    ...(product.variants.length > 0 ? [{ id: "variants", label: "Variants" }] : []),
-    { id: "details", label: "Details" },
-    { id: "whatsIn", label: "What's in?" },
-  ];
 
   const prevImg = () => setActiveImg((p) => (p > 0 ? p - 1 : images.length - 1));
   const nextImg = () => setActiveImg((p) => (p < images.length - 1 ? p + 1 : 0));
