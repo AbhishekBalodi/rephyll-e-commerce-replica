@@ -1,8 +1,6 @@
 import { Instagram, Facebook, Youtube, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import cloverDark from "@/assets/clover-green-dark.png";
-import logoGreen from "@/assets/logo-green-cropped.png";
 import { apiService } from "@/services/apiService";
 import { useToast } from "@/hooks/use-toast";
 
@@ -20,7 +18,6 @@ const Footer = () => {
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim()) return;
-
     setLoading(true);
     try {
       await apiService.subscribeNewsletter(email);
@@ -35,125 +32,81 @@ const Footer = () => {
 
   return (
     <footer className="bg-[#064734] text-white pt-20 pb-10">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-[1200px] mx-auto px-6">
 
-        {/* TOP SECTION */}
-        <div className="flex flex-col lg:flex-row justify-between gap-16">
+        {/* TOP SECTION - equal spacing */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
 
-          {/* LEFT SIDE (LOGO + LINKS) */}
-          <div className="flex flex-col md:flex-row gap-16 flex-1">
-
-            {/* LOGO */}
-            {/* <div className="flex flex-col items-start">
-              <img src={cloverDark} className="w-16 mb-3" />
-              <img src={logoGreen} className="w-28 -mt-6 mb-2" />
-              <p className="text-sm text-white/60">
-                Plant-powered cleaning for modern homes.
-              </p>
-            </div> */}
-
-            {/* QUICK LINKS */}
-            <div>
-              <h3 className="font-semibold mb-4">Quick Links</h3>
-              <div className="flex flex-col gap-2 text-white/60 text-sm">
-                {[
-                  { label: "Shop All", path: "/" },
-                  { label: "About Us", path: "/about" },
-                  { label: "Why Choose Us", path: "/why-choose-us" },
-                  { label: "Testimonials", path: "/testimonials" },
-                  { label: "FAQs", path: "/faqs" },
-                  { label: "Contact Us", path: "/contact" },
-                ].map((link) => (
-                  <button
-                    key={link.label}
-                    onClick={() => handleNav(link.path)}
-                    className="text-left hover:text-white transition"
-                  >
-                    {link.label}
-                  </button>
-                ))}
-              </div>
+          {/* QUICK LINKS */}
+          <div>
+            <h3 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "16px", lineHeight: "28px", letterSpacing: "0px", color: "#FFFFFF", marginBottom: "16px" }}>
+              Quick Links
+            </h3>
+            <div className="flex flex-col gap-2">
+              {[
+                { label: "Shop All", path: "/" },
+                { label: "About Us", path: "/about" },
+                { label: "Why Choose Us", path: "/why-choose-us" },
+                { label: "Testimonials", path: "/testimonials" },
+                { label: "FAQs", path: "/faqs" },
+                { label: "Contact Us", path: "/contact" },
+              ].map((link) => (
+                <button
+                  key={link.label}
+                  onClick={() => handleNav(link.path)}
+                  className="text-left hover:text-white transition"
+                  style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 500, fontSize: "16px", lineHeight: "100%", letterSpacing: "0px", color: "rgba(255,255,255,0.6)" }}
+                >
+                  {link.label}
+                </button>
+              ))}
             </div>
-
-            {/* POLICIES */}
-            <div>
-              <h3 className="font-semibold mb-4">Policies</h3>
-              <div className="flex flex-col gap-2 text-white/60 text-sm">
-                {[
-                  { label: "Terms & Conditions", path: "/terms" },
-                  { label: "Privacy Policy", path: "/privacy-policy" },
-                  { label: "Refund Policy", path: "/refund-policy" },
-                  { label: "Shipping Policy", path: "/shipping-policy" },
-                ].map((link) => (
-                  <button
-                    key={link.label}
-                    onClick={() => handleNav(link.path)}
-                    className="text-left hover:text-white transition"
-                  >
-                    {link.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* CONTACT */}
-            <div>
-              <h3 className="font-semibold mb-4">Contact</h3>
-
-              <div className="flex flex-col gap-2 text-white/60 text-sm">
-                {[
-                  { label: "care@rephyl.com", type: "mailto", value: "care@rephyl.com" },
-                  { label: "+91 9313984685", type: "tel", value: "9313984685" },
-                  { label: "Why Choose Us", path: "/why-choose-us" },
-                  { label: "Testimonials", path: "/testimonials" },
-                  { label: "FAQs", path: "/faqs" },
-                  { label: "Contact us", path: "/contact" },
-                ].map((item) => {
-                  // 👉 EMAIL
-                  if (item.type === "mailto") {
-                    return (
-                      <a
-                        key={item.label}
-                        href={`mailto:${item.value}`}
-                        className="hover:text-white transition"
-                      >
-                        {item.label}
-                      </a>
-                    );
-                  }
-
-                  // 👉 PHONE
-                  if (item.type === "tel") {
-                    return (
-                      <a
-                        key={item.label}
-                        href={`tel:${item.value}`}
-                        className="hover:text-white transition"
-                      >
-                        {item.label}
-                      </a>
-                    );
-                  }
-
-                  // 👉 NORMAL NAV BUTTONS
-                  return (
-                    <button
-                      key={item.label}
-                      onClick={() => handleNav(item.path)}
-                      className="text-left hover:text-white transition"
-                    >
-                      {item.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
           </div>
 
-          {/* SUBSCRIBE CARD */}
-          <div className="bg-white/10 rounded-xl p-6 w-full max-w-xs">
-            <h3 className="font-semibold mb-4">Subscribe</h3>
+          {/* POLICIES */}
+          <div>
+            <h3 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "16px", lineHeight: "28px", letterSpacing: "0px", color: "#FFFFFF", marginBottom: "16px" }}>
+              Policies
+            </h3>
+            <div className="flex flex-col gap-2">
+              {[
+                { label: "Terms & Conditions", path: "/terms" },
+                { label: "Privacy Policy", path: "/privacy-policy" },
+                { label: "Refund Policy", path: "/refund-policy" },
+                { label: "Shipping Policy", path: "/shipping-policy" },
+              ].map((link) => (
+                <button
+                  key={link.label}
+                  onClick={() => handleNav(link.path)}
+                  className="text-left hover:text-white transition"
+                  style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 500, fontSize: "16px", lineHeight: "100%", letterSpacing: "0px", color: "rgba(255,255,255,0.6)" }}
+                >
+                  {link.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* CONTACT */}
+          <div>
+            <h3 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "16px", lineHeight: "28px", letterSpacing: "0px", color: "#FFFFFF", marginBottom: "16px" }}>
+              Contact
+            </h3>
+            <div className="flex flex-col gap-2">
+              <a href="mailto:care@rephyl.com" className="hover:text-white transition" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 500, fontSize: "16px", lineHeight: "100%", color: "rgba(255,255,255,0.6)" }}>
+                care@rephyl.com
+              </a>
+              <a href="tel:9313984685" className="hover:text-white transition" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 500, fontSize: "16px", lineHeight: "100%", color: "rgba(255,255,255,0.6)" }}>
+                +91 9313984685
+              </a>
+            </div>
+          </div>
+
+          {/* SUBSCRIBE */}
+          <div>
+            <h3 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "16px", lineHeight: "28px", letterSpacing: "0px", color: "#FFFFFF", marginBottom: "16px" }}>
+              Subscribe
+            </h3>
 
             <form onSubmit={handleSubscribe} className="relative mb-4">
               <input
@@ -174,7 +127,7 @@ const Footer = () => {
             </form>
 
             <p className="text-sm text-white/60">
-              Hello, we are rePhyl. trying to make an effort to put the right people for you to get the best results. Just insight
+              Hello, we are rePhyl. trying to make an effort to put the right people for you to get the best results.
             </p>
           </div>
 
@@ -185,45 +138,19 @@ const Footer = () => {
 
         {/* BOTTOM SECTION */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-
-          {/* LOGO TEXT */}
           <h2 className="text-2xl font-bold">rePhyl</h2>
-
-          {/* COPYRIGHT */}
-          <p className="text-sm text-white/60">
-            ©2026 rePhyl. All rights reserved.
-          </p>
-
-          {/* SOCIALS */}
+          <p className="text-sm text-white/60">©2026 rePhyl. All rights reserved.</p>
           <div className="flex gap-4">
-            <a
-              href="https://www.instagram.com/rephyl.life"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#064734] transition"
-            >
+            <a href="https://www.instagram.com/rephyl.life" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#064734] transition">
               <Instagram size={16} />
             </a>
-
-            <a
-              href="https://www.facebook.com/people/rePhyl/61583757478743/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#064734] transition"
-            >
+            <a href="https://www.facebook.com/people/rePhyl/61583757478743/" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#064734] transition">
               <Facebook size={16} />
             </a>
-
-            <a
-              href="https://www.youtube.com/"  // replace with your real channel
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#064734] transition"
-            >
+            <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#064734] transition">
               <Youtube size={16} />
             </a>
           </div>
-
         </div>
 
       </div>

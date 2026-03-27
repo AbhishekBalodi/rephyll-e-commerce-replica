@@ -9,21 +9,46 @@ const ITEMS = [
 
 const TrustMarqueeStrip = () => {
   return (
-    <div className="marquee-container">
-      <div className="marquee-track">
-        
-        {/* REPEAT MANY TIMES → removes gap */}
+    <div
+      className="w-full overflow-hidden"
+      style={{
+        height: "40px",
+        background: "#064734",
+        display: "flex",
+        alignItems: "center",
+      }}
+    >
+      <div className="flex animate-marquee-slow whitespace-nowrap">
         {[...Array(6)].map((_, i) => (
-          <div key={i} className="marquee-group">
+          <div key={i} className="flex items-center">
             {ITEMS.map((item, index) => (
-              <div key={index} className="item">
-                <span>{item}</span>
-                <span className="dot" />
-              </div>
+              <span
+                key={index}
+                className="flex items-center"
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontWeight: 400,
+                  fontSize: "14px",
+                  lineHeight: "20px",
+                  color: "#FFFFFF",
+                  paddingRight: "32px",
+                }}
+              >
+                {item}
+                <span
+                  style={{
+                    width: "6px",
+                    height: "6px",
+                    background: "#FFFFFF",
+                    borderRadius: "50%",
+                    marginLeft: "32px",
+                    flexShrink: 0,
+                  }}
+                />
+              </span>
             ))}
           </div>
         ))}
-
       </div>
     </div>
   );
