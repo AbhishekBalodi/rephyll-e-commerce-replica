@@ -109,7 +109,7 @@
 .marquee-container {
   width: 100%;
   overflow: hidden;
-  background: #000;
+  background: #064734;
   padding: 10px 0;
 }
 
@@ -141,7 +141,7 @@
 .dot {
   width: 6px;
   height: 6px;
-  background: #00ff2a;
+  background: #FFFFFF;
   border-radius: 50%;
   margin-left: 12px;
 }
