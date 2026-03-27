@@ -1,33 +1,29 @@
-const SEGMENTS = [
-  "99+ ✦ Non-Toxic • Plant-Based • Family Safe",
-  "🌿 Flat 20% Off on Bundles | Code: CLEAN20",
-  "✦ Free Shipping ₹499+",
-  "✦ Non-Toxic • Plant-Based • Family Safe",
+const ITEMS = [
+  "Non-Toxic",
+  "Plant-Based",
+  "Child Safe",
+  "Pet Safe",
+  "100% Natural",
+  "Safe for everyday cleaning",
 ];
-
-const SEP = "\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0";
-const combinedText = SEGMENTS.join(SEP);
-const fullText = `${combinedText}${SEP}${combinedText}`;
 
 const TrustMarqueeStrip = () => {
   return (
-    <div
-      className="w-full overflow-hidden py-2.5"
-      style={{ background: "#064734" }}
-    >
-      <div className="flex animate-marquee whitespace-nowrap">
-        <span
-          className="text-white text-sm font-normal tracking-wide mx-4"
-          style={{ fontFamily: "'Inter', sans-serif", fontSize: "14px", lineHeight: "20px" }}
-        >
-          {fullText}
-        </span>
-        <span
-          className="text-white text-sm font-normal tracking-wide mx-4"
-          style={{ fontFamily: "'Inter', sans-serif", fontSize: "14px", lineHeight: "20px" }}
-        >
-          {fullText}
-        </span>
+    <div className="marquee-container">
+      <div className="marquee-track">
+        
+        {/* REPEAT MANY TIMES → removes gap */}
+        {[...Array(6)].map((_, i) => (
+          <div key={i} className="marquee-group">
+            {ITEMS.map((item, index) => (
+              <div key={index} className="item">
+                <span>{item}</span>
+                <span className="dot" />
+              </div>
+            ))}
+          </div>
+        ))}
+
       </div>
     </div>
   );

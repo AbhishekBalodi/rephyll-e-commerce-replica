@@ -55,9 +55,9 @@ const NAV_CATEGORIES: NavCategory[] = [
 ];
 
 const ANNOUNCEMENT_SEGMENTS = [
-  "🌿 Flat 20% Off on Bundles | Code: CLEAN20",
-  "Free Shipping ₹499+",
-  "Non-Toxic • Plant-Based • Family Safe",
+  "🌿 Flat 20% Off on Bundles | Code: CLEAN20\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0",
+  "Free Shipping ₹499+\u00A0",
+  "\u00A0Non-Toxic \u00A0\u00A0• Plant-Based \u00A0\u00A0• Family Safe",
 ];
 const SEPARATOR = "          ✦          ";
 const ANNOUNCEMENT_TEXT = ANNOUNCEMENT_SEGMENTS.join(SEPARATOR);
@@ -157,7 +157,7 @@ const Navbar = () => {
                 paddingRight: "80px",
               }}
             >
-              {ANNOUNCEMENT_TEXT}
+              {ANNOUNCEMENT_SEGMENTS}
             </span>
           ))}
         </div>

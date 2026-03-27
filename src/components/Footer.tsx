@@ -44,13 +44,13 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row gap-16 flex-1">
 
             {/* LOGO */}
-            <div className="flex flex-col items-start">
+            {/* <div className="flex flex-col items-start">
               <img src={cloverDark} className="w-16 mb-3" />
               <img src={logoGreen} className="w-28 -mt-6 mb-2" />
               <p className="text-sm text-white/60">
                 Plant-powered cleaning for modern homes.
               </p>
-            </div>
+            </div> */}
 
             {/* QUICK LINKS */}
             <div>
@@ -99,13 +99,53 @@ const Footer = () => {
             {/* CONTACT */}
             <div>
               <h3 className="font-semibold mb-4">Contact</h3>
+
               <div className="flex flex-col gap-2 text-white/60 text-sm">
-                <a href="mailto:care@rephyl.com">care@rephyl.com</a>
-                <a href="tel:9313984685">+91 9313984685</a>
-                <button onClick={() => handleNav("/why-choose-us")}>Why Choose Us</button>
-                <button onClick={() => handleNav("/testimonials")}>Testimonials</button>
-                <button onClick={() => handleNav("/faqs")}>FAQs</button>
-                <button onClick={() => handleNav("/contact")}>Contact us</button>
+                {[
+                  { label: "care@rephyl.com", type: "mailto", value: "care@rephyl.com" },
+                  { label: "+91 9313984685", type: "tel", value: "9313984685" },
+                  { label: "Why Choose Us", path: "/why-choose-us" },
+                  { label: "Testimonials", path: "/testimonials" },
+                  { label: "FAQs", path: "/faqs" },
+                  { label: "Contact us", path: "/contact" },
+                ].map((item) => {
+                  // 👉 EMAIL
+                  if (item.type === "mailto") {
+                    return (
+                      <a
+                        key={item.label}
+                        href={`mailto:${item.value}`}
+                        className="hover:text-white transition"
+                      >
+                        {item.label}
+                      </a>
+                    );
+                  }
+
+                  // 👉 PHONE
+                  if (item.type === "tel") {
+                    return (
+                      <a
+                        key={item.label}
+                        href={`tel:${item.value}`}
+                        className="hover:text-white transition"
+                      >
+                        {item.label}
+                      </a>
+                    );
+                  }
+
+                  // 👉 NORMAL NAV BUTTONS
+                  return (
+                    <button
+                      key={item.label}
+                      onClick={() => handleNav(item.path)}
+                      className="text-left hover:text-white transition"
+                    >
+                      {item.label}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -156,33 +196,33 @@ const Footer = () => {
 
           {/* SOCIALS */}
           <div className="flex gap-4">
-  <a
-    href="https://www.instagram.com/rephyl.life"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#064734] transition"
-  >
-    <Instagram size={16} />
-  </a>
+            <a
+              href="https://www.instagram.com/rephyl.life"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#064734] transition"
+            >
+              <Instagram size={16} />
+            </a>
 
-  <a
-    href="https://www.facebook.com/people/rePhyl/61583757478743/"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#064734] transition"
-  >
-    <Facebook size={16} />
-  </a>
+            <a
+              href="https://www.facebook.com/people/rePhyl/61583757478743/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#064734] transition"
+            >
+              <Facebook size={16} />
+            </a>
 
-  <a
-    href="https://www.youtube.com/"  // replace with your real channel
-    target="_blank"
-    rel="noopener noreferrer"
-    className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#064734] transition"
-  >
-    <Youtube size={16} />
-  </a>
-</div>
+            <a
+              href="https://www.youtube.com/"  // replace with your real channel
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#064734] transition"
+            >
+              <Youtube size={16} />
+            </a>
+          </div>
 
         </div>
 

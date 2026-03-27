@@ -1,8 +1,17 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, ChevronRight, Star, Leaf, ShieldCheck, Baby, Droplets } from "lucide-react";
+import { ChevronLeft, ChevronRight, Leaf, ShieldCheck, Baby, Droplets } from "lucide-react";
 import type { ApiProduct, ApiVariant } from "@/types/api";
-import { getProductImages, getSellingPrice, getMrp, getDiscount, parseVariantAttributes, isInStock, resolveImageUrl } from "@/lib/productHelpers";
+
+import {
+  getProductImages,
+  getSellingPrice,
+  getMrp,
+  getDiscount,
+  parseVariantAttributes,
+  isInStock
+} from "@/lib/productHelpers";
+
 import { useCart } from "@/contexts/CartContext";
 import PackSelector, { generatePacks } from "./PackSelector";
 import QuantityCapsule from "./QuantityCapsule";
@@ -13,16 +22,6 @@ interface ProductDetailProps {
   onBack: () => void;
 }
 
-const renderStars = (rating: number, size = 16) => {
-  const stars = [];
-  for (let i = 1; i <= 5; i++) {
-    stars.push(
-      <Star key={i} size={size} className={i <= Math.floor(rating) ? "text-primary fill-primary" : "text-muted-foreground"} />
-    );
-  }
-  return stars;
-};
-
 const WHATS_IN_ICONS = [
   { label: "Plant-Based", icon: Leaf },
   { label: "Non-Toxic", icon: ShieldCheck },
@@ -31,12 +30,15 @@ const WHATS_IN_ICONS = [
 ];
 
 const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
+
   const navigate = useNavigate();
+
   const [activeImg, setActiveImg] = useState(0);
   const [selectedVariant, setSelectedVariant] = useState<ApiVariant | undefined>(
     product.variants.length > 0 ? product.variants[0] : undefined
   );
   const [selectedPackId, setSelectedPackId] = useState<number>(1);
+
   const { items, addToCart, updateQuantity, removeFromCart } = useCart();
 
   const images = getProductImages(product);
@@ -48,12 +50,15 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
   const packs = generatePacks(price, mrp);
   const activePack = packs.find((p) => p.id === selectedPackId) ?? packs[0];
 
-  // Cart item key includes pack info
   const cartKey = product.id * 100 + selectedPackId;
   const cartItem = items.find((i) => i.productId === cartKey);
   const cartQty = cartItem?.quantity ?? 0;
 
-  const description = product.ingredients || product.metaDescription || product.productDetails || "No description available.";
+  const description =
+    product.ingredients ||
+    product.metaDescription ||
+    product.productDetails ||
+    "No description available.";
 
   const prevImg = () => setActiveImg((p) => (p > 0 ? p - 1 : images.length - 1));
   const nextImg = () => setActiveImg((p) => (p < images.length - 1 ? p + 1 : 0));
@@ -77,75 +82,81 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 md:px-6 py-8">
-      <button onClick={() => { onBack(); navigate("/"); }} className="text-sm text-muted-foreground hover:text-foreground mb-6 inline-block">
-        ← Back to products
+    <div className="max-w-[1200px] mx-auto px-6 py-10">
+
+      <button
+        onClick={() => { onBack(); navigate("/"); }}
+        className="text-sm text-gray-500 mb-6"
+      >
+        ← Back
       </button>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-        {/* Image gallery */}
-        <div className="space-y-3">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-muted">
+      {/* ✅ IMPORTANT CHANGE HERE */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-stretch">
+
+        {/* ✅ LEFT SIDE IMAGE (NOW FULL HEIGHT) */}
+        <div className="flex flex-col h-full">
+
+          <div className="relative flex-1 rounded-2xl overflow-hidden bg-[#F6F6F6] flex items-center justify-center">
             <img
               src={images[activeImg]}
               alt={product.name}
-              className="w-full h-full object-cover"
-              onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg"; }}
+              className="w-full h-full object-contain"
             />
+
             {images.length > 1 && (
               <>
-                <button onClick={prevImg} className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-background/80 backdrop-blur rounded-full flex items-center justify-center shadow-md hover:bg-background transition-colors">
-                  <ChevronLeft size={20} />
+                <button onClick={prevImg} className="absolute left-3 top-1/2 -translate-y-1/2">
+                  <ChevronLeft />
                 </button>
-                <button onClick={nextImg} className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-background/80 backdrop-blur rounded-full flex items-center justify-center shadow-md hover:bg-background transition-colors">
-                  <ChevronRight size={20} />
+                <button onClick={nextImg} className="absolute right-3 top-1/2 -translate-y-1/2">
+                  <ChevronRight />
                 </button>
               </>
             )}
           </div>
-          <div className="flex gap-2">
+
+          <div className="flex gap-3 mt-4">
             {images.map((img, i) => (
-              <button
+              <img
                 key={i}
+                src={img}
                 onClick={() => setActiveImg(i)}
-                className={`w-16 h-16 rounded-md overflow-hidden border-2 transition-all ${activeImg === i ? "border-primary" : "border-transparent opacity-60 hover:opacity-100"}`}
-              >
-                <img src={img} alt="" className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg"; }} />
-              </button>
+                className={`w-16 h-16 rounded-lg cursor-pointer border ${
+                  activeImg === i ? "border-[#064734]" : "border-gray-200"
+                }`}
+              />
             ))}
           </div>
         </div>
 
-        {/* Product info */}
-        <div>
-          {/* Brand & Category */}
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-primary bg-primary/10 px-2 py-0.5 rounded">{product.brandName}</span>
-            <span className="text-xs text-muted-foreground">{product.categoryName}</span>
-          </div>
+        {/* ✅ RIGHT SIDE */}
+        <div className="flex flex-col h-full">
 
-          <h1 className="text-2xl md:text-3xl font-display font-bold text-foreground mb-3">{product.name}</h1>
+          <h1 className="text-[28px] font-semibold text-[#064734] mb-2">
+            {product.name}
+          </h1>
 
-          <p className="text-foreground/70 text-sm leading-relaxed mb-4">
-            {description.length > 160 ? description.substring(0, 160) + "..." : description}
+          <p className="text-sm text-gray-600 mb-4">
+            {description}
           </p>
 
-          {/* What's In icons */}
+          {/* FEATURES */}
           <div className="grid grid-cols-2 gap-3 mb-6">
             {WHATS_IN_ICONS.map(({ label, icon: Icon }) => (
-              <div key={label} className="flex items-center gap-2.5">
-                <div className="w-10 h-10 rounded-full border border-border flex items-center justify-center">
-                  <Icon size={18} className="text-foreground" />
+              <div key={label} className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-[#E2F3AF] flex items-center justify-center">
+                  <Icon size={16} className="text-[#064734]" />
                 </div>
-                <span className="text-sm text-foreground font-medium">{label}</span>
+                <span className="text-sm text-[#064734]">{label}</span>
               </div>
             ))}
           </div>
 
-          {/* Variant selector */}
+          {/* VARIANTS */}
           {product.variants.length > 0 && (
             <div className="mb-4">
-              <p className="text-sm font-semibold text-foreground mb-2">Select Variant</p>
+              <p className="text-sm font-semibold mb-2">Select Variant</p>
               <div className="flex flex-wrap gap-2">
                 {product.variants.map((v) => {
                   const attrs = parseVariantAttributes(v.variantAttributes);
@@ -153,18 +164,13 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
                     <button
                       key={v.id}
                       onClick={() => setSelectedVariant(v)}
-                      className={`px-3 py-2 rounded-lg border-2 text-sm transition-all ${
+                      className={`px-3 py-2 rounded-lg border ${
                         selectedVariant?.id === v.id
-                          ? "border-primary bg-primary/10 text-foreground font-semibold"
-                          : "border-border text-muted-foreground hover:border-primary/50"
+                          ? "border-[#064734] bg-[#E2F3AF]"
+                          : "border-gray-300"
                       }`}
                     >
                       {v.variantName}
-                      {Object.keys(attrs).length > 0 && (
-                        <span className="block text-[10px] text-muted-foreground">
-                          {Object.values(attrs).join(" / ")}
-                        </span>
-                      )}
                     </button>
                   );
                 })}
@@ -172,63 +178,43 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
             </div>
           )}
 
-          {/* Pack selector */}
+          {/* PACK */}
+          <PackSelector
+            basePrice={price}
+            baseMrp={mrp}
+            selectedPack={selectedPackId}
+            onSelectPack={setSelectedPackId}
+          />
+
+          {/* PRICE */}
+          <div className="mt-4 mb-4">
+            <span className="text-3xl font-bold text-[#064734]">
+              ₹{activePack.totalPrice.toFixed(0)}
+            </span>
+          </div>
+
+          {/* CART */}
           <div className="mb-6">
-            <p className="text-sm font-semibold text-foreground mb-3">Select Pack</p>
-            <PackSelector
-              basePrice={price}
-              baseMrp={mrp}
-              selectedPack={selectedPackId}
-              onSelectPack={setSelectedPackId}
-            />
-          </div>
-
-          {/* Price */}
-          <div className="mb-1">
-            <span className="text-3xl font-bold text-foreground">₹{activePack.totalPrice.toFixed(0)}</span>
-            {activePack.originalPrice > activePack.totalPrice && (
-              <>
-                <span className="text-lg text-muted-foreground line-through ml-3">₹{activePack.originalPrice.toFixed(0)}</span>
-                <span className="ml-2 text-sm font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">Save {activePack.discount}%</span>
-              </>
-            )}
-          </div>
-          <p className="text-xs text-muted-foreground mb-1">
-            {product.productWeight && `Weight: ${product.productWeight}`}
-            {product.productWeight && " · "}
-            Inclusive of all taxes
-          </p>
-          {!inStock && <p className="text-sm font-semibold text-destructive mb-2">Out of Stock</p>}
-
-          {/* Quantity + Add to cart */}
-          <div className="flex items-center gap-4 mt-4 mb-8">
             {cartQty > 0 ? (
-              <>
-                <QuantityCapsule
-                  quantity={cartQty}
-                  onIncrement={handleAddToCart}
-                  onDecrement={handleDecrement}
-                />
-                <div className="flex-1 py-3 border-2 border-primary/30 rounded-full text-center text-primary font-bold text-sm uppercase tracking-wider">
-                  {cartQty} × {activePack.label} in Cart
-                </div>
-              </>
+              <QuantityCapsule
+                quantity={cartQty}
+                onIncrement={handleIncrement}
+                onDecrement={handleDecrement}
+              />
             ) : (
               <button
                 onClick={handleAddToCart}
-                disabled={!inStock}
-                className="flex-1 py-3 border-2 border-foreground rounded-full text-foreground font-bold text-sm uppercase tracking-wider hover:bg-foreground hover:text-background transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-[#064734] text-white py-3 rounded-xl"
               >
-                {inStock ? "ADD TO CART" : "OUT OF STOCK"}
+                Add To Cart
               </button>
             )}
           </div>
-        </div>
-      </div>
 
-      {/* Accordion sections replacing tabs */}
-      <div className="mt-4">
-        <ProductDetailAccordion product={product} />
+          {/* ACCORDION */}
+          <ProductDetailAccordion product={product} />
+
+        </div>
       </div>
     </div>
   );

@@ -139,168 +139,209 @@ const HomecareKitsSection = () => {
   return (
     <div id="homecare-kits-section">
       {/* ===== SECTION 1: Smart Bundles / Single Products ===== */}
-      <section className="relative overflow-hidden py-10" style={{ minHeight: "897px", background: "rgba(206, 241, 123, 0.3)" }}>
-        {/* 9 large clovers across the section */}
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute z-0" style={{ width: "320px", left: "-90px", top: "-70px", opacity: 0.2 }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute z-0" style={{ width: "300px", right: "-70px", top: "-50px", opacity: 0.2 }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute z-0" style={{ width: "280px", left: "-80px", bottom: "-80px", opacity: 0.18 }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute z-0" style={{ width: "300px", right: "-60px", bottom: "-70px", opacity: 0.18 }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute z-0" style={{ width: "260px", left: "50%", top: "-60px", transform: "translateX(-50%)", opacity: 0.12 }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute z-0" style={{ width: "240px", left: "25%", bottom: "40px", opacity: 0.12 }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute z-0" style={{ width: "250px", right: "20%", top: "30%", opacity: 0.1 }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute z-0" style={{ width: "220px", left: "15%", top: "40%", opacity: 0.1 }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute z-0" style={{ width: "260px", left: "50%", bottom: "-50px", opacity: 0.14 }} />
+      <section
+  className="relative overflow-hidden py-10"
+  style={{ minHeight: "897px", background: "rgba(206, 241, 123, 0.3)" }}
+>
+  {/* CLOVERS */}
+  <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "320px", left: "-90px", top: "-70px", opacity: 0.2 }} />
+  <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "300px", right: "-70px", top: "-50px", opacity: 0.2 }} />
+  <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "280px", left: "-80px", bottom: "-80px", opacity: 0.18 }} />
+  <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "300px", right: "-60px", bottom: "-70px", opacity: 0.18 }} />
 
-        <div className="relative z-[1] mx-auto max-w-[1440px] px-4 md:px-6">
-          {/* Tab Buttons */}
-          <div className="mb-10 flex justify-center">
-            <div className="flex items-center gap-6" style={{ width: "612px" }}>
-              <button
-                onClick={() => setActiveTab("bundles")}
-                className="flex-1 flex items-center justify-center transition-all"
-                style={{
-                  width: "294px", height: "48px", borderRadius: "12px",
-                  background: activeTab === "bundles" ? "#064734" : "#FFFFFF",
-                  boxShadow: "0px 13px 25px rgba(0, 0, 0, 0.15)",
-                  fontFamily: "'Poppins', sans-serif", fontSize: "16px", fontWeight: 400, lineHeight: "24px",
-                  color: activeTab === "bundles" ? "#FFFFFF" : "#064734",
-                }}
-              >
-                Smart Bundles
-              </button>
-              <button
-                onClick={() => setActiveTab("single")}
-                className="flex-1 flex items-center justify-center transition-all"
-                style={{
-                  width: "294px", height: "48px", borderRadius: "12px",
-                  background: activeTab === "single" ? "#064734" : "#FFFFFF",
-                  boxShadow: "0px 13px 25px rgba(0, 0, 0, 0.15)",
-                  fontFamily: "'Poppins', sans-serif", fontSize: "16px", fontWeight: 400, lineHeight: "24px",
-                  color: activeTab === "single" ? "#FFFFFF" : "#064734",
-                }}
-              >
-                Single Products
-              </button>
-            </div>
-          </div>
+  <div className="relative z-[1] mx-auto max-w-[1440px] px-4 md:px-6">
 
-          {/* Product Cards Grid */}
-          {activeTab === "bundles" && (
-            <div className="flex justify-center gap-6 flex-wrap">
-              {BUNDLES.map((bundle) => {
-                const cartItem = items.find((i) => i.productId === bundle.id);
-                const cartQty = cartItem?.quantity ?? 0;
-                return (
-                  <div key={bundle.id} className="flex flex-col overflow-hidden" style={{ width: "428px", height: "468px", background: "#FFFFFF", boxShadow: "0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1)", borderRadius: "24px" }}>
-                    <div className="relative flex-shrink-0" style={{ width: "428px", height: "409px", background: "linear-gradient(137.98deg, #CEF17B 0.45%, #FFFFFF 106.93%)", borderRadius: "24px 24px 0 0" }}>
-                      <div className="absolute flex items-center justify-center" style={{ width: "89px", height: "32px", left: "31px", top: "16px", background: "#E2FF9C", borderRadius: "9999px" }}>
-                        <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "16px", lineHeight: "24px", color: "#064734" }}>{bundle.discount}% Off</span>
-                      </div>
-                      <button className="absolute flex items-center justify-center" style={{ width: "40px", height: "40px", left: "324px", top: "16px", background: "#FFFFFF", boxShadow: "0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -2px rgba(0, 0, 0, 0.1)", borderRadius: "9999px" }}>
-                        <svg className="w-4 h-4" fill="none" stroke="#364153" strokeWidth={1.33} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>
-                      </button>
-                      <button className="absolute flex items-center justify-center" style={{ width: "40px", height: "40px", left: "372px", top: "16px", background: "#FFFFFF", boxShadow: "0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -2px rgba(0, 0, 0, 0.1)", borderRadius: "9999px" }}>
-                        <svg className="w-5 h-5" fill="none" stroke="#364153" strokeWidth={1.67} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
-                      </button>
-                      <img src={ascFront2} alt={bundle.name} className="absolute object-contain" style={{ width: "228px", height: "343px", left: "calc(50% - 114px)", top: "45px" }} />
-                      <button className="absolute flex items-center justify-center" style={{ width: "32px", height: "32px", left: "380px", top: "208px", background: "rgba(255, 255, 255, 0.9)", boxShadow: "0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -2px rgba(0, 0, 0, 0.1)", borderRadius: "9999px" }}>
-                        <ChevronRight size={20} color="#364153" />
-                      </button>
-                      <div className="absolute flex items-start gap-[6px]" style={{ width: "60px", height: "6px", left: "194px", top: "377px" }}>
-                        <span style={{ width: "24px", height: "6px", background: "#064734", borderRadius: "9999px", flex: "none" }} />
-                        <span style={{ width: "6px", height: "6px", background: "rgba(6, 71, 52, 0.3)", borderRadius: "9999px", flex: "none" }} />
-                        <span style={{ width: "6px", height: "6px", background: "rgba(6, 71, 52, 0.3)", borderRadius: "9999px", flex: "none" }} />
-                        <span style={{ width: "6px", height: "6px", background: "rgba(6, 71, 52, 0.3)", borderRadius: "9999px", flex: "none" }} />
-                      </div>
-                    </div>
-                    <div className="flex-1 flex flex-col" style={{ padding: "20px" }}>
-                      <div className="flex flex-col gap-[8px] mb-[20px]">
-                        <p style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "16px", lineHeight: "24px", color: "#464646" }}>{bundle.name}</p>
-                        <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "16px", lineHeight: "24px", color: "#064734" }}>({bundle.productCount} Products)</p>
-                        <div className="flex items-center gap-[8px]">
-                          <div className="flex items-center gap-[4px]">
-                            {[1, 2, 3, 4, 5].map((star) => (
-                              <svg key={star} className="w-4 h-4" fill={star <= bundle.rating ? "#FDC700" : "none"} stroke={star <= bundle.rating ? "#FDC700" : "#8E939C"} strokeWidth={1.33} viewBox="0 0 20 20">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                              </svg>
-                            ))}
-                          </div>
-                          <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "16px", lineHeight: "24px", color: "#464646" }}>{bundle.rating.toFixed(1)}</span>
-                          <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "16px", lineHeight: "24px", color: "#8E939C" }}>({bundle.reviewCount} reviews)</span>
-                        </div>
-                        <div className="flex items-center gap-[12px]">
-                          <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "30px", lineHeight: "24px", color: "#064734" }}>₹{bundle.price}</span>
-                          <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, fontSize: "16px", lineHeight: "24px", color: "#8E939C", textDecoration: "line-through" }}>₹{bundle.originalPrice}</span>
-                        </div>
-                      </div>
-                      <div className="mt-auto">
-                        {cartQty > 0 ? (
-                          <QuantityCapsule quantity={cartQty} onIncrement={(e) => { e.stopPropagation(); updateQuantity(bundle.id, cartQty + 1); }} onDecrement={(e) => { e.stopPropagation(); cartQty <= 1 ? removeFromCart(bundle.id) : updateQuantity(bundle.id, cartQty - 1); }} size="sm" fullWidth />
-                        ) : (
-                          <button onClick={() => handleAddBundle(bundle)} className="flex w-full items-center justify-center gap-2" style={{ height: "56px", background: "#064734", borderRadius: "14px", fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "16px", lineHeight: "24px", color: "#FFFFFF" }}>
-                            <ShoppingCart size={20} color="#FFFFFF" />
-                            Add to Cart
-                          </button>
-                        )}
-                      </div>
-                    </div>
+    {/* TABS */}
+    <div className="mb-10 flex justify-center">
+      <div className="flex items-center gap-6" style={{ width: "612px" }}>
+        <button
+          onClick={() => setActiveTab("bundles")}
+          className="flex-1 flex items-center justify-center"
+          style={{
+            height: "48px",
+            borderRadius: "12px",
+            background: activeTab === "bundles" ? "#064734" : "#FFFFFF",
+            color: activeTab === "bundles" ? "#FFFFFF" : "#064734",
+          }}
+        >
+          Smart Bundles
+        </button>
+
+        <button
+          onClick={() => setActiveTab("single")}
+          className="flex-1 flex items-center justify-center"
+          style={{
+            height: "48px",
+            borderRadius: "12px",
+            background: activeTab === "single" ? "#064734" : "#FFFFFF",
+            color: activeTab === "single" ? "#FFFFFF" : "#064734",
+          }}
+        >
+          Single Products
+        </button>
+      </div>
+    </div>
+
+    {/* ================= BUNDLES ================= */}
+    {activeTab === "bundles" && (
+      <div className="flex justify-center gap-6 flex-wrap">
+        {BUNDLES.map((bundle) => {
+          const cartItem = items.find((i) => i.productId === bundle.id);
+          const cartQty = cartItem?.quantity ?? 0;
+
+          return (
+            <div key={bundle.id} className="flex flex-col overflow-hidden" style={{ width: "428px", height: "468px", background: "#FFFFFF", borderRadius: "24px" }}>
+
+              {/* IMAGE */}
+              <div className="relative" style={{ height: "50%", background: "linear-gradient(137.98deg, #CEF17B 0.45%, #FFFFFF 106.93%)" }}>
+
+                {/* ✅ FIXED (ONLY bundle used) */}
+                <div className="absolute flex items-center justify-center" style={{ width: "89px", height: "32px", left: "16px", top: "12px", background: "#E2FF9C", borderRadius: "9999px" }}>
+                  <span className="text-[#064734] text-sm">
+                    {bundle.discount}% Off
+                  </span>
+                </div>
+
+                <button className="absolute flex items-center justify-center" style={{ width: "36px", height: "36px", right: "56px", top: "12px", background: "#FFFFFF", borderRadius: "9999px" }}>
+                  <Share2 size={16} color="#364153" />
+                </button>
+
+                <button className="absolute flex items-center justify-center" style={{ width: "36px", height: "36px", right: "12px", top: "12px", background: "#FFFFFF", borderRadius: "9999px" }}>
+                  <Heart size={16} color="#364153" />
+                </button>
+
+                <img
+                  src={ascFront2}
+                  alt={bundle.name}   /* ✅ FIXED */
+                  className="absolute object-contain"
+                  style={{ width: "100%", height: "100%", padding: "40px 60px" }}
+                />
+
+                <button className="absolute flex items-center justify-center" style={{ width: "32px", height: "32px", right: "10px", top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.9)", borderRadius: "9999px" }}>
+                  <ChevronRight size={18} color="#364153" />
+                </button>
+
+              </div>
+
+              {/* CONTENT */}
+              <div className="flex flex-col justify-between" style={{ height: "50%", padding: "16px" }}>
+
+                <div className="flex flex-col gap-1">
+                  <p className="font-semibold text-[#464646]">{bundle.name}</p>
+                  <p className="text-[#064734] text-sm">Pack Of {bundle.productCount}</p>
+                  <div className="flex items-center gap-2 text-sm">
+                    ⭐⭐⭐⭐☆ {bundle.rating} ({bundle.reviewCount})
                   </div>
-                );
-              })}
-            </div>
-          )}
-
-          {activeTab === "single" && (
-            <div className="flex justify-center gap-6 flex-wrap">
-              {SINGLE_PRODUCTS.map((product) => {
-                const cartItem = items.find((i) => i.productId === product.id);
-                const cartQty = cartItem?.quantity ?? 0;
-                return (
-                  <div key={product.id} className="flex flex-col overflow-hidden" style={{ width: "428px", height: "468px", background: "#FFFFFF", boxShadow: "0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1)", borderRadius: "24px" }}>
-                    <div className="relative flex-shrink-0" style={{ width: "428px", height: "409px", background: "linear-gradient(137.98deg, #CEF17B 0.45%, #FFFFFF 106.93%)", borderRadius: "24px 24px 0 0" }}>
-                      <div className="absolute flex items-center justify-center" style={{ width: "89px", height: "32px", left: "31px", top: "16px", background: "#E2FF9C", borderRadius: "9999px" }}>
-                        <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "16px", lineHeight: "24px", color: "#064734" }}>{product.discount}% Off</span>
-                      </div>
-                      <button className="absolute flex items-center justify-center" style={{ width: "40px", height: "40px", left: "372px", top: "16px", background: "#FFFFFF", boxShadow: "0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -2px rgba(0, 0, 0, 0.1)", borderRadius: "9999px" }}>
-                        <svg className="w-5 h-5" fill="none" stroke="#364153" strokeWidth={1.67} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
-                      </button>
-                      <img src={ascFront2} alt={product.name} className="absolute object-contain" style={{ width: "228px", height: "343px", left: "calc(50% - 114px)", top: "45px" }} />
-                      <button className="absolute flex items-center justify-center" style={{ width: "32px", height: "32px", left: "380px", top: "208px", background: "rgba(255, 255, 255, 0.9)", boxShadow: "0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -2px rgba(0, 0, 0, 0.1)", borderRadius: "9999px" }}>
-                        <ChevronRight size={20} color="#364153" />
-                      </button>
-                      <div className="absolute flex items-start gap-[6px]" style={{ width: "60px", height: "6px", left: "194px", top: "377px" }}>
-                        <span style={{ width: "24px", height: "6px", background: "#064734", borderRadius: "9999px", flex: "none" }} />
-                        <span style={{ width: "6px", height: "6px", background: "rgba(6, 71, 52, 0.3)", borderRadius: "9999px", flex: "none" }} />
-                        <span style={{ width: "6px", height: "6px", background: "rgba(6, 71, 52, 0.3)", borderRadius: "9999px", flex: "none" }} />
-                        <span style={{ width: "6px", height: "6px", background: "rgba(6, 71, 52, 0.3)", borderRadius: "9999px", flex: "none" }} />
-                      </div>
-                    </div>
-                    <div className="flex-1 flex flex-col" style={{ padding: "20px" }}>
-                      <div className="flex flex-col gap-[8px] mb-[20px]">
-                        <p style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "16px", lineHeight: "24px", color: "#464646" }}>{product.name}</p>
-                        <div className="flex items-center gap-[12px]">
-                          <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "30px", lineHeight: "24px", color: "#064734" }}>₹{product.price}</span>
-                          <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, fontSize: "16px", lineHeight: "24px", color: "#8E939C", textDecoration: "line-through" }}>₹{product.originalPrice}</span>
-                        </div>
-                      </div>
-                      <div className="mt-auto">
-                        {cartQty > 0 ? (
-                          <QuantityCapsule quantity={cartQty} onIncrement={(e) => { e.stopPropagation(); updateQuantity(product.id, cartQty + 1); }} onDecrement={(e) => { e.stopPropagation(); cartQty <= 1 ? removeFromCart(product.id) : updateQuantity(product.id, cartQty - 1); }} size="sm" fullWidth />
-                        ) : (
-                          <button onClick={() => addToCart({ productId: product.id, name: product.name, price: product.price, originalPrice: product.originalPrice, image: "/placeholder.svg" })} className="flex w-full items-center justify-center gap-2" style={{ height: "56px", background: "#064734", borderRadius: "14px", fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "16px", lineHeight: "24px", color: "#FFFFFF" }}>
-                            <ShoppingCart size={20} color="#FFFFFF" />
-                            Add to Cart
-                          </button>
-                        )}
-                      </div>
-                    </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[22px] font-bold text-[#064734]">₹{bundle.price}</span>
+                    <span className="line-through text-[#8E939C] text-sm">₹{bundle.originalPrice}</span>
                   </div>
-                );
-              })}
+                </div>
+
+                <div>
+                  {cartQty > 0 ? (
+                    <QuantityCapsule
+                      quantity={cartQty}
+                      onIncrement={() => updateQuantity(bundle.id, cartQty + 1)}
+                      onDecrement={() => cartQty <= 1 ? removeFromCart(bundle.id) : updateQuantity(bundle.id, cartQty - 1)}
+                      size="sm"
+                      fullWidth
+                    />
+                  ) : (
+                    <button onClick={() => handleAddBundle(bundle)} className="w-full h-[48px] bg-[#064734] text-white rounded-lg">
+                      Add to Cart
+                    </button>
+                  )}
+                </div>
+
+              </div>
             </div>
-          )}
-        </div>
-      </section>
+          );
+        })}
+      </div>
+    )}
+
+    {/* ================= SINGLE ================= */}
+    {activeTab === "single" && (
+      <div className="flex justify-center gap-6 flex-wrap">
+        {SINGLE_PRODUCTS.map((product) => {
+          const cartItem = items.find((i) => i.productId === product.id);
+          const cartQty = cartItem?.quantity ?? 0;
+
+          return (
+            <div key={product.id} className="flex flex-col overflow-hidden" style={{ width: "428px", height: "468px", background: "#FFFFFF", borderRadius: "24px" }}>
+
+              {/* IMAGE */}
+              <div className="relative" style={{ height: "50%", background: "linear-gradient(137.98deg, #CEF17B 0.45%, #FFFFFF 106.93%)" }}>
+
+                {/* ✅ FIXED */}
+                <div className="absolute flex items-center justify-center" style={{ width: "89px", height: "32px", left: "16px", top: "12px", background: "#E2FF9C", borderRadius: "9999px" }}>
+                  <span className="text-[#064734] text-sm">
+                    {product.discount}% Off
+                  </span>
+                </div>
+
+                <button className="absolute flex items-center justify-center" style={{ width: "36px", height: "36px", right: "56px", top: "12px", background: "#FFFFFF", borderRadius: "9999px" }}>
+                  <Share2 size={16} />
+                </button>
+
+                <button className="absolute flex items-center justify-center" style={{ width: "36px", height: "36px", right: "12px", top: "12px", background: "#FFFFFF", borderRadius: "9999px" }}>
+                  <Heart size={16} />
+                </button>
+
+                <img
+                  src={ascFront2}
+                  alt={product.name}   /* ✅ FIXED */
+                  className="absolute object-contain"
+                  style={{ width: "100%", height: "100%", padding: "40px 60px" }}
+                />
+
+              </div>
+
+              {/* CONTENT */}
+              <div className="flex flex-col justify-between" style={{ height: "50%", padding: "16px" }}>
+                <div>
+                  <p className="font-semibold text-[#464646]">{product.name}</p>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[22px] font-bold text-[#064734]">₹{product.price}</span>
+                    <span className="line-through text-[#8E939C] text-sm">₹{product.originalPrice}</span>
+                  </div>
+                </div>
+
+                <div>
+                  {cartQty > 0 ? (
+                    <QuantityCapsule
+                      quantity={cartQty}
+                      onIncrement={() => updateQuantity(product.id, cartQty + 1)}
+                      onDecrement={() => cartQty <= 1 ? removeFromCart(product.id) : updateQuantity(product.id, cartQty - 1)}
+                      size="sm"
+                      fullWidth
+                    />
+                  ) : (
+                    <button
+                      onClick={() => addToCart({
+                        productId: product.id,
+                        name: product.name,
+                        price: product.price,
+                        originalPrice: product.originalPrice,
+                        image: "/placeholder.svg",
+                      })}
+                      className="w-full h-[48px] bg-[#064734] text-white rounded-lg"
+                    >
+                      Add to Cart
+                    </button>
+                  )}
+                </div>
+              </div>
+
+            </div>
+          );
+        })}
+      </div>
+    )}
+
+  </div>
+</section>
 
       {/* ===== SECTION 2: Smart Savings + Mega Saver Pack (ONE continuous section) ===== */}
       <section

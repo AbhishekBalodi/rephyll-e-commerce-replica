@@ -19,7 +19,7 @@ const Index = () => {
       <HomecareKitsSection />
       <WhyChooseUs />
       <TrustStrips />
-      <VideoReelsSection />
+      {/* <VideoReelsSection /> */}
       <BlogsSection />
       <Footer />
     </div>
