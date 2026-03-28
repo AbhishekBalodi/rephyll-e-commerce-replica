@@ -7,7 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useSearchSuggestions } from "@/hooks/useProducts";
 import { listProducts } from "@/services/productApi";
 import type { ApiProduct } from "@/types/api";
-import { resolveImageUrl } from "@/lib/productHelpers";
+import { getProductImage } from "@/lib/productHelpers";
 import {
   Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger,
 } from "@/components/ui/sheet";
@@ -298,10 +298,43 @@ const Navbar = () => {
                 {/* 👤 */}
                 <User size={20} className="text-[#064734]" />
 
-                {/* 🔽 DROPDOWN */}
-                {searchFocused && (
-                  <div className="absolute right-0 top-[60px] w-96 bg-white border rounded-lg shadow-xl z-50">
-                    {/* keep your logic SAME */}
+                {/* 🔽 SEARCH DROPDOWN */}
+                {searchFocused && searchQuery.length >= 2 && (
+                  <div className="absolute left-0 right-0 top-[56px] bg-white border border-gray-200 rounded-xl shadow-xl z-50 overflow-hidden" style={{ width: '100%' }}>
+                    {searching ? (
+                      <div className="px-4 py-6 text-center text-sm text-gray-400">Searching...</div>
+                    ) : searchResults.length > 0 ? (
+                      <div className="max-h-[360px] overflow-y-auto">
+                        {searchResults.map((product) => (
+                          <button
+                            key={product.id}
+                            onClick={() => {
+                              setSearchQuery("");
+                              setSearchFocused(false);
+                              navigate(`/product/${product.slug || product.id}`);
+                            }}
+                            className="flex items-center gap-3 w-full px-4 py-3 hover:bg-gray-50 transition-colors text-left border-b border-gray-100 last:border-0"
+                          >
+                            <img
+                              src={getProductImage(product)}
+                              alt={product.name}
+                              className="w-10 h-10 rounded-lg object-cover bg-gray-100 flex-shrink-0"
+                            />
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium text-gray-800 truncate" style={{ fontFamily: "'Poppins', sans-serif" }}>{product.name}</p>
+                              <p className="text-xs text-[#064734] font-semibold">
+                                ₹{product.variants?.[0]?.sellingPrice ?? product.mrp}
+                                {product.variants?.[0]?.sellingPrice && product.mrp > product.variants[0].sellingPrice && (
+                                  <span className="ml-1 text-gray-400 line-through font-normal">₹{product.mrp}</span>
+                                )}
+                              </p>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="px-4 py-6 text-center text-sm text-gray-400">No products found</div>
+                    )}
                   </div>
                 )}
               </div>
