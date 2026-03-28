@@ -58,32 +58,45 @@ const PackSelector = ({ basePrice, baseMrp, selectedPack, onSelectPack }: PackSe
           <button
             key={pack.id}
             onClick={() => onSelectPack(pack.id)}
-            className={`rounded-lg border-2 text-left transition-all ${
-              isSelected
+            className={`rounded-lg border-2 text-left transition-all ${isSelected
                 ? "border-primary bg-primary/5"
                 : "border-border hover:border-primary/40"
-            }`}
+              }`}
           >
             {/* Header */}
-            <div className={`px-3 py-2 text-center font-semibold text-sm border-b ${
-              isSelected ? "border-primary/30" : "border-border"
-            }`}>
+            <div className={`px-3 py-2 text-center font-semibold text-sm border-b ${isSelected ? "border-primary/30" : "border-border"
+              }`}>
               {pack.label}
             </div>
             {/* Body */}
-            <div className="px-3 py-3 space-y-1 text-center">
+            <div className="px-3 py-3 text-center flex flex-col items-center justify-between h-[90px]">
+
+              {/* PRICE */}
               <div className="flex items-center justify-center gap-1 flex-wrap">
-                <span className="font-bold text-foreground text-sm">₹{pack.totalPrice.toFixed(2)}</span>
+                <span className="font-bold text-foreground text-sm">
+                  ₹{pack.totalPrice.toFixed(2)}
+                </span>
                 {pack.originalPrice > pack.totalPrice && (
-                  <span className="text-xs text-muted-foreground line-through">₹{pack.originalPrice.toFixed(2)}</span>
+                  <span className="text-xs text-muted-foreground line-through">
+                    ₹{pack.originalPrice.toFixed(2)}
+                  </span>
                 )}
               </div>
-              {pack.discount > 0 && (
+
+              {/* SAVE BADGE OR SPACER */}
+              {pack.discount > 0 ? (
                 <span className="inline-block text-[10px] font-bold bg-primary text-primary-foreground px-2 py-0.5 rounded-full">
                   Save {pack.discount}%
                 </span>
+              ) : (
+                <div className="h-[18px]" />  // 👈 THIS FIXES ALIGNMENT
               )}
-              <p className="text-xs text-muted-foreground">₹{pack.pricePerPack.toFixed(2)} / Pack</p>
+
+              {/* PER PACK */}
+              <p className="text-xs text-muted-foreground">
+                ₹{pack.pricePerPack.toFixed(2)} / Pack
+              </p>
+
             </div>
           </button>
         );

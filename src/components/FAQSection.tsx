@@ -2,9 +2,7 @@ import { useState } from "react";
 import { ChevronDown, ChevronUp, ArrowUpRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-// 👉 IMPORT YOUR IMAGE HERE
-import faqBg from "@/assets/image 3652.png"; 
-// (change path based on your project)
+import faqBg from "@/assets/image 3652.png";
 
 const FAQ_ITEMS = [
   {
@@ -36,103 +34,109 @@ const FAQSection = () => {
   return (
     <section
       className="relative w-full flex justify-center"
-      style={{ height: "818px" }} // Figma height
+      style={{ height: "818px" }}
     >
-      {/* ✅ Background Image */}
+      {/* Background */}
       <img
         src={faqBg}
         alt="faq background"
         className="absolute inset-0 w-full h-full object-cover"
       />
 
-      {/* Overlay container */}
+      {/* Container */}
       <div
-        className="relative w-full flex"
+        className="relative w-full flex items-center"
         style={{
-          maxWidth: "1440px", // Figma width
+          maxWidth: "1440px",
           height: "818px",
         }}
       >
-        {/* ✅ FAQ CARD */}
+        {/* FAQ CARD */}
         <div
-          className="flex flex-col justify-between"
+          className="flex flex-col"
           style={{
-            width: "636px", // Figma width
-            height: "594px", // Figma height (IMPORTANT FIX)
+            width: "636px",
             marginLeft: "52px",
-            marginTop: "74px",
+            
             background: "#064734",
             borderRadius: "20px",
-            padding: "36px 32px 44px",
+            padding: "36px 32px",
           }}
         >
-          {/* Top content */}
-          <div>
-            <h2
-              style={{
-                fontFamily: "'Nunito Sans', sans-serif",
-                fontWeight: 700,
-                fontSize: "42px",
-                lineHeight: "57px",
-                color: "#FAFAFA",
-                marginBottom: "24px",
-              }}
-            >
-              Do you have questions?
-            </h2>
+          {/* Heading */}
+          <h2
+            style={{
+              fontFamily: "'Nunito Sans', sans-serif",
+              fontWeight: 700,
+              fontSize: "42px",
+              lineHeight: "100%",
+              letterSpacing: "1%",
+              color: "#FAFAFA",
+              marginBottom: "28px",
+            }}
+          >
+            Do you have questions?
+          </h2>
 
-            <div>
-              {FAQ_ITEMS.map((item, i) => (
-                <div
-                  key={i}
-                  style={{
-                    borderBottom: "1.5px solid rgba(235,235,235,0.25)",
-                    padding: "16px 0",
-                    cursor: "pointer",
-                  }}
-                  onClick={() =>
-                    setOpenIndex(openIndex === i ? -1 : i)
-                  }
-                >
-                  <div className="flex justify-between items-center">
-                    <span
-                      style={{
-                        fontFamily: "'Nunito Sans'",
-                        fontWeight: 600,
-                        fontSize: "20px",
-                        color: "#FAFAFA",
-                      }}
-                    >
-                      {item.question}
-                    </span>
+          {/* Questions */}
+          <div className="flex flex-col gap-12">
+            {FAQ_ITEMS.map((item, i) => (
+              <div
+                key={i}
+                style={{
+                  borderBottom: "1.5px solid rgba(235,235,235,0.25)",
+                  paddingBottom: "14px",
+                  cursor: "pointer",
+                }}
+                onClick={() =>
+                  setOpenIndex(openIndex === i ? -1 : i)
+                }
+              >
+                <div className="flex justify-between items-center">
+                  <span
+                    style={{
+                      fontFamily: "'Nunito Sans', sans-serif",
+                      fontWeight: 600,
+                      fontSize: "20px",
+                      lineHeight: "100%",
+                      letterSpacing: "0%",
+                      color: "#FAFAFA",
+                    }}
+                  >
+                    {item.question}
+                  </span>
 
-                    {openIndex === i ? (
-                      <ChevronUp size={16} color="#FAFAFA" />
-                    ) : (
-                      <ChevronDown size={16} color="#FAFAFA" />
-                    )}
-                  </div>
-
-                  {openIndex === i && (
-                    <p
-                      style={{
-                        marginTop: "12px",
-                        fontSize: "16px",
-                        color: "#FAFAFA",
-                      }}
-                    >
-                      {item.answer}
-                    </p>
+                  {openIndex === i ? (
+                    <ChevronUp size={16} color="#FAFAFA" />
+                  ) : (
+                    <ChevronDown size={16} color="#FAFAFA" />
                   )}
                 </div>
-              ))}
-            </div>
+
+                {openIndex === i && (
+                  <p
+                    style={{
+                      marginTop: "30px",
+                      fontFamily: "'Nunito Sans', sans-serif",
+                      fontWeight: 600,
+                      fontSize: "16px",
+                      lineHeight: "100%",
+                      color: "#FAFAFA",
+                    }}
+                  >
+                    {item.answer}
+                  </p>
+                )}
+              </div>
+            ))}
           </div>
 
-          {/* Bottom CTA */}
-          <div className="flex items-center gap-4">
+          {/* CTA */}
+          <div className="flex items-center justify-center gap-4 mt-6">
             <span
               style={{
+                fontFamily: "'Nunito Sans', sans-serif",
+                fontWeight: 600,
                 fontSize: "16px",
                 color: "#FAFAFA",
               }}
@@ -143,7 +147,7 @@ const FAQSection = () => {
             <button
               onClick={() => navigate("/contact")}
               style={{
-                padding: "10px 20px 10px 24px",
+                padding: "10px 20px",
                 background: "#FAFAFA",
                 borderRadius: "8px",
                 border: "none",
@@ -162,7 +166,7 @@ const FAQSection = () => {
               >
                 CONNECT US
               </span>
-              <ArrowUpRight size={20} color="#1B242C" />
+              <ArrowUpRight size={18} color="#1B242C" />
             </button>
           </div>
         </div>

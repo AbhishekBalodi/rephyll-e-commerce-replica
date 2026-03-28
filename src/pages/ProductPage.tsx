@@ -5,6 +5,7 @@ import ProductDetail from "@/components/ProductDetail";
 import SimilarItemsSection from "@/components/SimilarItemsSection";
 import CertifiedProductsSection from "@/components/CertifiedProductsSection";
 import FAQSection from "@/components/FAQSection";
+import FormulaSection from "@/components/FormulaSection";
 import WeAreAvailableOnSection from "@/components/WeAreAvailableOnSection";
 import TrustStrips from "@/components/TrustStrips";
 import { useProductDetail } from "@/hooks/useProducts";
@@ -30,8 +31,10 @@ const ProductPage = () => {
           <ProductDetail product={product} onBack={handleBack} />
           <SimilarItemsSection currentProductId={product.id} categoryId={product.categoryId} />
           <CertifiedProductsSection />
-          <FAQSection />
+          <FormulaSection />
           <WeAreAvailableOnSection />
+          <FAQSection />
+          
           <TrustStrips />
         </>
       ) : (

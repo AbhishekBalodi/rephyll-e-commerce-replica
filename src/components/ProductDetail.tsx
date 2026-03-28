@@ -1,15 +1,21 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, ChevronRight, Leaf, ShieldCheck, Baby, Droplets } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Check,
+  Heart,
+  Bookmark,
+  Share2,
+  Star
+} from "lucide-react";
+
 import type { ApiProduct, ApiVariant } from "@/types/api";
 
 import {
   getProductImages,
   getSellingPrice,
   getMrp,
-  getDiscount,
-  parseVariantAttributes,
-  isInStock
 } from "@/lib/productHelpers";
 
 import { useCart } from "@/contexts/CartContext";
@@ -22,20 +28,20 @@ interface ProductDetailProps {
   onBack: () => void;
 }
 
-const WHATS_IN_ICONS = [
-  { label: "Plant-Based", icon: Leaf },
-  { label: "Non-Toxic", icon: ShieldCheck },
-  { label: "Child & Pet Safe", icon: Baby },
-  { label: "Biodegradable", icon: Droplets },
+const FEATURES = [
+  "Premium formula",
+  "Eco-friendly packaging",
+  "No Chemicals",
+  "Child & Pet Safe",
 ];
 
-const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
+const ProductDetail = ({ product }: ProductDetailProps) => {
 
   const navigate = useNavigate();
 
   const [activeImg, setActiveImg] = useState(0);
-  const [selectedVariant, setSelectedVariant] = useState<ApiVariant | undefined>(
-    product.variants.length > 0 ? product.variants[0] : undefined
+  const [selectedVariant] = useState<ApiVariant | undefined>(
+    product.variants[0]
   );
   const [selectedPackId, setSelectedPackId] = useState<number>(1);
 
@@ -44,76 +50,45 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
   const images = getProductImages(product);
   const price = getSellingPrice(product, selectedVariant);
   const mrp = getMrp(product, selectedVariant);
-  const discount = getDiscount(product, selectedVariant);
-  const inStock = isInStock(product, selectedVariant);
 
   const packs = generatePacks(price, mrp);
-  const activePack = packs.find((p) => p.id === selectedPackId) ?? packs[0];
+  const activePack = packs.find(p => p.id === selectedPackId) ?? packs[0];
 
   const cartKey = product.id * 100 + selectedPackId;
-  const cartItem = items.find((i) => i.productId === cartKey);
+  const cartItem = items.find(i => i.productId === cartKey);
   const cartQty = cartItem?.quantity ?? 0;
 
-  const description =
-    product.ingredients ||
-    product.metaDescription ||
-    product.productDetails ||
-    "No description available.";
-
-  const prevImg = () => setActiveImg((p) => (p > 0 ? p - 1 : images.length - 1));
-  const nextImg = () => setActiveImg((p) => (p < images.length - 1 ? p + 1 : 0));
+  const prevImg = () => setActiveImg(p => (p > 0 ? p - 1 : images.length - 1));
+  const nextImg = () => setActiveImg(p => (p < images.length - 1 ? p + 1 : 0));
 
   const handleAddToCart = () => {
     addToCart({
       productId: cartKey,
-      name: selectedVariant
-        ? `${product.name} - ${selectedVariant.variantName} (${activePack.label})`
-        : `${product.name} (${activePack.label})`,
+      name: product.name,
       price: activePack.totalPrice,
       originalPrice: activePack.originalPrice,
       image: images[0],
     }, 1);
   };
 
-  const handleIncrement = () => updateQuantity(cartKey, cartQty + 1);
-  const handleDecrement = () => {
-    if (cartQty <= 1) removeFromCart(cartKey);
-    else updateQuantity(cartKey, cartQty - 1);
-  };
-
   return (
     <div className="max-w-[1200px] mx-auto px-6 py-10">
 
-      <button
-        onClick={() => { onBack(); navigate("/"); }}
-        className="text-sm text-gray-500 mb-6"
-      >
-        ← Back
-      </button>
+      <div className="grid md:grid-cols-2 gap-12 items-stretch">
 
-      {/* ✅ IMPORTANT CHANGE HERE */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-stretch">
-
-        {/* ✅ LEFT SIDE IMAGE (NOW FULL HEIGHT) */}
+        {/* LEFT */}
         <div className="flex flex-col h-full">
 
-          <div className="relative flex-1 rounded-2xl overflow-hidden bg-[#F6F6F6] flex items-center justify-center">
-            <img
-              src={images[activeImg]}
-              alt={product.name}
-              className="w-full h-full object-contain"
-            />
+          <div className="relative flex-1 min-h-[500px] rounded-2xl bg-[#F6F6F6] flex items-center justify-center">
+            <img src={images[activeImg]} className="h-[90%] object-contain" />
 
-            {images.length > 1 && (
-              <>
-                <button onClick={prevImg} className="absolute left-3 top-1/2 -translate-y-1/2">
-                  <ChevronLeft />
-                </button>
-                <button onClick={nextImg} className="absolute right-3 top-1/2 -translate-y-1/2">
-                  <ChevronRight />
-                </button>
-              </>
-            )}
+            <button onClick={prevImg} className="absolute left-3 top-1/2 -translate-y-1/2">
+              <ChevronLeft />
+            </button>
+
+            <button onClick={nextImg} className="absolute right-3 top-1/2 -translate-y-1/2">
+              <ChevronRight />
+            </button>
           </div>
 
           <div className="flex gap-3 mt-4">
@@ -122,7 +97,7 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
                 key={i}
                 src={img}
                 onClick={() => setActiveImg(i)}
-                className={`w-16 h-16 rounded-lg cursor-pointer border ${
+                className={`w-16 h-16 rounded-lg border cursor-pointer ${
                   activeImg === i ? "border-[#064734]" : "border-gray-200"
                 }`}
               />
@@ -130,89 +105,115 @@ const ProductDetail = ({ product, onBack }: ProductDetailProps) => {
           </div>
         </div>
 
-        {/* ✅ RIGHT SIDE */}
-        <div className="flex flex-col h-full">
+        {/* RIGHT */}
+        <div className="flex flex-col justify-between">
 
-          <h1 className="text-[28px] font-semibold text-[#064734] mb-2">
-            {product.name}
-          </h1>
+          <div>
 
-          <p className="text-sm text-gray-600 mb-4">
-            {description}
-          </p>
+            {/* TITLE + ACTIONS */}
+            <div className="flex justify-between items-start mb-2">
 
-          {/* FEATURES */}
-          <div className="grid grid-cols-2 gap-3 mb-6">
-            {WHATS_IN_ICONS.map(({ label, icon: Icon }) => (
-              <div key={label} className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-[#E2F3AF] flex items-center justify-center">
-                  <Icon size={16} className="text-[#064734]" />
+              <h1 className="text-[28px] font-semibold text-black font-[Poppins]">
+                {product.name}
+              </h1>
+
+              <div className="flex items-center gap-2">
+
+                <div className="flex items-center gap-1 px-3 py-1 bg-[#E2F3AF] rounded-full text-sm">
+                  <Heart size={14} className="text-[#064734]" />
+                  109
                 </div>
-                <span className="text-sm text-[#064734]">{label}</span>
-              </div>
-            ))}
-          </div>
 
-          {/* VARIANTS */}
-          {product.variants.length > 0 && (
-            <div className="mb-4">
-              <p className="text-sm font-semibold mb-2">Select Variant</p>
-              <div className="flex flex-wrap gap-2">
-                {product.variants.map((v) => {
-                  const attrs = parseVariantAttributes(v.variantAttributes);
-                  return (
-                    <button
-                      key={v.id}
-                      onClick={() => setSelectedVariant(v)}
-                      className={`px-3 py-2 rounded-lg border ${
-                        selectedVariant?.id === v.id
-                          ? "border-[#064734] bg-[#E2F3AF]"
-                          : "border-gray-300"
-                      }`}
-                    >
-                      {v.variantName}
-                    </button>
-                  );
-                })}
+                <div className="w-[34px] h-[34px] rounded-full bg-[#0647341A] flex items-center justify-center">
+                  <Bookmark size={16} className="text-[#064734]" />
+                </div>
+
+                <div className="w-[34px] h-[34px] rounded-full bg-[#0647341A] flex items-center justify-center">
+                  <Share2 size={16} className="text-[#064734]" />
+                </div>
+
               </div>
             </div>
-          )}
 
-          {/* PACK */}
-          <PackSelector
-            basePrice={price}
-            baseMrp={mrp}
-            selectedPack={selectedPackId}
-            onSelectPack={setSelectedPackId}
-          />
+            {/* TEXT */}
+            <p className="text-[16px] text-[#464646] font-medium font-[Poppins]">
+              What if clean surface meant safer homes?
+            </p>
 
-          {/* PRICE */}
-          <div className="mt-4 mb-4">
-            <span className="text-3xl font-bold text-[#064734]">
-              ₹{activePack.totalPrice.toFixed(0)}
-            </span>
-          </div>
+            <p className="text-[16px] text-[#999999] font-[Poppins] mt-1 mb-4">
+              {product.metaDescription}
+            </p>
 
-          {/* CART */}
-          <div className="mb-6">
-            {cartQty > 0 ? (
+            {/* ✅ FEATURES (FIXED HERE ONLY) */}
+            <div className="grid grid-cols-2 gap-3 mb-6">
+              {FEATURES.map((item) => (
+                <div key={item} className="flex items-center gap-2">
+
+                  {/* CIRCLE BACKGROUND */}
+                  <div className="w-5 h-5 rounded-full bg-[#CEF17B] flex items-center justify-center">
+                    <Check size={12} className="text-[#064734]" />
+                  </div>
+
+                  <span className="text-sm text-[#064734]">{item}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* PRICE */}
+            <div className="mb-4">
+
+              <div className="flex items-center gap-3">
+
+                <span className="text-[34px] font-bold text-[#064734] font-[Inter]">
+                  ₹{activePack.totalPrice}
+                </span>
+
+                <div className="flex items-center gap-1 px-2 py-1 bg-[#E2F3AF] rounded-full text-sm">
+                  <Star size={14} fill="#064734" className="text-[#064734]" />
+                  4.8
+                </div>
+
+                <div className="px-2 py-1 bg-gray-100 rounded-full text-sm text-gray-600">
+                  67 Reviews
+                </div>
+
+              </div>
+
+              <div className="text-sm text-gray-500 mt-1">
+                <span className="line-through mr-2">₹399</span>
+                93% of buyers have recommended this.
+              </div>
+            </div>
+
+            <PackSelector
+              basePrice={price}
+              baseMrp={mrp}
+              selectedPack={selectedPackId}
+              onSelectPack={setSelectedPackId}
+            />
+
+            <div className="flex gap-4 mt-4 mb-6">
+
               <QuantityCapsule
                 quantity={cartQty}
-                onIncrement={handleIncrement}
-                onDecrement={handleDecrement}
+                onIncrement={() => updateQuantity(cartKey, cartQty + 1)}
+                onDecrement={() => updateQuantity(cartKey, cartQty - 1)}
               />
-            ) : (
+
               <button
                 onClick={handleAddToCart}
-                className="w-full bg-[#064734] text-white py-3 rounded-xl"
+                className="flex-1 bg-[#064734] text-white py-3 rounded-xl"
               >
                 Add To Cart
               </button>
-            )}
+
+            </div>
+
           </div>
 
-          {/* ACCORDION */}
-          <ProductDetailAccordion product={product} />
+          <div className="text-[17px] font-semibold text-[#064734] font-[Poppins]">
+            <ProductDetailAccordion product={product} />
+          </div>
 
         </div>
       </div>

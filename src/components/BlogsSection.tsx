@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useBlogList } from "@/hooks/useBlogList";
 import { Loader2, ArrowRight } from "lucide-react";
-import clover from "@/assets/clover-green.png";
+import clover from "@/assets/clover-green-dark.png";
 
 const BlogsSection = () => {
   const { blogs, loading, error } = useBlogList({
@@ -47,15 +47,15 @@ const BlogsSection = () => {
   }
 
   return (
-    <section className="relative w-full overflow-hidden bg-gradient-to-r from-[#064734] to-[#cfdad5] py-28">
+    <section className="relative w-full overflow-hidden bg-[linear-gradient(160deg,_#064734_75%,_#eaf5f0_100%)] py-28">
 
       {/* 🌿 CLOVERS (ABSOLUTE like Figma) */}
-      <img src={clover} className="absolute w-[250px] opacity-30 top-[-40px] right-[0px]" />
-      <img src={clover} className="absolute w-[250px] opacity-30 top-[-120px] right-[300px]" />
-      <img src={clover} className="absolute w-[220px] opacity-40 bottom-[80px] left-[-80px]" />
-      <img src={clover} className="absolute w-[220px] opacity-30 bottom-[-40px] left-[350px]" />
-      <img src={clover} className="absolute w-[280px] opacity-30 bottom-[-80px] right-[0px]" />
-      <img src={clover} className="absolute w-[280px] opacity-20 top-[80px] left-[-120px]" />
+      <img src={clover} className="absolute w-[250px] top-[-40px] right-[0px]" style={{  opacity: 0.5, filter: "brightness(1.5)" }} />
+      <img src={clover} className="absolute w-[250px] top-[-120px] right-[300px]" style={{  opacity: 0.5, filter: "brightness(1.5)" }} />
+      <img src={clover} className="absolute w-[220px] bottom-[80px] left-[-80px]" style={{  opacity: 0.5, filter: "brightness(1.5)" }} />
+      <img src={clover} className="absolute w-[220px] bottom-[-40px] left-[350px]" style={{  opacity: 0.5, filter: "brightness(1.5)" }} />
+      <img src={clover} className="absolute w-[280px] bottom-[-80px] right-[0px]" style={{  opacity: 0.5, filter: "brightness(1.5)" }} />
+      <img src={clover} className="absolute w-[280px] top-[80px] left-[-120px]" style={{  opacity: 0.5, filter: "brightness(1.5)" }} />
 
       {/* CONTENT CONTAINER */}
       <div className="relative max-w-[1208px] mx-auto text-center text-white">

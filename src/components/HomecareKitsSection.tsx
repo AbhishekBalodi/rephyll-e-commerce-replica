@@ -53,17 +53,17 @@ const HomecareKitsSection = () => {
         style={{ height: "727px", background: "rgba(206, 241, 123, 0.3)" }}
       >
         {/* Intense clovers - darker & more visible */}
-        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "320px", left: "-90px", top: "-70px", opacity: 0.35 }} />
-        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "300px", right: "-70px", top: "-50px", opacity: 0.35 }} />
-        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "280px", left: "-80px", bottom: "-80px", opacity: 0.3 }} />
-        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "300px", right: "-60px", bottom: "-70px", opacity: 0.3 }} />
-        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "260px", left: "50%", top: "-50px", transform: "translateX(-50%)", opacity: 0.25 }} />
-        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "250px", left: "20%", top: "40%", opacity: 0.25 }} />
-        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "270px", right: "15%", top: "30%", opacity: 0.22 }} />
-        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "240px", left: "10%", bottom: "10%", opacity: 0.25 }} />
-        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "220px", right: "5%", bottom: "5%", opacity: 0.2 }} />
+        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "320px", left: "-90px", top: "-70px", opacity: 0.5 }} />
+        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "300px", right: "-70px", top: "-50px", opacity: 0.5 }} />
+        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "280px", left: "-80px", bottom: "-80px", opacity: 0.5 }} />
+        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "300px", right: "-60px", bottom: "-70px", opacity: 0.5 }} />
+        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "260px", left: "50%", top: "-50px", transform: "translateX(-50%)", opacity: 0.5 }} />
+        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "250px", left: "20%", top: "40%", opacity: 0.5 }} />
+        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "270px", right: "15%", top: "30%", opacity: 0.5 }} />
+        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "240px", left: "10%", bottom: "10%", opacity: 0.5 }} />
+        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "220px", right: "5%", bottom: "5%", opacity: 0.5 }} />
 
-        <div className="relative z-[1] mx-auto max-w-[1440px] px-4 md:px-6 pt-8">
+        <div className="relative z-[1] mx-auto max-w-[1440px] px-4 md:px-6 h-full flex flex-col justify-center">
           {/* TABS */}
           <div className="mb-8 flex justify-center">
             <div className="flex items-center gap-6" style={{ width: "612px" }}>
@@ -95,7 +95,7 @@ const HomecareKitsSection = () => {
                       <button className="absolute flex items-center justify-center" style={{ width: "36px", height: "36px", right: "12px", top: "12px", background: "#FFFFFF", borderRadius: "9999px" }}>
                         <Heart size={16} color="#364153" />
                       </button>
-                      <img src={ascFront2} alt={bundle.name} className="absolute object-contain" style={{ width: "141px", height: "155px", top: "57px", left: "50%", transform: "translateX(-50%)" }} />
+                      <img src={ascFront2} alt={bundle.name} className="absolute object-contain" style={{ width: "190px", height: "210px", top: "35px", left: "50%", transform: "translateX(-50%)" }} />
                       <button className="absolute flex items-center justify-center" style={{ width: "32px", height: "32px", right: "10px", top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.9)", borderRadius: "9999px" }}>
                         <ChevronRight size={18} color="#364153" />
                       </button>
@@ -106,7 +106,7 @@ const HomecareKitsSection = () => {
                         <p style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "16px", lineHeight: "24px", color: "#464646" }}>{bundle.name}</p>
                         <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "16px", lineHeight: "24px", color: "#064734" }}>Pack Of {bundle.productCount}</p>
                         <div className="flex items-center gap-1">
-                          {[1,2,3,4,5].map(s => (
+                          {[1, 2, 3, 4, 5].map(s => (
                             <svg key={s} width="13.33" height="12.71" viewBox="0 0 14 13" fill={s <= Math.floor(bundle.rating) ? "#FDD264" : "#FFEEC1"} stroke={s <= Math.floor(bundle.rating) ? "#FDD264" : "#FFEEC1"} strokeWidth="1.33">
                               <path d="M7 1l1.76 3.57 3.94.57-2.85 2.78.67 3.93L7 10.27l-3.52 1.58.67-3.93L1.3 5.14l3.94-.57z" />
                             </svg>
@@ -181,15 +181,15 @@ const HomecareKitsSection = () => {
         {/* Part A: Stop Buying One - SOLID #064734 */}
         <div className="relative" style={{ background: "#064734" }}>
           {/* Clovers - visible on dark bg */}
-          <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "320px", left: "-90px", top: "-60px", opacity: 0.15, filter: "brightness(1.5)" }} />
-          <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "300px", right: "-70px", top: "-50px", opacity: 0.15, filter: "brightness(1.5)" }} />
-          <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "280px", left: "-80px", bottom: "-80px", opacity: 0.12, filter: "brightness(1.5)" }} />
-          <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "310px", right: "-60px", bottom: "-70px", opacity: 0.15, filter: "brightness(1.5)" }} />
-          <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "260px", left: "50%", top: "-50px", transform: "translateX(-50%)", opacity: 0.1, filter: "brightness(1.5)" }} />
-          <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "250px", left: "20%", top: "35%", opacity: 0.1, filter: "brightness(1.5)" }} />
-          <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "270px", right: "15%", top: "25%", opacity: 0.08, filter: "brightness(1.5)" }} />
-          <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "240px", left: "10%", bottom: "15%", opacity: 0.1, filter: "brightness(1.5)" }} />
-          <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "260px", right: "5%", bottom: "-40px", opacity: 0.08, filter: "brightness(1.5)" }} />
+          <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "320px", left: "-90px", top: "-60px", opacity: 0.5, filter: "brightness(1.5)" }} />
+          <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "300px", right: "-70px", top: "-50px", opacity: 0.5, filter: "brightness(1.5)" }} />
+          <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "280px", left: "-80px", bottom: "-80px", opacity: 0.5, filter: "brightness(1.5)" }} />
+          <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "310px", right: "-60px", bottom: "-70px", opacity: 0.5, filter: "brightness(1.5)" }} />
+          <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "260px", left: "50%", top: "-50px", transform: "translateX(-50%)", opacity: 0.5, filter: "brightness(1.5)" }} />
+          <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "250px", left: "20%", top: "35%", opacity: 0.5, filter: "brightness(1.5)" }} />
+          <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "270px", right: "15%", top: "25%", opacity: 0.5, filter: "brightness(1.5)" }} />
+          <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "240px", left: "10%", bottom: "15%", opacity: 0.5, filter: "brightness(1.5)" }} />
+          <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "260px", right: "5%", bottom: "-40px", opacity: 0.5, filter: "brightness(1.5)" }} />
 
           <div className="relative z-[1] mx-auto flex items-center" style={{ maxWidth: "1313px", padding: "80px 20px", gap: "74px" }}>
             <div className="flex flex-col items-start" style={{ width: "372px", gap: "24px" }}>
@@ -263,58 +263,219 @@ const HomecareKitsSection = () => {
         </div>
 
         {/* Part B: Mega Saver Pack - solid with tiny diagonal gradient in bottom-right */}
-        <div className="relative" style={{ background: "linear-gradient(160deg, #064734 70%, rgba(255,255,255,0.15) 100%)" }}>
-          {/* More clovers */}
-          <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "300px", left: "-80px", top: "-50px", opacity: 0.12, filter: "brightness(1.5)" }} />
-          <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "280px", right: "-60px", top: "-40px", opacity: 0.12, filter: "brightness(1.5)" }} />
-          <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "260px", left: "-60px", bottom: "-60px", opacity: 0.1, filter: "brightness(1.5)" }} />
-          <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "290px", right: "-50px", bottom: "-50px", opacity: 0.12, filter: "brightness(1.5)" }} />
-          <img src={cloverDark} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "240px", left: "50%", bottom: "20%", transform: "translateX(-50%)", opacity: 0.08, filter: "brightness(1.5)" }} />
+        <div
+          className="relative"
+          style={{
+            background: "linear-gradient(160deg,#064734 0%,#0a5a45 60%,#f5f7f6 100%)"
+          }}
+        >
+          {/* Clovers */}
+          <img src={cloverDark} className="absolute pointer-events-none z-0" style={{ width: "300px", left: "-80px", top: "-50px", mixBlendMode: "screen", opacity: 0.5 }} />
+          <img src={cloverDark} className="absolute pointer-events-none z-0" style={{ width: "280px", right: "-60px", top: "-40px", mixBlendMode: "screen", opacity: 0.5 }} />
+          <img src={cloverDark} className="absolute pointer-events-none z-0" style={{ width: "260px", left: "-60px", bottom: "-60px", mixBlendMode: "screen", opacity: 0.5 }} />
+          <img src={cloverDark} className="absolute pointer-events-none z-0" style={{ width: "290px", right: "0px", bottom: "-50px", mixBlendMode: "screen", opacity: 0.5 }} />
 
-          <div className="relative z-[1] mx-auto flex flex-col items-center" style={{ maxWidth: "1435px", padding: "60px 20px 60px" }}>
+          <div className="relative z-[1] mx-auto flex flex-col items-center" style={{ maxWidth: "1435px", padding: "60px 20px" }}>
+
             <div className="rounded-full text-sm font-medium" style={{ background: "#EDFFC3", color: "#064734", padding: "8px 20px", marginBottom: "16px" }}>
               ✨ 5L Save More
             </div>
-            <h2 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "40px", lineHeight: "60px", letterSpacing: "0px", color: "#FFFFFF", textAlign: "center", margin: 0 }}>
+
+            <h2 style={{ fontFamily: "Poppins", fontWeight: 600, fontSize: "40px", lineHeight: "60px", color: "#FFF" }}>
               Mega Saver Pack
             </h2>
-            <p style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, fontSize: "20px", lineHeight: "28px", color: "#FFFFFF", margin: "8px 0 40px" }}>
+
+            <p style={{ fontFamily: "Poppins", fontSize: "20px", color: "#FFF", marginBottom: "40px" }}>
               Curated Combinations for Effortless Cleaning
             </p>
+
             <div className="flex gap-[24px] flex-wrap justify-center">
               {BUNDLES.slice(0, 3).map((product, i) => {
-                const cartItem = items.find((it) => it.productId === product.id + 100);
-                const cartQty = cartItem?.quantity ?? 0;
+
                 return (
-                  <div key={i} className="flex flex-col overflow-hidden" style={{ width: "428px", height: "508px", background: "#FFFFFF", borderRadius: "24px", boxShadow: "0px 10px 15px -3px rgba(0,0,0,0.1)" }}>
-                    <div className="relative flex-shrink-0" style={{ height: "246px", background: "linear-gradient(137.98deg, #CEF17B 0.45%, #FFFFFF 106.93%)" }}>
-                      <div className="absolute top-4 left-4 rounded-full text-sm" style={{ background: "#E2FF9C", color: "#064734", padding: "4px 12px" }}>{product.discount}% Off</div>
+                  <div
+                    key={i}
+                    className="flex flex-col overflow-hidden"
+                    style={{
+                      width: "375px",
+                      height: "508px",
+                      background: "#FFF",
+                      borderRadius: "24px",
+                      boxShadow: "0px 10px 15px -3px rgba(0,0,0,0.1)"
+                    }}
+                  >
+
+                    {/* IMAGE SECTION */}
+                    <div
+                      className="relative"
+                      style={{
+                        height: "246px",
+                        background: "linear-gradient(137.98deg, #CEF17B 0.45%, #FFFFFF 106.93%)"
+                      }}
+                    >
+                      <div className="absolute top-4 left-4 rounded-full text-sm"
+                        style={{ background: "#E2FF9C", color: "#064734", padding: "4px 12px" }}>
+                        {product.discount}% Off
+                      </div>
+
                       <div className="absolute top-4 right-4 flex gap-2">
-                        <button className="w-10 h-10 bg-white rounded-full shadow flex items-center justify-center"><Share2 size={16} /></button>
-                        <button className="w-10 h-10 bg-white rounded-full shadow flex items-center justify-center"><Heart size={16} /></button>
+                        <button className="w-10 h-10 bg-white rounded-full shadow flex items-center justify-center">
+                          <Share2 size={16} />
+                        </button>
+                        <button className="w-10 h-10 bg-white rounded-full shadow flex items-center justify-center">
+                          <Heart size={16} />
+                        </button>
                       </div>
-                      <img src={ascFront2} alt={product.name} className="absolute object-contain" style={{ width: "141px", height: "155px", left: "50%", top: "60px", transform: "translateX(-50%)" }} />
+
+                      {/* ✅ FIXED IMAGE SIZE */}
+                      <img
+                        src={ascFront2}
+                        alt=""
+                        className="absolute object-contain"
+                        style={{
+                          width: "190px",
+                          height: "200px",
+                          left: "50%",
+                          top: "50%",
+                          transform: "translate(-50%, -40%)"
+                        }}
+                      />
+
+
+                      {/* ➡️ Right Arrow Button (Figma Perfect) */}
+                      <button
+                        className="absolute flex items-center justify-center"
+                        style={{
+                          width: "31px",
+                          height: "32px",
+                          right: "12px",
+                          top: "50%",
+                          transform: "translateY(-50%)",
+                          background: "rgba(255,255,255,0.9)",
+                          borderRadius: "50%",
+                          boxShadow: "0px 2px 4px rgba(0,0,0,0.1)",
+                          padding: "6px",
+                          border: "none",
+                          cursor: "pointer"
+                        }}
+                      >
+                        <svg
+                          width="5"
+                          height="10"
+                          viewBox="0 0 5 10"
+                          fill="none"
+                        >
+                          <path
+                            d="M1 1L4 5L1 9"
+                            stroke="#364153"
+                            strokeWidth="1.67"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </button>
                     </div>
-                    <div className="flex flex-col justify-between flex-1 p-4">
-                      <div className="flex flex-col gap-1">
-                        <p style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "16px", lineHeight: "24px", color: "#464646" }}>{product.name}</p>
-                        <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: "16px", color: "#064734" }}>Pack Of {product.productCount}</p>
-                        <div className="flex items-center gap-1">
-                          {[1,2,3,4,5].map(s => (
-                            <svg key={s} width="13.33" height="12.71" viewBox="0 0 14 13" fill={s <= Math.floor(product.rating) ? "#FDD264" : "#FFEEC1"} stroke={s <= Math.floor(product.rating) ? "#FDD264" : "#FFEEC1"} strokeWidth="1.33">
-                              <path d="M7 1l1.76 3.57 3.94.57-2.85 2.78.67 3.93L7 10.27l-3.52 1.58.67-3.93L1.3 5.14l3.94-.57z" />
-                            </svg>
-                          ))}
-                          <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "16px", color: "#6B7280", marginLeft: "4px" }}>{product.rating} ({product.reviewCount} reviews)</span>
-                        </div>
-                        <div className="flex items-center gap-2 mt-1">
-                          <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "30px", lineHeight: "24px", color: "#064734" }}>₹{product.price}</span>
-                          <span style={{ fontSize: "16px", color: "#8E939C", textDecoration: "line-through" }}>₹{product.originalPrice}</span>
-                        </div>
+
+                    {/* CONTENT */}
+                    <div style={{ padding: "16px" }}>
+
+                      <p style={{ fontFamily: "Poppins", fontWeight: 600, fontSize: "16px", color: "#464646" }}>
+                        {product.name}
+                      </p>
+
+                      <p style={{ fontFamily: "Inter", fontSize: "16px", color: "#064734", marginBottom: "6px" }}>
+                        Pack Of {product.productCount}
+                      </p>
+
+                      {/* ⭐ Rating */}
+                      <div className="flex items-center" style={{ gap: "6px", marginBottom: "6px" }}>
+
+                        {/* ⭐ Stars */}
+                        {[1, 2, 3, 4, 5].map((s) => (
+                          <svg
+                            key={s}
+                            width="13.33"
+                            height="12.71"
+                            viewBox="0 0 14 13"
+                            fill={s <= Math.floor(product.rating) ? "#FDC700" : "#FFEEC1"}
+                            stroke="#FDC700"
+                            strokeWidth="1.33"
+                            style={{ marginTop: "1.33px", marginLeft: "1.33px" }}
+                          >
+                            <path d="M7 1l1.76 3.57 3.94.57-2.85 2.78.67 3.93L7 10.27l-3.52 1.58.67-3.93L1.3 5.14l3.94-.57z" />
+                          </svg>
+                        ))}
+
+                        {/* ⭐ Rating value */}
+                        <span
+                          style={{
+                            fontFamily: "Inter",
+                            fontWeight: 400,
+                            fontSize: "16px",
+                            lineHeight: "24px",
+                            color: "#464646"
+                          }}
+                        >
+                          {product.rating}
+                        </span>
+
+                        {/* ⭐ Reviews */}
+                        <span
+                          style={{
+                            fontFamily: "Inter",
+                            fontWeight: 400,
+                            fontSize: "16px",
+                            lineHeight: "24px",
+                            color: "#8E939C"
+                          }}
+                        >
+                          ({product.reviewCount} reviews)
+                        </span>
+
                       </div>
-                      <button onClick={() => addToCart({ productId: product.id + 100, name: product.name, price: product.price, originalPrice: product.originalPrice, image: "/placeholder.svg" })} className="w-full flex items-center justify-center gap-2" style={{ height: "48px", background: "#064734", color: "#FFFFFF", borderRadius: "14px", fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "14px", border: "none", cursor: "pointer" }}>
+
+                      {/* PRICE */}
+                      <div className="flex items-center gap-2 mb-2">
+                        <span style={{ fontWeight: 700, fontSize: "26px", color: "#064734" }}>
+                          ₹{product.price}
+                        </span>
+                        <span style={{ color: "#8E939C", textDecoration: "line-through" }}>
+                          ₹{product.originalPrice}
+                        </span>
+                      </div>
+
+                      {/* ✅ SIZE CHIPS (NEW) */}
+                      <div className="flex gap-2 mb-3">
+                        {["5L", "3L", "2L", "750 ML"].map((size, idx) => (
+                          <span
+                            key={idx}
+                            style={{
+                              padding: "4px 8px",
+                              fontSize: "12px",
+                              borderRadius: "6px",
+                              background: idx === 0 ? "#D9F99D" : "#F3F4F6",
+                              color: "#064734"
+                            }}
+                          >
+                            {size}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* BUTTON */}
+                      <button
+                        className="w-full flex items-center justify-center gap-2"
+                        style={{
+                          height: "48px",
+                          background: "#064734",
+                          color: "#FFF",
+                          borderRadius: "14px",
+                          fontWeight: 600
+                        }}
+                      >
                         <ShoppingCart size={18} /> Add to Cart
                       </button>
+
                     </div>
                   </div>
                 );
@@ -327,19 +488,21 @@ const HomecareKitsSection = () => {
       {/* ===== SECTION 3: Everything Your Home Needs In One Kit ===== */}
       <section
         className="relative overflow-hidden"
-        style={{ width: "100%", background: "linear-gradient(96.54deg, #CEF17B 22.56%, #FFFFFF 129.53%)" }}
+        style={{ width: "100%",background: "rgba(206, 241, 123, 0.3)" }}
       >
-        <img src={cloverDarkGreen} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "293px", height: "293px", left: "calc(50% - 720px + 319px)", top: "-84px", opacity: 0.08 }} />
-        <img src={cloverDarkGreen} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "293px", height: "293px", left: "calc(50% - 720px + -61px)", top: "63px", opacity: 0.08 }} />
-        <img src={cloverDarkGreen} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "227px", height: "227px", left: "calc(50% - 720px + 5px)", top: "576px", opacity: 0.08 }} />
-        <img src={cloverDarkGreen} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "221px", height: "221px", left: "calc(50% - 720px + 720px)", top: "266px", opacity: 0.07 }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "245px", height: "245px", left: "calc(50% - 720px + 1250px)", top: "50px", opacity: 0.2 }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "267px", height: "267px", left: "calc(50% - 720px + 1215px)", top: "581px", opacity: 0.2 }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "180px", height: "180px", left: "calc(50% - 720px + 891px)", top: "600px", opacity: 0.18 }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "293px", height: "293px", left: "calc(50% - 720px + 319px)", top: "-84px", opacity: 0.5}} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "293px", height: "293px", left: "calc(50% - 720px + -61px)", top: "63px", opacity: 0.5 }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "227px", height: "227px", left: "calc(50% - 720px + 5px)", top: "576px", opacity: 0.5 }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "293px", height: "293px", left: "calc(50% - 720px + -61px)", top: "63px", opacity: 0.5 }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "221px", height: "221px", left: "calc(50% - 720px + 720px)", top: "266px", opacity: 0.5 }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "245px", height: "245px", left: "calc(50% - 720px + 1250px)", top: "50px", opacity: 0.5 }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "267px", height: "267px", left: "calc(50% - 720px + 1215px)", top: "581px", opacity: 0.5 }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "180px", height: "180px", left: "calc(50% - 720px + 891px)", top: "600px", opacity: 0.5 }} />
 
         <div className="relative z-[1] mx-auto flex flex-col items-center" style={{ maxWidth: "1440px", padding: "40px 20px 40px", gap: "24px" }}>
+
           <div className="flex flex-col items-center" style={{ gap: "8px" }}>
-            <h2 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "40px", lineHeight: "60px", letterSpacing: "0px", textAlign: "center", color: "#064734", margin: 0 }}>
+            <h2 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "40px", lineHeight: "60px", textAlign: "center", color: "#064734", margin: 0 }}>
               Everything Your Home Needs. In One Kit.
             </h2>
             <p style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, fontSize: "20px", lineHeight: "28px", textAlign: "center", color: "#064734", margin: 0 }}>
@@ -351,30 +514,82 @@ const HomecareKitsSection = () => {
             {KITS.map((kit) => {
               const cartItem = items.find((i) => i.productId === kit.id);
               const cartQty = cartItem?.quantity ?? 0;
+
               return (
-                <div key={kit.id} className="flex flex-col items-center" style={{ width: "276px", height: "450px", background: "#FFFFFF", boxShadow: "0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1)", borderRadius: "24px", overflow: "hidden" }}>
+                <div
+                  key={kit.id}
+                  className="flex flex-col items-center"
+                  style={{
+                    width: "276px",
+                    background: "#FFFFFF",
+                    boxShadow: "0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1)",
+                    borderRadius: "24px",
+                    overflow: "hidden"
+                  }}
+                >
                   <div className="relative flex-shrink-0" style={{ width: "276px", height: "162px", borderRadius: "24px 24px 0 0", overflow: "hidden" }}>
                     <img src={kitCardBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
                     <img src={kitBottles} alt="Kit bottles" className="absolute object-contain" style={{ width: "178px", height: "141px", left: "49px", top: "11px" }} />
                   </div>
-                  <div className="flex flex-col items-start" style={{ width: "238px", padding: "16px 0 12px 0", gap: "12px", flex: 1 }}>
-                    <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "18px", lineHeight: "24px", color: "#064734" }}>{kit.name}</span>
+
+                  <div
+                    className="flex flex-col items-start"
+                    style={{
+                      width: "238px",
+                      padding: "16px 0 12px 0",
+                      gap: "12px"
+                    }}
+                  >
+                    <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "18px", lineHeight: "24px", color: "#064734" }}>
+                      {kit.name}
+                    </span>
+
                     <div className="flex flex-col" style={{ gap: "8px", width: "238px" }}>
                       {kit.items.map((item, i) => (
                         <div key={i} className="flex items-center" style={{ gap: "6px" }}>
                           <Check size={18} color="#064734" strokeWidth={1.75} />
-                          <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, fontSize: "13px", lineHeight: "18px", color: "#064734" }}>{item}</span>
+                          <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, fontSize: "13px", lineHeight: "18px", color: "#064734" }}>
+                            {item}
+                          </span>
                         </div>
                       ))}
                     </div>
+
                     <div className="flex items-center" style={{ gap: "10px" }}>
-                      <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "26px", lineHeight: "24px", color: "#064734" }}>₹{kit.price}</span>
-                      <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, fontSize: "14px", lineHeight: "24px", color: "#8E939C", textDecoration: "line-through" }}>₹{kit.originalPrice}</span>
+                      <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "26px", lineHeight: "24px", color: "#064734" }}>
+                        ₹{kit.price}
+                      </span>
+                      <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, fontSize: "14px", lineHeight: "24px", color: "#8E939C", textDecoration: "line-through" }}>
+                        ₹{kit.originalPrice}
+                      </span>
                     </div>
+
                     {cartQty > 0 ? (
-                      <QuantityCapsule quantity={cartQty} onIncrement={(e) => { e.stopPropagation(); updateQuantity(kit.id, cartQty + 1); }} onDecrement={(e) => { e.stopPropagation(); cartQty <= 1 ? removeFromCart(kit.id) : updateQuantity(kit.id, cartQty - 1); }} size="sm" fullWidth />
+                      <QuantityCapsule
+                        quantity={cartQty}
+                        onIncrement={(e) => { e.stopPropagation(); updateQuantity(kit.id, cartQty + 1); }}
+                        onDecrement={(e) => { e.stopPropagation(); cartQty <= 1 ? removeFromCart(kit.id) : updateQuantity(kit.id, cartQty - 1); }}
+                        size="sm"
+                        fullWidth
+                      />
                     ) : (
-                      <button onClick={() => handleAddKit(kit)} className="flex items-center justify-center gap-2" style={{ width: "238px", height: "36px", border: "1px solid #064734", borderRadius: "8px", background: "transparent", fontFamily: "'Poppins', sans-serif", fontWeight: 500, fontSize: "14px", lineHeight: "24px", color: "#064734", cursor: "pointer" }}>
+                      <button
+                        onClick={() => handleAddKit(kit)}
+                        className="flex items-center justify-center gap-2"
+                        style={{
+                          width: "238px",
+                          height: "36px",
+                          border: "1px solid #064734",
+                          borderRadius: "8px",
+                          background: "transparent",
+                          fontFamily: "'Poppins', sans-serif",
+                          fontWeight: 500,
+                          fontSize: "14px",
+                          lineHeight: "24px",
+                          color: "#064734",
+                          cursor: "pointer"
+                        }}
+                      >
                         <ShoppingCart size={20} color="#064734" />
                         Add to Cart
                       </button>
@@ -388,6 +603,7 @@ const HomecareKitsSection = () => {
           <button style={{ background: "#064734", color: "#FFFFFF", fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "16px", lineHeight: "24px", padding: "12px 32px", borderRadius: "9999px", border: "none", cursor: "pointer" }}>
             Explore Kits
           </button>
+
         </div>
       </section>
     </div>
