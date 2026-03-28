@@ -27,9 +27,13 @@ const SimilarItemsSection = ({ currentProductId, categoryId }: SimilarItemsSecti
   return (
     <section className="relative w-full overflow-hidden" style={{ background: "rgba(206, 241, 123, 0.3)" }}>
       {/* Clovers */}
-      <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none" style={{ width: "245px", right: "-30px", top: "-34px", opacity: 0.25 }} />
-      <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none" style={{ width: "267px", right: "-40px", bottom: "-50px", opacity: 0.2 }} />
-      <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none" style={{ width: "209px", left: "25%", bottom: "-40px", opacity: 0.18 }} />
+      <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none" style={{ width: "280px", left: "-70px", top: "-50px", opacity: 0.5 }} />
+      <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none" style={{ width: "260px", right: "-50px", top: "-40px", opacity: 0.5 }} />
+      <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none" style={{ width: "300px", left: "-80px", bottom: "-60px", opacity: 0.5 }} />
+      <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none" style={{ width: "270px", right: "-40px", bottom: "-50px", opacity: 0.5 }} />
+      <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none" style={{ width: "240px", left: "50%", top: "-30px", transform: "translateX(-50%)", opacity: 0.5 }} />
+      <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none" style={{ width: "220px", left: "15%", top: "40%", opacity: 0.5 }} />
+      <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none" style={{ width: "250px", right: "10%", bottom: "20%", opacity: 0.5 }} />
 
       <div className="relative z-[1] mx-auto max-w-[1280px] px-4 py-16">
         <div className="text-center mb-8">

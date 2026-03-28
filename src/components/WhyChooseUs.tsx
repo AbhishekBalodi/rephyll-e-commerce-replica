@@ -1,4 +1,4 @@
-import { Leaf, Baby, Heart, Recycle, PawPrint } from "lucide-react";
+import { Leaf, Baby, Recycle, PawPrint, Heart } from "lucide-react";
 import clover from "@/assets/clover-green-dark.png";
 import ifraShield from "@/assets/ifra-shield.png";
 
@@ -7,7 +7,7 @@ const BADGES = [
   { icon: <Leaf size={32} className="text-[#064734]" />, title: "100% Natural", subtitle: "Plant-based formulas" },
   { icon: <Baby size={32} className="text-[#064734]" />, title: "Child Safe", subtitle: "Gentle and safe" },
   { icon: <PawPrint size={32} className="text-[#064734]" />, title: "Pet Friendly", subtitle: "No harmful ingredients" },
-  { icon: <Heart size={32} className="text-[#064734]" />, title: "Dermatology Safe", subtitle: "Tested and approved" },
+  { icon: <Recycle size={32} className="text-[#064734]" />, title: "Biodegradable", subtitle: "Eco-friendly formulas" },
 ];
 
 const WhyChooseUs = () => {
