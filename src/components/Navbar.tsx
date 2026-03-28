@@ -316,20 +316,16 @@ const Navbar = () => {
                             className="flex items-center gap-3 w-full px-4 py-3 hover:bg-gray-50 transition-colors text-left border-b border-gray-100 last:border-0"
                           >
                             <img
-                              src={resolveImageUrl(
-                                product.displayImage ||
-                                product.images?.[0]?.url ||
-                                product.variants?.[0]?.images?.[0]?.url || ""
-                              )}
+                              src={getProductImage(product)}
                               alt={product.name}
                               className="w-10 h-10 rounded-lg object-cover bg-gray-100 flex-shrink-0"
                             />
                             <div className="flex-1 min-w-0">
                               <p className="text-sm font-medium text-gray-800 truncate" style={{ fontFamily: "'Poppins', sans-serif" }}>{product.name}</p>
                               <p className="text-xs text-[#064734] font-semibold">
-                                ₹{product.salePrice ?? product.price}
-                                {product.salePrice && product.price > product.salePrice && (
-                                  <span className="ml-1 text-gray-400 line-through font-normal">₹{product.price}</span>
+                                ₹{product.variants?.[0]?.sellingPrice ?? product.mrp}
+                                {product.variants?.[0]?.sellingPrice && product.mrp > product.variants[0].sellingPrice && (
+                                  <span className="ml-1 text-gray-400 line-through font-normal">₹{product.mrp}</span>
                                 )}
                               </p>
                             </div>
