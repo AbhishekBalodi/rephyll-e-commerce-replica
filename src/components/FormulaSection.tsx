@@ -25,10 +25,13 @@ const FormulaSection = () => {
             }}
         >
             {/* 🌿 CLOVERS BACKGROUND */}
-            <img src={clover} className="absolute left-[100px] top-[250px] w-[130px] opacity-100" />
-            <img src={clover} className="absolute right-[100px] top-[150px] w-[200px] opacity-100" />
-            <img src={clover} className="absolute left-[200px] bottom-[80px] w-[150px] opacity-100" />
-            <img src={clover} className="absolute right-[200px] bottom-[60px] w-[150px] opacity-100" />
+            <img src={clover} className="absolute pointer-events-none" style={{ width: "280px", left: "-70px", top: "-50px", opacity: 0.5 }} />
+            <img src={clover} className="absolute pointer-events-none" style={{ width: "260px", right: "-50px", top: "-40px", opacity: 0.5 }} />
+            <img src={clover} className="absolute pointer-events-none" style={{ width: "300px", left: "-80px", bottom: "-60px", opacity: 0.5 }} />
+            <img src={clover} className="absolute pointer-events-none" style={{ width: "270px", right: "-40px", bottom: "-50px", opacity: 0.5 }} />
+            <img src={clover} className="absolute pointer-events-none" style={{ width: "240px", left: "50%", top: "30%", transform: "translateX(-50%)", opacity: 0.5 }} />
+            <img src={clover} className="absolute pointer-events-none" style={{ width: "220px", left: "15%", top: "50%", opacity: 0.5 }} />
+            <img src={clover} className="absolute pointer-events-none" style={{ width: "250px", right: "10%", bottom: "15%", opacity: 0.5 }} />
 
             {/* MAIN CONTAINER */}
             <div

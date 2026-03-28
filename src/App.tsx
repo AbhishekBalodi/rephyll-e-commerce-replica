@@ -36,7 +36,11 @@ const App = () => (
           <CartProvider>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/shop" element={<Index />} />
               <Route path="/about" element={<AboutUs />} />
+              <Route path="/our-story" element={<AboutUs />} />
+              <Route path="/homecare-kits" element={<Index />} />
+              <Route path="/b2b-orders" element={<ContactUs />} />
               <Route path="/why-choose-us" element={<WhyChooseUsPage />} />
               <Route path="/faqs" element={<FAQs />} />
               <Route path="/contact" element={<ContactUs />} />

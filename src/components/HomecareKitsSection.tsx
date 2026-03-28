@@ -229,14 +229,14 @@ const HomecareKitsSection = () => {
                 return (
                   <div key={tier.qty} className="relative" style={{ width: "276px", height: "307px" }}>
                     {tier.save && (
-                      <div className="absolute flex items-center justify-center gap-1" style={{ width: "101px", height: "25px", left: "calc(50% - 50px)", top: "0px", background: "#064734", border: "0.67px solid #064734", borderRadius: "8px", zIndex: 2 }}>
+                      <div className="absolute flex items-center justify-center gap-1" style={{ width: "101px", height: "25px", left: "calc(50% - 50px)", top: "0px", background: "#064734", border: "1.5px solid #FFFFFF", borderRadius: "8px", zIndex: 2 }}>
                         <TrendingDown size={16} color="#FFFFFF" strokeWidth={1.33} />
                         <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500, fontSize: "14px", lineHeight: "20px", color: "#FFFFFF" }}>{tier.save}</span>
                       </div>
                     )}
                     <div className="absolute flex flex-col items-start" style={{ width: "275px", height: "294px", left: "0px", top: "13px", background: "#FFFFFF", boxShadow: "0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1)", borderRadius: "24px", padding: "32px 32px 0px", gap: "24px" }}>
                       <div className="flex justify-center" style={{ width: "100%" }}>
-                        <div className="flex items-center justify-center" style={{ width: "96px", height: "96px", borderRadius: "9999px", background: tier.dark ? "#064734" : "#D0FAE5" }}>
+                        <div className="flex items-center justify-center" style={{ width: "96px", height: "96px", borderRadius: "9999px", background: tier.dark ? "#064734" : "#E5E7EB" }}>
                           <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: "30px", lineHeight: "36px", color: tier.dark ? "#FFFFFF" : "#064734" }}>{tier.qty}</span>
                         </div>
                       </div>
