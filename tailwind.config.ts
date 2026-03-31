@@ -67,6 +67,7 @@ export default {
       fontFamily: {
         sans: ['"Source Sans 3"', 'sans-serif'],
         display: ['"Source Sans 3"', 'sans-serif'],
+        poppins: ['Poppins', 'sans-serif'],
       },
       borderRadius: {
         lg: "var(--radius)",

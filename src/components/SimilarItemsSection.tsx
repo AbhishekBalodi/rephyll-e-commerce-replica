@@ -33,7 +33,7 @@ const SimilarItemsSection = ({ currentProductId, categoryId }: SimilarItemsSecti
       <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none" style={{ width: "270px", right: "-40px", bottom: "-50px", opacity: 0.5 }} />
       <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none" style={{ width: "240px", left: "50%", top: "-30px", transform: "translateX(-50%)", opacity: 0.5 }} />
       <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none" style={{ width: "220px", left: "15%", top: "40%", opacity: 0.5 }} />
-      <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none" style={{ width: "250px", right: "10%", bottom: "20%", opacity: 0.5 }} />
+      {/* <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none" style={{ width: "250px", right: "10%", bottom: "20%", opacity: 0.5 }} /> */}
 
       <div className="relative z-[1] mx-auto max-w-[1280px] px-4 py-16">
         <div className="text-center mb-8">

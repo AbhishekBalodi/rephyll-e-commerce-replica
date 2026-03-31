@@ -30,8 +30,8 @@ const FormulaSection = () => {
             <img src={clover} className="absolute pointer-events-none" style={{ width: "300px", left: "-80px", bottom: "-60px", opacity: 0.5 }} />
             <img src={clover} className="absolute pointer-events-none" style={{ width: "270px", right: "-40px", bottom: "-50px", opacity: 0.5 }} />
             <img src={clover} className="absolute pointer-events-none" style={{ width: "240px", left: "50%", top: "30%", transform: "translateX(-50%)", opacity: 0.5 }} />
-            <img src={clover} className="absolute pointer-events-none" style={{ width: "220px", left: "15%", top: "50%", opacity: 0.5 }} />
-            <img src={clover} className="absolute pointer-events-none" style={{ width: "250px", right: "10%", bottom: "15%", opacity: 0.5 }} />
+            <img src={clover} className="absolute pointer-events-none" style={{ width: "220px", left: "15%", top: "35%", opacity: 0.5 }} />
+            <img src={clover} className="absolute pointer-events-none" style={{ width: "250px", right: "10%", bottom: "30%", opacity: 0.5 }} />
 
             {/* MAIN CONTAINER */}
             <div

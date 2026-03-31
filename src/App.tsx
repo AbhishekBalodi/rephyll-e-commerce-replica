@@ -7,6 +7,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { CartProvider } from "@/contexts/CartContext";
 import Index from "./pages/Index.tsx";
 import AboutUs from "./pages/AboutUs.tsx";
+import OurStory from "./pages/OurStory.tsx";
 import FAQs from "./pages/FAQs.tsx";
 import ContactUs from "./pages/ContactUs.tsx";
 import TermsOfService from "./pages/TermsOfService.tsx";
@@ -23,6 +24,7 @@ import CartPage from "./pages/CartPage.tsx";
 import AdminAddProduct from "./pages/AdminAddProduct.tsx";
 import ProductPage from "./pages/ProductPage.tsx";
 import CategoryPage from "./pages/CategoryPage.tsx";
+import ShopSection from "./pages/ShopSection.tsx";
 
 const queryClient = new QueryClient();
 
@@ -36,9 +38,9 @@ const App = () => (
           <CartProvider>
             <Routes>
               <Route path="/" element={<Index />} />
-              <Route path="/shop" element={<Index />} />
+              <Route path="/shop" element={<ShopSection/>} />
               <Route path="/about" element={<AboutUs />} />
-              <Route path="/our-story" element={<AboutUs />} />
+              <Route path="/our-story" element={<OurStory />} />
               <Route path="/homecare-kits" element={<Index />} />
               <Route path="/b2b-orders" element={<ContactUs />} />
               <Route path="/why-choose-us" element={<WhyChooseUsPage />} />

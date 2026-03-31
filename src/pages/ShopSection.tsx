@@ -8,30 +8,17 @@ import Philosophy from "@/components/about/Philosophy";
 import Promises from "@/components/about/Promises";
 import BlogsSection from "@/components/BlogsSection";
 import WhyChooseUs from "@/components/WhyChooseUs";
+import ProductGridSection from "@/components/ProductGridSection";
 
-const AboutUs = () => {
+const ShopSection = () => {
   return (
     <div className="min-h-screen">
       <Navbar />
 
-      <HeroSection />
-      <TrustMarqueeStrip />
-      <WhyWeExist />
-      <WhyChooseUs />
-
-      {/* Already built section */}
-      {/* <HowWeAreMakingDifference /> */}
-
-      <MoreThanProducts />
-      <Philosophy />
-      <Promises />
-
-      {/* Already existing section */}
-      {/* <CleanLivingSection /> */}
-      <BlogsSection />
+      <ProductGridSection />
       <Footer />
     </div>
   );
 };
 
-export default AboutUs;
+export default ShopSection;
