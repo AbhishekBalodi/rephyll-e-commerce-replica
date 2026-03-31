@@ -22,7 +22,7 @@ const ProductCard = ({ product, onClick }: ProductCardProps) => {
   const cartQty = cartItem?.quantity ?? 0;
 
   // Mock rating/review data
-  const rating = product.featured ? 5 : 4.5 + Math.random() * 0.4;
+  const rating = 4.5 + Math.random() * 0.4;
   const reviewCount = 30 + Math.floor(Math.random() * 100);
 
   const handleAddToCart = (e: React.MouseEvent) => {
