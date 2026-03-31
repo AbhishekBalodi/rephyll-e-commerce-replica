@@ -24,7 +24,7 @@ import QuantityCapsule from "./QuantityCapsule";
 import ProductDetailAccordion from "./ProductDetailAccordion";
 
 interface ProductDetailProps {
-  product: ApiProduct;
+  product: ApiProductDetail;
   onBack: () => void;
 }
 
