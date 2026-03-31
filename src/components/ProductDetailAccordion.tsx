@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Plus, Minus } from "lucide-react";
-import type { ApiProduct } from "@/types/api";
+import type { ApiProductDetail } from "@/types/api";
 
 interface ProductDetailAccordionProps {
-  product: ApiProduct;
+  product: ApiProductDetail;
 }
 
 const ProductDetailAccordion = ({ product }: ProductDetailAccordionProps) => {
