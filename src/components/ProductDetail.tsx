@@ -10,7 +10,7 @@ import {
   Star
 } from "lucide-react";
 
-import type { ApiProduct, ApiVariant } from "@/types/api";
+import type { ApiProductDetail, ApiVariant } from "@/types/api";
 
 import {
   getProductImages,
@@ -24,7 +24,7 @@ import QuantityCapsule from "./QuantityCapsule";
 import ProductDetailAccordion from "./ProductDetailAccordion";
 
 interface ProductDetailProps {
-  product: ApiProduct;
+  product: ApiProductDetail;
   onBack: () => void;
 }
 
@@ -41,15 +41,15 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
 
   const [activeImg, setActiveImg] = useState(0);
   const [selectedVariant] = useState<ApiVariant | undefined>(
-    product.variants[0]
+    product.variants?.[0]
   );
   const [selectedPackId, setSelectedPackId] = useState<number>(1);
 
   const { items, addToCart, updateQuantity, removeFromCart } = useCart();
 
   const images = getProductImages(product);
-  const price = getSellingPrice(product, selectedVariant);
-  const mrp = getMrp(product, selectedVariant);
+  const price = getSellingPrice(product);
+  const mrp = getMrp(product);
 
   const packs = generatePacks(price, mrp);
   const activePack = packs.find(p => p.id === selectedPackId) ?? packs[0];
@@ -141,7 +141,7 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
             </p>
 
             <p className="text-[16px] text-[#999999] font-[Poppins] mt-1 mb-4">
-              {product.metaDescription}
+              {product.seoDescription || product.description}
             </p>
 
             {/* ✅ FEATURES (FIXED HERE ONLY) */}

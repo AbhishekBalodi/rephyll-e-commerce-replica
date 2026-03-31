@@ -22,7 +22,7 @@ const ProductCard = ({ product, onClick }: ProductCardProps) => {
   const cartQty = cartItem?.quantity ?? 0;
 
   // Mock rating/review data
-  const rating = product.featured ? 5 : 4.5 + Math.random() * 0.4;
+  const rating = 4.5 + Math.random() * 0.4;
   const reviewCount = 30 + Math.floor(Math.random() * 100);
 
   const handleAddToCart = (e: React.MouseEvent) => {
@@ -68,9 +68,9 @@ const ProductCard = ({ product, onClick }: ProductCardProps) => {
             {discount}% OFF
           </span>
         )}
-        {product.featured && (
-          <span className="absolute top-2 left-2 text-xs font-bold bg-accent text-accent-foreground px-2 py-1 rounded-full">
-            Bestseller
+        {product.inStock === false && (
+          <span className="absolute top-2 left-2 text-xs font-bold bg-destructive text-destructive-foreground px-2 py-1 rounded-full">
+            Out of Stock
           </span>
         )}
       </div>

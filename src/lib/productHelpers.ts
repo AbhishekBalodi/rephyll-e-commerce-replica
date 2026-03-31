@@ -1,80 +1,105 @@
 /**
  * Helpers to normalize API product data for UI display.
+ * Updated for NEW API response structure.
  */
-import type { ApiProduct, ApiVariant } from "@/types/api";
+import type { ApiProduct, ApiProductDetail, ApiVariant, ApiProductImage } from "@/types/api";
 
-const ASSET_BASE = import.meta.env.VITE_BASE_URL || "https://www.brandingidiots.tech";
+const ASSET_BASE = import.meta.env.VITE_BASE_URL || "https://www.rephyl.com";
 
-/** Prepend base URL to relative image paths (e.g. /api/files/...) */
+/** Prepend base URL to relative image/file paths. */
 export function resolveImageUrl(path: string | null | undefined): string {
   if (!path) return "/placeholder.svg";
   if (path.startsWith("http")) return path;
-  return `${ASSET_BASE}${path}`;
+  // Ensure path starts with /api/files/ for the backend file serving
+  if (path.startsWith("/")) return `${ASSET_BASE}${path}`;
+  return `${ASSET_BASE}/api/files/${path}`;
 }
 
-/** Get the best display image for a product. */
+/**
+ * Parse imagePath which can be:
+ * - { path: '{"path":"actual/path.jpg","originalName":"img.jpg"}', originalName: null }
+ * - { path: "direct/path.jpg", originalName: "img.jpg" }
+ * - null
+ */
+function parseImagePath(imagePath: ApiProductImage | null): string | null {
+  if (!imagePath?.path) return null;
+  try {
+    // Try parsing as nested JSON (the API sometimes double-encodes)
+    const parsed = JSON.parse(imagePath.path);
+    if (typeof parsed === "object" && parsed.path) {
+      return parsed.path;
+    }
+    return imagePath.path;
+  } catch {
+    return imagePath.path;
+  }
+}
+
+/** Get the best display image for a product (list view). */
 export function getProductImage(product: ApiProduct): string {
-  if (product.productImage) return resolveImageUrl(product.productImage);
-  const variantImg = product.variants.find((v) => v.imageUrl)?.imageUrl;
-  if (variantImg) return resolveImageUrl(variantImg);
+  const path = parseImagePath(product.imagePath);
+  if (path) return resolveImageUrl(path);
   return "/placeholder.svg";
 }
 
-/** Get all available images for gallery. */
-export function getProductImages(product: ApiProduct): string[] {
+/** Get all available images for gallery (detail view). */
+export function getProductImages(product: ApiProductDetail): string[] {
   const imgs: string[] = [];
-  if (product.productImage) imgs.push(resolveImageUrl(product.productImage));
-  if (product.stickerImage) imgs.push(resolveImageUrl(product.stickerImage));
-  product.variants.forEach((v) => {
-    const resolved = resolveImageUrl(v.imageUrl);
-    if (v.imageUrl && !imgs.includes(resolved)) imgs.push(resolved);
-  });
+
+  // Main product image
+  const mainPath = parseImagePath(product.imagePath);
+  if (mainPath) imgs.push(resolveImageUrl(mainPath));
+
+  // Variant images
+  if (product.variants) {
+    product.variants.forEach((v) => {
+      v.images?.forEach((img) => {
+        const resolved = resolveImageUrl(img.path);
+        if (!imgs.includes(resolved)) imgs.push(resolved);
+      });
+    });
+  }
+
   return imgs.length > 0 ? imgs : ["/placeholder.svg"];
 }
 
-/** Get display price (selling price). */
-export function getSellingPrice(product: ApiProduct, variant?: ApiVariant): number {
-  if (variant) return variant.sellingPrice;
-  if (product.variants.length > 0) {
-    return Math.min(...product.variants.map((v) => v.sellingPrice));
-  }
-  return product.wholesalePrice ?? product.mrp;
+/** Get display price (base price for list, can be overridden per variant). */
+export function getSellingPrice(product: ApiProduct): number {
+  return product.basePrice;
 }
 
-/** Get MRP (original price). */
-export function getMrp(product: ApiProduct, variant?: ApiVariant): number {
-  if (variant) return variant.mrp;
-  if (product.variants.length > 0) {
-    return product.variants[0].mrp;
-  }
-  return product.mrp;
+/** Get MRP — same as basePrice in new API (no separate MRP field in list). */
+export function getMrp(product: ApiProduct): number {
+  return product.basePrice;
 }
 
-/** Calculate discount percentage. */
-export function getDiscount(product: ApiProduct, variant?: ApiVariant): number {
-  const mrp = getMrp(product, variant);
-  const selling = getSellingPrice(product, variant);
-  if (mrp <= selling || mrp === 0) return 0;
-  return Math.round(((mrp - selling) / mrp) * 100);
+/** Calculate discount percentage (new API doesn't provide discount in list). */
+export function getDiscount(_product: ApiProduct): number {
+  return 0; // New API doesn't have separate MRP vs selling price in list view
 }
 
 /** Check if product is in stock. */
-export function isInStock(product: ApiProduct, variant?: ApiVariant): boolean {
-  if (variant) return variant.stock.available;
-  if (product.variants.length > 0) {
-    return product.variants.some((v) => v.stock.available);
-  }
-  return true; // Non-variant products assumed available
+export function isInStock(product: ApiProduct): boolean {
+  return product.inStock;
 }
 
-/** Parse variant attributes JSON string. */
-export function parseVariantAttributes(
-  attrs: string | null
-): Record<string, string> {
-  if (!attrs) return {};
-  try {
-    return JSON.parse(attrs);
-  } catch {
-    return {};
-  }
+/** Parse variant attributes combo string like "Color=Black,Fit=Regular". */
+export function parseAttrsCombo(combo: string): Record<string, string> {
+  const result: Record<string, string> = {};
+  if (!combo) return result;
+  combo.split(",").forEach((pair) => {
+    const [key, value] = pair.split("=");
+    if (key && value) result[key.trim()] = value.trim();
+  });
+  return result;
+}
+
+/** Check if a variant is in stock. */
+export function isVariantInStock(variant: ApiVariant): boolean {
+  return variant.inventory.available;
+}
+
+/** Get total stock for a variant. */
+export function getVariantStock(variant: ApiVariant): number {
+  return variant.inventory.totalStock;
 }

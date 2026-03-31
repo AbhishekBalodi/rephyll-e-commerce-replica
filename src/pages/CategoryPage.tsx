@@ -4,7 +4,7 @@ import { ChevronDown, ChevronUp, SlidersHorizontal } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
-import { useProductList, useCategories } from "@/hooks/useProducts";
+import { useProductsByCategory, useCategories } from "@/hooks/useProducts";
 import type { ApiProduct } from "@/types/api";
 
 type SortOption = "relevance" | "price-low" | "price-high" | "name-az" | "name-za";
@@ -30,10 +30,7 @@ const CategoryPage = () => {
     return null;
   }, [categories, slug, state]);
 
-  const { data: productsData, isLoading } = useProductList({
-    category: category?.id,
-    size: 100,
-  });
+  const { data: productsData, isLoading } = useProductsByCategory(category?.id, { size: 100 });
 
   const products = productsData?.content ?? [];
 
@@ -44,7 +41,6 @@ const CategoryPage = () => {
   const [expandedFilters, setExpandedFilters] = useState<Record<string, boolean>>({
     brand: true,
     price: true,
-    weight: false,
   });
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
@@ -62,13 +58,6 @@ const CategoryPage = () => {
     { label: "Above ₹1000", range: [1000, 99999] },
   ];
 
-  const weightOptions = useMemo(() => {
-    const set = new Set<string>();
-    products.forEach((p) => { if (p.productWeight) set.add(p.productWeight); });
-    return Array.from(set).sort();
-  }, [products]);
-  const [selectedWeights, setSelectedWeights] = useState<string[]>([]);
-
   // Apply filters & sorting
   const filteredProducts = useMemo(() => {
     let result = [...products];
@@ -79,23 +68,17 @@ const CategoryPage = () => {
 
     if (priceRange) {
       result = result.filter((p) => {
-        const price = p.variants.length > 0
-          ? Math.min(...p.variants.map((v) => v.sellingPrice))
-          : (p.wholesalePrice ?? p.mrp);
+        const price = p.basePrice;
         return price >= priceRange[0] && price <= priceRange[1];
       });
     }
 
-    if (selectedWeights.length > 0) {
-      result = result.filter((p) => p.productWeight && selectedWeights.includes(p.productWeight));
-    }
-
     switch (sortBy) {
       case "price-low":
-        result.sort((a, b) => getPrice(a) - getPrice(b));
+        result.sort((a, b) => a.basePrice - b.basePrice);
         break;
       case "price-high":
-        result.sort((a, b) => getPrice(b) - getPrice(a));
+        result.sort((a, b) => b.basePrice - a.basePrice);
         break;
       case "name-az":
         result.sort((a, b) => a.name.localeCompare(b.name));
@@ -106,7 +89,7 @@ const CategoryPage = () => {
     }
 
     return result;
-  }, [products, selectedBrands, priceRange, selectedWeights, sortBy]);
+  }, [products, selectedBrands, priceRange, sortBy]);
 
   const toggleFilter = (key: string) => {
     setExpandedFilters((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -118,20 +101,13 @@ const CategoryPage = () => {
     );
   };
 
-  const toggleWeight = (weight: string) => {
-    setSelectedWeights((prev) =>
-      prev.includes(weight) ? prev.filter((w) => w !== weight) : [...prev, weight]
-    );
-  };
-
   const clearAllFilters = () => {
     setSelectedBrands([]);
     setPriceRange(null);
-    setSelectedWeights([]);
     setSortBy("relevance");
   };
 
-  const hasActiveFilters = selectedBrands.length > 0 || priceRange !== null || selectedWeights.length > 0;
+  const hasActiveFilters = selectedBrands.length > 0 || priceRange !== null;
 
   const FilterSidebar = () => (
     <div className="space-y-6">
@@ -210,38 +186,6 @@ const CategoryPage = () => {
           </div>
         )}
       </div>
-
-      {/* Weight Filter */}
-      {weightOptions.length > 0 && (
-        <div className="border-t pt-4" style={{ borderColor: "#E5E7EB" }}>
-          <button
-            onClick={() => toggleFilter("weight")}
-            className="flex items-center justify-between w-full mb-3"
-          >
-            <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "14px", color: "#1A1A1A" }}>
-              WEIGHT
-            </span>
-            {expandedFilters.weight ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-          </button>
-          {expandedFilters.weight && (
-            <div className="space-y-2">
-              {weightOptions.map((w) => (
-                <label key={w} className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={selectedWeights.includes(w)}
-                    onChange={() => toggleWeight(w)}
-                    className="w-4 h-4 rounded accent-[#064734]"
-                  />
-                  <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: "14px", color: "#464646" }}>
-                    {w}
-                  </span>
-                </label>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 
@@ -367,10 +311,5 @@ const CategoryPage = () => {
     </div>
   );
 };
-
-function getPrice(p: ApiProduct): number {
-  if (p.variants.length > 0) return Math.min(...p.variants.map((v) => v.sellingPrice));
-  return p.wholesalePrice ?? p.mrp;
-}
 
 export default CategoryPage;

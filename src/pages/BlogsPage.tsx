@@ -9,7 +9,7 @@ import { CustomerBlogCatalogDto } from "@/types/api";
 
 const BlogCard = ({ post }: { post: CustomerBlogCatalogDto }) => {
   const getImageUrl = (relativePath: string): string => {
-    const baseUrl = import.meta.env.VITE_BASE_URL || 'https://www.brandingidiots.tech';
+    const baseUrl = import.meta.env.VITE_BASE_URL || 'https://www.rephyl.com';
     return `${baseUrl}${relativePath}`;
   };
 

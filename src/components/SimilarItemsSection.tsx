@@ -1,6 +1,6 @@
 import { ChevronLeft, ChevronRight, Heart, Star } from "lucide-react";
-import { useProductList } from "@/hooks/useProducts";
-import { getProductImages, getSellingPrice, getMrp } from "@/lib/productHelpers";
+import { useProductList, useRelatedProducts } from "@/hooks/useProducts";
+import { getProductImage, getSellingPrice, getMrp } from "@/lib/productHelpers";
 import { useNavigate } from "react-router-dom";
 import cloverLime from "@/assets/clover-lime.png";
 import type { ApiProduct } from "@/types/api";
@@ -13,10 +13,14 @@ interface SimilarItemsSectionProps {
 
 const SimilarItemsSection = ({ currentProductId, categoryId }: SimilarItemsSectionProps) => {
   const navigate = useNavigate();
-  const { data } = useProductList({ size: 12, category: categoryId });
+  const { data: relatedData } = useRelatedProducts(currentProductId);
+  const { data: fallbackData } = useProductList({ size: 12, category: categoryId });
   const [scrollIndex, setScrollIndex] = useState(0);
 
-  const products = (data?.content ?? []).filter((p: ApiProduct) => p.id !== currentProductId).slice(0, 6);
+  // Use related products if available, fallback to category products
+  const relatedProducts = relatedData?.content ?? [];
+  const fallbackProducts = (fallbackData?.content ?? []).filter((p: ApiProduct) => p.id !== currentProductId);
+  const products = (relatedProducts.length > 0 ? relatedProducts : fallbackProducts).slice(0, 6);
 
   if (products.length === 0) return null;
 
@@ -59,10 +63,10 @@ const SimilarItemsSection = ({ currentProductId, categoryId }: SimilarItemsSecti
 
           <div className="flex gap-4 overflow-hidden">
             {products.slice(scrollIndex, scrollIndex + visibleCount).map((product: ApiProduct) => {
-              const images = getProductImages(product);
+              const image = getProductImage(product);
               const price = getSellingPrice(product);
               const mrp = getMrp(product);
-              const variantCount = product.variants?.length ?? 0;
+              const variantCount = product.variantCount ?? 0;
               return (
                 <div
                   key={product.id}
@@ -71,7 +75,7 @@ const SimilarItemsSection = ({ currentProductId, categoryId }: SimilarItemsSecti
                   style={{ width: "calc((100% - 80px) / 6)", minWidth: "180px" }}
                 >
                   <div className="relative" style={{ height: "180px", background: "#f5f5f5" }}>
-                    <img src={images[0]} alt={product.name} className="w-full h-full object-contain p-2" onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg"; }} />
+                    <img src={image} alt={product.name} className="w-full h-full object-contain p-2" onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg"; }} />
                     <button className="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center">
                       <Heart size={16} className="text-gray-500" />
                     </button>

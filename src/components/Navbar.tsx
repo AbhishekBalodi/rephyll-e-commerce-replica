@@ -323,10 +323,7 @@ const Navbar = () => {
                             <div className="flex-1 min-w-0">
                               <p className="text-sm font-medium text-gray-800 truncate" style={{ fontFamily: "'Poppins', sans-serif" }}>{product.name}</p>
                               <p className="text-xs text-[#064734] font-semibold">
-                                ₹{product.variants?.[0]?.sellingPrice ?? product.mrp}
-                                {product.variants?.[0]?.sellingPrice && product.mrp > product.variants[0].sellingPrice && (
-                                  <span className="ml-1 text-gray-400 line-through font-normal">₹{product.mrp}</span>
-                                )}
+                                ₹{product.basePrice}
                               </p>
                             </div>
                           </button>
