@@ -48,8 +48,8 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
   const { items, addToCart, updateQuantity, removeFromCart } = useCart();
 
   const images = getProductImages(product);
-  const price = getSellingPrice(product, selectedVariant);
-  const mrp = getMrp(product, selectedVariant);
+  const price = getSellingPrice(product);
+  const mrp = getMrp(product);
 
   const packs = generatePacks(price, mrp);
   const activePack = packs.find(p => p.id === selectedPackId) ?? packs[0];
