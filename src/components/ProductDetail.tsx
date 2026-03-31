@@ -41,7 +41,7 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
 
   const [activeImg, setActiveImg] = useState(0);
   const [selectedVariant] = useState<ApiVariant | undefined>(
-    product.variants[0]
+    product.variants?.[0]
   );
   const [selectedPackId, setSelectedPackId] = useState<number>(1);
 
