@@ -1,65 +1,11 @@
 /**
- * Types matching the Spring Boot backend API responses.
+ * Types matching the NEW Spring Boot backend API responses.
  */
 
 export interface ApiResponse<T> {
   success: boolean;
   message: string;
   data: T;
-}
-
-// ── Stock ──
-export interface VariantStock {
-  totalQuantity: number;
-  available: boolean;
-  reservedQuantity: number;
-}
-
-// ── Variant ──
-export interface ApiVariant {
-  id: number;
-  sku: string;
-  barcode: string;
-  variantName: string;
-  variantAttributes: string | null; // JSON string e.g. '{"color":"Black","storage":"256GB"}'
-  sellingPrice: number;
-  mrp: number;
-  weight: number;
-  uomId: number;
-  uomName: string;
-  uomAbbreviation: string;
-  imageUrl: string | null;
-  stock: VariantStock;
-}
-
-// ── Product (list + detail) ──
-export interface ApiProduct {
-  id: number;
-  slug: string; // URL-friendly identifier
-  name: string;
-  code: string;
-  productTags: string | null;
-  categoryId: number;
-  categoryName: string;
-  brandId: number;
-  brandName: string;
-  mrp: number;
-  wholesalePrice: number | null;
-  productImage: string | null;
-  stickerImage: string | null;
-  featured: boolean;
-  ingredients: string | null;
-  nutritionAnalysis: string | null;
-  productDetails: string | null;
-  productWeight: string | null;
-  dimensionWidth: number | null;
-  dimensionDepth: number | null;
-  dimensionHeight: number | null;
-  netWeightUnit: number | null;
-  variants: ApiVariant[];
-  variantCount: number;
-  metaTitle: string | null;
-  metaDescription: string | null;
 }
 
 // ── Paginated response ──
@@ -75,48 +21,126 @@ export interface PaginatedData<T> {
   empty: boolean;
 }
 
-// ── Category ──
+// ══════════════════════════════════════
+//  PRODUCTS (list)
+// ══════════════════════════════════════
+
+export interface ApiProductImage {
+  path: string;
+  originalName: string | null;
+}
+
+/** Product as returned from GET /api/customer/products (list view). */
+export interface ApiProduct {
+  id: number;
+  name: string;
+  categoryId: number;
+  categoryName: string;
+  brandId: number;
+  brandName: string;
+  basePrice: number;
+  emoji: string | null;
+  imagePath: ApiProductImage | null;
+  tags: string[];
+  variantCount: number;
+  inStock: boolean;
+  createdDate: string;
+  urlHandle: string;
+  slug: string;
+}
+
+// ══════════════════════════════════════
+//  PRODUCTS (detail)
+// ══════════════════════════════════════
+
+export interface ApiVariantImage {
+  path: string;
+  originalName: string;
+}
+
+export interface ApiWarehouseDetail {
+  warehouseId: number;
+  warehouseName: string;
+  quantity: number;
+}
+
+export interface ApiVariantInventory {
+  available: boolean;
+  totalStock: number;
+  warehouseDetails: ApiWarehouseDetail[];
+}
+
+export interface ApiVariant {
+  id: number;
+  attrsCombo: string; // e.g. "Color=Black,Fit=Regular"
+  sku: string;
+  images: ApiVariantImage[];
+  inventory: ApiVariantInventory;
+}
+
+export interface ApiProductAttribute {
+  attributeName: string;
+  values: string[];
+  displayOrder: number;
+}
+
+/** Product as returned from GET /api/customer/products/slug/{slug} (detail view). */
+export interface ApiProductDetail extends ApiProduct {
+  description: string;
+  seoTitle: string;
+  seoDescription: string;
+  attrs: ApiProductAttribute[];
+  variants: ApiVariant[];
+  updatedDate: string | null;
+}
+
+// ══════════════════════════════════════
+//  CATEGORIES
+// ══════════════════════════════════════
+
 export interface ApiCategory {
   id: number;
   name: string;
+  description: string;
+  productCount: number;
   parentId: number | null;
-  parentName: string | null;
-  image: string | null;
-  icon: string | null;
-  featured: boolean;
-  metaTitle: string | null;
-  metaDescription: string | null;
-  activeFlag: boolean;
-  crtDt: string;
+  children: ApiCategory[] | null;
 }
 
-// ── Search suggestion ──
-export interface ApiSearchSuggestion {
+// ══════════════════════════════════════
+//  BRANDS
+// ══════════════════════════════════════
+
+export interface ApiBrand {
   id: number;
   name: string;
-  [key: string]: unknown;
+  productCount: number;
+  logoPath: string | null;
 }
 
-// ── Blog ──
+// ══════════════════════════════════════
+//  BLOGS
+// ══════════════════════════════════════
+
 export interface CustomerBlogCatalogDto {
   id: number;
   title: string;
   slug: string;
   shortDescription: string;
-  banner: string; // Relative path e.g. /api/files/blogs/banners/uuid.jpg
+  banner: string;
   categoryId: number;
   categoryName: string;
-  createdDate: string; // Format: yyyy-MM-dd HH:mm:ss
-  readingTime: number; // In minutes
+  createdDate: string;
+  readingTime: number;
 }
 
 export interface CustomerBlogDetailDto extends CustomerBlogCatalogDto {
-  description: string; // HTML content
+  description: string;
   metaTitle: string;
   metaDescription: string;
-  metaImg: string; // Relative path for social media preview
-  metaKeywords: string; // Comma-separated keywords
-  updatedDate: string | null; // Format: yyyy-MM-dd HH:mm:ss
+  metaImg: string;
+  metaKeywords: string;
+  updatedDate: string | null;
   author: string;
 }
 
@@ -140,3 +164,10 @@ export interface BlogListApiResponse {
 }
 
 export interface BlogDetailApiResponse extends CustomerBlogDetailDto {}
+
+// ── Search suggestion ──
+export interface ApiSearchSuggestion {
+  id: number;
+  name: string;
+  [key: string]: unknown;
+}
