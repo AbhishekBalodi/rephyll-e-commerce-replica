@@ -13,10 +13,14 @@ interface SimilarItemsSectionProps {
 
 const SimilarItemsSection = ({ currentProductId, categoryId }: SimilarItemsSectionProps) => {
   const navigate = useNavigate();
-  const { data } = useProductList({ size: 12, category: categoryId });
+  const { data: relatedData } = useRelatedProducts(currentProductId);
+  const { data: fallbackData } = useProductList({ size: 12, category: categoryId });
   const [scrollIndex, setScrollIndex] = useState(0);
 
-  const products = (data?.content ?? []).filter((p: ApiProduct) => p.id !== currentProductId).slice(0, 6);
+  // Use related products if available, fallback to category products
+  const relatedProducts = relatedData?.content ?? [];
+  const fallbackProducts = (fallbackData?.content ?? []).filter((p: ApiProduct) => p.id !== currentProductId);
+  const products = (relatedProducts.length > 0 ? relatedProducts : fallbackProducts).slice(0, 6);
 
   if (products.length === 0) return null;
 
