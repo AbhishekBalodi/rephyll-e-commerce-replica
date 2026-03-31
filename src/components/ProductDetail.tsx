@@ -10,7 +10,7 @@ import {
   Star
 } from "lucide-react";
 
-import type { ApiProduct, ApiVariant } from "@/types/api";
+import type { ApiProductDetail, ApiVariant } from "@/types/api";
 
 import {
   getProductImages,
