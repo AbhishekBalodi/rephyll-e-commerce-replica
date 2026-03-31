@@ -68,9 +68,9 @@ const ProductCard = ({ product, onClick }: ProductCardProps) => {
             {discount}% OFF
           </span>
         )}
-        {product.featured && (
-          <span className="absolute top-2 left-2 text-xs font-bold bg-accent text-accent-foreground px-2 py-1 rounded-full">
-            Bestseller
+        {product.inStock === false && (
+          <span className="absolute top-2 left-2 text-xs font-bold bg-destructive text-destructive-foreground px-2 py-1 rounded-full">
+            Out of Stock
           </span>
         )}
       </div>

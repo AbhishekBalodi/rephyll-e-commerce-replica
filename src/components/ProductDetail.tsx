@@ -141,7 +141,7 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
             </p>
 
             <p className="text-[16px] text-[#999999] font-[Poppins] mt-1 mb-4">
-              {product.metaDescription}
+              {product.seoDescription || product.description}
             </p>
 
             {/* ✅ FEATURES (FIXED HERE ONLY) */}

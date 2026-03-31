@@ -17,22 +17,21 @@ const ProductDetailAccordion = ({ product }: ProductDetailAccordionProps) => {
       id: "key-features",
       label: "Key Features",
       content:
-        product.productDetails ||
-        product.metaDescription ||
+        product.description ||
+        product.seoDescription ||
         "Premium quality product with advanced cleaning formula.",
     },
     {
       id: "whats-inside",
       label: "What's Inside",
       content:
-        product.ingredients ||
+        product.description ||
         "Plant-based ingredients with eco-friendly formulation.",
     },
     {
       id: "how-to-use",
       label: "How To Use",
       content:
-        product.nutritionAnalysis ||
         "Spray directly on the surface and wipe clean with a dry cloth. For tough stains, let it sit for 2-3 minutes before wiping.",
     },
   ];

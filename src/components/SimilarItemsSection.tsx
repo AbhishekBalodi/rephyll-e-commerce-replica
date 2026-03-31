@@ -59,10 +59,10 @@ const SimilarItemsSection = ({ currentProductId, categoryId }: SimilarItemsSecti
 
           <div className="flex gap-4 overflow-hidden">
             {products.slice(scrollIndex, scrollIndex + visibleCount).map((product: ApiProduct) => {
-              const images = getProductImages(product);
+              const image = getProductImage(product);
               const price = getSellingPrice(product);
               const mrp = getMrp(product);
-              const variantCount = product.variants?.length ?? 0;
+              const variantCount = product.variantCount ?? 0;
               return (
                 <div
                   key={product.id}
