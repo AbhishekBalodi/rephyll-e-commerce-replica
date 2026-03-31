@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight, Heart, Star } from "lucide-react";
-import { useProductList } from "@/hooks/useProducts";
+import { useProductList, useRelatedProducts } from "@/hooks/useProducts";
 import { getProductImage, getSellingPrice, getMrp } from "@/lib/productHelpers";
 import { useNavigate } from "react-router-dom";
 import cloverLime from "@/assets/clover-lime.png";
