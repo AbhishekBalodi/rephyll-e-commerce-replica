@@ -71,7 +71,7 @@ const SimilarItemsSection = ({ currentProductId, categoryId }: SimilarItemsSecti
                   style={{ width: "calc((100% - 80px) / 6)", minWidth: "180px" }}
                 >
                   <div className="relative" style={{ height: "180px", background: "#f5f5f5" }}>
-                    <img src={images[0]} alt={product.name} className="w-full h-full object-contain p-2" onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg"; }} />
+                    <img src={image} alt={product.name} className="w-full h-full object-contain p-2" onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg"; }} />
                     <button className="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center">
                       <Heart size={16} className="text-gray-500" />
                     </button>
