@@ -62,8 +62,8 @@ const ProductCard = ({
       className="bg-white rounded-2xl shadow-md overflow-hidden w-full max-w-[270px] cursor-pointer"
       onClick={() => { onClick?.(product); navigate(`/product/${product.slug || product.id}`); }}
     >
-      <div className="relative h-[200px] rounded-t-2xl bg-[linear-gradient(160deg,#CEF17B_0%,#FFFFFF_100%)] flex items-center justify-center">
-        <div className="absolute top-3 right-3 flex gap-2">
+      <div className="relative h-[200px] rounded-t-2xl overflow-hidden bg-[#F3F4F6] flex items-center justify-center">
+        <div className="absolute top-3 right-3 flex gap-2 z-10">
           <div className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow">
             <Share2 size={16} />
           </div>
@@ -72,13 +72,13 @@ const ProductCard = ({
           </div>
         </div>
 
-        <img src={image} alt={product.name} className="h-[120px] object-contain" onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg"; }} />
+        <img src={image} alt={product.name} className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg"; }} />
 
-        <div className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-white rounded-full flex items-center justify-center shadow">
+        <div className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-white rounded-full flex items-center justify-center shadow z-10">
           <ChevronRight size={16} color="#364153" />
         </div>
 
-        <div className="absolute bottom-3 flex gap-1">
+        <div className="absolute bottom-3 flex gap-1 z-10">
           <div className="w-6 h-1 bg-[#00301D] rounded-full"></div>
           <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
           <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
