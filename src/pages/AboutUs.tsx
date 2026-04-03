@@ -8,6 +8,7 @@ import Philosophy from "@/components/about/Philosophy";
 import Promises from "@/components/about/Promises";
 import BlogsSection from "@/components/BlogsSection";
 import WhyChooseUs from "@/components/WhyChooseUs";
+import TrustStrips from "@/components/TrustStrips";
 
 const AboutUs = () => {
   return (
@@ -28,7 +29,8 @@ const AboutUs = () => {
 
       {/* Already existing section */}
       {/* <CleanLivingSection /> */}
-      <BlogsSection />
+      <TrustStrips />
+      {/* <BlogsSection /> */}
       <Footer />
     </div>
   );
