@@ -140,33 +140,40 @@ const ProductCard = ({
   );
 };
 
-interface HomecareKitsSectionProps { mode: 'homecare' | 'mega'; }
+interface HomecareKitsSectionProps {
+  mode?: 'homecare' | 'mega';
+  cardsOnly?: boolean;
+}
 
-const HomecareKitsSection = ({ mode }: HomecareKitsSectionProps) => {
+const HomecareKitsSection = ({ mode = 'homecare', cardsOnly = false }: HomecareKitsSectionProps) => {
   const { items, addToCart, updateQuantity, removeFromCart } = useCart();
   const [bundleImageIdx, setBundleImageIdx] = useState<Record<number, number>>({});
   const [megaImageIdx, setMegaImageIdx] = useState<Record<number, number>>({});
   const [homeTab, setHomeTab] = useState<'bundles' | 'single'>('bundles');
 
   const renderHomecare = () => {
-    const activeItems = homeTab === 'bundles' ? BUNDLES : BUNDLES.map((b) => ({ ...b, name: b.name.replace('Bundle', 'Single Product') }));
+    const activeItems = cardsOnly || homeTab === 'bundles'
+      ? BUNDLES
+      : BUNDLES.map((b) => ({ ...b, name: b.name.replace('Bundle', 'Single Product') }));
 
     return (
       <>
-        <div className="flex gap-4 justify-center mb-6">
-          <button
-            onClick={() => setHomeTab('bundles')}
-            className={`px-5 py-2 rounded-full ${homeTab === 'bundles' ? 'bg-[#064734] text-white' : 'bg-[#E6F5E3] text-[#064734]'}`}
-          >
-            Smart Bundles
-          </button>
-          <button
-            onClick={() => setHomeTab('single')}
-            className={`px-5 py-2 rounded-full ${homeTab === 'single' ? 'bg-[#064734] text-white' : 'bg-[#E6F5E3] text-[#064734]'}`}
-          >
-            Single Products
-          </button>
-        </div>
+        {!cardsOnly && (
+          <div className="flex gap-4 justify-center mb-6">
+            <button
+              onClick={() => setHomeTab('bundles')}
+              className={`px-5 py-2 rounded-full ${homeTab === 'bundles' ? 'bg-[#064734] text-white' : 'bg-[#E6F5E3] text-[#064734]'}`}
+            >
+              Smart Bundles
+            </button>
+            <button
+              onClick={() => setHomeTab('single')}
+              className={`px-5 py-2 rounded-full ${homeTab === 'single' ? 'bg-[#064734] text-white' : 'bg-[#E6F5E3] text-[#064734]'}`}
+            >
+              Single Products
+            </button>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {activeItems.map((item) => {
@@ -249,7 +256,11 @@ const HomecareKitsSection = ({ mode }: HomecareKitsSectionProps) => {
     </div>
   );
 
-  return <section className="py-16 bg-[#F1F9EE]">{mode === 'homecare' ? renderHomecare() : renderMega()}</section>;
+  return (
+    <section className={cardsOnly ? 'bg-transparent' : 'py-16 bg-[#F1F9EE]'}>
+      {mode === 'homecare' ? renderHomecare() : renderMega()}
+    </section>
+  );
 };
 
 export default HomecareKitsSection;

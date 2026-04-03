@@ -12,7 +12,12 @@ interface ProductCardProps {
   onBundleToggle?: (product: ApiProduct) => void;
 }
 
-const ProductCard = ({ product, onClick }: ProductCardProps) => {
+const ProductCard = ({
+  product,
+  onClick,
+  bundleItemSelected = false,
+  onBundleToggle,
+}: ProductCardProps) => {
   const navigate = useNavigate();
   const { items, addToCart, updateQuantity, removeFromCart } = useCart();
   const image = getProductImage(product);
