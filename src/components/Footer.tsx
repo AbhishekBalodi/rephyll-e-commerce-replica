@@ -10,6 +10,33 @@ const Footer = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  const sectionHeadingStyle = {
+    fontFamily: "'Poppins', sans-serif",
+    fontWeight: 700,
+    fontSize: "16px",
+    lineHeight: "28px",
+    letterSpacing: "0px",
+    color: "#FFFFFF",
+    marginBottom: "20px",
+  } as const;
+
+  const sectionLinkStyle = {
+    fontFamily: "'Poppins', sans-serif",
+    fontWeight: 500,
+    fontSize: "16px",
+    lineHeight: "100%",
+    letterSpacing: "0px",
+    color: "rgba(255,255,255,0.6)",
+  } as const;
+
+  const subscribeTextStyle = {
+    fontFamily: "'Poppins', sans-serif",
+    fontWeight: 500,
+    fontSize: "14px",
+    lineHeight: "150%",
+    color: "rgba(255,255,255,0.6)",
+  } as const;
+
   const handleNav = (path: string) => {
     navigate(path);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -39,7 +66,7 @@ const Footer = () => {
 
           {/* QUICK LINKS */}
           <div>
-            <h3 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "16px", lineHeight: "28px", letterSpacing: "0px", color: "#FFFFFF", marginBottom: "20px" }}>
+            <h3 style={sectionHeadingStyle}>
               Quick Links
             </h3>
             <div className="flex flex-col gap-[15px]">
@@ -54,7 +81,7 @@ const Footer = () => {
                   key={link.label}
                   onClick={() => handleNav(link.path)}
                   className="text-left hover:text-white transition"
-                  style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 500, fontSize: "16px", lineHeight: "100%", letterSpacing: "0px", color: "rgba(255,255,255,0.6)" }}
+                  style={sectionLinkStyle}
                 >
                   {link.label}
                 </button>
@@ -64,7 +91,7 @@ const Footer = () => {
 
           {/* POLICIES */}
           <div>
-            <h3 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "16px", lineHeight: "28px", letterSpacing: "0px", color: "#FFFFFF", marginBottom: "20px" }}>
+            <h3 style={sectionHeadingStyle}>
               Policies
             </h3>
             <div className="flex flex-col gap-[15px]">
@@ -78,7 +105,7 @@ const Footer = () => {
                   key={link.label}
                   onClick={() => handleNav(link.path)}
                   className="text-left hover:text-white transition"
-                  style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 500, fontSize: "16px", lineHeight: "100%", letterSpacing: "0px", color: "rgba(255,255,255,0.6)" }}
+                  style={sectionLinkStyle}
                 >
                   {link.label}
                 </button>
@@ -88,14 +115,14 @@ const Footer = () => {
 
           {/* CONTACT */}
           <div>
-            <h3 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "16px", lineHeight: "28px", letterSpacing: "0px", color: "#FFFFFF", marginBottom: "20px" }}>
+            <h3 style={sectionHeadingStyle}>
               Contact
             </h3>
             <div className="flex flex-col gap-[15px]">
-              <a href="mailto:care@rephyl.com" className="hover:text-white transition" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 500, fontSize: "16px", lineHeight: "100%", color: "rgba(255,255,255,0.6)" }}>
+              <a href="mailto:care@rephyl.com" className="hover:text-white transition" style={sectionLinkStyle}>
                 care@rephyl.com
               </a>
-              <a href="tel:9313984685" className="hover:text-white transition" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 500, fontSize: "16px", lineHeight: "100%", color: "rgba(255,255,255,0.6)" }}>
+              <a href="tel:9313984685" className="hover:text-white transition" style={sectionLinkStyle}>
                 +91 9313984685
               </a>
             </div>
@@ -103,34 +130,36 @@ const Footer = () => {
 
           {/* SUBSCRIBE */}
           <div>
-            <h3 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "16px", lineHeight: "28px", letterSpacing: "0px", color: "#FFFFFF", marginBottom: "20px" }}>
+            <h3 style={sectionHeadingStyle}>
               Subscribe
             </h3>
 
-            <form onSubmit={handleSubscribe} className="relative mb-4">
-              <input
-                type="email"
-                placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-transparent border border-[#CEF17B66] px-4 py-3 rounded-md text-sm placeholder:text-white/50 outline-none"
-                required
-              />
-              <button
-                type="submit"
-                disabled={loading}
-                className="absolute right-0 top-0 h-full px-4 bg-[#CEF17B] rounded-r-md flex items-center justify-center"
-              >
-                <ArrowRight className="text-[#064734]" size={18} />
-              </button>
-            </form>
+            <div className="flex flex-col gap-[15px]">
+              <form onSubmit={handleSubscribe} className="relative">
+                <input
+                  type="email"
+                  placeholder="Email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full bg-transparent border border-[#CEF17B66] px-4 py-3 rounded-md text-sm placeholder:text-white/50 outline-none"
+                  required
+                />
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="absolute right-0 top-0 h-full px-4 bg-[#CEF17B] rounded-r-md flex items-center justify-center"
+                >
+                  <ArrowRight className="text-[#064734]" size={18} />
+                </button>
+              </form>
 
-            <p className="text-sm text-white/60">
-              Hello, we are rePhyl. trying to make an effort to put the right people for you to get the best results.
-            </p>
-            <p className="text-sm mt-2 text-white">
-              Made with ❤️ by <a href="https://brandingidiots.com/" target="_blank" rel="noopener noreferrer" className="text-white underline">Branding Idiots</a>
-            </p>
+              <p style={subscribeTextStyle}>
+                Hello, we are rePhyl. trying to make an effort to put the right people for you to get the best results.
+              </p>
+              <p style={{ ...subscribeTextStyle, color: "#FFFFFF" }}>
+                Made with ❤️ by <a href="https://brandingidiots.com/" target="_blank" rel="noopener noreferrer" style={{ color: "#FFFFFF", textDecoration: "underline" }}>Branding Ideas</a>
+              </p>
+            </div>
           </div>
 
         </div>
