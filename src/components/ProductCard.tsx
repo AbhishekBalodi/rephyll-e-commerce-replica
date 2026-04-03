@@ -1,4 +1,4 @@
-import { Star, ShoppingCart } from "lucide-react";
+import { Star, ShoppingCart, Share2, Heart, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import type { ApiProduct } from "@/types/api";
 import { getProductImage, getSellingPrice, getMrp, getDiscount } from "@/lib/productHelpers";
@@ -8,6 +8,8 @@ import QuantityCapsule from "./QuantityCapsule";
 interface ProductCardProps {
   product: ApiProduct;
   onClick?: (product: ApiProduct) => void;
+  bundleItemSelected?: boolean;
+  onBundleToggle?: (product: ApiProduct) => void;
 }
 
 const ProductCard = ({ product, onClick }: ProductCardProps) => {
@@ -52,70 +54,73 @@ const ProductCard = ({ product, onClick }: ProductCardProps) => {
 
   return (
     <div
-      className="cursor-pointer group rounded-xl border border-border bg-card p-3 flex flex-col"
+      className="bg-white rounded-2xl shadow-md overflow-hidden w-full max-w-[270px] cursor-pointer"
       onClick={() => { onClick?.(product); navigate(`/product/${product.slug || product.id}`); }}
     >
-      {/* Image */}
-      <div className="relative aspect-square overflow-hidden rounded-lg mb-3 bg-muted">
-        <img
-          src={image}
-          alt={product.name}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-          onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg"; }}
-        />
-        {discount > 0 && (
-          <span className="absolute top-2 right-2 text-xs font-bold bg-primary text-primary-foreground px-2 py-1 rounded-full">
-            {discount}% OFF
-          </span>
-        )}
-        {product.inStock === false && (
-          <span className="absolute top-2 left-2 text-xs font-bold bg-destructive text-destructive-foreground px-2 py-1 rounded-full">
-            Out of Stock
-          </span>
-        )}
+      <div className="relative h-[200px] rounded-t-2xl bg-[linear-gradient(160deg,#CEF17B_0%,#FFFFFF_100%)] flex items-center justify-center">
+        <div className="absolute top-3 right-3 flex gap-2">
+          <div className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow">
+            <Share2 size={16} />
+          </div>
+          <div className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow">
+            <Heart size={16} />
+          </div>
+        </div>
+
+        <img src={image} alt={product.name} className="h-[120px] object-contain" onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg"; }} />
+
+        <div className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-white rounded-full flex items-center justify-center shadow">
+          <ChevronRight size={16} color="#364153" />
+        </div>
+
+        <div className="absolute bottom-3 flex gap-1">
+          <div className="w-6 h-1 bg-[#00301D] rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
+        </div>
       </div>
 
-      {/* Rating */}
-      <div className="flex items-center gap-1 mb-1">
-        <Star size={14} className="text-primary fill-primary" />
-        <span className="text-sm font-semibold text-foreground">{rating.toFixed(1)}</span>
-        <span className="text-xs text-muted-foreground">({reviewCount} reviews)</span>
-      </div>
+      <div className="p-4">
+        <div className="flex items-center gap-1 mb-2">
+          <Star size={14} className="text-[#FBC700]" />
+          <span className="text-sm font-semibold text-[#464646]">{rating.toFixed(1)}</span>
+          <span className="text-xs text-[#8E939C]">({reviewCount} reviews)</span>
+        </div>
 
-      {/* Title */}
-      <h3 className="text-sm font-semibold text-foreground leading-snug mb-1 line-clamp-2 min-h-[2.5rem]">
-        {product.name}
-      </h3>
+        <h3 className="font-poppins font-semibold text-[16px] leading-[24px] text-[#464646] line-clamp-2">
+          {product.name}
+        </h3>
 
-      {/* Price row */}
-      <div className="flex items-center gap-2 flex-wrap mb-3">
-        <span className="text-lg font-bold text-foreground">₹{price.toFixed(0)}</span>
-        {discount > 0 && (
-          <span className="text-sm text-muted-foreground line-through">
-            ₹{mrp.toFixed(0)}
-          </span>
+        <div className="flex items-center gap-3 mt-2">
+          <span className="font-poppins font-bold text-[30px] text-[#064734] leading-[24px]">₹{price.toFixed(0)}</span>
+          {discount > 0 && (
+            <span className="text-sm text-[#8E939C] line-through">₹{mrp.toFixed(0)}</span>
+          )}
+        </div>
+
+        {onBundleToggle && (
+          <div className="mb-3">
+            <button
+              onClick={(e) => { e.stopPropagation(); onBundleToggle(product); }}
+              className={`w-full rounded-lg py-2 text-sm font-medium ${bundleItemSelected ? "bg-[#F4D06F] text-[#064734]" : "bg-[#E2F8D8] text-[#064734] hover:bg-[#CEF17B]"}`}
+            >
+              {bundleItemSelected ? "Remove from bundle" : "Select for bundle"}
+            </button>
+          </div>
         )}
-      </div>
-
-      {/* Add to cart / Quantity capsule */}
-      <div className="mt-auto">
-        {cartQty > 0 ? (
-          <QuantityCapsule
-            quantity={cartQty}
-            onIncrement={handleIncrement}
-            onDecrement={handleDecrement}
-            size="sm"
-            fullWidth
-          />
-        ) : (
-          <button
-            onClick={handleAddToCart}
-            className="w-full bg-primary text-primary-foreground font-bold py-3 rounded-lg flex items-center justify-center gap-2 text-sm hover:opacity-90 transition-colors"
-          >
-            <ShoppingCart size={16} />
-            Add to Cart
-          </button>
-        )}
+        <div className="mt-1">
+          {cartQty > 0 ? (
+            <QuantityCapsule quantity={cartQty} onIncrement={handleIncrement} onDecrement={handleDecrement} size="sm" fullWidth />
+          ) : (
+            <button
+              onClick={(e) => { e.stopPropagation(); handleAddToCart(e); }}
+              className="w-full bg-[#064734] text-white py-3 rounded-xl flex items-center justify-center gap-2"
+            >
+              <ShoppingCart size={16} />
+              Add to Box
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

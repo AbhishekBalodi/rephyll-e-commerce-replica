@@ -15,7 +15,6 @@ import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
 import RefundPolicy from "./pages/RefundPolicy.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import WhyChooseUsPage from "./pages/WhyChooseUsPage.tsx";
-import TestimonialsPage from "./pages/TestimonialsPage.tsx";
 import BlogPost from "./pages/BlogPost.tsx";
 import BlogsPage from "./pages/BlogsPage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
@@ -25,6 +24,7 @@ import AdminAddProduct from "./pages/AdminAddProduct.tsx";
 import ProductPage from "./pages/ProductPage.tsx";
 import CategoryPage from "./pages/CategoryPage.tsx";
 import ShopSection from "./pages/ShopSection.tsx";
+import HomecareKitsPage from "./pages/HomecareKits.tsx";
 
 const queryClient = new QueryClient();
 
@@ -41,7 +41,7 @@ const App = () => (
               <Route path="/shop" element={<ShopSection/>} />
               <Route path="/about" element={<AboutUs />} />
               <Route path="/our-story" element={<OurStory />} />
-              <Route path="/homecare-kits" element={<Index />} />
+              <Route path="/homecare-kits" element={<HomecareKitsPage />} />
               <Route path="/b2b-orders" element={<ContactUs />} />
               <Route path="/why-choose-us" element={<WhyChooseUsPage />} />
               <Route path="/faqs" element={<FAQs />} />
@@ -49,7 +49,6 @@ const App = () => (
               <Route path="/terms" element={<TermsOfService />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/refund-policy" element={<RefundPolicy />} />
-              <Route path="/testimonials" element={<TestimonialsPage />} />
               <Route path="/blogs" element={<BlogsPage />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/login" element={<LoginPage />} />

@@ -9,26 +9,32 @@ const HeroSection = () => {
       
       {/* ================= CLOVERS (BACKGROUND) ================= */}
       <img src={cloverLime} className="absolute opacity-20 pointer-events-none"
-        style={{ width: "299px", left: "-85px", top: "-113px" }} />
+        style={{ width: "153px", left: "0px", top: "0px" }} />
+
+<img src={cloverLime} className="absolute opacity-20 pointer-events-none"
+  style={{ width: "153px", left: "0px", top: "380px" }} />
+
+  <img src={cloverLime} className="absolute opacity-20 pointer-events-none"
+  style={{ width: "153px", left: "1350px", top: "380px" }} />
 
       <img src={cloverLime} className="absolute opacity-20 pointer-events-none"
-        style={{ width: "293px", left: "496px", top: "-84px" }} />
+        style={{ width: "153px", left: "496px", top: "0px" }} />
 
       <img src={cloverLime} className="absolute opacity-15 pointer-events-none"
-        style={{ width: "267px", left: "642px", top: "391px" }} />
+        style={{ width: "153px", left: "642px", top: "391px" }} />
 
       <img src={cloverLime} className="absolute opacity-15 pointer-events-none"
-        style={{ width: "356px", left: "1170px", top: "302px" }} />
+        style={{ width: "153px", left: "1170px", top: "302px" }} />
 
       <img src={cloverLime} className="absolute opacity-20 pointer-events-none"
-        style={{ width: "232px", left: "1268px", top: "-84px" }} />
+        style={{ width: "153px", left: "1350px", top: "0px" }} />
 
       {/* EXTRA CLOVERS for depth */}
       <img src={cloverLime} className="absolute opacity-10 pointer-events-none"
-        style={{ width: "200px", left: "200px", top: "350px" }} />
+        style={{ width: "153px", left: "350px", top: "350px" }} />
 
       <img src={cloverLime} className="absolute opacity-10 pointer-events-none"
-        style={{ width: "180px", left: "900px", top: "100px" }} />
+        style={{ width: "153px", left: "900px", top: "100px" }} />
 
 
       {/* ================= CONTENT WRAPPER ================= */}

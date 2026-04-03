@@ -39,15 +39,14 @@ const Footer = () => {
 
           {/* QUICK LINKS */}
           <div>
-            <h3 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "16px", lineHeight: "28px", letterSpacing: "0px", color: "#FFFFFF", marginBottom: "16px" }}>
+            <h3 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "16px", lineHeight: "28px", letterSpacing: "0px", color: "#FFFFFF", marginBottom: "20px" }}>
               Quick Links
             </h3>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-[15px]">
               {[
                 { label: "Shop All", path: "/" },
                 { label: "About Us", path: "/about" },
-                { label: "Why Choose Us", path: "/why-choose-us" },
-                { label: "Testimonials", path: "/testimonials" },
+
                 { label: "FAQs", path: "/faqs" },
                 { label: "Contact Us", path: "/contact" },
               ].map((link) => (
@@ -65,10 +64,10 @@ const Footer = () => {
 
           {/* POLICIES */}
           <div>
-            <h3 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "16px", lineHeight: "28px", letterSpacing: "0px", color: "#FFFFFF", marginBottom: "16px" }}>
+            <h3 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "16px", lineHeight: "28px", letterSpacing: "0px", color: "#FFFFFF", marginBottom: "20px" }}>
               Policies
             </h3>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-[15px]">
               {[
                 { label: "Terms & Conditions", path: "/terms" },
                 { label: "Privacy Policy", path: "/privacy-policy" },
@@ -89,10 +88,10 @@ const Footer = () => {
 
           {/* CONTACT */}
           <div>
-            <h3 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "16px", lineHeight: "28px", letterSpacing: "0px", color: "#FFFFFF", marginBottom: "16px" }}>
+            <h3 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "16px", lineHeight: "28px", letterSpacing: "0px", color: "#FFFFFF", marginBottom: "20px" }}>
               Contact
             </h3>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-[15px]">
               <a href="mailto:care@rephyl.com" className="hover:text-white transition" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 500, fontSize: "16px", lineHeight: "100%", color: "rgba(255,255,255,0.6)" }}>
                 care@rephyl.com
               </a>
@@ -104,7 +103,7 @@ const Footer = () => {
 
           {/* SUBSCRIBE */}
           <div>
-            <h3 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "16px", lineHeight: "28px", letterSpacing: "0px", color: "#FFFFFF", marginBottom: "16px" }}>
+            <h3 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "16px", lineHeight: "28px", letterSpacing: "0px", color: "#FFFFFF", marginBottom: "20px" }}>
               Subscribe
             </h3>
 
@@ -128,6 +127,9 @@ const Footer = () => {
 
             <p className="text-sm text-white/60">
               Hello, we are rePhyl. trying to make an effort to put the right people for you to get the best results.
+            </p>
+            <p className="text-sm mt-2 text-white">
+              Made with ❤️ by <a href="https://brandingidiots.com/" target="_blank" rel="noopener noreferrer" className="text-white underline">Branding Idiots</a>
             </p>
           </div>
 

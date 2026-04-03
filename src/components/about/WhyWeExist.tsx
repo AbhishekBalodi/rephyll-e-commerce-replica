@@ -10,18 +10,21 @@ const WhyWeExist = () => {
       <div className="absolute inset-0 bg-[rgba(206,241,123,0.3)]" />
 
       {/* ================= CLOVERS ================= */}
-      <img src={cloverLime} className="absolute opacity-60" style={{ width: 223, left: 10, top: 74 }} />
+      <img src={cloverLime} className="absolute opacity-60" style={{ width: 153, left: 10, top: 24 }} />
       <img src={cloverLime} className="absolute opacity-60" style={{ width: 133, left: 780, top: 10 }} />
       <img src={cloverLime} className="absolute opacity-60" style={{ width: 110, left: 416, top: 19 }} />
       <img src={cloverLime} className="absolute opacity-60" style={{ width: 110, left: 1079, top: 10 }} />
-      <img src={cloverLime} className="absolute opacity-60" style={{ width: 245, left: 1646, top: -31 }} />
+      <img src={cloverLime} className="absolute opacity-60" style={{ width: 153, left: 1646, top: -31 }} />
 
-      <img src={cloverLime} className="absolute opacity-60" style={{ width: 161, left: 10, top: 379 }} />
-      <img src={cloverLime} className="absolute opacity-60" style={{ width: 318, left: 334, top: 656 }} />
-      <img src={cloverLime} className="absolute opacity-60" style={{ width: 180, left: 737, top: 656 }} />
-      <img src={cloverLime} className="absolute opacity-60" style={{ width: 180, left: 10, top: 580 }} />
-      <img src={cloverLime} className="absolute opacity-60" style={{ width: 267, left: 1639, top: 490 }} />
-      <img src={cloverLime} className="absolute opacity-60" style={{ width: 161, left: 1660, top: 288 }} />
+      <img src={cloverLime} className="absolute opacity-60" style={{ width: 153, left: 10, top: 340 }} />
+      <img src={cloverLime} className="absolute opacity-60" style={{ width: 153, left: 334, top: 656 }} />
+      <img src={cloverLime} className="absolute opacity-60" style={{ width: 153, left: 737, top: 656 }} />
+      <img src={cloverLime} className="absolute opacity-60" style={{ width: 153, left: 10, top: 580 }} />
+      <img src={cloverLime} className="absolute opacity-60" style={{ width: 153, left: 1639, top: 490 }} />
+      <img src={cloverLime} className="absolute opacity-60" style={{ width: 153, left: 1660, top: 288 }} />
+      <img src={cloverLime} className="absolute opacity-60" style={{ width: 153, left: 1370, top: 580 }} />
+      <img src={cloverLime} className="absolute opacity-60" style={{ width: 153, left: 1370, top: 20 }} />
+      <img src={cloverLime} className="absolute opacity-60" style={{ width: 153, left: 1340, top: 340 }} />
 
       {/* ================= MAIN CONTAINER ================= */}
       <div className="relative w-[1280px] mx-auto pt-[80px] flex flex-col items-center gap-6">

@@ -9,7 +9,6 @@ import catLaundry from "@/assets/cat-laundry-care.png";
 import catHomeCare from "@/assets/cat-home-care-kits.png";
 import catBundles from "@/assets/cat-smart-bundles.png";
 
-/** Map a category name to its Figma icon */
 const getCategoryIcon = (name: string): string => {
   const lower = name.toLowerCase();
   if (lower.includes("washroom") || lower.includes("bath")) return catWashroom;
@@ -21,19 +20,35 @@ const getCategoryIcon = (name: string): string => {
   return catHomeCare;
 };
 
-/** Generate a URL-friendly slug from category name */
 const toSlug = (name: string) =>
   name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
 const CategoryBar = () => {
   const navigate = useNavigate();
-  const { data: categories, isLoading } = useCategories();
+  const { data: categories, isLoading, error } = useCategories();
+
+  // Function to calculate the order for center-first, alternating left-right layout
+  const getOrderValue = (index: number, totalCount: number) => {
+    const middle = Math.floor(totalCount / 2);
+    
+    if (index === middle) return 0; // Center item
+    
+    if (index < middle) {
+      // Items to the left of middle
+      const distance = middle - index;
+      return -distance; // Negative values go left
+    } else {
+      // Items to the right of middle
+      const distance = index - middle;
+      return distance; // Positive values go right
+    }
+  };
 
   if (isLoading) {
     return (
       <section className="bg-background" style={{ boxShadow: "inset 0px -0.5px 0px #CCCCCC" }}>
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <div className="flex items-center justify-center gap-[50px]">
+          <div className="flex items-center justify-center gap-[50px] flex-wrap">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div key={i} className="flex flex-col items-center gap-4 py-[30px] animate-pulse">
                 <div className="w-[76px] h-[76px] rounded-full bg-muted" />
@@ -46,7 +61,17 @@ const CategoryBar = () => {
     );
   }
 
-  if (!categories || categories.length === 0) return null;
+  if (error || !categories || categories.length === 0) {
+    return (
+      <section className="bg-background" style={{ boxShadow: "inset 0px -0.5px 0px #CCCCCC" }}>
+        <div className="max-w-7xl mx-auto px-4 md:px-6 py-8">
+          <div className="text-center text-muted-foreground">
+            <p>Categories will be available soon.</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   const handleCategoryClick = (cat: ApiCategory) => {
     const slug = toSlug(cat.name);
@@ -55,53 +80,53 @@ const CategoryBar = () => {
 
   return (
     <section className="bg-background w-full" style={{ boxShadow: "inset 0px -0.5px 0px #CCCCCC" }}>
-      <div className="max-w-7xl mx-auto px-4 md:px-6">
-        <div className="flex flex-wrap justify-center items-start" style={{ gap: "50px" }}>
-          {categories.map((cat: ApiCategory) => {
-            const iconSrc = getCategoryIcon(cat.name);
-            return (
-              <button
-                key={cat.id}
-                onClick={() => handleCategoryClick(cat)}
-                className="flex flex-col items-center cursor-pointer group relative"
-                style={{
-                  padding: "30px 0",
-                  gap: "16px",
-                  width: "154px",
-                }}
-              >
-                <div
-                  className="flex items-center justify-center rounded-full transition-all group-hover:scale-105"
-                  style={{
-                    width: "76px",
-                    height: "76px",
-                    background: "rgba(206, 241, 123, 0.3)",
+      <div className="w-full">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <div className="flex items-center justify-center flex-wrap py-4" style={{ gap: "24px" }}>
+            {categories.map((cat: ApiCategory, index: number) => {
+              const iconSrc = getCategoryIcon(cat.name);
+              const orderValue = getOrderValue(index, categories.length);
+              
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => handleCategoryClick(cat)}
+                  className="flex flex-col items-center cursor-pointer group relative py-5 gap-4"
+                  style={{ 
+                    order: orderValue,
+                    minWidth: "154px",
+                    flex: "0 0 auto"
                   }}
                 >
-                  <img
-                    src={iconSrc}
-                    alt={cat.name}
-                    className="w-10 h-10 object-contain transition-all"
-                  />
-                </div>
-                <span
-                  className="text-center transition-colors"
-                  style={{
-                    fontFamily: "'Poppins', sans-serif",
-                    fontWeight: 600,
-                    fontSize: "18px",
-                    lineHeight: "150%",
-                    color: "#1A1A1A",
-                    width: "154px",
-                    wordWrap: "break-word",
-                    overflowWrap: "break-word",
-                  }}
-                >
-                  {cat.name}
-                </span>
-              </button>
-            );
-          })}
+                  <div
+                    className="flex items-center justify-center rounded-full transition-all group-hover:scale-105"
+                    style={{
+                      width: "76px",
+                      height: "76px",
+                      background: "rgba(206, 241, 123, 0.3)",
+                    }}
+                  >
+                    <img src={iconSrc} alt={cat.name} className="w-10 h-10 object-contain transition-all" />
+                  </div>
+                  <span
+                    className="text-center transition-colors"
+                    style={{
+                      fontFamily: "'Poppins', sans-serif",
+                      fontWeight: 600,
+                      fontSize: "18px",
+                      lineHeight: "150%",
+                      color: "#1A1A1A",
+                      width: "154px",
+                      wordWrap: "break-word",
+                      overflowWrap: "break-word",
+                    }}
+                  >
+                    {cat.name}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

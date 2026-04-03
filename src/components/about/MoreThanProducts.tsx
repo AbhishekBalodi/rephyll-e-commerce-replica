@@ -11,14 +11,15 @@ const MoreThanProducts = () => {
       <div className="absolute inset-0 bg-gradient-to-r from-[#CEF17B] to-[#FFFFFF]" />
 
       {/* ================= CLOVERS (LEFT → RIGHT INTENSITY) ================= */}
-      <img src={cloverLime} className="absolute w-[293px] left-[290px] top-[-80px]" style={{ opacity: 0.5,filter: "brightness(1.5)" }} />
-      <img src={cloverLime} className="absolute w-[293px] left-[0px] top-[60px]" style={{ opacity: 0.5,filter: "brightness(1.5)"}} />
-      <img src={cloverLime} className="absolute w-[227px] left-[40px] bottom-[-120px]" style={{ opacity: 0.5,filter: "brightness(1.5)" }} />
+      <img src={cloverLime} className="absolute w-[153px] left-[290px] top-[10px]" style={{ opacity: 0.9,filter: "brightness(1.5)" }} />
+      <img src={cloverLime} className="absolute w-[153px] left-[0px] top-[60px]" style={{ opacity: 0.9,filter: "brightness(1.5)"}} />
+      <img src={cloverLime} className="absolute w-[153px] left-[40px] bottom-[10px]" style={{ opacity: 0.9,filter: "brightness(1.5)" }} />
 
-      <img src={cloverLime} className="absolute w-[221px] right-[420px] top-[50px]" style={{ opacity: 0.4 }} />
-      <img src={cloverLime} className="absolute w-[245px] right-[100px] top-[10px]" style={{ opacity: 0.5 }} />
-      <img src={cloverLime} className="absolute w-[267px] right-[580px] bottom-[-90px]" style={{ opacity: 0.6 }} />
-      <img src={cloverLime} className="absolute w-[180px] right-[320px] bottom-[0px]" style={{ opacity: 0.45 }} />
+      <img src={cloverLime} className="absolute w-[153px] right-[420px] top-[50px]" style={{ opacity: 0.4 }} />
+      <img src={cloverLime} className="absolute w-[153px] right-[100px] top-[0px]" style={{ opacity: 0.5 }} />
+      <img src={cloverLime} className="absolute w-[153px] right-[580px] bottom-[90px]" style={{ opacity: 0.6 }} />
+      <img src={cloverLime} className="absolute w-[153px] right-[320px] bottom-[0px]" style={{ opacity: 0.45 }} />
+      <img src={cloverLime} className="absolute w-[153px] right-[50px] top-[290px]" style={{ opacity: 0.5 }} />
 
       {/* ================= CONTENT ================= */}
       <div className="relative w-[1280px] mx-auto h-full flex items-center justify-between">

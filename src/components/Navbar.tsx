@@ -1,10 +1,10 @@
 import { Search, Heart, User, ShoppingBag, Menu, X, ChevronDown, ChevronRight, LogOut } from "lucide-react";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import logoBlack from "@/assets/logo-green-cropped.png";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
-import { useSearchSuggestions } from "@/hooks/useProducts";
+import { useSearchSuggestions, useCategories } from "@/hooks/useProducts";
 import { listProducts } from "@/services/productApi";
 import type { ApiProduct } from "@/types/api";
 import { getProductImage } from "@/lib/productHelpers";
@@ -26,23 +26,12 @@ interface NavCategory {
 
 const NAV_CATEGORIES: NavCategory[] = [
   { label: "Home", path: "/" },
-  {
-    label: "Shop All",
-    path: "/shop",
-    subcategories: [
-      { label: "Laundry Detergent", path: "/category/laundry-detergent" },
-      { label: "Glass Cleaner", path: "/category/glass-cleaner" },
-      { label: "Fabric Whitener", path: "/category/fabric-whitener" },
-      { label: "Toilet Cleaner", path: "/category/toilet-cleaner" },
-      { label: "Floor Cleaner", path: "/category/floor-cleaner" },
-    ],
-  },
+  { label: "Shop All", path: "/shop" },
   { label: "About Us", path: "/about" },
   { label: "Our Story", path: "/our-story" },
   { label: "Homecare Kits", path: "/homecare-kits" },
   { label: "B2B Orders", path: "/b2b-orders" },
   { label: "Blogs", path: "/blogs" },
-  { label: "Reviews", path: "/testimonials" },
 ];
 
 const ANNOUNCEMENT_SEGMENTS = [
@@ -72,6 +61,20 @@ const Navbar = () => {
   const searchContainerRef = useRef<HTMLDivElement>(null);
 
   const { data: suggestions } = useSearchSuggestions(searchQuery);
+  const { data: backendCategories } = useCategories();
+
+  const slugifyCategory = (name: string) =>
+    name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
+  const shopSubcategories = useMemo(() => {
+    if (!backendCategories) return [];
+    return backendCategories.map((cat) => ({ label: cat.name, path: `/category/${slugifyCategory(cat.name)}` }));
+  }, [backendCategories]);
+
+  const getSubcategories = (cat: NavCategory) => {
+    if (cat.label === "Shop All") return shopSubcategories;
+    return cat.subcategories || [];
+  };
 
   useEffect(() => {
     if (searchQuery.length < 2) { setSearchResults([]); return; }
@@ -171,27 +174,33 @@ const Navbar = () => {
                   <div className="py-4 overflow-y-auto max-h-[calc(100vh-80px)]">
                     {NAV_CATEGORIES.map((cat) => (
                       <div key={cat.label}>
-                        {cat.subcategories ? (
-                          <Collapsible open={mobileExpanded === cat.label} onOpenChange={() => toggleMobileExpand(cat.label)}>
-                            <CollapsibleTrigger className="flex items-center justify-between w-full px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider text-foreground hover:bg-accent/50 transition-colors">
-                              <span>{cat.label}</span>
-                              <ChevronRight size={16} className={`text-muted-foreground transition-transform ${mobileExpanded === cat.label ? "rotate-90" : ""}`} />
-                            </CollapsibleTrigger>
-                            <CollapsibleContent>
-                              <div className="bg-accent/30">
-                                {cat.subcategories.map((sub) => (
-                                  <button key={sub.label} onClick={() => handleNav(sub.path)} className="block w-full text-left pl-10 pr-6 py-2.5 text-sm text-foreground hover:bg-accent/50 transition-colors">
-                                    {sub.label}
-                                  </button>
-                                ))}
-                              </div>
-                            </CollapsibleContent>
-                          </Collapsible>
-                        ) : (
-                          <button onClick={() => cat.path && handleNav(cat.path)} className="flex items-center justify-between w-full px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider text-foreground hover:bg-accent/50 transition-colors">
+                        {(() => {
+                    const subs = getSubcategories(cat);
+                    if (subs.length > 0) {
+                      return (
+                        <Collapsible open={mobileExpanded === cat.label} onOpenChange={() => toggleMobileExpand(cat.label)}>
+                          <CollapsibleTrigger className="flex items-center justify-between w-full px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider text-foreground hover:bg-accent/50 transition-colors">
                             <span>{cat.label}</span>
-                          </button>
-                        )}
+                            <ChevronRight size={16} className={`text-muted-foreground transition-transform ${mobileExpanded === cat.label ? "rotate-90" : ""}`} />
+                          </CollapsibleTrigger>
+                          <CollapsibleContent>
+                            <div className="bg-accent/30">
+                              {subs.map((sub) => (
+                                <button key={sub.label} onClick={() => handleNav(sub.path)} className="block w-full text-left pl-10 pr-6 py-2.5 text-sm text-foreground hover:bg-accent/50 transition-colors">
+                                  {sub.label}
+                                </button>
+                              ))}
+                            </div>
+                          </CollapsibleContent>
+                        </Collapsible>
+                      );
+                    }
+                    return (
+                      <button onClick={() => cat.path && handleNav(cat.path)} className="flex items-center justify-between w-full px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider text-foreground hover:bg-accent/50 transition-colors">
+                        <span>{cat.label}</span>
+                      </button>
+                    );
+                  })()}
                       </div>
                     ))}
                   </div>
@@ -208,39 +217,56 @@ const Navbar = () => {
 
             {/* Center: nav links (desktop) - Poppins 500 14px */}
             <div className="hidden md:flex items-center gap-[20px] ml-[20px]">
-              {NAV_CATEGORIES.map((cat) => (
-                <div
-                  key={cat.label}
-                  className="relative"
-                  onMouseEnter={() => cat.subcategories && handleMouseEnter(cat.label)}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  <button
-                    onClick={() => cat.path && handleNav(cat.path)}
-                    className="relative pb-1"
-                    style={{
-                      fontFamily: "'Poppins', sans-serif",
-                      fontWeight: 500,
-                      fontSize: "14px",
-                      lineHeight: "150%",
-                      letterSpacing: "0%",
-                      color: isActive(cat) ? "#064734" : "#6B7280",
-                      transition: "color 0.2s",
-                    }}
-                    onMouseOver={(e) => (e.currentTarget.style.color = "#064734")}
-                    onMouseOut={(e) => { if (!isActive(cat)) e.currentTarget.style.color = "#6B7280"; }}
+              {NAV_CATEGORIES.map((cat) => {
+                const subcats = getSubcategories(cat);
+                return (
+                  <div
+                    key={cat.label}
+                    className="relative"
+                    onMouseEnter={() => subcats.length > 0 && handleMouseEnter(cat.label)}
+                    onMouseLeave={handleMouseLeave}
                   >
-                    {cat.label}
-                    {/* Active underline */}
-                    {isActive(cat) && (
-                      <span
-                        className="absolute left-0 right-0 bottom-[-4px]"
-                        style={{ height: "2px", background: "#064734", borderRadius: "1px" }}
-                      />
+                    <button
+                      onClick={() => cat.path && handleNav(cat.path)}
+                      className="relative pb-1"
+                      style={{
+                        fontFamily: "'Poppins', sans-serif",
+                        fontWeight: 500,
+                        fontSize: "14px",
+                        lineHeight: "150%",
+                        letterSpacing: "0%",
+                        color: isActive(cat) ? "#064734" : "#6B7280",
+                        transition: "color 0.2s",
+                      }}
+                      onMouseOver={(e) => (e.currentTarget.style.color = "#064734")}
+                      onMouseOut={(e) => { if (!isActive(cat)) e.currentTarget.style.color = "#6B7280"; }}
+                    >
+                      {cat.label}
+                      {/* Active underline */}
+                      {isActive(cat) && (
+                        <span
+                          className="absolute left-0 right-0 bottom-[-4px]"
+                          style={{ height: "2px", background: "#064734", borderRadius: "1px" }}
+                        />
+                      )}
+                    </button>
+
+                    {subcats.length > 0 && activeMenu === cat.label && (
+                      <div className="absolute top-full mt-2 w-[220px] bg-white rounded shadow-lg py-2">
+                        {subcats.map((sub) => (
+                          <button
+                            key={sub.label}
+                            className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            onClick={() => handleNav(sub.path)}
+                          >
+                            {sub.label}
+                          </button>
+                        ))}
+                      </div>
                     )}
-                  </button>
-                </div>
-              ))}
+                  </div>
+                );
+              })}
             </div>
 
             {/* Right: Search bar + icons in capsule */}

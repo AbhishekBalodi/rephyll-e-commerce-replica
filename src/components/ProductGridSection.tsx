@@ -1,113 +1,43 @@
-import { Heart, Share2, ChevronRight, Star, ShoppingCart } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import ProductCard from "./ProductCard";
 import { useProductList } from "@/hooks/useProducts";
-import { getProductImage, getSellingPrice } from "@/lib/productHelpers";
 import type { ApiProduct } from "@/types/api";
-import { useCart } from "@/contexts/CartContext";
-import QuantityCapsule from "./QuantityCapsule";
 
-const ProductGridCard = ({ product }: { product: ApiProduct }) => {
-  const navigate = useNavigate();
-  const { items, addToCart, updateQuantity, removeFromCart } = useCart();
-  const image = getProductImage(product);
-  const price = getSellingPrice(product);
-
-  const cartItem = items.find((i) => i.productId === product.id);
-  const cartQty = cartItem?.quantity ?? 0;
-
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    addToCart({
-      productId: product.id,
-      name: product.name,
-      price,
-      originalPrice: price,
-      image,
-    });
-  };
-
-  return (
-    <div
-      className="bg-white rounded-2xl shadow-md overflow-hidden w-full max-w-[270px] cursor-pointer"
-      onClick={() => navigate(`/product/${product.slug || product.urlHandle || product.id}`)}
-    >
-      {/* IMAGE SECTION */}
-      <div className="relative h-[200px] rounded-t-2xl bg-[linear-gradient(160deg,#CEF17B_0%,#FFFFFF_100%)] flex items-center justify-center">
-        <div className="absolute top-3 right-3 flex gap-2">
-          <div className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow">
-            <Share2 size={16} />
-          </div>
-          <div className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow">
-            <Heart size={16} />
-          </div>
-        </div>
-
-        <img src={image} alt={product.name} className="h-[120px] object-contain" onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg"; }} />
-
-        <div className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-white rounded-full flex items-center justify-center shadow">
-          <ChevronRight size={16} color="#364153" />
-        </div>
-
-        <div className="absolute bottom-3 flex gap-1">
-          <div className="w-6 h-1 bg-[#00301D] rounded-full"></div>
-          <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
-          <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
-        </div>
-      </div>
-
-      {/* CONTENT SECTION */}
-      <div className="p-4">
-        <h3 className="font-poppins font-semibold text-[16px] leading-[24px] text-[#464646] line-clamp-1">
-          {product.name}
-        </h3>
-
-        <div className="flex items-center gap-2 mt-1">
-          <div className="flex">
-            {[1, 2, 3, 4, 5].map((_, i) => (
-              <Star key={i} size={14} fill={i < 4 ? "#FBC700" : "none"} stroke="#FBC700" />
-            ))}
-          </div>
-          <span className="text-sm text-[#464646]">4.0</span>
-          <span className="text-sm text-[#8E939C]">({product.variantCount} variants)</span>
-        </div>
-
-        <div className="flex items-center gap-3 mt-2">
-          <span className="font-poppins font-bold text-[30px] text-[#064734] leading-[24px]">
-            ₹{price.toFixed(0)}
-          </span>
-        </div>
-
-        <div className="mt-4">
-          {cartQty > 0 ? (
-            <QuantityCapsule
-              quantity={cartQty}
-              onIncrement={(e) => { e?.stopPropagation(); updateQuantity(product.id, cartQty + 1); }}
-              onDecrement={(e) => { e?.stopPropagation(); if (cartQty <= 1) removeFromCart(product.id); else updateQuantity(product.id, cartQty - 1); }}
-              size="sm"
-              fullWidth
-            />
-          ) : (
-            <button
-              onClick={handleAddToCart}
-              className="w-full bg-[#064734] text-white py-3 rounded-xl flex items-center justify-center gap-2"
-            >
-              <ShoppingCart size={16} />
-              Add to Box
-            </button>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
+const BUNDLE_OPTIONS = [
+  { id: "2-499", label: "Buy 2 @499", size: 2, price: 499 },
+  { id: "4-849", label: "Buy 4 @849", size: 4, price: 849 },
+  { id: "5-999", label: "Buy 5 @999", size: 5, price: 999 },
+];
 
 const ProductGridSection = () => {
   const { data, isLoading } = useProductList({ page: 0, size: 20 });
   const products = data?.content ?? [];
 
+  const [selectedBundle, setSelectedBundle] = useState(BUNDLE_OPTIONS[0]);
+  const [bundleItems, setBundleItems] = useState<ApiProduct[]>([]);
+
+  const toggleBundleItem = (product: ApiProduct) => {
+    setBundleItems((prev) => {
+      if (prev.some((item) => item.id === product.id)) {
+        return prev.filter((item) => item.id !== product.id);
+      }
+      if (prev.length >= selectedBundle.size) {
+        return prev;
+      }
+      return [...prev, product];
+    });
+  };
+
+  const bundleUnitPrice = selectedBundle.price / Math.max(selectedBundle.size, 1);
+
   return (
-    <section className="w-full flex justify-center py-16">
+    <section className="w-full flex justify-center py-16 relative">
       <div className="max-w-[1194px] w-full px-4">
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold text-[#064734]">Explore Products</h2>
+          <p className="text-[#464646]">Select bundle option and pick products to apply bundle pricing.</p>
+        </div>
+
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[30px] justify-items-center">
             {Array.from({ length: 8 }).map((_, i) => (
@@ -124,7 +54,12 @@ const ProductGridSection = () => {
         ) : products.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[30px] justify-items-center">
             {products.map((product) => (
-              <ProductGridCard key={product.id} product={product} />
+              <ProductCard
+                key={product.id}
+                product={product}
+                bundleItemSelected={bundleItems.some((item) => item.id === product.id)}
+                onBundleToggle={toggleBundleItem}
+              />
             ))}
           </div>
         ) : (
@@ -132,6 +67,49 @@ const ProductGridSection = () => {
             <p>No products available at the moment.</p>
           </div>
         )}
+      </div>
+
+      <div className="fixed bottom-5 left-1/2 z-30 w-[min(92vw,840px)] -translate-x-1/2 rounded-2xl border border-[#CEF17B] bg-[#064734] p-4 text-white shadow-lg">
+        <div className="flex flex-wrap justify-center gap-3 mb-3">
+          {BUNDLE_OPTIONS.map((option) => (
+            <button
+              key={option.id}
+              onClick={() => {
+                setSelectedBundle(option);
+                setBundleItems([]);
+              }}
+              className={`rounded-full px-4 py-2 text-sm font-medium transition ${selectedBundle.id === option.id ? "bg-[#CEF17B] text-[#064734]" : "bg-white/15 hover:bg-white/30"}`}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex items-center justify-center gap-2 mb-3">
+          {Array.from({ length: selectedBundle.size }).map((_, index) => (
+            <div
+              key={index}
+              className={`h-4 w-4 rounded-full border border-white ${index < bundleItems.length ? "bg-[#CEF17B]" : "bg-white/20"}`}
+            />
+          ))}
+        </div>
+
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-base font-bold">Total: ₹{selectedBundle.price}</p>
+            <p className="text-sm text-white/80">{selectedBundle.size} products bundle at ₹{bundleUnitPrice.toFixed(0)} each</p>
+          </div>
+          <button
+            onClick={() => {
+              // placeholder action, existing cart handles pricing normally
+              alert(`Bundle purchase selected: ${selectedBundle.label} with ${bundleItems.length} products`);
+            }}
+            className="rounded-lg bg-[#CEF17B] px-4 py-2 text-sm font-bold text-[#064734]"
+            disabled={bundleItems.length !== selectedBundle.size}
+          >
+            Buy Bundle
+          </button>
+        </div>
       </div>
     </section>
   );

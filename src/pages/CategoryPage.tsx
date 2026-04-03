@@ -30,48 +30,19 @@ const CategoryPage = () => {
     return null;
   }, [categories, slug, state]);
 
-  const { data: productsData, isLoading } = useProductsByCategory(category?.id, { size: 100 });
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const { data: productsData, isLoading } = useProductsByCategory(category?.id, {
+    size: 100,
+    search: searchTerm.trim() || undefined,
+  });
 
   const products = productsData?.content ?? [];
 
-  // Filter state
   const [sortBy, setSortBy] = useState<SortOption>("relevance");
-  const [priceRange, setPriceRange] = useState<[number, number] | null>(null);
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
-  const [expandedFilters, setExpandedFilters] = useState<Record<string, boolean>>({
-    brand: true,
-    price: true,
-  });
-  const [showMobileFilters, setShowMobileFilters] = useState(false);
 
-  // Extract filter options from products
-  const brands = useMemo(() => {
-    const set = new Set<string>();
-    products.forEach((p) => { if (p.brandName) set.add(p.brandName); });
-    return Array.from(set).sort();
-  }, [products]);
-
-  const priceRanges: { label: string; range: [number, number] }[] = [
-    { label: "Under ₹200", range: [0, 200] },
-    { label: "₹200 – ₹500", range: [200, 500] },
-    { label: "₹500 – ₹1000", range: [500, 1000] },
-    { label: "Above ₹1000", range: [1000, 99999] },
-  ];
-
-  // Apply filters & sorting
   const filteredProducts = useMemo(() => {
     let result = [...products];
-
-    if (selectedBrands.length > 0) {
-      result = result.filter((p) => selectedBrands.includes(p.brandName));
-    }
-
-    if (priceRange) {
-      result = result.filter((p) => {
-        const price = p.basePrice;
-        return price >= priceRange[0] && price <= priceRange[1];
-      });
-    }
 
     switch (sortBy) {
       case "price-low":
@@ -89,105 +60,9 @@ const CategoryPage = () => {
     }
 
     return result;
-  }, [products, selectedBrands, priceRange, sortBy]);
+  }, [products, sortBy]);
 
-  const toggleFilter = (key: string) => {
-    setExpandedFilters((prev) => ({ ...prev, [key]: !prev[key] }));
-  };
 
-  const toggleBrand = (brand: string) => {
-    setSelectedBrands((prev) =>
-      prev.includes(brand) ? prev.filter((b) => b !== brand) : [...prev, brand]
-    );
-  };
-
-  const clearAllFilters = () => {
-    setSelectedBrands([]);
-    setPriceRange(null);
-    setSortBy("relevance");
-  };
-
-  const hasActiveFilters = selectedBrands.length > 0 || priceRange !== null;
-
-  const FilterSidebar = () => (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h3 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "18px", color: "#064734" }}>
-          FILTERS
-        </h3>
-        {hasActiveFilters && (
-          <button onClick={clearAllFilters} className="text-sm underline" style={{ color: "#064734" }}>
-            Clear All
-          </button>
-        )}
-      </div>
-
-      {/* Brand Filter */}
-      {brands.length > 0 && (
-        <div className="border-t pt-4" style={{ borderColor: "#E5E7EB" }}>
-          <button
-            onClick={() => toggleFilter("brand")}
-            className="flex items-center justify-between w-full mb-3"
-          >
-            <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "14px", color: "#1A1A1A" }}>
-              BRAND
-            </span>
-            {expandedFilters.brand ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-          </button>
-          {expandedFilters.brand && (
-            <div className="space-y-2">
-              {brands.map((brand) => (
-                <label key={brand} className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={selectedBrands.includes(brand)}
-                    onChange={() => toggleBrand(brand)}
-                    className="w-4 h-4 rounded accent-[#064734]"
-                  />
-                  <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: "14px", color: "#464646" }}>
-                    {brand}
-                  </span>
-                </label>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Price Filter */}
-      <div className="border-t pt-4" style={{ borderColor: "#E5E7EB" }}>
-        <button
-          onClick={() => toggleFilter("price")}
-          className="flex items-center justify-between w-full mb-3"
-        >
-          <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "14px", color: "#1A1A1A" }}>
-            PRICE
-          </span>
-          {expandedFilters.price ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-        </button>
-        {expandedFilters.price && (
-          <div className="space-y-2">
-            {priceRanges.map((pr) => (
-              <label key={pr.label} className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name="priceRange"
-                  checked={priceRange?.[0] === pr.range[0] && priceRange?.[1] === pr.range[1]}
-                  onChange={() => setPriceRange(
-                    priceRange?.[0] === pr.range[0] && priceRange?.[1] === pr.range[1] ? null : pr.range
-                  )}
-                  className="w-4 h-4 accent-[#064734]"
-                />
-                <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: "14px", color: "#464646" }}>
-                  {pr.label}
-                </span>
-              </label>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -206,8 +81,8 @@ const CategoryPage = () => {
           <h1
             style={{
               fontFamily: "'Poppins', sans-serif",
-              fontWeight: 600,
-              fontSize: "28px",
+              fontWeight: 700,
+              fontSize: "36px",
               color: "#064734",
               marginBottom: "8px",
             }}
@@ -219,22 +94,34 @@ const CategoryPage = () => {
           </p>
         </div>
 
-        {/* Sort bar + Mobile filter toggle */}
-        <div className="flex items-center justify-between mb-6">
-          <button
-            onClick={() => setShowMobileFilters(!showMobileFilters)}
-            className="md:hidden flex items-center gap-2 px-4 py-2 rounded-lg border"
-            style={{ borderColor: "#064734", color: "#064734" }}
-          >
-            <SlidersHorizontal size={16} />
-            Filters
-          </button>
+        {/* Sort bar + search + Mobile filter toggle */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
+          <div className="flex items-center gap-2 w-full md:w-auto">
+            <input
+              type="search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search in this category..."
+              className="w-full md:w-80 px-3 py-2 border rounded-lg outline-none"
+              style={{ borderColor: "#E5E7EB", color: "#1A1A1A", fontFamily: "'Poppins', sans-serif" }}
+            />
+            {searchTerm && (
+              <button
+                onClick={() => setSearchTerm("")}
+                className="px-3 py-2 rounded-lg bg-slate-100 text-slate-600"
+                style={{ borderColor: "#E5E7EB" }}
+              >
+                Clear
+              </button>
+            )}
+          </div>
 
-          <div className="flex items-center gap-2 ml-auto">
-            <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 500, fontSize: "14px", color: "#1A1A1A" }}>
-              Sort By:
-            </span>
-            <select
+          <div className="flex items-center justify-end gap-4 w-full md:w-auto">
+            <div className="flex items-center gap-2">
+              <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 500, fontSize: "14px", color: "#1A1A1A" }}>
+                Sort By:
+              </span>
+              <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortOption)}
               className="border rounded-lg px-3 py-2 text-sm bg-background"
@@ -248,62 +135,32 @@ const CategoryPage = () => {
             </select>
           </div>
         </div>
+      </div>
 
-        <div className="flex gap-8">
-          {/* Sidebar - desktop */}
-          <aside className="hidden md:block w-[260px] flex-shrink-0">
-            <FilterSidebar />
-          </aside>
-
-          {/* Mobile filter drawer */}
-          {showMobileFilters && (
-            <div className="fixed inset-0 z-50 md:hidden">
-              <div className="absolute inset-0 bg-black/40" onClick={() => setShowMobileFilters(false)} />
-              <div className="absolute left-0 top-0 bottom-0 w-[300px] bg-background p-6 overflow-y-auto">
-                <div className="flex justify-between items-center mb-4">
-                  <h3 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "18px" }}>Filters</h3>
-                  <button onClick={() => setShowMobileFilters(false)} className="text-lg">✕</button>
+        <div>
+          {isLoading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div key={i} className="animate-pulse space-y-3">
+                  <div className="aspect-square rounded-lg bg-muted" />
+                  <div className="h-4 w-3/4 rounded bg-muted" />
+                  <div className="h-4 w-1/2 rounded bg-muted" />
                 </div>
-                <FilterSidebar />
-              </div>
+              ))}
+            </div>
+          ) : filteredProducts.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {filteredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-20">
+              <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: "18px", color: "#808080" }}>
+                No products found in this category.
+              </p>
             </div>
           )}
-
-          {/* Products grid */}
-          <div className="flex-1">
-            {isLoading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[1, 2, 3, 4, 5, 6].map((i) => (
-                  <div key={i} className="animate-pulse space-y-3">
-                    <div className="aspect-square rounded-lg bg-muted" />
-                    <div className="h-4 w-3/4 rounded bg-muted" />
-                    <div className="h-4 w-1/2 rounded bg-muted" />
-                  </div>
-                ))}
-              </div>
-            ) : filteredProducts.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center py-20">
-                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: "18px", color: "#808080" }}>
-                  No products found in this category.
-                </p>
-                {hasActiveFilters && (
-                  <button
-                    onClick={clearAllFilters}
-                    className="mt-4 px-6 py-2 rounded-lg text-sm font-medium"
-                    style={{ background: "#064734", color: "#FFFFFF" }}
-                  >
-                    Clear Filters
-                  </button>
-                )}
-              </div>
-            )}
-          </div>
         </div>
       </div>
 
