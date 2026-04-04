@@ -1,6 +1,17 @@
 import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 import { DUMMY_REVIEWS } from "@/data/reviews";
 import cloverLime from "@/assets/clover-lime.png";
+import avatarTushar from "@/assets/avatar-tushar.jpg";
+import avatarDeepika from "@/assets/avatar-deepika.jpg";
+import avatarAnanya from "@/assets/avatar-ananya.jpg";
+import avatarPriya from "@/assets/avatar-priya.jpg";
+
+const AVATAR_MAP: Record<string, string> = {
+  "Tushar Gupta": avatarTushar,
+  "Deepika Rao": avatarDeepika,
+  "Ananya Nair": avatarAnanya,
+  "Priya Sharma": avatarPriya,
+};
 
 const TOP_REVIEWS = DUMMY_REVIEWS.filter((r) => r.rating >= 4).slice(0, 6);
 
