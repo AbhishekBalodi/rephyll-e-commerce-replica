@@ -1,66 +1,103 @@
-import { Star, ShoppingCart, Share2, Heart, ChevronRight } from "lucide-react";
+import type { MouseEvent } from "react";
+import { Star, StarHalf, ShoppingCart, Share2, Heart, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import type { ApiProduct } from "@/types/api";
 import { getProductImage, getSellingPrice, getMrp, getDiscount } from "@/lib/productHelpers";
-import { useCart } from "@/contexts/CartContext";
 import QuantityCapsule from "./QuantityCapsule";
+import { useCart } from "@/contexts/CartContext";
 
 interface ProductCardProps {
   product: ApiProduct;
   onClick?: (product: ApiProduct) => void;
-  bundleItemSelected?: boolean;
-  onBundleToggle?: (product: ApiProduct) => void;
+  bundleQuantity?: number;
+  bundleSize?: number;
+  totalBundleQuantity?: number;
+  onAdd?: (product: ApiProduct) => void;
+  onIncrement?: (product: ApiProduct) => void;
+  onDecrement?: (product: ApiProduct) => void;
+  buttonLabel?: string;
+  isCartMode?: boolean;
 }
 
 const ProductCard = ({
   product,
   onClick,
-  bundleItemSelected = false,
-  onBundleToggle,
+  bundleQuantity,
+  bundleSize,
+  totalBundleQuantity,
+  onAdd,
+  onIncrement,
+  onDecrement,
+  buttonLabel,
+  isCartMode,
 }: ProductCardProps) => {
   const navigate = useNavigate();
-  const { items, addToCart, updateQuantity, removeFromCart } = useCart();
+  const { items, addToCart, updateQuantity, removeFromCart, setBundleOffer } = useCart();
   const image = getProductImage(product);
   const price = getSellingPrice(product);
   const mrp = getMrp(product);
   const discount = getDiscount(product);
 
-  const cartItem = items.find((i) => i.productId === product.id);
-  const cartQty = cartItem?.quantity ?? 0;
+  const existingCartItem = items.find((item) => item.productId === product.id);
+  const cartQty = existingCartItem?.quantity ?? 0;
+
+  const isBundle = bundleQuantity !== undefined && bundleSize !== undefined;
+  const quantity = isBundle ? bundleQuantity : cartQty;
+  const bundleTotalQty = totalBundleQuantity ?? 0;
+  const maxReached = isBundle ? bundleTotalQty >= (bundleSize ?? 0) : false;
+  const actionLabel = isBundle ? (buttonLabel || "Add to Box") : (buttonLabel || "Add to Cart");
+
+  const handleAddClick = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (isBundle && onAdd) {
+      if (maxReached) return;
+      onAdd(product);
+      return;
+    }
+    if (!isBundle) {
+      addToCart({ productId: product.id, name: product.name, price, originalPrice: mrp, image });
+    }
+  };
+
+  const handleIncrementClick = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (isBundle && onIncrement) {
+      if (maxReached) return;
+      onIncrement(product);
+      return;
+    }
+    if (!isBundle) {
+      updateQuantity(product.id, quantity + 1);
+    }
+  };
+
+  const handleDecrementClick = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (isBundle && onDecrement) {
+      onDecrement(product);
+      return;
+    }
+    if (!isBundle) {
+      if (quantity <= 1) {
+        removeFromCart(product.id);
+      } else {
+        updateQuantity(product.id, quantity - 1);
+      }
+    }
+  };
 
   // Mock rating/review data
   const rating = 4.5 + Math.random() * 0.4;
   const reviewCount = 30 + Math.floor(Math.random() * 100);
 
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    addToCart({
-      productId: product.id,
-      name: product.name,
-      price,
-      originalPrice: mrp,
-      image,
-    });
-  };
-
-  const handleIncrement = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    updateQuantity(product.id, cartQty + 1);
-  };
-
-  const handleDecrement = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (cartQty <= 1) {
-      removeFromCart(product.id);
-    } else {
-      updateQuantity(product.id, cartQty - 1);
-    }
-  };
 
   return (
     <div
       className="bg-white rounded-2xl shadow-md overflow-hidden w-full max-w-[270px] cursor-pointer"
-      onClick={() => { onClick?.(product); navigate(`/product/${product.slug || product.id}`); }}
+      onClick={() => {
+        onClick?.(product);
+        navigate(`/product/${product.id}`);
+      }}
     >
       <div className="relative h-[200px] rounded-t-2xl overflow-hidden bg-[#F3F4F6] flex items-center justify-center">
         <div className="absolute top-3 right-3 flex gap-2 z-10">
@@ -86,43 +123,49 @@ const ProductCard = ({
       </div>
 
       <div className="p-4">
-        <div className="flex items-center gap-1 mb-2">
-          <Star size={14} className="text-[#FBC700]" />
-          <span className="text-sm font-semibold text-[#464646]">{rating.toFixed(1)}</span>
-          <span className="text-xs text-[#8E939C]">({reviewCount} reviews)</span>
-        </div>
-
         <h3 className="font-poppins font-semibold text-[16px] leading-[24px] text-[#464646] line-clamp-2">
           {product.name}
         </h3>
 
-        <div className="flex items-center gap-3 mt-2">
-          <span className="font-poppins font-bold text-[30px] text-[#064734] leading-[24px]">₹{price.toFixed(0)}</span>
+        <div className="flex items-end gap-2 mt-1">
+          <span className="font-poppins font-bold text-[28px] text-[#064734] leading-[28px]">₹{price.toFixed(0)}</span>
           {discount > 0 && (
             <span className="text-sm text-[#8E939C] line-through">₹{mrp.toFixed(0)}</span>
           )}
         </div>
 
-        {onBundleToggle && (
-          <div className="mb-3">
-            <button
-              onClick={(e) => { e.stopPropagation(); onBundleToggle(product); }}
-              className={`w-full rounded-lg py-2 text-sm font-medium ${bundleItemSelected ? "bg-[#F4D06F] text-[#064734]" : "bg-[#E2F8D8] text-[#064734] hover:bg-[#CEF17B]"}`}
-            >
-              {bundleItemSelected ? "Remove from bundle" : "Select for bundle"}
-            </button>
+        <div className="flex items-center gap-1 mt-2">
+          <div className="flex items-center gap-[2px]">
+            {Array.from({ length: 5 }).map((_, i) => {
+              const active = i < Math.floor(rating);
+              return (
+                <svg key={i} width="13.33" height="12.71" viewBox="0 0 14 13" fill="#FBC700" opacity={active ? 1 : 0.35} stroke="#FBC700" strokeWidth="1.33" style={{ transition: "opacity 0.2s" }}>
+                  <path d="M7 1l1.76 3.57 3.94.57-2.85 2.78.67 3.93L7 10.27l-3.52 1.58.67-3.93L1.3 5.14l3.94-.57z" />
+                </svg>
+              );
+            })}
           </div>
-        )}
-        <div className="mt-1">
-          {cartQty > 0 ? (
-            <QuantityCapsule quantity={cartQty} onIncrement={handleIncrement} onDecrement={handleDecrement} size="sm" fullWidth />
+          <span className="text-sm font-semibold text-[#464646]">{rating.toFixed(1)}</span>
+          <span className="text-xs text-[#8E939C]">({reviewCount} reviews)</span>
+        </div>
+
+        <div className="mt-3">
+          {quantity > 0 ? (
+            <QuantityCapsule
+              quantity={quantity}
+              onIncrement={handleIncrementClick}
+              onDecrement={handleDecrementClick}
+              size="sm"
+              fullWidth
+            />
           ) : (
             <button
-              onClick={(e) => { e.stopPropagation(); handleAddToCart(e); }}
-              className="w-full bg-[#064734] text-white py-3 rounded-xl flex items-center justify-center gap-2"
+              onClick={handleAddClick}
+              disabled={isBundle ? maxReached : false}
+              className={`w-full rounded-xl py-3 text-sm font-semibold text-white flex items-center justify-center gap-2 ${isBundle && maxReached ? "bg-gray-400" : "bg-[#064734] hover:bg-[#05412E]"}`}
             >
               <ShoppingCart size={16} />
-              Add to Box
+              {actionLabel}
             </button>
           )}
         </div>

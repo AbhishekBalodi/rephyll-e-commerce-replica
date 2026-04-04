@@ -16,7 +16,7 @@ const Index = () => {
       <HeroCarousel />
       <CategoryBar />
       <TrustMarqueeStrip />
-      <HomecareKitsSection />
+      <HomecareKitsSection showKitsTab={false} />
       <WhyChooseUs />
       <TrustStrips />
       {/* <VideoReelsSection /> */}

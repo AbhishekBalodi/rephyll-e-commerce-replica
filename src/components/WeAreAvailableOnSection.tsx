@@ -18,7 +18,8 @@ const WeAreAvailableOnSection = () => {
         src={cloverDark}
         className="absolute pointer-events-none"
         style={{
-          width: "240px",
+          width: "153px",
+          height: "153px",
           left: "-60px",
           top: "-20px",
           opacity: 0.12,
@@ -31,7 +32,8 @@ const WeAreAvailableOnSection = () => {
         src={cloverDark}
         className="absolute pointer-events-none"
         style={{
-          width: "200px",
+          width: "153px",
+          height: "153px",
           right: "80px",
           top: "60px",
           opacity: 0.12,
@@ -44,7 +46,8 @@ const WeAreAvailableOnSection = () => {
         src={cloverDark}
         className="absolute pointer-events-none"
         style={{
-          width: "220px",
+          width: "153px",
+          height: "153px",
           right: "-40px",
           bottom: "-30px",
           opacity: 0.12,

@@ -42,11 +42,14 @@ const HeroCarousel = () => {
           background: "radial-gradient(13.36% 42.27% at 75.29% 56.87%, hsl(var(--accent)) 0%, hsl(var(--hero-forest)) 100%)",
         }}
       >
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-20" style={{ width: "299px", height: "299px", left: "-85px", top: "-113px" }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-20" style={{ width: "293px", height: "293px", left: "496px", top: "-84px" }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-15" style={{ width: "267px", height: "267px", left: "642px", top: "391px" }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-15" style={{ width: "356px", height: "356px", left: "1170.5px", top: "302px" }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-20" style={{ width: "232px", height: "232px", left: "1268.5px", top: "-84px" }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-20" style={{ width: "153px", height: "153px", left: "5px", top: "3px" }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-20" style={{ width: "153px", height: "153px", left: "496px", top: "4px" }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-15" style={{ width: "153px", height: "153px", left: "642px", top: "391px" }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-15" style={{ width: "153px", height: "153px", left: "1170.5px", top: "302px" }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-20" style={{ width: "153px", height: "153px", left: "1268.5px", top: "4px" }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-20" style={{ width: "153px", height: "153px", left: "5px", top: "391px" }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-20" style={{ width: "153px", height: "153px", left: "1315px", top: "391px" }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-15" style={{ width: "153px", height: "153px", left: "742px", top: "175px" }} />
 
         <AnimatePresence mode="wait">
           <motion.div

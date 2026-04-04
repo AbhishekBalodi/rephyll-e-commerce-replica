@@ -73,7 +73,7 @@ const Footer = () => {
               {[
                 { label: "Shop All", path: "/" },
                 { label: "About Us", path: "/about" },
-
+                { label: "Our Story", path: "/our-story" },
                 { label: "FAQs", path: "/faqs" },
                 { label: "Contact Us", path: "/contact" },
               ].map((link) => (
@@ -157,7 +157,7 @@ const Footer = () => {
                 Hello, we are rePhyl. trying to make an effort to put the right people for you to get the best results.
               </p>
               <p style={{ ...subscribeTextStyle, color: "#FFFFFF" }}>
-                Made with ❤️ by <a href="https://brandingidiots.com/" target="_blank" rel="noopener noreferrer" style={{ color: "#FFFFFF", textDecoration: "underline" }}>Branding Ideas</a>
+                Made with ❤️ by <a href="https://brandingidiots.com/" target="_blank" rel="noopener noreferrer" style={{ color: "#FFFFFF", textDecoration: "underline" }}>Branding Idiots</a>
               </p>
             </div>
           </div>

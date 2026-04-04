@@ -70,7 +70,9 @@ const SimilarItemsSection = ({ currentProductId, categoryId }: SimilarItemsSecti
               return (
                 <div
                   key={product.id}
-                  onClick={() => navigate(`/product/${product.slug || product.id}`)}
+                  onClick={() => {
+                    navigate(`/product/${product.id}`);
+                  }}
                   className="flex-shrink-0 cursor-pointer bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
                   style={{ width: "calc((100% - 80px) / 6)", minWidth: "180px" }}
                 >

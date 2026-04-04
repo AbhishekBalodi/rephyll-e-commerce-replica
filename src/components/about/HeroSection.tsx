@@ -9,32 +9,32 @@ const HeroSection = () => {
       
       {/* ================= CLOVERS (BACKGROUND) ================= */}
       <img src={cloverLime} className="absolute opacity-20 pointer-events-none"
-        style={{ width: "153px", left: "0px", top: "0px" }} />
+        style={{ width: "153px", height: "153px", left: "0px", top: "0px" }} />
 
 <img src={cloverLime} className="absolute opacity-20 pointer-events-none"
-  style={{ width: "153px", left: "0px", top: "380px" }} />
+  style={{ width: "153px", height: "153px", left: "0px", top: "380px" }} />
 
   <img src={cloverLime} className="absolute opacity-20 pointer-events-none"
-  style={{ width: "153px", left: "1350px", top: "380px" }} />
+  style={{ width: "153px", height: "153px", left: "1350px", top: "380px" }} />
 
       <img src={cloverLime} className="absolute opacity-20 pointer-events-none"
-        style={{ width: "153px", left: "496px", top: "0px" }} />
+        style={{ width: "153px", height: "153px", left: "496px", top: "0px" }} />
 
       <img src={cloverLime} className="absolute opacity-15 pointer-events-none"
-        style={{ width: "153px", left: "642px", top: "391px" }} />
+        style={{ width: "153px", height: "153px", left: "642px", top: "391px" }} />
 
       <img src={cloverLime} className="absolute opacity-15 pointer-events-none"
-        style={{ width: "153px", left: "1170px", top: "302px" }} />
+        style={{ width: "153px", height: "153px", left: "1170px", top: "302px" }} />
 
       <img src={cloverLime} className="absolute opacity-20 pointer-events-none"
-        style={{ width: "153px", left: "1350px", top: "0px" }} />
+        style={{ width: "153px", height: "153px", left: "1350px", top: "0px" }} />
 
       {/* EXTRA CLOVERS for depth */}
       <img src={cloverLime} className="absolute opacity-10 pointer-events-none"
-        style={{ width: "153px", left: "350px", top: "350px" }} />
+        style={{ width: "153px", height: "153px", left: "350px", top: "350px" }} />
 
       <img src={cloverLime} className="absolute opacity-10 pointer-events-none"
-        style={{ width: "153px", left: "900px", top: "100px" }} />
+        style={{ width: "153px", height: "153px", left: "900px", top: "100px" }} />
 
 
       {/* ================= CONTENT WRAPPER ================= */}

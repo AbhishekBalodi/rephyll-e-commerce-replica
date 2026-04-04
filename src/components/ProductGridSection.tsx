@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import ProductCard from "./ProductCard";
 import { useProductList } from "@/hooks/useProducts";
 import { getProductImage } from "@/lib/productHelpers";
+import { useCart } from "@/contexts/CartContext";
 import type { ApiProduct } from "@/types/api";
 
 const BUNDLE_OPTIONS = [
@@ -14,21 +16,53 @@ const BUNDLE_OPTIONS = [
 const ProductGridSection = () => {
   const { data, isLoading } = useProductList({ page: 0, size: 20 });
   const products = data?.content ?? [];
+  const navigate = useNavigate();
+  const { items, addToCart, updateQuantity, removeFromCart, clearCart, setBundleOffer } = useCart();
 
   const [selectedBundle, setSelectedBundle] = useState(BUNDLE_OPTIONS[0]);
-  const [bundleItems, setBundleItems] = useState<ApiProduct[]>([]);
+  const [bundleItems, setBundleItems] = useState<Record<number, number>>({});
   const [bundleExpanded, setBundleExpanded] = useState(false);
 
-  const toggleBundleItem = (product: ApiProduct) => {
-    setBundleItems((prev) => {
-      if (prev.some((item) => item.id === product.id)) {
-        return prev.filter((item) => item.id !== product.id);
-      }
-      if (prev.length >= selectedBundle.size) {
-        return prev;
-      }
-      return [...prev, product];
-    });
+  const totalBundleQuantity = Object.values(bundleItems).reduce((sum, q) => sum + q, 0);
+
+  const setProductBundleQty = (product: ApiProduct, quantity: number) => {
+    const qty = Math.max(0, Math.min(2, quantity));
+    const target = Math.min(qty, selectedBundle.size - (totalBundleQuantity - (bundleItems[product.id] || 0)));
+
+    if (target <= 0) {
+      setBundleItems((prev) => {
+        const next = { ...prev };
+        delete next[product.id];
+        return next;
+      });
+      removeFromCart(product.id);
+      return;
+    }
+
+    setBundleItems((prev) => ({ ...prev, [product.id]: target }));
+    if (items.find((i) => i.productId === product.id)) {
+      updateQuantity(product.id, target);
+    } else {
+      addToCart({ productId: product.id, name: product.name, price: product.basePrice, originalPrice: product.basePrice, image: getProductImage(product) }, target);
+    }
+  };
+
+  const handleAddToBox = (product: ApiProduct) => {
+    if (totalBundleQuantity >= selectedBundle.size) return;
+    const existingQty = bundleItems[product.id] || 0;
+    if (existingQty >= 2) return;
+    setProductBundleQty(product, existingQty + 1);
+  };
+
+  const handleIncrement = (product: ApiProduct) => {
+    if (totalBundleQuantity >= selectedBundle.size) return;
+    const existingQty = bundleItems[product.id] || 0;
+    setProductBundleQty(product, existingQty + 1);
+  };
+
+  const handleDecrement = (product: ApiProduct) => {
+    const existingQty = bundleItems[product.id] || 0;
+    setProductBundleQty(product, existingQty - 1);
   };
 
   const bundleUnitPrice = selectedBundle.price / Math.max(selectedBundle.size, 1);
@@ -60,8 +94,12 @@ const ProductGridSection = () => {
               <ProductCard
                 key={product.id}
                 product={product}
-                bundleItemSelected={bundleItems.some((item) => item.id === product.id)}
-                onBundleToggle={toggleBundleItem}
+                bundleQuantity={bundleItems[product.id] || 0}
+                bundleSize={selectedBundle.size}
+                totalBundleQuantity={totalBundleQuantity}
+                onAdd={handleAddToBox}
+                onIncrement={handleIncrement}
+                onDecrement={handleDecrement}
               />
             ))}
           </div>
@@ -75,28 +113,32 @@ const ProductGridSection = () => {
       {/* Floating Bundle Bar */}
       <div className="fixed bottom-5 left-1/2 z-30 w-[min(92vw,840px)] -translate-x-1/2 rounded-2xl border border-[#CEF17B] bg-[#064734] text-white shadow-lg overflow-hidden transition-all">
         {/* Expand/Collapse toggle */}
-        {bundleItems.length > 0 && (
+        {totalBundleQuantity > 0 && (
           <button
             onClick={() => setBundleExpanded(!bundleExpanded)}
             className="w-full flex items-center justify-center gap-2 py-2 text-sm text-white/80 hover:text-white transition border-b border-white/10"
           >
             {bundleExpanded ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
-            {bundleExpanded ? "Hide selected products" : `Show ${bundleItems.length} selected product${bundleItems.length > 1 ? "s" : ""}`}
+            {bundleExpanded ? "Hide selected products" : `Show ${totalBundleQuantity} selected item${totalBundleQuantity > 1 ? "s" : ""}`}
           </button>
         )}
 
         {/* Expanded product cards */}
-        {bundleExpanded && bundleItems.length > 0 && (
+        {bundleExpanded && totalBundleQuantity > 0 && (
           <div className="px-4 py-3 border-b border-white/10">
             <div className="flex gap-4 overflow-x-auto pb-2">
-              {bundleItems.map((item) => (
-                <div key={item.id} className="flex flex-col items-center flex-shrink-0" style={{ width: "80px" }}>
-                  <div className="w-[72px] h-[72px] rounded-lg overflow-hidden bg-white mb-1">
-                    <img src={getProductImage(item)} alt={item.name} className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg"; }} />
+              {Object.entries(bundleItems).map(([prodId, qty]) => {
+                const item = products.find((p) => p.id === Number(prodId));
+                if (!item) return null;
+                return (
+                  <div key={prodId} className="flex flex-col items-center flex-shrink-0" style={{ width: "80px" }}>
+                    <div className="w-[72px] h-[72px] rounded-lg overflow-hidden bg-white mb-1">
+                      <img src={getProductImage(item)} alt={item.name} className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg"; }} />
+                    </div>
+                    <p className="text-xs text-center text-white/90 leading-tight line-clamp-2">{item.name} x{qty}</p>
                   </div>
-                  <p className="text-xs text-center text-white/90 leading-tight line-clamp-2">{item.name}</p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
@@ -122,7 +164,7 @@ const ProductGridSection = () => {
             {Array.from({ length: selectedBundle.size }).map((_, index) => (
               <div
                 key={index}
-                className={`h-4 w-4 rounded-full border border-white ${index < bundleItems.length ? "bg-[#CEF17B]" : "bg-white/20"}`}
+                className={`h-4 w-4 rounded-full border border-white ${index < totalBundleQuantity ? "bg-[#CEF17B]" : "bg-white/20"}`}
               />
             ))}
           </div>
@@ -134,10 +176,11 @@ const ProductGridSection = () => {
             </div>
             <button
               onClick={() => {
-                alert(`Bundle purchase selected: ${selectedBundle.label} with ${bundleItems.length} products`);
+                if (totalBundleQuantity === selectedBundle.size) {                  setBundleOffer({ targetQty: selectedBundle.size, bundlePrice: selectedBundle.price });                  navigate("/cart");
+                }
               }}
               className="rounded-lg bg-[#CEF17B] px-4 py-2 text-sm font-bold text-[#064734]"
-              disabled={bundleItems.length !== selectedBundle.size}
+              disabled={totalBundleQuantity !== selectedBundle.size}
             >
               Buy Bundle
             </button>

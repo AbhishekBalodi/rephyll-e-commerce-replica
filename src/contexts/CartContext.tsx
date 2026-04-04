@@ -11,10 +11,17 @@ export interface CartItem {
   quantity: number;
 }
 
+export interface BundleOffer {
+  targetQty: number;
+  bundlePrice: number;
+}
+
 interface CartContextType {
   items: CartItem[];
   totalItems: number;
   totalPrice: number;
+  bundleOffer: BundleOffer | null;
+  setBundleOffer: (offer: BundleOffer | null) => void;
   addToCart: (item: Omit<CartItem, "quantity">, quantity?: number) => void;
   removeFromCart: (productId: number) => void;
   updateQuantity: (productId: number, quantity: number) => void;
@@ -34,6 +41,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       return [];
     }
   });
+  const [bundleOffer, setBundleOffer] = useState<BundleOffer | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -41,7 +49,9 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   }, [items]);
 
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const totalPrice = bundleOffer && totalItems === bundleOffer.targetQty
+    ? bundleOffer.bundlePrice
+    : items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   const addToCart = (item: Omit<CartItem, "quantity">, quantity = 1) => {
     setItems((prev) => {
@@ -53,6 +63,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       }
       return [...prev, { ...item, quantity }];
     });
+    setBundleOffer(null);
     toast({ title: "Added to Cart", description: `${item.name} added to your cart.` });
   };
 
@@ -66,12 +77,16 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
     setItems((prev) => prev.map((i) => (i.productId === productId ? { ...i, quantity } : i)));
+    setBundleOffer(null);
   };
 
-  const clearCart = () => setItems([]);
+  const clearCart = () => {
+    setItems([]);
+    setBundleOffer(null);
+  };
 
   return (
-    <CartContext.Provider value={{ items, totalItems, totalPrice, addToCart, removeFromCart, updateQuantity, clearCart }}>
+    <CartContext.Provider value={{ items, totalItems, totalPrice, bundleOffer, setBundleOffer, addToCart, removeFromCart, updateQuantity, clearCart }}>
       {children}
     </CartContext.Provider>
   );

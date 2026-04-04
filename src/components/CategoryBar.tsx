@@ -74,6 +74,17 @@ const CategoryBar = () => {
   }
 
   const handleCategoryClick = (cat: ApiCategory) => {
+    const normalized = cat.name.trim().toLowerCase();
+    if (normalized === "byob" || normalized === "byob" || normalized.includes("byob")) {
+      navigate("/homecare-kits");
+      return;
+    }
+
+    if (normalized.includes("kit") || normalized.includes("bundle") || normalized.includes("homecare")) {
+      navigate("/homecare-kits");
+      return;
+    }
+
     const slug = toSlug(cat.name);
     navigate(`/category/${slug}`, { state: { categoryId: cat.id, categoryName: cat.name } });
   };

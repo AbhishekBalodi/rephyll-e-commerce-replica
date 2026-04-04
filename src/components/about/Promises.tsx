@@ -21,15 +21,15 @@ const Promises = () => {
 
       {/* ================= CLOVERS ================= */}
       {/* Left side (faded) */}
-      <img src={cloverLime} className="absolute opacity-10" style={{ width: 153, left: 10, top: 10  , opacity: 0.8,filter: "brightness(1.5)"}} />
-      <img src={cloverLime} className="absolute opacity-10" style={{ width: 153, left: 200, top: 200  , opacity: 0.8,filter: "brightness(1.5)" }} />
-      <img src={cloverLime} className="absolute opacity-10" style={{ width: 153, left: 500, top: 60  , opacity: 0.8,filter: "brightness(1.5)" }} />
-      <img src={cloverLime} className="absolute opacity-10" style={{ width: 153, left: 10, top: 240  , opacity: 0.8,filter: "brightness(1.5)"}} />
+      <img src={cloverLime} className="absolute opacity-10" style={{ width: 153, height: 153, left: 10, top: 10  , opacity: 0.8,filter: "brightness(1.5)"}} />
+      <img src={cloverLime} className="absolute opacity-10" style={{ width: 153, height: 153, left: 200, top: 200  , opacity: 0.8,filter: "brightness(1.5)" }} />
+      <img src={cloverLime} className="absolute opacity-10" style={{ width: 153, height: 153, left: 500, top: 60  , opacity: 0.8,filter: "brightness(1.5)" }} />
+      <img src={cloverLime} className="absolute opacity-10" style={{ width: 153, height: 153, left: 10, top: 240  , opacity: 0.8,filter: "brightness(1.5)"}} />
 
       {/* Right side (stronger visibility) */}
-      <img src={cloverLime} className="absolute opacity-25" style={{ width: 153, right: 220, top: 10  , opacity: 0.5}} />
-      <img src={cloverLime} className="absolute opacity-25" style={{ width: 153, right: 5, top: 250 , opacity: 0.5 }} />
-      <img src={cloverLime} className="absolute opacity-20" style={{ width: 153, right: 5, top: 20 , opacity: 0.5}} />
+      <img src={cloverLime} className="absolute opacity-25" style={{ width: 153, height: 153, right: 220, top: 10  , opacity: 0.5}} />
+      <img src={cloverLime} className="absolute opacity-25" style={{ width: 153, height: 153, right: 5, top: 250 , opacity: 0.5 }} />
+      <img src={cloverLime} className="absolute opacity-20" style={{ width: 153, height: 153, right: 5, top: 20 , opacity: 0.5}} />
       {/* ================= CONTENT ================= */}
       <div className="relative w-[1280px] mx-auto flex flex-col items-center justify-center h-full">
 

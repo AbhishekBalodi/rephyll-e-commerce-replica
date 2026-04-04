@@ -24,11 +24,18 @@ export function useProductList(params?: {
   });
 }
 
-export function useProductDetail(slug: string | null) {
+export function useProductDetail(identifier: string | null) {
   return useQuery({
-    queryKey: ["product", slug],
-    queryFn: () => getProductBySlug(slug!),
-    enabled: slug !== null,
+    queryKey: ["product", identifier],
+    queryFn: async () => {
+      if (!identifier) throw new Error("Product identifier is required");
+      const idCandidate = decodeURIComponent(identifier);
+      if (/^\d+$/.test(idCandidate)) {
+        return getProductById(Number(idCandidate));
+      }
+      return getProductBySlug(idCandidate);
+    },
+    enabled: identifier !== null,
   });
 }
 

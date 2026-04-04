@@ -3,7 +3,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import { useProductList } from "@/hooks/useProducts";
-import { ShoppingCart, Star, Share2, Heart, ChevronRight } from "lucide-react";
+import { ShoppingCart, Star, Share2, Heart, ChevronRight, Check } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import QuantityCapsule from "@/components/QuantityCapsule";
 import ascFront2 from "@/assets/ASC_Front-2.png";
@@ -11,6 +11,8 @@ import bottleSurface from "@/assets/bottle-surface-cleaner.png";
 import bottleDegreaser from "@/assets/bottle-kitchen-degreaser.png";
 import bottleDishwash from "@/assets/bottle-dishwash.png";
 import bottleToilet from "@/assets/bottle-toilet-cleaner.png";
+import kitBottles from "@/assets/kit-bottles.png";
+import kitCardBg from "@/assets/kit-card-bg.png";
 
 const SMART_BUNDLES = [
   { id: 2001, name: "Kitchen Essential Bundle", productCount: 3, rating: 4.0, reviewCount: 128, price: 799, originalPrice: 1047, discount: 20 },
@@ -25,6 +27,68 @@ const MEGA_PACKS = [
   { id: 4003, name: "Kitchen Essential Bundle", productCount: 3, rating: 4.0, reviewCount: 128, price: 799, originalPrice: 1047, discount: 20, sizes: ["5L", "3L", "2L", "750 ML"] },
   { id: 4004, name: "Kitchen Essential Bundle", productCount: 3, rating: 4.0, reviewCount: 128, price: 799, originalPrice: 1047, discount: 20, sizes: ["5L", "3L", "2L", "750 ML"] },
 ];
+
+const HOMECARE_KITS = [
+  { id: 5001, name: "Home Essential Kit", items: ["All Surface Cleaner", "Toilet Cleaner", "Floor Cleaner"], price: 799, originalPrice: 1047, discount: 20 },
+  { id: 5002, name: "Kitchen Essential Kit", items: ["Dishwash Liquid", "Kitchen Degreaser", "All Surface Cleaner"], price: 799, originalPrice: 1047, discount: 20 },
+  { id: 5003, name: "Laundry Care Kit", items: ["Laundry Liquid", "Fabric Freshener", "Stain Remover"], price: 799, originalPrice: 1047, discount: 20 },
+  { id: 5004, name: "Personal Care Kit", items: ["Handwash", "Sanitizer", "Surface Spray"], price: 799, originalPrice: 1047, discount: 20 },
+];
+
+const HomeCareKitCard = ({ kit }: { kit: typeof HOMECARE_KITS[0] }) => {
+  const { items, addToCart, updateQuantity, removeFromCart } = useCart();
+  const cartItem = items.find((i) => i.productId === kit.id);
+  const cartQty = cartItem?.quantity ?? 0;
+
+  return (
+    <div className="flex flex-col items-center" style={{ width: "276px", background: "#FFFFFF", borderRadius: "24px", boxShadow: "0px 10px 15px -3px rgba(0,0,0,0.1), 0px 4px 6px -4px rgba(0,0,0,0.1)" }}>
+      <div className="relative flex-shrink-0" style={{ width: "276px", height: "162px", borderRadius: "24px 24px 0 0", overflow: "hidden" }}>
+        <img src={kitCardBg} alt="Kit background" className="absolute inset-0 w-full h-full object-cover" />
+        <img src={kitBottles} alt={kit.name} className="absolute object-contain" style={{ width: "178px", height: "141px", left: "49px", top: "11px" }} />
+      </div>
+      <div className="flex flex-col items-start" style={{ width: "238px", padding: "16px 0 12px 0", gap: "12px" }}>
+        <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "18px", lineHeight: "24px", color: "#064734" }}>
+          {kit.name}
+        </span>
+        <div className="flex flex-col" style={{ gap: "8px", width: "238px" }}>
+          {kit.items.map((item, i) => (
+            <div key={i} className="flex items-center" style={{ gap: "6px" }}>
+              <Check size={18} color="#064734" strokeWidth={1.75} />
+              <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, fontSize: "13px", lineHeight: "18px", color: "#064734" }}>
+                {item}
+              </span>
+            </div>
+          ))}
+        </div>
+        <div className="flex items-center" style={{ gap: "10px" }}>
+          <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "26px", lineHeight: "24px", color: "#064734" }}>
+            ₹{kit.price}
+          </span>
+          <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, fontSize: "14px", lineHeight: "24px", color: "#8E939C", textDecoration: "line-through" }}>
+            ₹{kit.originalPrice}
+          </span>
+        </div>
+        {cartQty > 0 ? (
+          <QuantityCapsule
+            quantity={cartQty}
+            onIncrement={() => updateQuantity(kit.id, cartQty + 1)}
+            onDecrement={() => (cartQty <= 1 ? removeFromCart(kit.id) : updateQuantity(kit.id, cartQty - 1))}
+            size="sm"
+            fullWidth
+          />
+        ) : (
+          <button
+            onClick={() => addToCart({ productId: kit.id, name: kit.name, price: kit.price, originalPrice: kit.originalPrice, image: "/placeholder.svg" })}
+            className="flex items-center justify-center gap-2"
+            style={{ width: "238px", height: "36px", border: "1px solid #064734", borderRadius: "8px", background: "transparent", fontFamily: "'Poppins', sans-serif", fontWeight: 500, fontSize: "14px", color: "#064734", cursor: "pointer" }}
+          >
+            <ShoppingCart size={20} color="#064734" /> Add to Cart
+          </button>
+        )}
+      </div>
+    </div>
+  );
+};
 
 const BundleCard = ({ bundle }: { bundle: typeof SMART_BUNDLES[0] }) => {
   const { items, addToCart, updateQuantity, removeFromCart } = useCart();
@@ -125,8 +189,36 @@ const MegaCard = ({ pack }: { pack: typeof MEGA_PACKS[0] }) => {
   );
 };
 
+const HomeKitAction = ({ kit }: { kit: typeof HOMECARE_KITS[0] }) => {
+  const { items, addToCart, updateQuantity, removeFromCart } = useCart();
+  const cartItem = items.find((i) => i.productId === kit.id);
+  const cartQty = cartItem?.quantity ?? 0;
+
+  if (cartQty > 0) {
+    return (
+      <QuantityCapsule
+        quantity={cartQty}
+        onIncrement={() => updateQuantity(kit.id, cartQty + 1)}
+        onDecrement={() => (cartQty <= 1 ? removeFromCart(kit.id) : updateQuantity(kit.id, cartQty - 1))}
+        size="sm"
+        fullWidth
+      />
+    );
+  }
+
+  return (
+    <button
+      onClick={() => addToCart({ productId: kit.id, name: kit.name, price: kit.price, originalPrice: kit.originalPrice, image: "/placeholder.svg" })}
+      className="w-full flex items-center justify-center gap-2"
+      style={{ height: "48px", background: "#064734", color: "#FFFFFF", borderRadius: "14px", fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "14px", border: "none", cursor: "pointer" }}
+    >
+      <ShoppingCart size={18} /> Add to Cart
+    </button>
+  );
+};
+
 const HomecareKitsPage = () => {
-  const [activeView, setActiveView] = useState<"smart" | "mega">("smart");
+  const [activeView, setActiveView] = useState<"smart" | "mega" | "homecare">("smart");
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -145,6 +237,12 @@ const HomecareKitsPage = () => {
           >
             Mega Saver Pack
           </button>
+          <button
+            onClick={() => setActiveView("homecare")}
+            className={`px-6 py-2.5 rounded-full font-semibold text-base transition ${activeView === "homecare" ? "bg-[#064734] text-white" : "bg-[#E6F5E3] text-[#064734]"}`}
+          >
+            Home Care Kits
+          </button>
         </div>
 
         {activeView === "smart" ? (
@@ -153,10 +251,16 @@ const HomecareKitsPage = () => {
               <BundleCard key={bundle.id} bundle={bundle} />
             ))}
           </div>
-        ) : (
+        ) : activeView === "mega" ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[30px] justify-items-center">
             {MEGA_PACKS.map((pack) => (
               <MegaCard key={pack.id} pack={pack} />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[30px] justify-items-center">
+            {HOMECARE_KITS.map((kit) => (
+              <HomeCareKitCard key={kit.id} kit={kit} />
             ))}
           </div>
         )}

@@ -5,7 +5,7 @@ import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const CartPage = () => {
-  const { items, totalItems, totalPrice, updateQuantity, removeFromCart, clearCart } = useCart();
+  const { items, totalItems, totalPrice, bundleOffer, updateQuantity, removeFromCart, clearCart } = useCart();
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -70,6 +70,9 @@ const CartPage = () => {
                 <span className="text-sm text-muted-foreground">Subtotal ({totalItems} items)</span>
                 <span className="text-lg font-bold text-foreground">₹{totalPrice}</span>
               </div>
+              {bundleOffer && totalItems === bundleOffer.targetQty && (
+                <p className="text-sm text-primary-foreground font-medium mb-4">Bundle pricing applied: ₹{bundleOffer.bundlePrice} for {bundleOffer.targetQty} items</p>
+              )}
               <div className="flex gap-3">
                 <button
                   onClick={clearCart}

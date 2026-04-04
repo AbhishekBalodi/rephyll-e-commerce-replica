@@ -1,4 +1,4 @@
-import clover from "@/assets/clover-dark-green.png";
+import clover from "@/assets/clover-green-dark.png";
 
 import icon1 from "@/assets/philosophy-1.png";
 import icon2 from "@/assets/philosophy-2.png";
@@ -34,14 +34,14 @@ const Philosophy = () => {
 
       {/* ================= CLOVERS (MATCHED TO FIGMA) ================= */}
       <img src={clover} className="absolute w-[153px] top-[10px] right-[0px]" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
-      <img src={clover} className="absolute w-[153px] top-[-120px] right-[300px]" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
-      <img src={clover} className="absolute w-[153px] bottom-[80px] left-[-80px]" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
-      <img src={clover} className="absolute w-[153px] bottom-[-40px] left-[350px]" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
-      <img src={clover} className="absolute w-[153px] bottom-[-80px] right-[0px]" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
-      <img src={clover} className="absolute w-[153px] top-[80px] left-[-120px]" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
-      <img src={clover} className="absolute w-[153px] top-[290px] right-[0px]" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
-      <img src={clover} className="absolute w-[153px] top-[10px] right-[1300px]" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
-      <img src={clover} className="absolute w-[153px] top-[390px] right-[1300px]" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
+      <img src={clover} className="absolute w-[153px] top-[0px] right-[200px]" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
+      <img src={clover} className="absolute w-[153px] bottom-[80px] left-[0px]" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
+      <img src={clover} className="absolute w-[153px] bottom-[0px] left-[350px]" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
+      <img src={clover} className="absolute w-[153px] bottom-[0px] right-[0px]" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
+      <img src={clover} className="absolute w-[153px] top-[80px] left-[0px]" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
+      <img src={clover} className="absolute w-[153px] top-[200px] right-[0px]" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
+      <img src={clover} className="absolute w-[153px] top-[10px] right-[1200px]" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
+      <img src={clover} className="absolute w-[153px] top-[390px] right-[1200px]" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
       <img src={clover} className="absolute w-[153px] top-[10px] right-[400px]" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
       <img src={clover} className="absolute w-[153px] top-[10px] right-[950px]" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
       <img src={clover} className="absolute w-[153px] top-[390px] right-[400px]" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />

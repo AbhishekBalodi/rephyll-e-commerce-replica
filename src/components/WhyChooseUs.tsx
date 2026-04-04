@@ -12,12 +12,12 @@ const BADGES = [
 
 const WhyChooseUs = () => {
   return (
-    <section className="relative w-full bg-[#064734] py-20 overflow-hidden">
+    <section className="relative w-full bg-[#064734] pt-10 pb-20 overflow-hidden">
       {/* Clovers */}
-      <img src={clover} className="absolute w-[153px] top-[20px] left-[40px] z-0" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
-      <img src={clover} className="absolute w-[153px] top-[30px] right-[60px] z-0" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
-      <img src={clover} className="absolute w-[153px] bottom-[20px] left-[60px] z-0" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
-      <img src={clover} className="absolute w-[153px] bottom-[0px] right-[40px] z-0" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
+      <img src={clover} className="absolute w-[153px] h-[153px] top-[20px] left-[40px] z-0" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
+      <img src={clover} className="absolute w-[153px] h-[153px] top-[30px] right-[60px] z-0" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
+      <img src={clover} className="absolute w-[153px] h-[153px] bottom-[20px] left-[60px] z-0" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
+      <img src={clover} className="absolute w-[153px] h-[153px] bottom-[0px] right-[40px] z-0" style={{ opacity: 0.5, filter: "brightness(1.5)" }} />
 
       <div className="relative z-10 max-w-[1200px] w-full px-6 mx-auto text-center text-white">
         <h2 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "40px", lineHeight: "60px", textAlign: "center" }}>

@@ -7,17 +7,17 @@ const TOP_REVIEWS = DUMMY_REVIEWS.filter((r) => r.rating >= 4).slice(0, 6);
 const TrustStrips = () => {
   return (
     <section
-      className="relative w-full overflow-hidden py-24"
+      className="relative w-full overflow-hidden pt-10 pb-24"
       style={{
        background: "rgba(206, 241, 123, 0.3)",
       }}
     >
       {/* CLOVERS */}
-      <img src={cloverLime} className="absolute w-[260px] top-[20px] left-[300px]" style={{  opacity: 0.5 }} />
-      <img src={cloverLime} className="absolute w-[260px] top-[80px] left-[-60px]" style={{  opacity: 0.5, }} />
-      <img src={cloverLime} className="absolute w-[220px] bottom-[20px] left-[0px]" style={{  opacity: 0.5,  }} />
-      <img src={cloverLime} className="absolute w-[240px] bottom-[40px] right-[0px]" style={{  opacity: 0.5,  }} />
-      <img src={cloverLime} className="absolute w-[200px] top-[50px] right-[0px]" style={{  opacity: 0.5,  }} />
+      <img src={cloverLime} className="absolute w-[153px] h-[153px] top-[20px] left-[300px]" style={{  opacity: 0.5 }} />
+      <img src={cloverLime} className="absolute w-[153px] h-[153px] top-[80px] left-[-60px]" style={{  opacity: 0.5, }} />
+      <img src={cloverLime} className="absolute w-[153px] h-[153px] bottom-[20px] left-[0px]" style={{  opacity: 0.5,  }} />
+      <img src={cloverLime} className="absolute w-[153px] h-[153px] bottom-[40px] right-[0px]" style={{  opacity: 0.5,  }} />
+      <img src={cloverLime} className="absolute w-[153px] h-[153px] top-[50px] right-[0px]" style={{  opacity: 0.5,  }} />
 
       <div className="relative max-w-[1236px] mx-auto text-center px-4">
 

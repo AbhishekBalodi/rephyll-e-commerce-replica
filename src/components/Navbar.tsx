@@ -29,7 +29,7 @@ const NAV_CATEGORIES: NavCategory[] = [
   { label: "Shop All", path: "/shop" },
   { label: "About Us", path: "/about" },
   { label: "Our Story", path: "/our-story" },
-  { label: "Homecare Kits", path: "/homecare-kits" },
+  // { label: "Kits and Bundles", path: "/homecare-kits" },
   { label: "B2B Orders", path: "/b2b-orders" },
   { label: "Blogs", path: "/blogs" },
 ];
@@ -68,13 +68,25 @@ const Navbar = () => {
 
   const shopSubcategories = useMemo(() => {
     if (!backendCategories) return [];
-    return backendCategories.map((cat) => ({ label: cat.name, path: `/category/${slugifyCategory(cat.name)}` }));
+    return backendCategories.map((cat) => {
+      const normalizedName = slugifyCategory(cat.name);
+      const isBYOB = normalizedName === "byob" || cat.name.toLowerCase().includes("byob");
+      const isKitsOrBundles = cat.name.toLowerCase().includes("kit") || cat.name.toLowerCase().includes("bundle");
+      const path = isBYOB || isKitsOrBundles ? "/homecare-kits" : `/category/${normalizedName}`;
+      return { label: cat.name, path };
+    });
   }, [backendCategories]);
 
   const getSubcategories = (cat: NavCategory) => {
     if (cat.label === "Shop All") return shopSubcategories;
     return cat.subcategories || [];
   };
+
+  const activeSubcategories = useMemo(() => {
+    if (!activeMenu) return [];
+    if (activeMenu === "Shop All") return shopSubcategories;
+    return NAV_CATEGORIES.find((c) => c.label === activeMenu)?.subcategories || [];
+  }, [activeMenu, shopSubcategories]);
 
   useEffect(() => {
     if (searchQuery.length < 2) { setSearchResults([]); return; }
@@ -251,19 +263,6 @@ const Navbar = () => {
                       )}
                     </button>
 
-                    {subcats.length > 0 && activeMenu === cat.label && (
-                      <div className="absolute top-full mt-2 w-[220px] bg-white rounded shadow-lg py-2">
-                        {subcats.map((sub) => (
-                          <button
-                            key={sub.label}
-                            className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            onClick={() => handleNav(sub.path)}
-                          >
-                            {sub.label}
-                          </button>
-                        ))}
-                      </div>
-                    )}
                   </div>
                 );
               })}
@@ -337,7 +336,7 @@ const Navbar = () => {
                             onClick={() => {
                               setSearchQuery("");
                               setSearchFocused(false);
-                              navigate(`/product/${product.slug || product.id}`);
+                              navigate(`/product/${product.id}`);
                             }}
                             className="flex items-center gap-3 w-full px-4 py-3 hover:bg-gray-50 transition-colors text-left border-b border-gray-100 last:border-0"
                           >
@@ -383,14 +382,18 @@ const Navbar = () => {
         </div>
 
         {/* Mega menu (desktop) */}
-        {activeMenu && (
-          <div className="hidden md:block absolute left-0 right-0 bg-background border-b border-border shadow-sm z-40" onMouseEnter={() => { if (timeoutRef.current) clearTimeout(timeoutRef.current); }} onMouseLeave={handleMouseLeave}>
-            <div className="max-w-7xl mx-auto px-6 py-6">
-              <div className="flex gap-12">
-                {NAV_CATEGORIES.find((c) => c.label === activeMenu)?.subcategories?.map((sub) => (
-                  <button key={sub.label} onClick={() => handleNav(sub.path)} className="text-sm text-muted-foreground hover:text-foreground transition-colors whitespace-nowrap flex items-center gap-2">
+        {activeSubcategories.length > 0 && (
+          <div className="hidden md:block absolute top-full left-0 right-0 bg-background border-b border-border shadow-sm z-40" onMouseEnter={() => { if (timeoutRef.current) clearTimeout(timeoutRef.current); }} onMouseLeave={handleMouseLeave}>
+            <div className="max-w-[1440px] mx-auto px-6 py-3">
+              <div className="flex flex-wrap items-center justify-center gap-2 text-foreground">
+                {activeSubcategories.map((sub) => (
+                  <button
+                    key={sub.label}
+                    className="px-4 py-2 text-sm font-medium text-foreground hover:bg-accent/25 rounded"
+                    onClick={() => handleNav(sub.path)}
+                  >
                     {sub.label}
-                    {sub.isNew && <span className="text-[10px] font-bold bg-primary text-primary-foreground px-1.5 py-0.5 rounded-sm">NEW</span>}
+                    {sub.isNew && <span className="text-[10px] font-bold bg-[#064734] text-white px-1 py-0.5 rounded-sm ml-2">NEW</span>}
                   </button>
                 ))}
               </div>

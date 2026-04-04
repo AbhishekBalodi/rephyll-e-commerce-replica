@@ -47,16 +47,28 @@ const BlogsSection = () => {
   }
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#064734] py-28">
+    <section className="relative w-full overflow-hidden bg-[#064734] pt-10 pb-28">
 
       {/* 🌿 CLOVERS (ABSOLUTE like Figma) */}
-      <img src={clover} className="absolute w-[299px] top-[-40px] left-[20px]" style={{ opacity: 0.25, filter: "brightness(1.2)" }} />
-      <img src={clover} className="absolute w-[153px] top-[30px] right-[50px]" style={{ opacity: 0.6, filter: "brightness(1.2)" }} />
-      <img src={clover} className="absolute w-[153px] top-[220px] left-[80px]" style={{ opacity: 0.6, filter: "brightness(1.2)" }} />
-      <img src={clover} className="absolute w-[299px] bottom-[20px] right-[30px]" style={{ opacity: 0.25, filter: "brightness(1.2)" }} />
-      <img src={clover} className="absolute w-[153px] bottom-[90px] left-[180px]" style={{ opacity: 0.5, filter: "brightness(1.2)" }} />
-      <img src={clover} className="absolute w-[153px] top-[130px] left-[calc(50%-76px)]" style={{ opacity: 0.5, filter: "brightness(1.2)" }} />
-      
+      <img src={clover} className="absolute w-[153px] h-[153px] top-[0px] left-[20px]" style={{ opacity: 0.9, filter: "brightness(1.3)" }} /> // top left
+      <img src={clover} className="absolute w-[153px] h-[153px] top-[0px] right-[0px]" style={{ opacity: 0.9, filter: "brightness(1.3)" }} /> // top right
+      <img src={clover} className="absolute w-[153px] h-[153px] top-[325px] left-[20px]" style={{ opacity: 0.9, filter: "brightness(1.3)" }} /> 
+      <img src={clover} className="absolute w-[153px] h-[153px] top-[650px] left-[400px]" style={{ opacity: 0.9, filter: "brightness(1.3)" }} /> 
+      <img src={clover} className="absolute w-[153px] h-[153px] top-[0px] left-[400px]" style={{ opacity: 0.9, filter: "brightness(1.3)" }} /> 
+      <img src={clover} className="absolute w-[153px] h-[153px] top-[650px] left-[1000px]" style={{ opacity: 0.9, filter: "brightness(1.3)" }} /> 
+
+
+ 
+
+
+
+      <img src={clover} className="absolute w-[153px] h-[153px] top-[650px] left-[20px]" style={{ opacity: 0.9, filter: "brightness(1.3)" }} /> // bottom left
+      <img src={clover} className="absolute w-[153px] h-[153px] top-[0px] left-[1020px]" style={{ opacity: 0.9, filter: "brightness(1.2)" }} />
+      <img src={clover} className="absolute w-[153px] h-[153px] top-[650px] left-[1320px]" style={{ opacity: 0.9, filter: "brightness(1.3)" }} /> // bottom right
+      <img src={clover} className="absolute w-[153px] h-[153px] top-[325px] left-[1320px]" style={{ opacity: 0.9, filter: "brightness(1.3)" }} /> 
+      <img src={clover} className="absolute w-[153px] h-[153px] top-[325px] left-[400px]" style={{ opacity: 0.9, filter: "brightness(1.3)" }} /> 
+      <img src={clover} className="absolute w-[153px] h-[153px] top-[325px] left-[1000px]" style={{ opacity: 0.9, filter: "brightness(1.3)" }} /> 
+
 
 
 
