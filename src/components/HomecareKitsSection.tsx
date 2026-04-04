@@ -370,6 +370,27 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
                 );
               })}
             </div>
+
+            {/* Shop All Button */}
+            <button
+              onClick={() => window.location.href = "/shop"}
+              className="flex items-center justify-center"
+              style={{
+                height: "48px",
+                padding: "0 32px",
+                background: "#064734",
+                color: "#FFFFFF",
+                borderRadius: "9999px",
+                fontFamily: "'Poppins', sans-serif",
+                fontWeight: 600,
+                fontSize: "16px",
+                border: "none",
+                cursor: "pointer",
+              }}
+            >
+              Shop All
+            </button>
+            </div>
           )}
 
           {/* KITS */}
