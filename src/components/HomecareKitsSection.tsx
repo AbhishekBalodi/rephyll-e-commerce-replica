@@ -66,20 +66,9 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
         <div className="relative z-[1] mx-auto max-w-[1440px] px-4 md:px-6 h-full flex flex-col justify-center">
           {/* TABS */}
           <div className="mb-8 flex justify-center">
-            <div className="flex justify-center w-full">
-              {/* <div className="flex items-center gap-4" style={{ width: showKitsTab ? "760px" : "500px" }}>  */}
-              {/* <button onClick={() => setActiveTab("bundles")} className={`flex items-center justify-center`} style={{ width: showKitsTab ? "33.33%" : "50%", height: "48px", borderRadius: "12px", background: activeTab === "bundles" ? "#064734" : "#FFFFFF", color: activeTab === "bundles" ? "#FFFFFF" : "#064734", fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "16px" }}> */}{/* 
-                Smart Bundles
-              </button> */}
-              <button onClick={() => setActiveTab("single")} className={`flex items-center justify-center`} style={{ width: showKitsTab ? "33.33%" : "50%", height: "48px", borderRadius: "12px", background: activeTab === "single" ? "#064734" : "#FFFFFF", color: activeTab === "single" ? "#FFFFFF" : "#064734", fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "16px" }}>
-                Single Products
-              </button>
-              {showKitsTab && (
-                <button onClick={() => setActiveTab("kits")} className="w-1/3 flex items-center justify-center" style={{ height: "48px", borderRadius: "12px", background: activeTab === "kits" ? "#064734" : "#FFFFFF", color: activeTab === "kits" ? "#FFFFFF" : "#064734", fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "16px" }}>
-                  Homecare Kits
-                </button>
-              )}
-            </div>
+            <button onClick={() => setActiveTab("single")} className="flex items-center justify-center" style={{ width: "240px", height: "48px", borderRadius: "12px", background: "#064734", color: "#FFFFFF", fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "16px" }}>
+              Single Products
+            </button>
           </div>
 
           {/* BUNDLES */}
@@ -183,6 +172,7 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
 
           {/* SINGLE */}
           {activeTab === "single" && (
+            <div className="flex flex-col items-center gap-10">
             <div className="flex justify-center flex-wrap gap-x-[80px] gap-y-[40px]">
               {SINGLE_PRODUCTS.map((product) => {
                 const cartItem = items.find((i) => i.productId === product.id);
@@ -379,6 +369,27 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
                   </div>
                 );
               })}
+            </div>
+
+            {/* Shop All Button */}
+            <button
+              onClick={() => window.location.href = "/shop"}
+              className="flex items-center justify-center"
+              style={{
+                height: "48px",
+                padding: "0 32px",
+                background: "#064734",
+                color: "#FFFFFF",
+                borderRadius: "9999px",
+                fontFamily: "'Poppins', sans-serif",
+                fontWeight: 600,
+                fontSize: "16px",
+                border: "none",
+                cursor: "pointer",
+              }}
+            >
+              Shop All
+            </button>
             </div>
           )}
 
