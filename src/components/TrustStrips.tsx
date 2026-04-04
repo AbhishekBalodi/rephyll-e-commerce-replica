@@ -81,8 +81,10 @@ const TrustStrips = () => {
                 {/* PROFILE IMAGE */}
                 <div className="absolute -top-[60px] w-[120px] h-[120px] rounded-full border-[8px] border-white overflow-hidden shadow-md">
                   <img
-                    src={`https://i.pravatar.cc/150?img=${review.id}`}
+                    src={AVATAR_MAP[review.name] || avatarTushar}
+                    alt={review.name}
                     className="w-full h-full object-cover rounded-full"
+                    loading="lazy"
                   />
                 </div>
 
