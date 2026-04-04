@@ -172,6 +172,7 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
 
           {/* SINGLE */}
           {activeTab === "single" && (
+            <div className="flex flex-col items-center gap-10">
             <div className="flex justify-center flex-wrap gap-x-[80px] gap-y-[40px]">
               {SINGLE_PRODUCTS.map((product) => {
                 const cartItem = items.find((i) => i.productId === product.id);

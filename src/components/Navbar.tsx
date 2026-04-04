@@ -393,7 +393,6 @@ const Navbar = () => {
                     onClick={() => handleNav(sub.path)}
                   >
                     {sub.label}
-                    {sub.isNew && <span className="text-[10px] font-bold bg-[#064734] text-white px-1 py-0.5 rounded-sm ml-2">NEW</span>}
                   </button>
                 ))}
               </div>
