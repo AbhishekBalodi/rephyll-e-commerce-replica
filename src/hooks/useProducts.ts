@@ -29,11 +29,12 @@ export function useProductDetail(identifier: string | null) {
     queryKey: ["product", identifier],
     queryFn: async () => {
       if (!identifier) throw new Error("Product identifier is required");
-      const idCandidate = decodeURIComponent(identifier);
-      if (/^\d+$/.test(idCandidate)) {
-        return getProductById(Number(idCandidate));
+      const decoded = decodeURIComponent(identifier);
+      // Always prefer slug-based lookup; only use ID if purely numeric
+      if (/^\d+$/.test(decoded)) {
+        return getProductById(Number(decoded));
       }
-      return getProductBySlug(idCandidate);
+      return getProductBySlug(decoded);
     },
     enabled: identifier !== null,
   });

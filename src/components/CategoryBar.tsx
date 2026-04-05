@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useCategories } from "@/hooks/useProducts";
 import type { ApiCategory } from "@/types/api";
+import { resolveImageUrl } from "@/lib/productHelpers";
 
 import catWashroom from "@/assets/cat-washroom-care.png";
 import catFloor from "@/assets/cat-floor-surface.png";
@@ -9,7 +10,7 @@ import catLaundry from "@/assets/cat-laundry-care.png";
 import catHomeCare from "@/assets/cat-home-care-kits.png";
 import catBundles from "@/assets/cat-smart-bundles.png";
 
-const getCategoryIcon = (name: string): string => {
+const getFallbackIcon = (name: string): string => {
   const lower = name.toLowerCase();
   if (lower.includes("washroom") || lower.includes("bath")) return catWashroom;
   if (lower.includes("floor") || lower.includes("surface")) return catFloor;
@@ -18,6 +19,11 @@ const getCategoryIcon = (name: string): string => {
   if (lower.includes("kit") || lower.includes("home")) return catHomeCare;
   if (lower.includes("bundle") || lower.includes("smart")) return catBundles;
   return catHomeCare;
+};
+
+const getCategoryIcon = (cat: ApiCategory): string => {
+  if (cat.image) return resolveImageUrl(cat.image);
+  return getFallbackIcon(cat.name);
 };
 
 const toSlug = (name: string) =>
@@ -95,7 +101,7 @@ const CategoryBar = () => {
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="flex items-center justify-center flex-wrap py-4" style={{ gap: "24px" }}>
             {categories.map((cat: ApiCategory, index: number) => {
-              const iconSrc = getCategoryIcon(cat.name);
+              const iconSrc = getCategoryIcon(cat);
               const orderValue = getOrderValue(index, categories.length);
               
               return (

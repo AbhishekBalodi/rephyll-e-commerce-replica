@@ -74,6 +74,7 @@ export interface ApiVariant {
   id: number;
   attrsCombo: string; // e.g. "Color=Black,Fit=Regular"
   sku: string;
+  price: number;
   images: ApiVariantImage[];
   inventory: ApiVariantInventory;
 }
@@ -104,6 +105,7 @@ export interface ApiCategory {
   description: string;
   productCount: number;
   parentId: number | null;
+  image: string | null;
   children: ApiCategory[] | null;
 }
 
