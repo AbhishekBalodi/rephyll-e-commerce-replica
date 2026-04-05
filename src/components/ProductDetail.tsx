@@ -40,7 +40,7 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
   const navigate = useNavigate();
 
   const [activeImg, setActiveImg] = useState(0);
-  const [selectedVariant] = useState<ApiVariant | undefined>(
+  const [selectedVariant, setSelectedVariant] = useState<ApiVariant | undefined>(
     product.variants?.[0]
   );
   const [selectedPackId, setSelectedPackId] = useState<number>(1);
@@ -48,7 +48,8 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
   const { items, addToCart, updateQuantity, removeFromCart } = useCart();
 
   const images = getProductImages(product);
-  const price = getSellingPrice(product);
+  // Use variant price if available, otherwise fall back to base price
+  const price = selectedVariant?.price ?? getSellingPrice(product);
   const mrp = getMrp(product);
 
   const packs = generatePacks(price, mrp);
@@ -184,6 +185,29 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
                 93% of buyers have recommended this.
               </div>
             </div>
+
+            {/* Variant selector */}
+            {product.variants && product.variants.length > 1 && (
+              <div className="flex flex-wrap gap-2 mb-4">
+                {product.variants.map((v) => {
+                  const label = v.attrsCombo.split(",").map(p => p.split("=")[1]).join(", ");
+                  const isSelected = selectedVariant?.id === v.id;
+                  return (
+                    <button
+                      key={v.id}
+                      onClick={() => setSelectedVariant(v)}
+                      className={`px-4 py-2 rounded-full text-sm font-medium border transition-all ${
+                        isSelected
+                          ? "bg-[#064734] text-white border-[#064734]"
+                          : "bg-white text-[#064734] border-[#064734]/30 hover:border-[#064734]"
+                      }`}
+                    >
+                      {label} — ₹{v.price}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
 
             <PackSelector
               basePrice={price}
