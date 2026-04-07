@@ -50,7 +50,7 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
       {/* ===== SECTION 1: Smart Bundles / Single Products (height: 727px) ===== */}
       <section
         className="relative overflow-hidden"
-        style={{ height: "727px", background: "rgba(206, 241, 123, 0.3)" }}
+        style={{ minHeight: "auto", background: "rgba(206, 241, 123, 0.3)" }}
       >
         {/* Intense clovers - darker & more visible */}
         <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "153px", height: "153px", left: "0px", top: "0px", opacity: 0.5 }} />
@@ -63,10 +63,10 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
         <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "153px", height: "153px", left: "10%", bottom: "10%", opacity: 0.5 }} />
         <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "153px", height: "153px", right: "25%", bottom: "25%", opacity: 0.5 }} />
 
-        <div className="relative z-[1] mx-auto max-w-[1440px] px-4 md:px-6 h-full flex flex-col justify-center">
+        <div className="relative z-[1] mx-auto max-w-[1440px] px-4 md:px-6 py-8 md:py-16 flex flex-col justify-center">
           {/* TABS */}
-          <div className="mb-8 flex justify-center">
-            <button onClick={() => setActiveTab("single")} className="flex items-center justify-center" style={{ width: "240px", height: "48px", borderRadius: "12px", background: "#064734", color: "#FFFFFF", fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "16px" }}>
+          <div className="mb-6 md:mb-8 flex justify-center">
+            <button onClick={() => setActiveTab("single")} className="flex items-center justify-center" style={{ width: "200px", height: "42px", borderRadius: "12px", background: "#064734", color: "#FFFFFF", fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "14px" }}>
               Single Products
             </button>
           </div>
@@ -173,7 +173,7 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
           {/* SINGLE */}
           {activeTab === "single" && (
             <div className="flex flex-col items-center gap-10">
-            <div className="flex justify-center flex-wrap gap-x-[80px] gap-y-[40px]">
+            <div className="flex justify-center flex-wrap gap-x-[30px] md:gap-x-[80px] gap-y-[30px] md:gap-y-[40px]">
               {SINGLE_PRODUCTS.map((product) => {
                 const cartItem = items.find((i) => i.productId === product.id);
                 const cartQty = cartItem?.quantity ?? 0;
@@ -183,7 +183,7 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
                     key={product.id}
                     className="flex flex-col overflow-hidden"
                     style={{
-                      width: "300px",
+                      width: "280px",
                       height: "420px",
                       background: "#FFFFFF",
                       borderRadius: "24px",
@@ -787,18 +787,18 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
         <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "153px", height: "153px", left: "calc(50% - 720px + 1215px)", top: "500px", opacity: 0.7 }} />
         <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "153px", height: "153px", left: "calc(50% - 720px + 891px)", top: "500px", opacity: 0.7 }} />
 
-        <div className="relative z-[1] mx-auto flex flex-col items-center" style={{ maxWidth: "1440px", padding: "40px 20px 40px", gap: "24px" }}>
+        <div className="relative z-[1] mx-auto flex flex-col items-center" style={{ maxWidth: "1440px", padding: "30px 16px 30px", gap: "20px" }}>
 
           <div className="flex flex-col items-center" style={{ gap: "8px" }}>
-            <h2 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "40px", lineHeight: "60px", textAlign: "center", color: "#064734", margin: 0 }}>
+            <h2 className="text-[24px] md:text-[40px] leading-[36px] md:leading-[60px]" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, textAlign: "center", color: "#064734", margin: 0 }}>
               Everything Your Home Needs. In One Kit.
             </h2>
-            <p style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, fontSize: "20px", lineHeight: "28px", textAlign: "center", color: "#064734", margin: 0 }}>
+            <p className="text-[14px] md:text-[20px] leading-[22px] md:leading-[28px]" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, textAlign: "center", color: "#064734", margin: 0 }}>
               Curated Combinations for Effortless Cleaning
             </p>
           </div>
 
-          <div className="flex justify-center" style={{ gap: "24px", flexWrap: "wrap" }}>
+          <div className="grid grid-cols-2 md:flex md:justify-center" style={{ gap: "16px", flexWrap: "wrap" }}>
             {KITS.map((kit) => {
               const cartItem = items.find((i) => i.productId === kit.id);
               const cartQty = cartItem?.quantity ?? 0;
