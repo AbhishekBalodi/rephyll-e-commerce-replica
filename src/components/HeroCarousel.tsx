@@ -37,19 +37,24 @@ const HeroCarousel = () => {
   return (
     <section className="relative w-full overflow-hidden" aria-label="Featured products banner">
       <div
-        className="relative mx-auto h-[575px] w-full overflow-hidden"
+        className="relative mx-auto h-[400px] md:h-[575px] w-full overflow-hidden"
         style={{
           background: "radial-gradient(13.36% 42.27% at 75.29% 56.87%, hsl(var(--accent)) 0%, hsl(var(--hero-forest)) 100%)",
         }}
       >
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-20" style={{ width: "153px", height: "153px", left: "5px", top: "3px" }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-20" style={{ width: "153px", height: "153px", left: "496px", top: "4px" }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-15" style={{ width: "153px", height: "153px", left: "642px", top: "391px" }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-15" style={{ width: "153px", height: "153px", left: "1170.5px", top: "302px" }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-20" style={{ width: "153px", height: "153px", left: "1268.5px", top: "4px" }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-20" style={{ width: "153px", height: "153px", left: "5px", top: "391px" }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-20" style={{ width: "153px", height: "153px", left: "1315px", top: "391px" }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-15" style={{ width: "153px", height: "153px", left: "742px", top: "175px" }} />
+        {/* Clovers - hidden on mobile for cleanliness */}
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-20 hidden md:block" style={{ width: "153px", height: "153px", left: "5px", top: "3px" }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-20 hidden md:block" style={{ width: "153px", height: "153px", left: "496px", top: "4px" }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-15 hidden md:block" style={{ width: "153px", height: "153px", left: "642px", top: "391px" }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-15 hidden md:block" style={{ width: "153px", height: "153px", left: "1170.5px", top: "302px" }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-20 hidden md:block" style={{ width: "153px", height: "153px", left: "1268.5px", top: "4px" }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-20 hidden md:block" style={{ width: "153px", height: "153px", left: "5px", top: "391px" }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-20 hidden md:block" style={{ width: "153px", height: "153px", left: "1315px", top: "391px" }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-15 hidden md:block" style={{ width: "153px", height: "153px", left: "742px", top: "175px" }} />
+        
+        {/* Mobile clovers */}
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-15 md:hidden" style={{ width: "80px", height: "80px", left: "0px", top: "0px" }} />
+        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-15 md:hidden" style={{ width: "80px", height: "80px", right: "0px", bottom: "0px" }} />
 
         <AnimatePresence mode="wait">
           <motion.div
@@ -61,8 +66,9 @@ const HeroCarousel = () => {
             className="absolute inset-0"
           >
             <div className="relative h-full w-full">
+              {/* Desktop text */}
               <div
-                className="absolute z-10 flex w-[442px] -translate-y-1/2 flex-col gap-8"
+                className="absolute z-10 hidden md:flex w-[442px] -translate-y-1/2 flex-col gap-8"
                 style={{ left: "134px", top: "50%" }}
               >
                 <div className="flex flex-col gap-5">
@@ -104,14 +110,50 @@ const HeroCarousel = () => {
                 </div>
               </div>
 
-              {/* Hero product image - single grouped bottles image */}
+              {/* Mobile text */}
+              <div className="md:hidden absolute z-10 inset-0 flex flex-col items-center justify-center px-6 text-center gap-4">
+                <h1
+                  className="whitespace-pre-line text-[28px] font-semibold leading-[120%] text-primary-foreground"
+                  style={{ fontFamily: "'Poppins', sans-serif" }}
+                >
+                  {slides[index].heading}
+                </h1>
+
+                <p
+                  className="text-[14px] font-normal leading-[140%] text-primary-foreground/70 max-w-[300px]"
+                  style={{ fontFamily: "'Poppins', sans-serif" }}
+                >
+                  {slides[index].subtext}
+                </p>
+
+                <div className="flex gap-3 mt-2">
+                  <button
+                    onClick={() => scrollToSection("products-section")}
+                    className="flex items-center justify-center gap-2 rounded-[43px] bg-accent px-6 py-3 text-[14px] font-semibold text-primary"
+                    style={{ fontFamily: "'Poppins', sans-serif" }}
+                  >
+                    Shop now
+                    <ArrowRight size={13} strokeWidth={1.5} />
+                  </button>
+
+                  <button
+                    onClick={() => scrollToSection("homecare-kits-section")}
+                    className="rounded-[43px] bg-background px-6 py-3 text-[14px] font-semibold text-primary"
+                    style={{ fontFamily: "'Poppins', sans-serif" }}
+                  >
+                    Explore Kits
+                  </button>
+                </div>
+              </div>
+
+              {/* Hero product image - desktop */}
               <motion.div
                 key={`bottles-${index}`}
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -14 }}
                 transition={{ duration: 0.45, delay: 0.1 }}
-                className="absolute z-[5] flex items-end justify-center"
+                className="absolute z-[5] hidden md:flex items-end justify-center"
                 style={{ right: "0", bottom: "20px", left: "50%", width: "50%" }}
               >
                 <img
@@ -127,7 +169,28 @@ const HeroCarousel = () => {
                 />
               </motion.div>
 
-              <div className="absolute bottom-[113px] left-[134px] z-10 flex gap-2">
+              {/* Hero product image - mobile (smaller, below text) */}
+              <motion.div
+                key={`bottles-mobile-${index}`}
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -14 }}
+                transition={{ duration: 0.45, delay: 0.1 }}
+                className="absolute z-[5] md:hidden flex items-end justify-center bottom-0 left-1/2 -translate-x-1/2"
+              >
+                <img
+                  src={heroBottles}
+                  alt="rePhyl cleaning products"
+                  draggable={false}
+                  className="select-none object-contain h-[140px]"
+                  style={{
+                    filter: "drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.2))",
+                  }}
+                />
+              </motion.div>
+
+              {/* Dots - desktop */}
+              <div className="absolute bottom-[113px] left-[134px] z-10 hidden md:flex gap-2">
                 {slides.map((_, slideIndex) => (
                   <button
                     key={slideIndex}
@@ -135,6 +198,23 @@ const HeroCarousel = () => {
                     aria-label={`Go to slide ${slideIndex + 1}`}
                     onClick={() => setIndex(slideIndex)}
                     className="h-[10px] w-[10px] rounded-full transition-all"
+                    style={{
+                      background:
+                        slideIndex === index ? "hsl(var(--primary-foreground))" : "hsl(var(--primary-foreground) / 0.3)",
+                    }}
+                  />
+                ))}
+              </div>
+
+              {/* Dots - mobile */}
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex md:hidden gap-2">
+                {slides.map((_, slideIndex) => (
+                  <button
+                    key={slideIndex}
+                    type="button"
+                    aria-label={`Go to slide ${slideIndex + 1}`}
+                    onClick={() => setIndex(slideIndex)}
+                    className="h-[8px] w-[8px] rounded-full transition-all"
                     style={{
                       background:
                         slideIndex === index ? "hsl(var(--primary-foreground))" : "hsl(var(--primary-foreground) / 0.3)",

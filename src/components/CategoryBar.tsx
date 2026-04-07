@@ -33,32 +33,15 @@ const CategoryBar = () => {
   const navigate = useNavigate();
   const { data: categories, isLoading, error } = useCategories();
 
-  // Function to calculate the order for center-first, alternating left-right layout
-  const getOrderValue = (index: number, totalCount: number) => {
-    const middle = Math.floor(totalCount / 2);
-    
-    if (index === middle) return 0; // Center item
-    
-    if (index < middle) {
-      // Items to the left of middle
-      const distance = middle - index;
-      return -distance; // Negative values go left
-    } else {
-      // Items to the right of middle
-      const distance = index - middle;
-      return distance; // Positive values go right
-    }
-  };
-
   if (isLoading) {
     return (
       <section className="bg-background" style={{ boxShadow: "inset 0px -0.5px 0px #CCCCCC" }}>
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <div className="flex items-center justify-center gap-[50px] flex-wrap">
+          <div className="flex items-center justify-center gap-6 md:gap-[50px] flex-wrap">
             {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="flex flex-col items-center gap-4 py-[30px] animate-pulse">
-                <div className="w-[76px] h-[76px] rounded-full bg-muted" />
-                <div className="h-4 w-20 rounded bg-muted" />
+              <div key={i} className="flex flex-col items-center gap-2 md:gap-4 py-4 md:py-[30px] animate-pulse">
+                <div className="w-[52px] h-[52px] md:w-[76px] md:h-[76px] rounded-full bg-muted" />
+                <div className="h-3 md:h-4 w-16 md:w-20 rounded bg-muted" />
               </div>
             ))}
           </div>
@@ -81,7 +64,7 @@ const CategoryBar = () => {
 
   const handleCategoryClick = (cat: ApiCategory) => {
     const normalized = cat.name.trim().toLowerCase();
-    if (normalized === "byob" || normalized === "byob" || normalized.includes("byob")) {
+    if (normalized === "byob" || normalized.includes("byob")) {
       navigate("/homecare-kits");
       return;
     }
@@ -99,41 +82,37 @@ const CategoryBar = () => {
     <section className="bg-background w-full" style={{ boxShadow: "inset 0px -0.5px 0px #CCCCCC" }}>
       <div className="w-full">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <div className="flex items-center justify-center flex-wrap py-4" style={{ gap: "24px" }}>
-            {categories.map((cat: ApiCategory, index: number) => {
+          {/* Mobile: horizontal scroll, Desktop: flex wrap center */}
+          <div className="flex items-center md:justify-center gap-4 md:gap-[24px] md:flex-wrap py-3 md:py-4 overflow-x-auto md:overflow-x-visible scrollbar-hide">
+            {categories.map((cat: ApiCategory) => {
               const iconSrc = getCategoryIcon(cat);
-              const orderValue = getOrderValue(index, categories.length);
-              
+
               return (
                 <button
                   key={cat.id}
                   onClick={() => handleCategoryClick(cat)}
-                  className="flex flex-col items-center cursor-pointer group relative py-5 gap-4"
-                  style={{ 
-                    order: orderValue,
-                    minWidth: "154px",
-                    flex: "0 0 auto"
+                  className="flex flex-col items-center cursor-pointer group relative py-2 md:py-5 gap-2 md:gap-4 flex-shrink-0"
+                  style={{
+                    minWidth: "70px",
                   }}
                 >
                   <div
                     className="flex items-center justify-center rounded-full transition-all group-hover:scale-105"
                     style={{
-                      width: "76px",
-                      height: "76px",
+                      width: "52px",
+                      height: "52px",
                       background: "rgba(206, 241, 123, 0.3)",
                     }}
                   >
-                    <img src={iconSrc} alt={cat.name} className="w-10 h-10 object-contain transition-all" />
+                    <img src={iconSrc} alt={cat.name} className="w-7 h-7 md:w-10 md:h-10 object-contain transition-all" />
                   </div>
                   <span
-                    className="text-center transition-colors"
+                    className="text-center transition-colors text-xs md:text-lg"
                     style={{
                       fontFamily: "'Poppins', sans-serif",
                       fontWeight: 600,
-                      fontSize: "18px",
                       lineHeight: "150%",
                       color: "#1A1A1A",
-                      width: "154px",
                       wordWrap: "break-word",
                       overflowWrap: "break-word",
                     }}
