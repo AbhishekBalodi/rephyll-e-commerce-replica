@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import heroBottles from "@/assets/kit-bottles-hero.png";
-import cloverLime from "@/assets/clover-lime.png";
+import bgHeroCarousel from "@/assets/bg-hero-carousel.png";
 
 const slides = [
   {
@@ -39,23 +39,11 @@ const HeroCarousel = () => {
       <div
         className="relative mx-auto h-[400px] md:h-[575px] w-full overflow-hidden"
         style={{
-          background: "radial-gradient(13.36% 42.27% at 75.29% 56.87%, hsl(var(--accent)) 0%, hsl(var(--hero-forest)) 100%)",
+          backgroundImage: `url(${bgHeroCarousel})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
       >
-        {/* Clovers - hidden on mobile for cleanliness */}
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-20 hidden md:block" style={{ width: "153px", height: "153px", left: "5px", top: "3px" }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-20 hidden md:block" style={{ width: "153px", height: "153px", left: "496px", top: "4px" }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-15 hidden md:block" style={{ width: "153px", height: "153px", left: "642px", top: "391px" }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-15 hidden md:block" style={{ width: "153px", height: "153px", left: "1170.5px", top: "302px" }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-20 hidden md:block" style={{ width: "153px", height: "153px", left: "1268.5px", top: "4px" }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-20 hidden md:block" style={{ width: "153px", height: "153px", left: "5px", top: "391px" }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-20 hidden md:block" style={{ width: "153px", height: "153px", left: "1315px", top: "391px" }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-15 hidden md:block" style={{ width: "153px", height: "153px", left: "742px", top: "175px" }} />
-        
-        {/* Mobile clovers */}
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-15 md:hidden" style={{ width: "80px", height: "80px", left: "0px", top: "0px" }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="pointer-events-none absolute opacity-15 md:hidden" style={{ width: "80px", height: "80px", right: "0px", bottom: "0px" }} />
-
         <AnimatePresence mode="wait">
           <motion.div
             key={index}
@@ -169,7 +157,7 @@ const HeroCarousel = () => {
                 />
               </motion.div>
 
-              {/* Hero product image - mobile (smaller, below text) */}
+              {/* Hero product image - mobile */}
               <motion.div
                 key={`bottles-mobile-${index}`}
                 initial={{ opacity: 0, y: 18 }}
