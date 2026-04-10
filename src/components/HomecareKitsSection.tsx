@@ -3,9 +3,10 @@
 import { ShoppingCart, Heart, Share2, Check, ChevronRight, Sparkles, TrendingDown } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import QuantityCapsule from "./QuantityCapsule";
-import cloverLime from "@/assets/clover-lime.png";
-import cloverDark from "@/assets/clover-green-dark.png";
-import cloverDarkGreen from "@/assets/clover-dark-green.png";
+import bgSingleProducts from "@/assets/bg-home-kits.png";
+import bgStopBuyingOne from "@/assets/bg-stop-buying-one.png";
+import bgMegaSaver from "@/assets/bg-mega-saver.png";
+import bgHomeKits from "@/assets/bg-home-kits.png";
 import ascFront2 from "@/assets/ASC_Front-2.png";
 import bottleSurface from "@/assets/bottle-surface-cleaner.png";
 import bottleDegreaser from "@/assets/bottle-kitchen-degreaser.png";
@@ -50,18 +51,8 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
       {/* ===== SECTION 1: Smart Bundles / Single Products (height: 727px) ===== */}
       <section
         className="relative overflow-hidden"
-        style={{ minHeight: "auto", background: "rgba(206, 241, 123, 0.3)" }}
+        style={{ minHeight: "auto", backgroundImage: `url(${bgSingleProducts})`, backgroundSize: "cover", backgroundPosition: "center" }}
       >
-        {/* Intense clovers - darker & more visible */}
-        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "153px", height: "153px", left: "0px", top: "0px", opacity: 0.5 }} />
-        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "153px", height: "153px", right: "0px", top: "0px", opacity: 0.5 }} />
-        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "153px", height: "153px", left: "0px", bottom: "0px", opacity: 0.5 }} />
-        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "153px", height: "153px", right: "0px", bottom: "0px", opacity: 0.5 }} />
-        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "153px", height: "153px", left: "50%", top: "0px", transform: "translateX(-50%)", opacity: 0.5 }} />
-        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "153px", height: "153px", left: "20%", top: "40%", opacity: 0.5 }} />
-        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "153px", height: "153px", right: "15%", top: "30%", opacity: 0.5 }} />
-        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "153px", height: "153px", left: "10%", bottom: "10%", opacity: 0.5 }} />
-        <img src={cloverLime} className="pointer-events-none absolute z-0" style={{ width: "153px", height: "153px", right: "25%", bottom: "25%", opacity: 0.5 }} />
 
         <div className="relative z-[1] mx-auto max-w-[1440px] px-4 md:px-6 py-8 md:py-16 flex flex-col justify-center">
           {/* TABS */}
@@ -776,16 +767,8 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
       {/* ===== SECTION 3: Everything Your Home Needs In One Kit ===== */}
       <section
         className="relative overflow-hidden"
-        style={{ width: "100%", background: "rgba(206, 241, 123, 0.3)" }}
+        style={{ width: "100%", backgroundImage: `url(${bgHomeKits})`, backgroundSize: "cover", backgroundPosition: "center" }}
       >
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "153px", height: "153px", left: "calc(50% - 720px + 319px)", top: "0px", opacity: 0.8 }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "153px", height: "153px", left: "calc(50% - 720px + -61px)", top: "63px", opacity: 0.7 }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "153px", height: "153px", left: "calc(50% - 720px + 5px)", top: "500px", opacity: 0.7 }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "153px", height: "153px", left: "calc(50% - 720px + -61px)", top: "63px", opacity: 0.7 }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "153px", height: "153px", left: "calc(50% - 720px + 720px)", top: "266px", opacity: 0.7 }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "153px", height: "153px", left: "calc(50% - 720px + 1250px)", top: "50px", opacity: 0.7 }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "153px", height: "153px", left: "calc(50% - 720px + 1215px)", top: "500px", opacity: 0.7 }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "153px", height: "153px", left: "calc(50% - 720px + 891px)", top: "500px", opacity: 0.7 }} />
 
         <div className="relative z-[1] mx-auto flex flex-col items-center" style={{ maxWidth: "1440px", padding: "30px 16px 30px", gap: "20px" }}>
 
