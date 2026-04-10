@@ -1,8 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import cloverLime from "@/assets/clover-lime.png";
 
-const AboutUs = () => {
+const OurStory = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
@@ -10,10 +9,17 @@ const AboutUs = () => {
       {/* Hero */}
       <section className="bg-primary text-primary-foreground py-20">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <img src={cloverLime} alt="" className="w-20 h-20 mx-auto mb-4" />
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">our story</h1>
-          <p className="text-lg md:text-xl font-semibold">
-            Keep your home forever fresh and your planet looking new. All with the power of nature.
+          <h1
+            className="text-3xl md:text-5xl font-extrabold tracking-tight mb-4"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            rePhyl
+          </h1>
+          <p
+            className="text-lg md:text-xl font-semibold italic"
+            style={{ fontFamily: "'Poppins', sans-serif", color: "#CEF17B" }}
+          >
+            Reset your space. Feel the relief. Trust what's left behind.
           </p>
         </div>
       </section>
@@ -74,4 +80,4 @@ const AboutUs = () => {
   );
 };
 
-export default AboutUs;
+export default OurStory;
