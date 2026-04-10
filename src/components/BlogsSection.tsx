@@ -29,9 +29,16 @@ const BlogsSection = () => {
     }
   };
 
+  const bgStyle = {
+    backgroundImage: `url(${bgBlogs})`,
+    backgroundSize: "100% 100%",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat" as const,
+  };
+
   if (loading) {
     return (
-      <section className="py-16 md:py-24 text-white text-center" style={{ backgroundImage: `url(${bgBlogs})`, backgroundSize: "cover", backgroundPosition: "center" }}>
+      <section className="w-full text-white text-center py-16 md:py-24" style={bgStyle}>
         <Loader2 className="animate-spin mx-auto mb-2" />
         Loading...
       </section>
@@ -40,22 +47,15 @@ const BlogsSection = () => {
 
   if (error || !blogs || blogs.length === 0) {
     return (
-      <section className="py-16 md:py-24 text-white text-center" style={{ backgroundImage: `url(${bgBlogs})`, backgroundSize: "cover", backgroundPosition: "center" }}>
+      <section className="w-full text-white text-center py-16 md:py-24" style={bgStyle}>
         No blogs available.
       </section>
     );
   }
 
   return (
-    <section
-      className="relative w-full overflow-hidden pt-8 pb-16 md:pt-10 md:pb-28"
-      style={{
-        backgroundImage: `url(${bgBlogs})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      <div className="relative max-w-[1208px] mx-auto text-center text-white px-4">
+    <section className="relative w-full overflow-hidden" style={bgStyle}>
+      <div className="relative max-w-[1440px] mx-auto text-center text-white px-4 pt-8 pb-16 md:pt-10 md:pb-28">
         <h2 className="text-[24px] md:text-[40px] font-semibold leading-[36px] md:leading-[60px]">
           Clean Living, Smarter Choices
         </h2>

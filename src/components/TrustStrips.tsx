@@ -1,17 +1,17 @@
 import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 import { DUMMY_REVIEWS } from "@/data/reviews";
-import avatarTushar from "@/assets/avatar-tushar.jpg";
-import avatarDeepika from "@/assets/avatar-deepika.jpg";
-import avatarAnanya from "@/assets/avatar-ananya.jpg";
-import avatarPriya from "@/assets/avatar-priya.jpg";
+import avatarGarima from "@/assets/avatar-garima.jpg";
+import avatarAkanksha from "@/assets/avatar-akanksha.jpg";
+import avatarRenu from "@/assets/avatar-renu.jpg";
+import avatarKetan from "@/assets/avatar-ketan.jpg";
 import bgTestimonials from "@/assets/bg-testimonials.png";
 import { useState } from "react";
 
 const AVATAR_MAP: Record<string, string> = {
-  "Tushar Gupta": avatarTushar,
-  "Deepika Rao": avatarDeepika,
-  "Ananya Nair": avatarAnanya,
-  "Priya Sharma": avatarPriya,
+  "Garima": avatarGarima,
+  "Akanksha": avatarAkanksha,
+  "Renu": avatarRenu,
+  "Ketan": avatarKetan,
 };
 
 const TOP_REVIEWS = DUMMY_REVIEWS.filter((r) => r.rating >= 4).slice(0, 6);
@@ -22,14 +22,15 @@ const TrustStrips = () => {
 
   return (
     <section
-      className="relative w-full overflow-hidden pt-8 pb-16 md:pt-10 md:pb-24"
+      className="relative w-full overflow-hidden"
       style={{
         backgroundImage: `url(${bgTestimonials})`,
-        backgroundSize: "cover",
+        backgroundSize: "100% 100%",
         backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
       }}
     >
-      <div className="relative max-w-[1236px] mx-auto text-center px-4">
+      <div className="relative max-w-[1440px] mx-auto text-center px-4 pt-8 pb-16 md:pt-10 md:pb-24">
         <h2
           className="text-[24px] md:text-[40px] leading-[36px] md:leading-[60px]"
           style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, color: "#064734" }}
@@ -57,7 +58,7 @@ const TrustStrips = () => {
             {TOP_REVIEWS.slice(0, 4).map((review) => (
               <div key={review.id} className="relative w-[313px] bg-white rounded-[24px] shadow-md pt-[90px] pb-6 px-6 flex flex-col items-center">
                 <div className="absolute -top-[60px] w-[120px] h-[120px] rounded-full border-[8px] border-white overflow-hidden shadow-md">
-                  <img src={AVATAR_MAP[review.name] || avatarTushar} alt={review.name} className="w-full h-full object-cover rounded-full" loading="lazy" />
+                  <img src={AVATAR_MAP[review.name] || avatarGarima} alt={review.name} className="w-full h-full object-cover rounded-full" loading="lazy" />
                 </div>
                 <div className="flex gap-[4px] mt-2 mb-3">
                   {[1,2,3,4,5].map((s) => (
@@ -68,7 +69,6 @@ const TrustStrips = () => {
                   "{review.content}"
                 </p>
                 <h4 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "18px", color: "#2C2C2C" }}>{review.name}</h4>
-                <p style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, fontSize: "16px", lineHeight: "100%", color: "#777777" }}>Marketing Manager</p>
               </div>
             ))}
           </div>
@@ -79,7 +79,7 @@ const TrustStrips = () => {
           <div className="flex justify-center">
             <div className="relative w-full max-w-[300px] bg-white rounded-[24px] shadow-md pt-[70px] pb-5 px-5 flex flex-col items-center">
               <div className="absolute -top-[50px] w-[100px] h-[100px] rounded-full border-[6px] border-white overflow-hidden shadow-md">
-                <img src={AVATAR_MAP[mobileReview.name] || avatarTushar} alt={mobileReview.name} className="w-full h-full object-cover rounded-full" loading="lazy" />
+                <img src={AVATAR_MAP[mobileReview.name] || avatarGarima} alt={mobileReview.name} className="w-full h-full object-cover rounded-full" loading="lazy" />
               </div>
               <div className="flex gap-[4px] mt-2 mb-3">
                 {[1,2,3,4,5].map((s) => (
@@ -90,7 +90,6 @@ const TrustStrips = () => {
                 "{mobileReview.content}"
               </p>
               <h4 className="text-[16px] font-semibold text-[#2C2C2C]" style={{ fontFamily: "'Poppins', sans-serif" }}>{mobileReview.name}</h4>
-              <p className="text-[14px] text-[#777777]" style={{ fontFamily: "'Poppins', sans-serif" }}>Marketing Manager</p>
             </div>
           </div>
           <div className="flex justify-center gap-4 mt-4">

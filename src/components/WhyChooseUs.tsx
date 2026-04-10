@@ -13,14 +13,15 @@ const BADGES = [
 const WhyChooseUs = () => {
   return (
     <section
-      className="relative w-full pt-8 pb-14 md:pt-10 md:pb-20 overflow-hidden"
+      className="relative w-full overflow-hidden"
       style={{
         backgroundImage: `url(${bgWhyDifferent})`,
-        backgroundSize: "cover",
+        backgroundSize: "100% 100%",
         backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
       }}
     >
-      <div className="relative z-10 max-w-[1200px] w-full px-4 md:px-6 mx-auto text-center text-white">
+      <div className="relative z-10 max-w-[1440px] w-full px-4 md:px-6 mx-auto text-center text-white pt-8 pb-14 md:pt-10 md:pb-20">
         <h2 className="text-[24px] md:text-[40px] leading-[36px] md:leading-[60px] font-semibold" style={{ fontFamily: "'Poppins', sans-serif" }}>
           What Makes rePhyl Different
         </h2>
@@ -29,7 +30,7 @@ const WhyChooseUs = () => {
         </p>
 
         {/* White container with Reset / Relief / Safety */}
-        <div className="relative bg-white rounded-[16px] md:rounded-[24px] px-4 py-6 md:px-10 md:py-8 shadow-[0px_8px_40px_rgba(0,38,3,0.08)] mb-6 md:mb-8">
+        <div className="relative bg-white rounded-[16px] md:rounded-[24px] px-4 py-6 md:px-10 md:py-8 shadow-[0px_8px_40px_rgba(0,38,3,0.08)] mb-6 md:mb-8 max-w-[1200px] mx-auto">
           <div className="flex flex-col md:flex-row justify-center items-center gap-6 md:gap-[60px]">
             {[
               { icon: "↻", title: "Reset", subtitle: "A reset you can feel" },

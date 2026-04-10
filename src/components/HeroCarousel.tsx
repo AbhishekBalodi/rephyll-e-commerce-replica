@@ -30,18 +30,18 @@ const HeroCarousel = () => {
     const timer = window.setInterval(() => {
       setIndex((prev) => (prev + 1) % slides.length);
     }, 5000);
-
     return () => window.clearInterval(timer);
   }, []);
 
   return (
     <section className="relative w-full overflow-hidden" aria-label="Featured products banner">
       <div
-        className="relative mx-auto h-[400px] md:h-[575px] w-full overflow-hidden"
+        className="relative w-full h-[400px] md:h-[575px] overflow-hidden"
         style={{
           backgroundImage: `url(${bgHeroCarousel})`,
-          backgroundSize: "cover",
+          backgroundSize: "100% 100%",
           backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
         }}
       >
         <AnimatePresence mode="wait">
@@ -53,7 +53,7 @@ const HeroCarousel = () => {
             transition={{ duration: 0.45 }}
             className="absolute inset-0"
           >
-            <div className="relative h-full w-full">
+            <div className="relative h-full w-full max-w-[1440px] mx-auto">
               {/* Desktop text */}
               <div
                 className="absolute z-10 hidden md:flex w-[442px] -translate-y-1/2 flex-col gap-8"
@@ -66,7 +66,6 @@ const HeroCarousel = () => {
                   >
                     {slides[index].heading}
                   </h1>
-
                   <div className="flex items-center gap-3">
                     <div className="h-14 w-[2px] bg-accent" />
                     <p
@@ -77,7 +76,6 @@ const HeroCarousel = () => {
                     </p>
                   </div>
                 </div>
-
                 <div className="flex gap-5">
                   <button
                     onClick={() => scrollToSection("products-section")}
@@ -87,7 +85,6 @@ const HeroCarousel = () => {
                     Shop now
                     <ArrowRight size={15} strokeWidth={1.5} />
                   </button>
-
                   <button
                     onClick={() => scrollToSection("homecare-kits-section")}
                     className="rounded-[43px] bg-background px-10 py-4 text-[16px] font-semibold leading-[120%] text-primary transition-opacity hover:opacity-90"
@@ -106,14 +103,12 @@ const HeroCarousel = () => {
                 >
                   {slides[index].heading}
                 </h1>
-
                 <p
                   className="text-[14px] font-normal leading-[140%] text-primary-foreground/70 max-w-[300px]"
                   style={{ fontFamily: "'Poppins', sans-serif" }}
                 >
                   {slides[index].subtext}
                 </p>
-
                 <div className="flex gap-3 mt-2">
                   <button
                     onClick={() => scrollToSection("products-section")}
@@ -123,7 +118,6 @@ const HeroCarousel = () => {
                     Shop now
                     <ArrowRight size={13} strokeWidth={1.5} />
                   </button>
-
                   <button
                     onClick={() => scrollToSection("homecare-kits-section")}
                     className="rounded-[43px] bg-background px-6 py-3 text-[14px] font-semibold text-primary"
@@ -171,9 +165,7 @@ const HeroCarousel = () => {
                   alt="rePhyl cleaning products"
                   draggable={false}
                   className="select-none object-contain h-[140px]"
-                  style={{
-                    filter: "drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.2))",
-                  }}
+                  style={{ filter: "drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.2))" }}
                 />
               </motion.div>
 
@@ -187,8 +179,7 @@ const HeroCarousel = () => {
                     onClick={() => setIndex(slideIndex)}
                     className="h-[10px] w-[10px] rounded-full transition-all"
                     style={{
-                      background:
-                        slideIndex === index ? "hsl(var(--primary-foreground))" : "hsl(var(--primary-foreground) / 0.3)",
+                      background: slideIndex === index ? "hsl(var(--primary-foreground))" : "hsl(var(--primary-foreground) / 0.3)",
                     }}
                   />
                 ))}
@@ -204,8 +195,7 @@ const HeroCarousel = () => {
                     onClick={() => setIndex(slideIndex)}
                     className="h-[8px] w-[8px] rounded-full transition-all"
                     style={{
-                      background:
-                        slideIndex === index ? "hsl(var(--primary-foreground))" : "hsl(var(--primary-foreground) / 0.3)",
+                      background: slideIndex === index ? "hsl(var(--primary-foreground))" : "hsl(var(--primary-foreground) / 0.3)",
                     }}
                   />
                 ))}

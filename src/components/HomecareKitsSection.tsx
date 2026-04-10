@@ -50,8 +50,8 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
     <div id="homecare-kits-section">
       {/* ===== SECTION 1: Smart Bundles / Single Products (height: 727px) ===== */}
       <section
-        className="relative overflow-hidden"
-        style={{ minHeight: "auto", backgroundImage: `url(${bgSingleProducts})`, backgroundSize: "cover", backgroundPosition: "center" }}
+        className="relative w-full overflow-hidden"
+        style={{ minHeight: "auto", backgroundImage: `url(${bgSingleProducts})`, backgroundSize: "100% 100%", backgroundPosition: "center", backgroundRepeat: "no-repeat" }}
       >
 
         <div className="relative z-[1] mx-auto max-w-[1440px] px-4 md:px-6 py-8 md:py-16 flex flex-col justify-center">
@@ -766,8 +766,8 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
 
       {/* ===== SECTION 3: Everything Your Home Needs In One Kit ===== */}
       <section
-        className="relative overflow-hidden"
-        style={{ width: "100%", backgroundImage: `url(${bgHomeKits})`, backgroundSize: "cover", backgroundPosition: "center" }}
+        className="relative w-full overflow-hidden"
+        style={{ width: "100%", backgroundImage: `url(${bgHomeKits})`, backgroundSize: "100% 100%", backgroundPosition: "center", backgroundRepeat: "no-repeat" }}
       >
 
         <div className="relative z-[1] mx-auto flex flex-col items-center" style={{ maxWidth: "1440px", padding: "30px 16px 30px", gap: "20px" }}>
