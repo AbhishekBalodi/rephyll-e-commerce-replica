@@ -767,16 +767,8 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
       {/* ===== SECTION 3: Everything Your Home Needs In One Kit ===== */}
       <section
         className="relative overflow-hidden"
-        style={{ width: "100%", background: "rgba(206, 241, 123, 0.3)" }}
+        style={{ width: "100%", backgroundImage: `url(${bgHomeKits})`, backgroundSize: "cover", backgroundPosition: "center" }}
       >
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "153px", height: "153px", left: "calc(50% - 720px + 319px)", top: "0px", opacity: 0.8 }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "153px", height: "153px", left: "calc(50% - 720px + -61px)", top: "63px", opacity: 0.7 }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "153px", height: "153px", left: "calc(50% - 720px + 5px)", top: "500px", opacity: 0.7 }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "153px", height: "153px", left: "calc(50% - 720px + -61px)", top: "63px", opacity: 0.7 }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "153px", height: "153px", left: "calc(50% - 720px + 720px)", top: "266px", opacity: 0.7 }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "153px", height: "153px", left: "calc(50% - 720px + 1250px)", top: "50px", opacity: 0.7 }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "153px", height: "153px", left: "calc(50% - 720px + 1215px)", top: "500px", opacity: 0.7 }} />
-        <img src={cloverLime} alt="" aria-hidden="true" className="absolute pointer-events-none z-0" style={{ width: "153px", height: "153px", left: "calc(50% - 720px + 891px)", top: "500px", opacity: 0.7 }} />
 
         <div className="relative z-[1] mx-auto flex flex-col items-center" style={{ maxWidth: "1440px", padding: "30px 16px 30px", gap: "20px" }}>
 
