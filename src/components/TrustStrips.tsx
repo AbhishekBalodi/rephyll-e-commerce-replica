@@ -5,6 +5,7 @@ import avatarAkanksha from "@/assets/avatar-akanksha.jpg";
 import avatarRenu from "@/assets/avatar-renu.jpg";
 import avatarKetan from "@/assets/avatar-ketan.jpg";
 import bgTestimonials from "@/assets/bg-testimonials.png";
+import bgTestimonialsMobile from "@/assets/bg-testimonials-mobile.png";
 import { useState } from "react";
 
 const AVATAR_MAP: Record<string, string> = {
@@ -22,8 +23,12 @@ const TrustStrips = () => {
 
   return (
     <section className="relative w-full overflow-hidden" style={{ minHeight: "360px" }}>
-      <img src={bgTestimonials} alt="bg" className="pointer-events-none select-none" style={{ position: "absolute", left: "50%", top: 0, transform: "translateX(-50%)", width: "calc(100vw + 520px)", height: "100%", objectFit: "cover", zIndex: 0 }} />
-      <div className="relative max-w-[1440px] mx-auto text-center px-4 pt-8 pb-16 md:pt-10 md:pb-24">
+      {/* Desktop bg */}
+      <img src={bgTestimonials} alt="" aria-hidden="true" className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
+      {/* Mobile bg */}
+      <img src={bgTestimonialsMobile} alt="" aria-hidden="true" className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
+
+      <div className="relative max-w-[1440px] mx-auto text-center px-4 pt-8 pb-16 md:pt-10 md:pb-24" style={{ zIndex: 1 }}>
         <h2
           className="text-[24px] md:text-[40px] leading-[36px] md:leading-[60px]"
           style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, color: "#064734" }}
@@ -38,15 +43,8 @@ const TrustStrips = () => {
           Discover the experiences of our satisfied customers! Read their testimonials to learn how our services have made a positive impact on their businesses.
         </p>
 
-        {/* CARDS - Desktop */}
+        {/* CARDS - Desktop (NO arrows) */}
         <div className="relative mt-16 hidden md:block">
-          <div className="absolute left-[-30px] top-1/2 -translate-y-1/2 z-10 w-[60px] h-[60px] bg-white/80 rounded-full flex items-center justify-center shadow cursor-pointer">
-            <ChevronLeft />
-          </div>
-          <div className="absolute right-[-30px] top-1/2 -translate-y-1/2 z-10 w-[60px] h-[60px] bg-white/80 rounded-full flex items-center justify-center shadow cursor-pointer">
-            <ChevronRight />
-          </div>
-
           <div className="flex justify-center gap-[24px]">
             {TOP_REVIEWS.slice(0, 4).map((review) => (
               <div key={review.id} className="relative w-[313px] bg-white rounded-[24px] shadow-md pt-[90px] pb-6 px-6 flex flex-col items-center">

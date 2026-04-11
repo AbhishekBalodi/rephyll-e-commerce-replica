@@ -1,7 +1,7 @@
-import clover from "@/assets/clover-lime.png";
-import bottle from "@/assets/bottle.png"; // center product
-import earth from "@/assets/earth.png";   // bottom globe
-import cross from "@/assets/cross.png";   // red cross icon
+import bottle from "@/assets/bottle.png";
+import earth from "@/assets/earth.png";
+import cross from "@/assets/cross.png";
+import bgFormula from "@/assets/bg-formula-section.png";
 
 const itemsLeft = [
     { text: "Artificial Colours", top: "151px" },
@@ -19,19 +19,15 @@ const FormulaSection = () => {
     return (
         <section
             className="relative w-full flex justify-center overflow-hidden"
-            style={{
-                height: "780px",
-                background: "rgba(206, 241, 123, 0.3)",
-            }}
+            style={{ height: "780px" }}
         >
-            {/* 🌿 CLOVERS BACKGROUND */}
-            <img src={clover} className="absolute pointer-events-none" style={{ width: "280px", left: "-70px", top: "-50px", opacity: 0.5 }} />
-            <img src={clover} className="absolute pointer-events-none" style={{ width: "260px", right: "-50px", top: "-40px", opacity: 0.5 }} />
-            <img src={clover} className="absolute pointer-events-none" style={{ width: "300px", left: "-80px", bottom: "-60px", opacity: 0.5 }} />
-            <img src={clover} className="absolute pointer-events-none" style={{ width: "270px", right: "-40px", bottom: "-50px", opacity: 0.5 }} />
-            <img src={clover} className="absolute pointer-events-none" style={{ width: "240px", left: "50%", top: "30%", transform: "translateX(-50%)", opacity: 0.5 }} />
-            <img src={clover} className="absolute pointer-events-none" style={{ width: "220px", left: "15%", top: "35%", opacity: 0.5 }} />
-            <img src={clover} className="absolute pointer-events-none" style={{ width: "250px", right: "10%", bottom: "30%", opacity: 0.5 }} />
+            <img
+                src={bgFormula}
+                alt=""
+                aria-hidden="true"
+                className="pointer-events-none select-none absolute inset-0 w-full h-full object-cover"
+                style={{ zIndex: 0 }}
+            />
 
             {/* MAIN CONTAINER */}
             <div
@@ -41,9 +37,10 @@ const FormulaSection = () => {
                     height: "631px",
                     marginTop: "83px",
                     gap: "20px",
+                    zIndex: 1,
                 }}
             >
-                {/* 🔹 HEADING */}
+                {/* HEADING */}
                 <div className="flex flex-col items-center gap-[10px]">
                     <h2
                         style={{
@@ -72,15 +69,11 @@ const FormulaSection = () => {
                     </p>
                 </div>
 
-                {/* 🔥 CENTER VISUAL */}
+                {/* CENTER VISUAL */}
                 <div className="relative w-full flex justify-center items-center mt-6">
-
                     <div className="relative flex flex-col items-center justify-center mt-10">
-
-                        {/* 🌍 EARTH (base) */}
                         <img
                             src={earth}
-                            
                             style={{
                                 width: "319px",
                                 height: "272px",
@@ -88,28 +81,22 @@ const FormulaSection = () => {
                                 marginRight: "10px",
                             }}
                         />
-
-                        {/* 🧴 BOTTLE (overlapping top of earth) */}
                         <img
                             src={bottle}
                             className="absolute"
                             style={{
                                 width: "117px",
-                                top: "-80px", // key adjustment
+                                top: "-80px",
                             }}
                         />
-
                     </div>
 
-                    {/* 🔴 LEFT ITEMS */}
+                    {/* LEFT ITEMS */}
                     {itemsLeft.map((item, i) => (
                         <div
                             key={i}
                             className="absolute flex items-center gap-[5px]"
-                            style={{
-                                left: "300px",
-                                top: item.top,
-                            }}
+                            style={{ left: "300px", top: item.top }}
                         >
                             <span
                                 style={{
@@ -122,35 +109,24 @@ const FormulaSection = () => {
                             >
                                 {item.text}
                             </span>
-
                             <div className="relative w-[35px] h-[35px]">
                                 <div className="absolute w-full h-full rounded-full bg-red-500/10" />
-                                <img
-                                    src={cross}
-                                    className="absolute w-[20px] h-[20px] top-[7px] left-[7px]"
-                                />
+                                <img src={cross} className="absolute w-[20px] h-[20px] top-[7px] left-[7px]" />
                             </div>
                         </div>
                     ))}
 
-                    {/* 🔴 RIGHT ITEMS */}
+                    {/* RIGHT ITEMS */}
                     {itemsRight.map((item, i) => (
                         <div
                             key={i}
                             className="absolute flex items-center gap-[5px]"
-                            style={{
-                                right: "300px",
-                                top: item.top,
-                            }}
+                            style={{ right: "300px", top: item.top }}
                         >
                             <div className="relative w-[35px] h-[35px]">
                                 <div className="absolute w-full h-full rounded-full bg-red-500/10" />
-                                <img
-                                    src={cross}
-                                    className="absolute w-[20px] h-[20px] top-[7px] left-[7px]"
-                                />
+                                <img src={cross} className="absolute w-[20px] h-[20px] top-[7px] left-[7px]" />
                             </div>
-
                             <span
                                 style={{
                                     fontFamily: "Poppins",

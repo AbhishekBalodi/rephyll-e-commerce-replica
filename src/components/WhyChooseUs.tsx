@@ -1,37 +1,31 @@
 import { Leaf, Baby, Recycle, PawPrint } from "lucide-react";
 import ifraShield from "@/assets/ifra-shield.png";
 import bgWhyDifferent from "@/assets/bg-why-different.png";
+import bgWhyDifferentMobile from "@/assets/bg-why-different-mobile.png";
 
 const BADGES = [
-  { icon: <img src={ifraShield} alt="IFRA" className="w-[28px] h-[28px] md:w-[32px] md:h-[32px] object-contain" />, title: "IFRA Certified", subtitle: "Safe fragrance standards" },
-  { icon: <Leaf size={28} className="text-[#064734] md:w-8 md:h-8" />, title: "100% Natural", subtitle: "Plant-based formulas" },
-  { icon: <Baby size={28} className="text-[#064734] md:w-8 md:h-8" />, title: "Child Safe", subtitle: "Gentle and safe" },
-  { icon: <PawPrint size={28} className="text-[#064734] md:w-8 md:h-8" />, title: "Pet Friendly", subtitle: "No harmful ingredients" },
-  { icon: <Recycle size={28} className="text-[#064734] md:w-8 md:h-8" />, title: "Biodegradable", subtitle: "Eco-friendly formulas" },
+  { icon: <img src={ifraShield} alt="IFRA" className="w-[28px] h-[28px] md:w-[32px] md:h-[32px] object-contain" />, title: "IFRA Certified" },
+  { icon: <Leaf size={28} className="text-[#064734] md:w-8 md:h-8" />, title: "100% Natural" },
+  { icon: <Baby size={28} className="text-[#064734] md:w-8 md:h-8" />, title: "Child Safe" },
+  { icon: <PawPrint size={28} className="text-[#064734] md:w-8 md:h-8" />, title: "Pet Friendly" },
+  { icon: <Recycle size={28} className="text-[#064734] md:w-8 md:h-8" />, title: "Biodegradable" },
+];
+
+const CARDS = [
+  { icon: "↻", title: "Reset", subtitle: "A reset you can feel" },
+  { icon: "☘", title: "Relief", subtitle: "Effortless to use" },
+  { icon: "🛡", title: "Safety", subtitle: "No harsh residues" },
 ];
 
 const WhyChooseUs = () => {
   return (
     <section className="relative w-full overflow-hidden" style={{ minHeight: "520px" }}>
-      {/* Full-bleed background image sized to viewport to avoid image-edge padding */}
-      <img
-        src={bgWhyDifferent}
-        alt="background"
-        className="pointer-events-none select-none"
-        style={{
-          position: "absolute",
-          left: "50%",
-          top: 0,
-          transform: "translateX(-50%)",
-          width: "calc(100vw + 520px)",
-          height: "100%",
-          objectFit: "cover",
-          zIndex: 0,
-        }}
-      />
-      {/* Content (centered max width like other sections) */}
-      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 md:px-6 text-center text-white pt-12 pb-16 md:pt-16 md:pb-24">
+      {/* Desktop bg */}
+      <img src={bgWhyDifferent} alt="" aria-hidden="true" className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
+      {/* Mobile bg */}
+      <img src={bgWhyDifferentMobile} alt="" aria-hidden="true" className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
 
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 md:px-6 text-center text-white pt-12 pb-16 md:pt-16 md:pb-24">
         <h2
           className="text-[24px] md:text-[40px] leading-[36px] md:leading-[60px] font-semibold"
           style={{ fontFamily: "'Poppins', sans-serif" }}
@@ -46,33 +40,30 @@ const WhyChooseUs = () => {
           Curated Combinations for Effortless Cleaning
         </p>
 
-        {/* White container */}
-        <div className="bg-white rounded-[16px] md:rounded-[24px] px-4 py-6 md:px-10 md:py-8 shadow-[0px_8px_40px_rgba(0,38,3,0.08)] mb-6 md:mb-8">
-          <div className="flex flex-col md:flex-row justify-center items-center gap-6 md:gap-[60px]">
-            {[
-              { icon: "↻", title: "Reset", subtitle: "A reset you can feel" },
-              { icon: "☘", title: "Relief", subtitle: "Effortless to use" },
-              { icon: "🛡", title: "Safety", subtitle: "No harsh residues" },
-            ].map((item, i) => (
-              <div key={i} className="flex flex-col items-center text-center gap-2 md:w-[200px]">
-                <div className="w-[52px] h-[52px] md:w-[68px] md:h-[68px] rounded-full flex items-center justify-center bg-[#F1FBD8]">
-                  <span className="text-[24px] md:text-[28px]">{item.icon}</span>
-                </div>
-                <p
-                  className="text-[14px] md:text-[18px] font-semibold text-[#064734]"
-                  style={{ fontFamily: "'Poppins', sans-serif" }}
-                >
-                  {item.title}
-                </p>
-                <p
-                  className="text-[12px] md:text-[14px] text-[#064734]"
-                  style={{ fontFamily: "'Poppins', sans-serif" }}
-                >
-                  {item.subtitle}
-                </p>
+        {/* 3 Separate white cards */}
+        <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-6 mb-6 md:mb-8">
+          {CARDS.map((item, i) => (
+            <div
+              key={i}
+              className="bg-white rounded-[16px] md:rounded-[24px] px-6 py-6 md:px-8 md:py-8 shadow-[0px_8px_40px_rgba(0,38,3,0.08)] flex flex-col items-center text-center gap-2 w-[200px] md:w-[220px]"
+            >
+              <div className="w-[52px] h-[52px] md:w-[68px] md:h-[68px] rounded-full flex items-center justify-center bg-[#F1FBD8]">
+                <span className="text-[24px] md:text-[28px]">{item.icon}</span>
               </div>
-            ))}
-          </div>
+              <p
+                className="text-[14px] md:text-[18px] font-semibold text-[#064734]"
+                style={{ fontFamily: "'Poppins', sans-serif" }}
+              >
+                {item.title}
+              </p>
+              <p
+                className="text-[12px] md:text-[14px] text-[#064734]"
+                style={{ fontFamily: "'Poppins', sans-serif" }}
+              >
+                {item.subtitle}
+              </p>
+            </div>
+          ))}
         </div>
 
         {/* Badge pills */}
@@ -94,7 +85,6 @@ const WhyChooseUs = () => {
             </div>
           ))}
         </div>
-
       </div>
     </section>
   );
