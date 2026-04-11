@@ -7,6 +7,7 @@ import bgSingleProducts from "@/assets/bg-home-kits.png";
 import bgStopBuyingOne from "@/assets/bg-stop-buying-one.png";
 import bgMegaSaver from "@/assets/bg-mega-saver.png";
 import bgHomeKits from "@/assets/bg-home-kits.png";
+import bgHomeKitsMobile from "@/assets/bg-home-kits-mobile.png";
 import ascFront2 from "@/assets/ASC_Front-2.png";
 import bottleSurface from "@/assets/bottle-surface-cleaner.png";
 import bottleDegreaser from "@/assets/bottle-kitchen-degreaser.png";
