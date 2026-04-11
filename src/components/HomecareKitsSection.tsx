@@ -35,6 +35,37 @@ const KITS = [
   { id: 1004, name: "Home Essential Kit", items: ["All Surface Cleaner", "Toilet Cleaner", "Floor Cleaner"], price: 799, originalPrice: 1047, bottles: [bottleToilet, bottleDegreaser, bottleDishwash] },
 ];
 
+const KitCard = ({ kit, cartQty, onAdd, onIncrement, onDecrement }: { kit: typeof KITS[0]; cartQty: number; onAdd: () => void; onIncrement: () => void; onDecrement: () => void }) => (
+  <div className="flex flex-col items-center" style={{ width: "276px", background: "#FFFFFF", boxShadow: "0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1)", borderRadius: "24px", overflow: "hidden" }}>
+    <div className="relative flex-shrink-0" style={{ width: "276px", height: "162px", borderRadius: "24px 24px 0 0", overflow: "hidden" }}>
+      <img src={kitCardBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
+      <img src={kitBottles} alt="Kit bottles" className="absolute object-contain" style={{ width: "178px", height: "141px", left: "49px", top: "11px" }} />
+    </div>
+    <div className="flex flex-col items-start" style={{ width: "238px", padding: "16px 0 12px 0", gap: "12px" }}>
+      <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "18px", lineHeight: "24px", color: "#064734" }}>{kit.name}</span>
+      <div className="flex flex-col" style={{ gap: "8px", width: "238px" }}>
+        {kit.items.map((item: string, i: number) => (
+          <div key={i} className="flex items-center" style={{ gap: "6px" }}>
+            <Check size={18} color="#064734" strokeWidth={1.75} />
+            <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, fontSize: "13px", lineHeight: "18px", color: "#064734" }}>{item}</span>
+          </div>
+        ))}
+      </div>
+      <div className="flex items-center" style={{ gap: "10px" }}>
+        <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: "26px", lineHeight: "24px", color: "#064734" }}>₹{kit.price}</span>
+        <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, fontSize: "14px", lineHeight: "24px", color: "#8E939C", textDecoration: "line-through" }}>₹{kit.originalPrice}</span>
+      </div>
+      {cartQty > 0 ? (
+        <QuantityCapsule quantity={cartQty} onIncrement={(e) => { e.stopPropagation(); onIncrement(); }} onDecrement={(e) => { e.stopPropagation(); onDecrement(); }} size="sm" fullWidth />
+      ) : (
+        <button onClick={onAdd} className="flex items-center justify-center gap-2" style={{ width: "238px", height: "36px", border: "1px solid #064734", borderRadius: "8px", background: "transparent", fontFamily: "'Poppins', sans-serif", fontWeight: 500, fontSize: "14px", lineHeight: "24px", color: "#064734", cursor: "pointer" }}>
+          <ShoppingCart size={20} color="#064734" /> Add to Cart
+        </button>
+      )}
+    </div>
+  </div>
+);
+
 const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) => {
   const [activeTab, setActiveTab] = useState<"bundles" | "single" | "kits">("single");
   const [mobileKitIndex, setMobileKitIndex] = useState(0);
