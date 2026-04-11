@@ -21,15 +21,8 @@ const TrustStrips = () => {
   const mobileReview = TOP_REVIEWS[mobileIndex];
 
   return (
-    <section
-      className="relative w-full overflow-hidden"
-      style={{
-        backgroundImage: `url(${bgTestimonials})`,
-        backgroundSize: "100% 100%",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
+    <section className="relative w-full overflow-hidden" style={{ minHeight: "360px" }}>
+      <img src={bgTestimonials} alt="bg" className="pointer-events-none select-none" style={{ position: "absolute", left: "50%", top: 0, transform: "translateX(-50%)", width: "calc(100vw + 520px)", height: "100%", objectFit: "cover", zIndex: 0 }} />
       <div className="relative max-w-[1440px] mx-auto text-center px-4 pt-8 pb-16 md:pt-10 md:pb-24">
         <h2
           className="text-[24px] md:text-[40px] leading-[36px] md:leading-[60px]"

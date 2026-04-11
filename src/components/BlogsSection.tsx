@@ -29,16 +29,12 @@ const BlogsSection = () => {
     }
   };
 
-  const bgStyle = {
-    backgroundImage: `url(${bgBlogs})`,
-    backgroundSize: "100% 100%",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat" as const,
-  };
+  const bgStyle = {};
 
   if (loading) {
     return (
-      <section className="w-full text-white text-center py-16 md:py-24" style={bgStyle}>
+      <section className="relative w-full text-white text-center py-16 md:py-24">
+        <img src={bgBlogs} alt="bg" className="pointer-events-none select-none" style={{ position: "absolute", left: "50%", top: 0, transform: "translateX(-50%)", width: "calc(100vw + 520px)", height: "100%", objectFit: "cover", zIndex: 0 }} />
         <Loader2 className="animate-spin mx-auto mb-2" />
         Loading...
       </section>
@@ -47,14 +43,16 @@ const BlogsSection = () => {
 
   if (error || !blogs || blogs.length === 0) {
     return (
-      <section className="w-full text-white text-center py-16 md:py-24" style={bgStyle}>
+      <section className="relative w-full text-white text-center py-16 md:py-24">
+        <img src={bgBlogs} alt="bg" className="pointer-events-none select-none" style={{ position: "absolute", left: "50%", top: 0, transform: "translateX(-50%)", width: "calc(100vw + 520px)", height: "100%", objectFit: "cover", zIndex: 0 }} />
         No blogs available.
       </section>
     );
   }
 
   return (
-    <section className="relative w-full overflow-hidden" style={bgStyle}>
+    <section className="relative w-full overflow-hidden">
+      <img src={bgBlogs} alt="bg" className="pointer-events-none select-none" style={{ position: "absolute", left: "50%", top: 0, transform: "translateX(-50%)", width: "calc(100vw + 520px)", height: "100%", objectFit: "cover", zIndex: 0 }} />
       <div className="relative max-w-[1440px] mx-auto text-center text-white px-4 pt-8 pb-16 md:pt-10 md:pb-28">
         <h2 className="text-[24px] md:text-[40px] font-semibold leading-[36px] md:leading-[60px]">
           Clean Living, Smarter Choices

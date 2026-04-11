@@ -49,10 +49,8 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
   return (
     <div id="homecare-kits-section">
       {/* ===== SECTION 1: Smart Bundles / Single Products (height: 727px) ===== */}
-      <section
-        className="relative w-full overflow-hidden"
-        style={{ minHeight: "auto", backgroundImage: `url(${bgSingleProducts})`, backgroundSize: "100% 100%", backgroundPosition: "center", backgroundRepeat: "no-repeat" }}
-      >
+      <section className="relative w-full overflow-hidden" style={{ minHeight: "auto" }}>
+        <img src={bgSingleProducts} alt="bg" className="pointer-events-none select-none" style={{ position: "absolute", left: "50%", top: 0, transform: "translateX(-50%)", width: "calc(100vw + 520px)", height: "100%", objectFit: "cover", zIndex: 0 }} />
 
         <div className="relative z-[1] mx-auto max-w-[1440px] px-4 md:px-6 py-8 md:py-16 flex flex-col justify-center">
           {/* TABS */}
@@ -765,10 +763,14 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
       */}
 
       {/* ===== SECTION 3: Everything Your Home Needs In One Kit ===== */}
-      <section
+      {/* <section
         className="relative w-full overflow-hidden"
-        style={{ width: "100%", backgroundImage: `url(${bgHomeKits})`, backgroundSize: "100% 100%", backgroundPosition: "center", backgroundRepeat: "no-repeat" }}
-      >
+        style={{ width: "100%" }}
+        // background handled by full-bleed <img> above
+      > */}
+
+      <section className="relative w-full overflow-hidden" style={{ minHeight: "auto" }}>
+        <img src={bgHomeKits} alt="bg" className="pointer-events-none select-none" style={{ position: "absolute", left: "50%", top: 0, transform: "translateX(-50%)", width: "calc(100vw + 520px)", height: "100%", objectFit: "cover", zIndex: 0 }} />
 
         <div className="relative z-[1] mx-auto flex flex-col items-center" style={{ maxWidth: "1440px", padding: "30px 16px 30px", gap: "20px" }}>
 
