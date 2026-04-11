@@ -37,6 +37,7 @@ const KITS = [
 
 const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) => {
   const [activeTab, setActiveTab] = useState<"bundles" | "single" | "kits">("single");
+  const [mobileKitIndex, setMobileKitIndex] = useState(0);
   const { items, addToCart, updateQuantity, removeFromCart } = useCart();
 
   const handleAddBundle = (bundle: typeof BUNDLES[0]) => {
