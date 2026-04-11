@@ -1,6 +1,6 @@
 ﻿import { useState } from "react";
 
-import { ShoppingCart, Heart, Share2, Check, ChevronRight, Sparkles, TrendingDown } from "lucide-react";
+import { ShoppingCart, Heart, Share2, Check, ChevronRight, ChevronLeft, Sparkles, TrendingDown } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import QuantityCapsule from "./QuantityCapsule";
 import bgSingleProducts from "@/assets/bg-home-kits.png";
