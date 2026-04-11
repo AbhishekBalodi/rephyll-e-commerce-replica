@@ -772,7 +772,8 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
       > */}
 
       <section className="relative w-full overflow-hidden" style={{ minHeight: "auto" }}>
-        <img src={bgHomeKits} alt="bg" className="pointer-events-none select-none" style={{ position: "absolute", left: "50%", top: 0, transform: "translateX(-50%)", width: "calc(100vw + 520px)", height: "100%", objectFit: "cover", zIndex: 0 }} />
+        <img src={bgHomeKits} alt="bg" className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
+        <img src={bgHomeKitsMobile} alt="bg" className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
 
         <div className="relative z-[1] mx-auto flex flex-col items-center" style={{ maxWidth: "1440px", padding: "30px 16px 30px", gap: "20px" }}>
 
