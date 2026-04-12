@@ -24,9 +24,9 @@ const TrustStrips = () => {
   return (
     <section className="relative w-full overflow-hidden" style={{ minHeight: "360px" }}>
       {/* Desktop bg */}
-      <img src={bgTestimonials} alt="" aria-hidden="true" className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
+      <img src={bgTestimonials} alt="" aria-hidden="true" className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full" style={{ zIndex: 0, width: "100%", height: "100%", objectFit: "fill" }} />
       {/* Mobile bg */}
-      <img src={bgTestimonialsMobile} alt="" aria-hidden="true" className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
+      <img src={bgTestimonialsMobile} alt="" aria-hidden="true" className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full" style={{ zIndex: 0, width: "100%", height: "100%", objectFit: "fill" }} />
 
       <div className="relative max-w-[1440px] mx-auto text-center px-4 pt-8 pb-16 md:pt-10 md:pb-24" style={{ zIndex: 1 }}>
         <h2

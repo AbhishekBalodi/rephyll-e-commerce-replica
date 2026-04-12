@@ -20,28 +20,39 @@ const CARDS = [
   { icon: <img src={iconSafety} alt="Safety" className="w-[24px] h-[24px] md:w-[28px] md:h-[28px] object-contain" />, title: "Safety", subtitle: "No harsh residues" },
 ];
 
-const WhyChooseUs = () => {
-  return (
-    <section className="relative w-full overflow-hidden" style={{ minHeight: "520px" }}>
-      {/* Desktop bg */}
-      <img src={bgWhyDifferent} alt="" aria-hidden="true" className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
-      {/* Mobile bg */}
-      <img src={bgWhyDifferentMobile} alt="" aria-hidden="true" className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
+interface WhyChooseUsProps {
+  heading?: string;
+  subtext?: string;
+}
 
-      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 md:px-6 text-center text-white pt-12 pb-16 md:pt-16 md:pb-24">
+const WhyChooseUs = ({
+  heading = "What Makes rePhyl Different",
+  subtext,
+}: WhyChooseUsProps) => {
+  return (
+    <section className="relative w-full overflow-hidden">
+      {/* Desktop bg */}
+      <img src={bgWhyDifferent} alt="" aria-hidden="true" className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full" style={{ zIndex: 0, width: "100%", height: "100%", objectFit: "fill" }} />
+      {/* Mobile bg */}
+      <img src={bgWhyDifferentMobile} alt="" aria-hidden="true" className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full" style={{ zIndex: 0, width: "100%", height: "100%", objectFit: "fill" }} />
+
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 md:px-6 text-center text-white pt-12 pb-16 md:pt-16 md:pb-24" style={{ minHeight: "510px" }}>
         <h2
-          className="text-[24px] md:text-[40px] leading-[36px] md:leading-[60px] font-semibold"
+          className="text-[24px] md:text-[40px] leading-[36px] md:leading-[60px] font-semibold max-w-[900px] mx-auto"
           style={{ fontFamily: "'Poppins', sans-serif" }}
         >
-          What Makes rePhyl Different
+          {heading}
         </h2>
 
-        <p
-          className="text-[14px] md:text-[20px] leading-[22px] md:leading-[28px] mt-2 mb-6 md:mb-12"
-          style={{ fontFamily: "'Poppins', sans-serif" }}
-        >
-          Curated Combinations for Effortless Cleaning
-        </p>
+        {subtext && (
+          <p
+            className="text-[14px] md:text-[20px] leading-[22px] md:leading-[28px] mt-2 mb-6 md:mb-12"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            {subtext}
+          </p>
+        )}
+        {!subtext && <div className="mb-6 md:mb-12" />}
 
         {/* 3 Separate white cards */}
         <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-6 mb-6 md:mb-8">

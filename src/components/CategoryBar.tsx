@@ -84,7 +84,7 @@ const CategoryBar = () => {
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           {/* Mobile: horizontal scroll, Desktop: flex wrap center */}
           <div className="flex items-center md:justify-center gap-4 md:gap-[24px] md:flex-wrap py-3 md:py-4 overflow-x-auto md:overflow-x-visible scrollbar-hide">
-            {categories.map((cat: ApiCategory) => {
+            {categories.filter((cat: ApiCategory) => cat.name.trim().toUpperCase() !== "BYOB").map((cat: ApiCategory) => {
               const iconSrc = getCategoryIcon(cat);
 
               return (

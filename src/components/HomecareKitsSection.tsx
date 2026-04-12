@@ -803,9 +803,9 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
         // background handled by full-bleed <img> above
       > */}
 
-      <section className="relative w-full overflow-hidden" style={{ minHeight: "auto" }}>
-        <img src={bgHomeKits} alt="bg" className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
-        <img src={bgHomeKitsMobile} alt="bg" className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
+      <section className="relative w-full overflow-hidden" style={{ minHeight: "805px" }}>
+        <img src={bgHomeKits} alt="bg" className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full" style={{ zIndex: 0, width: "100%", height: "100%", objectFit: "fill" }} />
+        <img src={bgHomeKitsMobile} alt="bg" className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full" style={{ zIndex: 0, width: "100%", height: "100%", objectFit: "fill" }} />
 
         <div className="relative z-[1] mx-auto flex flex-col items-center" style={{ maxWidth: "1440px", padding: "30px 16px 30px", gap: "20px" }}>
 

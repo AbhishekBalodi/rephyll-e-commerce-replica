@@ -68,13 +68,14 @@ const Navbar = () => {
 
   const shopSubcategories = useMemo(() => {
     if (!backendCategories) return [];
-    return backendCategories.map((cat) => {
-      const normalizedName = slugifyCategory(cat.name);
-      const isBYOB = normalizedName === "byob" || cat.name.toLowerCase().includes("byob");
-      const isKitsOrBundles = cat.name.toLowerCase().includes("kit") || cat.name.toLowerCase().includes("bundle");
-      const path = isBYOB || isKitsOrBundles ? "/homecare-kits" : `/category/${normalizedName}`;
-      return { label: cat.name, path };
-    });
+    return backendCategories
+      .filter((cat) => cat.name.trim().toUpperCase() !== "BYOB")
+      .map((cat) => {
+        const normalizedName = slugifyCategory(cat.name);
+        const isKitsOrBundles = cat.name.toLowerCase().includes("kit") || cat.name.toLowerCase().includes("bundle");
+        const path = isKitsOrBundles ? "/homecare-kits" : `/category/${normalizedName}`;
+        return { label: cat.name, path };
+      });
   }, [backendCategories]);
 
   const getSubcategories = (cat: NavCategory) => {
