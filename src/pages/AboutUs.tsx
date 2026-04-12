@@ -63,7 +63,7 @@ const AboutUs = () => {
       </section>
 
       {/* ✅ FULL WIDTH SECTION (no constraints) */}
-      <WhyChooseUs />
+      <WhyChooseUs heading="Redefine what home care can be: clean, safe, and refreshingly honest." />
 
       <Footer />
 

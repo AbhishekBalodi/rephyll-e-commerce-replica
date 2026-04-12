@@ -17,7 +17,7 @@ const Index = () => {
       <CategoryBar />
       <TrustMarqueeStrip />
       <HomecareKitsSection showKitsTab={false} />
-      <WhyChooseUs />
+      <WhyChooseUs heading="Bring home the feeling of reset, the ease of relief, and the confidence of safety." />
       <TrustStrips />
       {/* <VideoReelsSection /> */}
       <BlogsSection />
