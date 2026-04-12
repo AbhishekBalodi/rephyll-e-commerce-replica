@@ -54,9 +54,9 @@ const BlogsSection = () => {
   return (
     <section className="relative w-full overflow-hidden">
       {/* Desktop bg */}
-      <img src={bgBlogs} alt="" aria-hidden="true" className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
+      <img src={bgBlogs} alt="" aria-hidden="true" className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full" style={{ zIndex: 0, width: "100%", height: "100%", objectFit: "fill" }} />
       {/* Mobile bg */}
-      <img src={bgBlogsMobile} alt="" aria-hidden="true" className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
+      <img src={bgBlogsMobile} alt="" aria-hidden="true" className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full" style={{ zIndex: 0, width: "100%", height: "100%", objectFit: "fill" }} />
 
       <div className="relative max-w-[1440px] mx-auto text-center text-white px-4 pt-8 pb-16 md:pt-10 md:pb-28" style={{ zIndex: 1 }}>
         <h2 className="text-[24px] md:text-[40px] font-semibold leading-[36px] md:leading-[60px]">

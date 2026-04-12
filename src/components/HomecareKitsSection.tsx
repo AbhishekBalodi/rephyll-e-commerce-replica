@@ -83,8 +83,8 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
     <div id="homecare-kits-section">
       {/* ===== SECTION 1: Smart Bundles / Single Products (height: 727px) ===== */}
       <section className="relative w-full overflow-hidden" style={{ minHeight: "auto" }}>
-        <img src={bgSingleProducts} alt="bg" className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
-        <img src={bgHomeKitsMobile} alt="bg" className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
+        <img src={bgSingleProducts} alt="bg" className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full" style={{ zIndex: 0, width: "100%", height: "100%", objectFit: "fill" }} />
+        <img src={bgHomeKitsMobile} alt="bg" className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full" style={{ zIndex: 0, width: "100%", height: "100%", objectFit: "fill" }} />
 
         <div className="relative z-[1] mx-auto max-w-[1440px] px-4 md:px-6 py-8 md:py-16 flex flex-col justify-center">
           {/* TABS */}
