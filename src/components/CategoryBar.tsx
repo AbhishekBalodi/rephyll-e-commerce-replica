@@ -5,12 +5,12 @@ import { resolveImageUrl } from "@/lib/productHelpers";
 
 import catWashroom from "@/assets/cat-washroom-care.png";
 import catFloor from "@/assets/cat-floor-surface.png";
-import catKitchen from "@/assets/cat-kitchen-care.png";
+import catKitchen from "@/assets/cat-smart-bundles.png";
 import catLaundry from "@/assets/cat-laundry-care.png";
 import catHomeCare from "@/assets/cat-home-care-kits.png";
 import catBundles from "@/assets/cat-smart-bundles.png";
 
-const getFallbackIcon = (name: string): string => {
+ const getFallbackIcon = (name: string): string => {
   const lower = name.toLowerCase();
   if (lower.includes("washroom") || lower.includes("bath")) return catWashroom;
   if (lower.includes("floor") || lower.includes("surface")) return catFloor;
@@ -19,7 +19,7 @@ const getFallbackIcon = (name: string): string => {
   if (lower.includes("kit") || lower.includes("home")) return catHomeCare;
   if (lower.includes("bundle") || lower.includes("smart")) return catBundles;
   return catHomeCare;
-};
+}; 
 
 const getCategoryIcon = (cat: ApiCategory): string => {
   if (cat.image) return resolveImageUrl(cat.image);

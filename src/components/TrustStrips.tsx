@@ -81,15 +81,17 @@ const TrustStrips = () => {
                 "{mobileReview.content}"
               </p>
               <h4 className="text-[16px] font-semibold text-[#2C2C2C]" style={{ fontFamily: "'Poppins', sans-serif" }}>{mobileReview.name}</h4>
+              {TOP_REVIEWS.length > 1 && (
+                <>
+                  <button onClick={() => setMobileIndex((p) => (p > 0 ? p - 1 : TOP_REVIEWS.length - 1))} className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white rounded-full shadow flex items-center justify-center md:hidden">
+                    <ChevronLeft size={18} />
+                  </button>
+                  <button onClick={() => setMobileIndex((p) => (p < TOP_REVIEWS.length - 1 ? p + 1 : 0))} className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white rounded-full shadow flex items-center justify-center md:hidden">
+                    <ChevronRight size={18} />
+                  </button>
+                </>
+              )}
             </div>
-          </div>
-          <div className="flex justify-center gap-4 mt-4">
-            <button onClick={() => setMobileIndex((p) => (p > 0 ? p - 1 : TOP_REVIEWS.length - 1))} className="w-10 h-10 bg-white rounded-full shadow flex items-center justify-center">
-              <ChevronLeft size={18} />
-            </button>
-            <button onClick={() => setMobileIndex((p) => (p < TOP_REVIEWS.length - 1 ? p + 1 : 0))} className="w-10 h-10 bg-white rounded-full shadow flex items-center justify-center">
-              <ChevronRight size={18} />
-            </button>
           </div>
         </div>
       </div>

@@ -87,13 +87,15 @@ const HeroCarousel = () => {
                     Shop now
                     <ArrowRight size={15} strokeWidth={1.5} />
                   </button>
-                  <button
+
+                  {/* <button
                     onClick={() => scrollToSection("homecare-kits-section")}
                     className="rounded-[43px] bg-background px-10 py-4 text-[16px] font-semibold leading-[120%] text-primary transition-opacity hover:opacity-90"
                     style={{ fontFamily: "'Poppins', sans-serif" }}
-                  >
-                    Explore Kits
-                  </button>
+                  > 
+                  //   Explore Kits
+                  // </button>
+                  */}
                 </div>
               </div>
 

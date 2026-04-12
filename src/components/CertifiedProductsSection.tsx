@@ -7,7 +7,21 @@ import bgCertified from "@/assets/bg-certified-products.png";
 
 const BADGES = [makeInIndia, locallySourced, authentic, plantBased, biodegradable];
 
+import { useRef } from "react";
+
 const CertifiedProductsSection = () => {
+  const stripRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollLeft = () => {
+    if (!stripRef.current) return;
+    stripRef.current.scrollBy({ left: -Math.max(200, stripRef.current.clientWidth / 2), behavior: "smooth" });
+  };
+
+  const scrollRight = () => {
+    if (!stripRef.current) return;
+    stripRef.current.scrollBy({ left: Math.max(200, stripRef.current.clientWidth / 2), behavior: "smooth" });
+  };
+
   return (
     <section
       className="relative w-full flex justify-center overflow-hidden"
@@ -50,24 +64,24 @@ const CertifiedProductsSection = () => {
           </p>
         </div>
 
-        <div
-          className="flex items-center justify-center"
-          style={{
-            width: "1100px",
-            background: "#FFFFFF",
-            borderRadius: "20px",
-            padding: "32px 40px",
-            gap: "60px",
-          }}
-        >
-          {BADGES.map((img, index) => (
-            <img
-              key={index}
-              src={img}
-              alt="badge"
-              style={{ width: "120px", height: "120px", objectFit: "contain" }}
-            />
-          ))}
+        <div className="relative w-full flex items-center justify-center">
+          <button onClick={scrollLeft} className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white rounded-full shadow flex items-center justify-center md:hidden">◀</button>
+          <div
+            ref={stripRef}
+            className="inline-flex items-center justify-center md:justify-center max-w-full overflow-x-auto py-6 px-4 rounded-[20px] bg-white gap-6"
+            style={{ scrollBehavior: "smooth" }}
+          >
+            {BADGES.map((img, index) => (
+              <img
+                key={index}
+                src={img}
+                alt="badge"
+                className="w-[100px] h-[100px] object-contain"
+                style={{ flex: "0 0 auto" }}
+              />
+            ))}
+          </div>
+          <button onClick={scrollRight} className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white rounded-full shadow flex items-center justify-center md:hidden">▶</button>
         </div>
       </div>
     </section>

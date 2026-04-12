@@ -4,7 +4,7 @@ import { getProductImage, getSellingPrice, getMrp } from "@/lib/productHelpers";
 import { useNavigate } from "react-router-dom";
 import bgSimilar from "@/assets/bg-similar-items.png";
 import type { ApiProduct } from "@/types/api";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface SimilarItemsSectionProps {
   currentProductId?: number;
@@ -16,14 +16,23 @@ const SimilarItemsSection = ({ currentProductId, categoryId }: SimilarItemsSecti
   const { data: relatedData } = useRelatedProducts(currentProductId);
   const { data: fallbackData } = useProductList({ size: 12, category: categoryId });
   const [scrollIndex, setScrollIndex] = useState(0);
+  const [visibleCount, setVisibleCount] = useState<number>(6);
 
+  useEffect(() => {
+    const update = () => {
+      if (typeof window === "undefined") return;
+      setVisibleCount(window.innerWidth < 768 ? 1 : 6);
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
   const relatedProducts = relatedData?.content ?? [];
   const fallbackProducts = (fallbackData?.content ?? []).filter((p: ApiProduct) => p.id !== currentProductId);
   const products = (relatedProducts.length > 0 ? relatedProducts : fallbackProducts).slice(0, 6);
 
   if (products.length === 0) return null;
 
-  const visibleCount = 6;
   const canPrev = scrollIndex > 0;
   const canNext = scrollIndex + visibleCount < products.length;
 
@@ -49,12 +58,12 @@ const SimilarItemsSection = ({ currentProductId, categoryId }: SimilarItemsSecti
 
         <div className="relative">
           {canPrev && (
-            <button onClick={() => setScrollIndex(Math.max(0, scrollIndex - 1))} className="absolute left-[-20px] top-1/2 -translate-y-1/2 z-10 w-[50px] h-[50px] bg-white rounded-full shadow flex items-center justify-center">
+            <button onClick={() => setScrollIndex(Math.max(0, scrollIndex - 1))} className="absolute left-2 md:left-[-20px] top-1/2 -translate-y-1/2 z-10 w-[50px] h-[50px] bg-white rounded-full shadow flex items-center justify-center">
               <ChevronLeft size={24} />
             </button>
           )}
           {canNext && (
-            <button onClick={() => setScrollIndex(scrollIndex + 1)} className="absolute right-[-20px] top-1/2 -translate-y-1/2 z-10 w-[50px] h-[50px] bg-white rounded-full shadow flex items-center justify-center">
+            <button onClick={() => setScrollIndex(scrollIndex + 1)} className="absolute right-2 md:right-[-20px] top-1/2 -translate-y-1/2 z-10 w-[50px] h-[50px] bg-white rounded-full shadow flex items-center justify-center">
               <ChevronRight size={24} />
             </button>
           )}
@@ -69,7 +78,7 @@ const SimilarItemsSection = ({ currentProductId, categoryId }: SimilarItemsSecti
                   key={product.id}
                   onClick={() => navigate(`/product/${product.id}`)}
                   className="flex-shrink-0 cursor-pointer bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
-                  style={{ width: "calc((100% - 80px) / 6)", minWidth: "180px" }}
+                    style={{ width: `calc((100% - ${Math.max(0, (visibleCount - 1) * 16)}px) / ${visibleCount})`, minWidth: "140px" }}
                 >
                   <div className="relative" style={{ height: "180px", background: "#f5f5f5" }}>
                     <img src={image} alt={product.name} className="w-full h-full object-contain p-2" onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg"; }} />

@@ -17,15 +17,15 @@ const AboutUs = () => {
       <section className="w-full bg-[#F1FBD8]">
         <div className="max-w-[1318px] mx-auto px-4 md:px-[68px] py-12 md:py-16">
           <h2
-            className="text-[28px] md:text-[40px] leading-[42px] md:leading-[60px] font-semibold text-[#064734] mb-6 md:mb-8"
-            style={{ fontFamily: "'Poppins', sans-serif" }}
+            className="text-[18px] md:text-[40px] leading-[100%] md:leading-[60px] font-semibold mb-6 md:mb-8"
+            style={{ fontFamily: "'Poppins', sans-serif", color: "#064734" }}
           >
-            About Us
+            <span className="md:text-black">About Us</span>
           </h2>
 
           <div
-            className="space-y-5 md:space-y-6 text-[16px] md:text-[24px] leading-[160%] md:leading-[100%] text-[#064734]"
-            style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400 }}
+            className="space-y-5 md:space-y-6 text-[18px] md:text-[24px] leading-[100%] md:leading-[100%]"
+            style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, color: "#064734" }}
           >
             <p>For decades, "clean" has come with a trade-off—</p>
 
