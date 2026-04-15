@@ -68,6 +68,9 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
       price: activePack.totalPrice,
       originalPrice: activePack.originalPrice,
       image: images[0],
+      variantId: selectedVariant?.id,
+      maxQuantity: selectedVariant?.inventory?.maxCartQuantity ?? selectedVariant?.inventory?.totalStock ?? null,
+      stockLabel: selectedVariant?.inventory?.stockLabel ?? null,
     }, 1);
   };
 
@@ -209,8 +212,15 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
             <div className="flex gap-3 md:gap-4 mt-3 md:mt-4 mb-4 md:mb-6">
               <QuantityCapsule
                 quantity={cartQty}
-                onIncrement={() => updateQuantity(cartKey, cartQty + 1)}
-                onDecrement={() => updateQuantity(cartKey, cartQty - 1)}
+                onIncrement={(e: any) => {
+                  e?.preventDefault?.();
+                  const variantMax = selectedVariant?.inventory?.maxCartQuantity ?? null;
+                  const localMax = cartItem?.maxQuantity ?? null;
+                  const max = variantMax ?? localMax ?? null;
+                  const next = max ? Math.min(cartQty + 1, max) : cartQty + 1;
+                  updateQuantity(cartKey, next);
+                }}
+                onDecrement={(e: any) => { e?.preventDefault?.(); updateQuantity(cartKey, cartQty - 1); }}
               />
 
               <button

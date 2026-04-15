@@ -64,6 +64,8 @@ const Footer = () => {
     { label: "Shop All", path: "/" },
     { label: "About Us", path: "/about" },
     { label: "Our Story", path: "/our-story" },
+    { label: "My Account", path: "/profile" },
+    { label: "Addresses", path: "/addresses" },
     { label: "FAQs", path: "/faqs" },
     { label: "Contact Us", path: "/contact" },
   ];

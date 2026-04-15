@@ -69,7 +69,11 @@ const CategoryBar = () => {
       return;
     }
 
-    if (normalized.includes("kit") || normalized.includes("bundle") || normalized.includes("homecare")) {
+    // Match whole words like "kit", "kits", "bundle", "bundles", or the
+    // literal "homecare" to avoid accidental matches inside words like
+    // "kitchen".
+    const kitsOrBundlesRegex = /\bkit(s)?\b|\bbundle(s)?\b|\bhomecare\b/;
+    if (kitsOrBundlesRegex.test(normalized)) {
       navigate("/homecare-kits");
       return;
     }

@@ -25,6 +25,12 @@ import ProductPage from "./pages/ProductPage.tsx";
 import CategoryPage from "./pages/CategoryPage.tsx";
 import ShopSection from "./pages/ShopSection.tsx";
 import HomecareKitsPage from "./pages/HomecareKits.tsx";
+import CheckoutPage from "./pages/CheckoutPage.tsx";
+import OrdersPage from "./pages/OrdersPage";
+import OrderDetail from "./pages/OrderDetail";
+import ProfilePage from "./pages/ProfilePage.tsx";
+import AddressesPage from "./pages/AddressesPage";
+import RequireAuth from "./components/RequireAuth";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +48,7 @@ const App = () => (
               <Route path="/about" element={<AboutUs />} />
               <Route path="/our-story" element={<OurStory />} />
               <Route path="/homecare-kits" element={<HomecareKitsPage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/b2b-orders" element={<ContactUs />} />
               <Route path="/why-choose-us" element={<WhyChooseUsPage />} />
               <Route path="/faqs" element={<FAQs />} />
@@ -54,6 +61,11 @@ const App = () => (
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/cart" element={<CartPage />} />
+              <Route path="/orders" element={<RequireAuth><OrdersPage /></RequireAuth>} />
+              <Route path="/orders/:id" element={<RequireAuth><OrderDetail /></RequireAuth>} />
+              <Route path="/profile" element={<RequireAuth><ProfilePage /></RequireAuth>} />
+              <Route path="/addresses" element={<RequireAuth><AddressesPage /></RequireAuth>} />
+              <Route path="/checkout" element={<RequireAuth><CheckoutPage /></RequireAuth>} />
               <Route path="/product/:slug" element={<ProductPage />} />
               <Route path="/category/:slug" element={<CategoryPage />} />
               <Route path="/admin/add-product" element={<AdminAddProduct />} />

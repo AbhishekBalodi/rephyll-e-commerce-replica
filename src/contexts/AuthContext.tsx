@@ -1,9 +1,12 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import profileApi from "@/services/profileApi";
 
 interface AuthUser {
   email: string;
   username: string;
   role: string;
+  personId?: number;
+  tenantId?: number;
 }
 
 interface AuthContextType {
@@ -41,6 +44,32 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [user]);
 
+  // When token changes, try to fetch the full profile
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const tokenVal = localStorage.getItem('rephyl_token');
+        if (!tokenVal) return;
+        const res = await profileApi.getProfile();
+        const payload = (res && typeof res === 'object' && 'success' in res) ? (res.data || res) : res;
+        if (!mounted) return;
+        if (payload) {
+          setUser((prev) => ({
+            email: payload.email || prev?.email || '',
+            username: payload.displayName || prev?.username || payload.username || '',
+            role: prev?.role || 'ROLE_CUSTOMER',
+            personId: payload.personId || prev?.personId,
+            tenantId: payload.tenantId || prev?.tenantId,
+          }));
+        }
+      } catch (_) {
+        // ignore
+      }
+    })();
+    return () => { mounted = false; };
+  }, [token]);
+
   const login = async (email: string, password: string) => {
     const res = await fetch(`${API_BASE}/auth/login`, {
       method: "POST",
@@ -49,16 +78,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Login failed");
-
-    // Spring Boot response: { token, username, role, tenantId, tenantType, permissions }
-    const authToken = data.token;
+    // Support both direct AuthResponse and wrapped { success, data }
+    const payload = data.token ? data : data.data ? data.data : data;
+    const authToken = payload.token;
     const authUser: AuthUser = {
       email,
-      username: data.username,
-      role: data.role,
+      username: payload.username || data.username,
+      role: payload.role,
+      personId: payload.personId,
+      tenantId: payload.tenantId,
     };
 
     localStorage.setItem("rephyl_token", authToken);
+    if (authUser.personId) localStorage.setItem("rephyl_personId", String(authUser.personId));
+    if (authUser.tenantId) localStorage.setItem("rephyl_tenantId", String(authUser.tenantId));
     setToken(authToken);
     setUser(authUser);
   };
@@ -73,14 +106,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (!res.ok) throw new Error(data.message || "Registration failed");
 
     // If register also returns a token, log them in
-    if (data.token) {
-      localStorage.setItem("rephyl_token", data.token);
-      setToken(data.token);
+    const payload = data.token ? data : data.data ? data.data : data;
+    if (payload.token) {
+      localStorage.setItem("rephyl_token", payload.token);
+      setToken(payload.token);
       setUser({
         email: regData.email,
-        username: data.username || regData.fullName,
-        role: data.role || "ROLE_CUSTOMER",
+        username: payload.username || regData.fullName,
+        role: payload.role || "ROLE_CUSTOMER",
       });
+      return;
+    }
+
+    // If registration did not return a token, attempt to log in automatically
+    try {
+      await login(regData.email, regData.password);
+    } catch (_) {
+      // ignore - user can log in manually
     }
   };
 

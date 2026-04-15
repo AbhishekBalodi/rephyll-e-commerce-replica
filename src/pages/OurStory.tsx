@@ -73,14 +73,14 @@ const OurStory = () => {
               It's about how your space makes you feel.
             </p>
 
-            <div className="text-center pt-4">
-              <p className="text-[24px] md:text-[32px] font-bold" style={{ color: "#064734" }}>
+            {/* <div className="text-center pt-4"> */}
+              {/* <p className="text-[24px] md:text-[32px] font-bold" style={{ color: "#064734" }}>
                 rePhyl
-              </p>
-              <p className="italic font-semibold" style={{ color: "#064734" }}>
+              </p> */}
+              {/* <p className="italic font-semibold" style={{ color: "#064734" }}>
                 Reset your space. Feel the relief. Trust what's left behind.
-              </p>
-            </div>
+              </p> */}
+            {/* </div> */}
           </div>
         </div>
       </section>

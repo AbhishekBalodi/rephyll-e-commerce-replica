@@ -3,6 +3,7 @@ import { Star, StarHalf, ShoppingCart, Share2, Heart, ChevronRight } from "lucid
 import { useNavigate } from "react-router-dom";
 import type { ApiProduct } from "@/types/api";
 import { getProductImage, getSellingPrice, getMrp, getDiscount } from "@/lib/productHelpers";
+import { getProductById } from "@/services/productApi";
 import QuantityCapsule from "./QuantityCapsule";
 import { useCart } from "@/contexts/CartContext";
 
@@ -55,7 +56,22 @@ const ProductCard = ({
       return;
     }
     if (!isBundle) {
-      addToCart({ productId: product.id, name: product.name, price, originalPrice: mrp, image });
+      (async () => {
+        // Attempt to resolve a variant id from product detail. If not available, fallback to product.id
+        let variantId: number | undefined = undefined;
+        try {
+          if ((product as any).variantCount && (product as any).variantCount > 0) {
+            const detail = await getProductById(product.id);
+            if (detail.variants && detail.variants.length > 0) {
+              variantId = detail.variants[0].id;
+            }
+          }
+        } catch (_) {
+          // ignore and fallback
+        }
+
+        addToCart({ productId: product.id, name: product.name, price, originalPrice: mrp, image, variantId });
+      })();
     }
   };
 
@@ -67,7 +83,10 @@ const ProductCard = ({
       return;
     }
     if (!isBundle) {
-      updateQuantity(product.id, quantity + 1);
+      const existing = items.find((it) => it.productId === product.id);
+      const maxQ = existing?.maxQuantity ?? null;
+      const newQ = maxQ && (quantity + 1) > maxQ ? maxQ : quantity + 1;
+      updateQuantity(product.id, newQ);
     }
   };
 

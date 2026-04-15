@@ -72,7 +72,11 @@ const Navbar = () => {
       .filter((cat) => cat.name.trim().toUpperCase() !== "BYOB")
       .map((cat) => {
         const normalizedName = slugifyCategory(cat.name);
-        const isKitsOrBundles = cat.name.toLowerCase().includes("kit") || cat.name.toLowerCase().includes("bundle");
+        // Match whole words like "kit", "kits", "bundle", "bundles" to avoid
+        // accidental matches inside words like "kitchen".
+        const lowerName = cat.name.toLowerCase();
+        const kitsOrBundlesRegex = /\bkit(s)?\b|\bbundle(s)?\b/;
+        const isKitsOrBundles = kitsOrBundlesRegex.test(lowerName);
         const path = isKitsOrBundles ? "/homecare-kits" : `/category/${normalizedName}`;
         return { label: cat.name, path };
       });

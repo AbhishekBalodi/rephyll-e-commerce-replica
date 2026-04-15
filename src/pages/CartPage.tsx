@@ -5,7 +5,7 @@ import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const CartPage = () => {
-  const { items, totalItems, totalPrice, bundleOffer, updateQuantity, removeFromCart, clearCart } = useCart();
+  const { items, totalItems, totalPrice, bundleOffer, updateQuantity, removeFromCart, clearCart, syncing } = useCart();
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -41,6 +41,10 @@ const CartPage = () => {
                         <span className="text-xs line-through text-muted-foreground ml-2">₹{item.originalPrice}</span>
                       )}
                     </p>
+                    <div className="text-xs text-muted-foreground mt-1">
+                      {item.stockLabel ? <span>{item.stockLabel}</span> : null}
+                      {item.maxQuantity ? <span className="ml-2">• Max {item.maxQuantity}</span> : null}
+                    </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <button
@@ -66,6 +70,9 @@ const CartPage = () => {
             </div>
 
             <div className="bg-card border border-border rounded-xl p-6">
+              {syncing && (
+                <p className="text-sm text-muted-foreground mb-4">Syncing cart with server...</p>
+              )}
               <div className="flex items-center justify-between mb-4">
                 <span className="text-sm text-muted-foreground">Subtotal ({totalItems} items)</span>
                 <span className="text-lg font-bold text-foreground">₹{totalPrice}</span>
@@ -80,7 +87,7 @@ const CartPage = () => {
                 >
                   Clear Cart
                 </button>
-                <button className="flex-1 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors text-sm">
+                <button onClick={() => window.location.href = '/checkout'} className="flex-1 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors text-sm">
                   Proceed to Checkout
                 </button>
               </div>
