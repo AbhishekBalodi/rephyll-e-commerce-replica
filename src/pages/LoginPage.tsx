@@ -34,11 +34,11 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-      <section className="max-w-md mx-auto px-4 py-20 pt-[104px]">
-        <div className="flex flex-col items-center mb-8">
-          <img src={cloverGreen} alt="rePhyl" className="w-20 h-20 mb-2" />
-          <img src={logoBlack} alt="rePhyl" className="h-[220px] w-auto -my-[75px]" />
-          <p className="text-muted-foreground">Log in to your account</p>
+      <section className="max-w-md mx-auto px-4 py-20 pt-[130px]">
+        <div className="flex flex-col items-center mb-8 ">
+          <p className="w-20 h-20 mb-2" />
+          <img src={logoBlack} alt="rePhyl" className="h-[120px] w-auto -my-[75px]" />
+          <p className="text-muted-foreground relative top-8 mt-10">Log in to your account</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">

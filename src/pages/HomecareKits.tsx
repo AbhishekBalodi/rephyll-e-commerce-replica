@@ -223,7 +223,7 @@ const HomecareKitsPage = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-      <section className="max-w-7xl mx-auto px-4 md:px-6 py-8 pt-[104px]">
+      <section className="max-w-7xl mx-auto px-4 md:px-6 py-8 pt-[130px]">
         <div className="mb-8 flex items-center gap-4 justify-center">
           <button
             onClick={() => setActiveView("smart")}

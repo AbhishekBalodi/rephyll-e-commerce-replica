@@ -122,7 +122,7 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
           <div className="relative flex-1 rounded-2xl bg-[#F6F6F6] flex items-center justify-center overflow-hidden">
             <img
               src={images[activeImg]}
-              className="w-full h-full object-contain"
+              className="w-full h-full object-contai"
               alt="Product"
               loading="lazy"
             />
