@@ -135,7 +135,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     console.log('=== [SIGNUP] Starting customer signup ===');
     console.log('[SIGNUP] API_BASE:', API_BASE);
-    console.log('[SIGNUP] Full URL:', `${API_BASE}/customer-auth/signup`);
+    console.log('[SIGNUP] Full URL:', `${API_BASE}/customer-account/signup`);
     console.log('[SIGNUP] Request Payload:', { 
       name: signupPayload.name, 
       email: signupPayload.email, 
@@ -144,7 +144,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     });
 
     try {
-      const res = await fetch(`${API_BASE}/customer-auth/signup`, {
+      const res = await fetch(`${API_BASE}/customer-account/signup`, {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",

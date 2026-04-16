@@ -3,6 +3,7 @@ import { useParams, useLocation, Link } from "react-router-dom";
 import { ChevronDown, ChevronUp, SlidersHorizontal } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import CategoryBar from "@/components/CategoryBar";
 import ProductCard from "@/components/ProductCard";
 import { useProductsByCategory, useCategories } from "@/hooks/useProducts";
 import type { ApiProduct } from "@/types/api";
@@ -69,9 +70,9 @@ const CategoryPage = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Navbar />
-
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 pt-[104px]">
+      <Navbar/>
+      
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 pt-[130px]">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 mb-6 text-sm" style={{ fontFamily: "'Poppins', sans-serif" }}>
           <Link to="/" className="hover:underline" style={{ color: "#808080" }}>Home</Link>
@@ -79,13 +80,15 @@ const CategoryPage = () => {
           <span style={{ color: "#064734", fontWeight: 500 }}>{category?.name || slug}</span>
         </nav>
 
+        <CategoryBar/>
+
         {/* Title & count */}
         <div className="mb-6">
-          <h1
+          <h1 className="text-center my-9 "
             style={{
               fontFamily: "'Poppins', sans-serif",
               fontWeight: 700,
-              fontSize: "36px",
+              fontSize: "40px",
               color: "#064734",
               marginBottom: "8px",
             }}
@@ -98,7 +101,7 @@ const CategoryPage = () => {
         </div>
 
         {/* Sort bar + search + Mobile filter toggle */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
+        {/* <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
           <div className="flex items-center gap-2 w-full md:w-auto">
             <input
               type="search"
@@ -144,7 +147,7 @@ const CategoryPage = () => {
             </select>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Products Grid */}
         {isLoading ? (

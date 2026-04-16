@@ -2,7 +2,7 @@ import type { MouseEvent } from "react";
 import { useState, useEffect } from "react";
 import { Star, StarHalf, ShoppingCart, Share2, Heart, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import type { ApiProduct, ApiProductDetail } from "@/types/api";
+import type { ApiProduct, ApiProductDetail ,ApiVariant} from "@/types/api";
 import { getProductImage, getSellingPrice, getMrp, getDiscount, getProductImages } from "@/lib/productHelpers";
 import { getProductById } from "@/services/productApi";
 import QuantityCapsule from "./QuantityCapsule";
@@ -12,6 +12,7 @@ interface ProductCardProps {
   product: ApiProduct;
   onClick?: (product: ApiProduct) => void;
 }
+
 
 const ProductCard = ({ product, onClick }: ProductCardProps) => {
   const navigate = useNavigate();
@@ -35,6 +36,10 @@ const ProductCard = ({ product, onClick }: ProductCardProps) => {
     };
     loadProduct();
   }, [product.id]);
+
+  
+
+  
   
   // Use variant images if available, otherwise fallback to catalog image
   const images = fullProduct ? getProductImages(fullProduct) : [getProductImage(product)];

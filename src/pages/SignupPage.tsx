@@ -68,7 +68,7 @@ const SignupPage = () => {
         <div className="flex flex-col items-center mb-8">
           <img src={cloverGreen} alt="rePhyl" className="w-20 h-20 mb-2" />
           <img src={logoBlack} alt="rePhyl" className="h-28 w-auto -my-6" />
-          <p className="text-muted-foreground">Join rePhyl for a cleaner, greener home</p>
+          <p className="text-muted-foreground relative top-5">Join rePhyl for a cleaner, greener home</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
