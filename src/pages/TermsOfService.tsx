@@ -5,7 +5,7 @@ const TermsOfService = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-      <section className="max-w-4xl mx-auto px-4 md:px-6 py-16">
+      <section className="max-w-4xl mx-auto px-4 md:px-6 py-16 pt-[104px]">
         <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-8">
           Terms of Service
         </h1>

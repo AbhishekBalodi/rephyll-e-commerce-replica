@@ -162,6 +162,72 @@ Frontend usage:
 - Save token in local storage
 - Send token in `Authorization` header for all `/customer-account/*` APIs
 
+### 4.2 Signup customer
+
+- Method: `POST`
+- Endpoint: `/api/customer-auth/signup`
+- Auth required: No
+- Purpose: Create new customer account.
+
+Request body:
+
+| Field | Type | Required | Notes |
+| --- | --- | --- | --- |
+| `name` | string | Yes | Customer name |
+| `email` | string | Yes | Email address |
+| `mobile` | string | Yes | Mobile phone number |
+| `password` | string | Yes | Login password |
+
+Example request:
+
+```json
+{
+  "name": "Ratan Sharma",
+  "email": "ratan@example.com",
+  "mobile": "9876543210",
+  "password": "Secret@123"
+}
+```
+
+Success response (`201`):
+
+```json
+{
+  "success": true,
+  "message": "Customer signup successful",
+  "data": {
+    "loginId": 125,
+    "personId": 210,
+    "customerProfileId": 78,
+    "childRoleId": 8,
+    "username": "ratan@example.com",
+    "name": "Ratan Sharma",
+    "email": "ratan@example.com",
+    "mobile": "9876543210"
+  }
+}
+```
+
+`SignupResponse` data fields:
+- `loginId` (number) - Login record ID
+- `personId` (number) - Person record ID  
+- `customerProfileId` (number) - Customer profile ID
+- `childRoleId` (number) - Role ID
+- `username` (string) - Username (typically email)
+- `name` (string) - Customer name
+- `email` (string) - Email address
+- `mobile` (string) - Mobile number
+
+Common error cases:
+- `400` validation failed (missing/invalid fields)
+- `409` email already exists
+- `500` server error
+
+Frontend usage:
+- Call signup with name, email, mobile, password
+- After successful signup, store customer info (optional auto-login may follow)
+- Optionally redirect to login page to authenticate
+
 ---
 
 ## 5. Public catalog APIs (Customer storefront)
@@ -537,6 +603,22 @@ Response `data`: `CustomerAddressResponse`
 - `countryId` (number)
 - `isDefault` (boolean)
 
+### 6.2.3 Update address
+- Method: `PUT`
+- Endpoint: `/api/customer-account/addresses/{addressId}`
+- Auth: Customer JWT required
+- Purpose: Update an existing address.
+- Request body: Same as Create Address (all fields updateable)
+- Success response (`200`): `ApiResponse<CustomerAddressResponse>`
+
+### 6.2.4 Delete address
+- Method: `DELETE`
+- Endpoint: `/api/customer-account/addresses/{addressId}`
+- Auth: Customer JWT required
+- Purpose: Delete a saved address.
+- Request body: None
+- Success response (`200`): `{ "success": true, "message": "...", "data": null }`
+
 ---
 
 ## 6.3 Cart (`/api/customer-account/cart`)
@@ -587,6 +669,72 @@ Response `data`: `CartItemResponse`
 - `id` (number)
 - `customerProfileId` (number)
 - `itemCount` (number)
+
+---
+
+## 7. Contact Form API
+
+### 7.1 Submit contact message
+
+- Method: `POST`
+- Endpoint: `/api/contact`
+- Auth required: No
+- Purpose: Submit contact/inquiry form from B2B Orders page or Contact Us page.
+
+Request body:
+
+| Field | Type | Required | Notes |
+| --- | --- | --- | --- |
+| `name` | string | Yes | Name of the person submitting (min 2 chars, max 100) |
+| `email` | string | Yes | Email address |
+| `message` | string | Yes | Message content (min 10 chars, max 2000) |
+
+Example request:
+
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "message": "I would like to inquire about B2B orders and bulk pricing for our retail store."
+}
+```
+
+Success response (`201`):
+
+```json
+{
+  "success": true,
+  "message": "Your message has been sent successfully!",
+  "data": {
+    "id": 15,
+    "name": "John Doe",
+    "email": "john@example.com",
+    "message": "I would like to inquire about...",
+    "createdDate": "2026-04-15T10:30:00Z",
+    "isRead": false
+  }
+}
+```
+
+`ContactMessageResponse` data fields:
+- `id` (number) - Message ID
+- `name` (string) - Sender name
+- `email` (string) - Sender email
+- `message` (string) - Message content
+- `createdDate` (string) - Timestamp when message was received
+- `isRead` (boolean) - Whether admin has read the message
+
+Common error cases:
+- `400` validation failed (empty/invalid fields, message too short)
+- `422` unprocessable entity (field validation errors)
+- `500` server error
+
+Frontend usage:
+- Call on B2B Orders (Contact Us) form submission
+- Validate locally: name (2-100 chars), email (valid format), message (10-2000 chars)
+- Show success toast: "Message Sent! We'll get back to you soon."
+- Clear form after successful submission
+- Show error toast on failure with error message
 - `items` (CartItemResponse[])
 
 `CartItemResponse` fields:

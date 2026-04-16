@@ -1,8 +1,11 @@
-﻿import { useState } from "react";
+﻿import { useState, useEffect } from "react";
 
 import { ShoppingCart, Heart, Share2, Check, ChevronRight, ChevronLeft, Sparkles, TrendingDown } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
+import ProductCard from "./ProductCard";
+import { useProductList } from "@/hooks/useProducts";
 import QuantityCapsule from "./QuantityCapsule";
+import type { ApiProduct } from "@/types/api";
 import bgSingleProducts from "@/assets/bg-home-kits.png";
 import bgStopBuyingOne from "@/assets/bg-stop-buying-one.png";
 import bgMegaSaver from "@/assets/bg-mega-saver.png";
@@ -20,12 +23,6 @@ const BUNDLES = [
   { id: 2001, name: "Kitchen Essential Bundle", productCount: 3, rating: 4.0, reviewCount: 128, price: 799, originalPrice: 1047, discount: 20, bottles: [bottleDegreaser, bottleDishwash, bottleSurface] },
   { id: 2002, name: "Kitchen Essential Bundle", productCount: 3, rating: 4.0, reviewCount: 128, price: 799, originalPrice: 1047, discount: 20, bottles: [bottleSurface, bottleToilet, bottleDegreaser] },
   { id: 2003, name: "Kitchen Essential Bundle", productCount: 3, rating: 4.0, reviewCount: 128, price: 799, originalPrice: 1047, discount: 20, bottles: [bottleDishwash, bottleSurface, bottleToilet] },
-];
-
-const SINGLE_PRODUCTS = [
-  { id: 3001, name: "All Surface Cleaner", price: 299, originalPrice: 399, discount: 20, image: bottleSurface },
-  { id: 3002, name: "Kitchen Degreaser", price: 299, originalPrice: 399, discount: 20, image: bottleDegreaser },
-  { id: 3003, name: "Dishwash Liquid", price: 299, originalPrice: 399, discount: 20, image: bottleDishwash },
 ];
 
 const KITS = [
@@ -70,6 +67,8 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
   const [activeTab, setActiveTab] = useState<"bundles" | "single" | "kits">("single");
   const [mobileKitIndex, setMobileKitIndex] = useState(0);
   const { items, addToCart, updateQuantity, removeFromCart } = useCart();
+  const { data, isLoading } = useProductList({ page: 0, size: 4 });
+  const singleProducts = data?.content?.slice(0, 3) ?? [];
 
   const handleAddBundle = (bundle: typeof BUNDLES[0]) => {
     addToCart({ productId: bundle.id, name: bundle.name, price: bundle.price, originalPrice: bundle.originalPrice, image: "/placeholder.svg" });
@@ -83,8 +82,8 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
     <div id="homecare-kits-section">
       {/* ===== SECTION 1: Smart Bundles / Single Products (height: 727px) ===== */}
       <section className="relative w-full overflow-hidden" style={{ minHeight: "auto" }}>
-        <img src={bgSingleProducts} alt="bg" className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full" style={{ zIndex: 0, width: "100%", height: "100%", objectFit: "fill" }} />
-        <img src={bgHomeKitsMobile} alt="bg" className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full" style={{ zIndex: 0, width: "100%", height: "100%", objectFit: "fill" }} />
+        <img src={bgSingleProducts} alt="bg" className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
+        <img src={bgHomeKitsMobile} alt="bg" className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
 
         <div className="relative z-[1] mx-auto max-w-[1440px] px-4 md:px-6 py-8 md:py-16 flex flex-col justify-center">
           {/* TABS */}
@@ -196,209 +195,36 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
           {/* SINGLE */}
           {activeTab === "single" && (
             <div className="flex flex-col items-center gap-10">
-            <div className="flex justify-center flex-wrap gap-x-[30px] md:gap-x-[80px] gap-y-[30px] md:gap-y-[40px]">
-              {SINGLE_PRODUCTS.map((product) => {
-                const cartItem = items.find((i) => i.productId === product.id);
-                const cartQty = cartItem?.quantity ?? 0;
-
-                return (
-                  <div
-                    key={product.id}
-                    className="flex flex-col overflow-hidden"
-                    style={{
-                      width: "280px",
-                      height: "420px",
-                      background: "#FFFFFF",
-                      borderRadius: "24px",
-                      boxShadow:
-                        "0px 10px 15px -3px rgba(0,0,0,0.1), 0px 4px 6px -4px rgba(0,0,0,0.1)",
-                    }}
-                  >
-                    {/* IMAGE */}
-                    <div
-                      className="relative flex-shrink-0"
-                      style={{
-                        height: "200px",
-                        background:
-                          "linear-gradient(137.98deg, #CEF17B 0.45%, #FFFFFF 106.93%)",
-                      }}
-                    >
-                      {/* Discount */}
-                      <div
-                        className="absolute flex items-center justify-center"
-                        style={{
-                          width: "80px",
-                          height: "28px",
-                          left: "12px",
-                          top: "10px",
-                          background: "#E2FF9C",
-                          borderRadius: "9999px",
-                        }}
-                      >
-                        <span style={{ fontSize: "13px", color: "#064734" }}>
-                          {product.discount}% Off
-                        </span>
-                      </div>
-
-                      {/* Icons */}
-                      <button
-                        className="absolute flex items-center justify-center"
-                        style={{
-                          width: "32px",
-                          height: "32px",
-                          right: "48px",
-                          top: "10px",
-                          background: "#FFFFFF",
-                          borderRadius: "9999px",
-                        }}
-                      >
-                        <Share2 size={14} />
-                      </button>
-
-                      <button
-                        className="absolute flex items-center justify-center"
-                        style={{
-                          width: "32px",
-                          height: "32px",
-                          right: "10px",
-                          top: "10px",
-                          background: "#FFFFFF",
-                          borderRadius: "9999px",
-                        }}
-                      >
-                        <Heart size={14} />
-                      </button>
-
-                      {/* Product Image */}
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="absolute object-contain"
-                        style={{
-                          width: "120px",
-                          height: "140px",
-                          top: "40px",
-                          left: "50%",
-                          transform: "translateX(-50%)",
-                        }}
-                      />
-                    </div>
-
-                    {/* CONTENT */}
-                    <div className="flex flex-col justify-between flex-1 p-4">
-                      <div>
-                        <p
-                          style={{
-                            fontWeight: 600,
-                            fontSize: "15px",
-                            color: "#464646",
-                          }}
-                        >
-                          {product.name}
-                        </p>
-
-                        {/* PRICE */}
-                        <div className="flex items-center gap-2 mt-2">
-                          <span
-                            style={{
-                              fontWeight: 700,
-                              fontSize: "24px",
-                              color: "#064734",
-                            }}
-                          >
-                            ₹{product.price}
-                          </span>
-                          <span
-                            style={{
-                              fontSize: "14px",
-                              color: "#8E939C",
-                              textDecoration: "line-through",
-                            }}
-                          >
-                            ₹{product.originalPrice}
-                          </span>
-                        </div>
-
-                        {/* ⭐ Rating */}
-                        <div className="flex items-center gap-1 mt-2">
-                          {[1, 2, 3, 4, 5].map((s) => (
-                            <svg
-                              key={s}
-                              width="13"
-                              height="12"
-                              viewBox="0 0 14 13"
-                              fill={s <= 4 ? "#FDC700" : "#E5E7EB"}
-                            >
-                              <path d="M7 1l1.76 3.57 3.94.57-2.85 2.78.67 3.93L7 10.27l-3.52 1.58.67-3.93L1.3 5.14l3.94-.57z" />
-                            </svg>
-                          ))}
-
-                          <span
-                            style={{
-                              fontSize: "13px",
-                              color: "#6B7280",
-                              marginLeft: "4px",
-                            }}
-                          >
-                            4.0 (128 reviews)
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* BUTTON */}
-                      <div>
-                        {cartQty > 0 ? (
-                          <QuantityCapsule
-                            quantity={cartQty}
-                            onIncrement={() =>
-                              updateQuantity(product.id, cartQty + 1)
-                            }
-                            onDecrement={() =>
-                              cartQty <= 1
-                                ? removeFromCart(product.id)
-                                : updateQuantity(product.id, cartQty - 1)
-                            }
-                            size="sm"
-                            fullWidth
-                          />
-                        ) : (
-                          <button
-                            onClick={() =>
-                              addToCart({
-                                productId: product.id,
-                                name: product.name,
-                                price: product.price,
-                                originalPrice: product.originalPrice,
-                                image: "/placeholder.svg",
-                              })
-                            }
-                            className="w-full flex items-center justify-center gap-2"
-                            style={{
-                              height: "44px",
-                              background: "#064734",
-                              color: "#FFFFFF",
-                              borderRadius: "12px",
-                              fontWeight: 600,
-                              fontSize: "14px",
-                              border: "none",
-                              cursor: "pointer",
-                            }}
-                          >
-                            <ShoppingCart size={16} /> Add to Box
-                          </button>
-                        )}
+              {isLoading ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 w-full max-w-[1000px] mx-auto">
+                  {Array.from({ length: 3 }).map((_, i) => (
+                    <div key={i} className="animate-pulse">
+                      <div className="h-[200px] rounded-t-2xl bg-muted" />
+                      <div className="p-4 space-y-3">
+                        <div className="h-4 w-3/4 rounded bg-muted" />
+                        <div className="h-4 w-1/2 rounded bg-muted" />
+                        <div className="h-8 w-1/3 rounded bg-muted" />
                       </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
+                  ))}
+                </div>
+              ) : singleProducts.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 w-full max-w-[1000px] mx-auto">
+                  {singleProducts.map((product: ApiProduct) => (
+                    <div key={product.id} className="flex justify-center">
+                      <ProductCard product={product} />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-center text-muted-foreground">No products available</p>
+              )}
 
-            {/* Shop All Button */}
-            <button
-              onClick={() => window.location.href = "/shop"}
-              className="flex items-center justify-center"
-              style={{
+              {/* Shop All Button */}
+              <button
+                onClick={() => window.location.href = "/shop"}
+                className="flex items-center justify-center"
+                style={{
                 height: "48px",
                 padding: "0 32px",
                 background: "#064734",
@@ -802,10 +628,10 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
         style={{ width: "100%" }}
         // background handled by full-bleed <img> above
       > */}
-
+      {/*
       <section className="relative w-full overflow-hidden" style={{ minHeight: "805px" }}>
-        <img src={bgHomeKits} alt="bg" className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full" style={{ zIndex: 0, width: "100%", height: "100%", objectFit: "fill" }} />
-        <img src={bgHomeKitsMobile} alt="bg" className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full" style={{ zIndex: 0, width: "100%", height: "100%", objectFit: "fill" }} />
+        <img src={bgHomeKits} alt="bg" className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
+        <img src={bgHomeKitsMobile} alt="bg" className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
 
         <div className="relative z-[1] mx-auto flex flex-col items-center" style={{ maxWidth: "1440px", padding: "30px 16px 30px", gap: "20px" }}>
 
@@ -818,7 +644,7 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
             </p>
           </div>
 
-          {/* Desktop: grid */}
+          //Desktop: grid 
           <div className="hidden md:flex justify-center" style={{ gap: "16px", flexWrap: "wrap" }}>
             {KITS.map((kit) => {
               const cartItem = items.find((i) => i.productId === kit.id);
@@ -829,7 +655,7 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
             })}
           </div>
 
-          {/* Mobile: single card carousel */}
+          //Mobile: single card carousel 
           <div className="md:hidden flex flex-col items-center">
             {(() => {
               const kit = KITS[mobileKitIndex];
@@ -855,6 +681,7 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
 
         </div>
       </section>
+      */}
     </div>
   );
 };

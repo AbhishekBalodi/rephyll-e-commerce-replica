@@ -8,7 +8,7 @@ const OurStory = () => {
       <Navbar />
 
       {/* Hero */}
-      <section className="bg-primary text-primary-foreground py-20">
+      <section className="bg-primary text-primary-foreground py-20 pt-[140px]">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h1
             className="text-3xl md:text-5xl font-extrabold tracking-tight mb-4"

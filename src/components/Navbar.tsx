@@ -146,9 +146,9 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Top announcement strip */}
+      {/* Top announcement strip - FIXED */}
       <div
-        className="w-full overflow-hidden"
+        className="w-full overflow-hidden fixed top-0 left-0 right-0 z-[100]"
         style={{ height: "40px", background: "#CEF17B", display: "flex", alignItems: "center" }}
       >
         <div className="flex animate-marquee-slow whitespace-nowrap">
@@ -170,8 +170,8 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Main navbar */}
-      <nav className="sticky top-0 z-50 bg-background border-b border-border">
+      {/* Main navbar - FIXED */}
+      <nav className="fixed top-[40px] left-0 right-0 z-50 bg-background border-b border-border w-full">
         <div className="w-full max-w-[1440px] mx-auto px-[40px] relative">
           <div className="h-[64px] flex items-center justify-between">
             {/* Left: Logo */}
@@ -183,9 +183,9 @@ const Navbar = () => {
                   </button>
                 </SheetTrigger>
                 <SheetContent side="left" className="w-80 p-0">
-                  <SheetHeader className="p-6 pb-4 border-b border-border">
-                    <SheetTitle>
-                      <img src={logoBlack} alt="rePhyl" className="h-[180px] w-auto -my-[65px]" />
+                  <SheetHeader className="p-6 pb-4 border-b border-border flex items-center justify-center">
+                    <SheetTitle className="w-full flex items-center justify-center">
+                      <img src={logoBlack} alt="rePhyl" className="h-20 md:h-[180px] w-auto" />
                     </SheetTitle>
                   </SheetHeader>
                   <div className="py-4 overflow-y-auto max-h-[calc(100vh-80px)]">
@@ -196,10 +196,14 @@ const Navbar = () => {
                     if (subs.length > 0) {
                       return (
                         <Collapsible open={mobileExpanded === cat.label} onOpenChange={() => toggleMobileExpand(cat.label)}>
-                          <CollapsibleTrigger className="flex items-center justify-between w-full px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider text-foreground hover:bg-accent/50 transition-colors">
-                            <span>{cat.label}</span>
-                            <ChevronRight size={16} className={`text-muted-foreground transition-transform ${mobileExpanded === cat.label ? "rotate-90" : ""}`} />
-                          </CollapsibleTrigger>
+                          <div className="flex items-center justify-between w-full">
+                            <button onClick={() => cat.path && handleNav(cat.path)} className="flex-1 px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider text-foreground hover:bg-accent/50 transition-colors">
+                              <span>{cat.label}</span>
+                            </button>
+                            <CollapsibleTrigger className="flex items-center justify-center px-3 py-3 text-foreground hover:bg-accent/50 transition-colors" onClick={(e) => e.stopPropagation()}>
+                              <ChevronRight size={16} className={`text-muted-foreground transition-transform ${mobileExpanded === cat.label ? "rotate-90" : ""}`} />
+                            </CollapsibleTrigger>
+                          </div>
                           <CollapsibleContent>
                             <div className="bg-accent/30">
                               {subs.map((sub) => (
@@ -325,8 +329,49 @@ const Navbar = () => {
                 {/* ❤️ */}
                 <Heart size={20} className="text-[#064734]" />
 
-                {/* 👤 */}
-                <User size={20} className="text-[#064734]" />
+                {/* 👤 User Menu */}
+                {user ? (
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <button className="cursor-pointer">
+                        <User size={20} className="text-[#064734]" />
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-48" align="end">
+                      <div className="flex flex-col gap-2">
+                        <div className="px-2 py-2 border-b">
+                          <p className="text-xs text-muted-foreground">Logged in as</p>
+                          <p className="text-sm font-semibold truncate">{user.email}</p>
+                        </div>
+                        <button onClick={() => { handleNav("/profile"); }} className="text-left px-2 py-1.5 text-sm hover:bg-accent rounded text-foreground">
+                          My Profile
+                        </button>
+                        <button onClick={() => { handleNav("/addresses"); }} className="text-left px-2 py-1.5 text-sm hover:bg-accent rounded text-foreground">
+                          My Addresses
+                        </button>
+                        <button onClick={() => { handleNav("/orders"); }} className="text-left px-2 py-1.5 text-sm hover:bg-accent rounded text-foreground">
+                          My Orders
+                        </button>
+                        <div className="border-t pt-2">
+                          <button 
+                            onClick={() => {
+                              logout();
+                              handleNav("/");
+                            }} 
+                            className="w-full text-left px-2 py-1.5 text-sm text-destructive hover:bg-red-50 rounded flex items-center gap-2"
+                          >
+                            <LogOut size={14} />
+                            Logout
+                          </button>
+                        </div>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                ) : (
+                  <button onClick={() => handleNav("/login")} className="cursor-pointer">
+                    <User size={20} className="text-[#064734]" />
+                  </button>
+                )}
 
                 {/* 🔽 SEARCH DROPDOWN */}
                 {searchFocused && searchQuery.length >= 2 && (

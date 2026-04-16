@@ -22,20 +22,39 @@ const SignupPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('=== [FORM] Signup form submitted ===');
+    
+    // Validation
     if (password !== confirmPassword) {
+      console.warn('[FORM] ❌ Passwords do not match');
       toast({ title: "Error", description: "Passwords do not match.", variant: "destructive" });
       return;
     }
     if (password.length < 8) {
+      console.warn('[FORM] ❌ Password too short:', password.length, 'characters');
       toast({ title: "Error", description: "Password must be at least 8 characters.", variant: "destructive" });
       return;
     }
+    
+    console.log('[FORM] ✓ Validation passed');
+    console.log('[FORM] Form Data:', { 
+      fullName: fullName.length > 0 ? '✓' : '✗', 
+      email, 
+      phone: phone || '(empty)',
+      passwordLength: password.length
+    });
+    
     setLoading(true);
     try {
+      console.log('[FORM] Calling register function...');
       await register({ email, password, fullName, phone: phone || undefined });
+      console.log('[FORM] ✓ Registration successful');
       toast({ title: "Account Created!", description: "Welcome to rePhyl." });
+      console.log('[FORM] Redirecting to home...');
       navigate("/");
     } catch (err: any) {
+      console.error('[FORM] ❌ Registration failed');
+      console.error('[FORM] Error:', err.message);
       toast({ title: "Registration Failed", description: err.message, variant: "destructive" });
     } finally {
       setLoading(false);
@@ -45,7 +64,7 @@ const SignupPage = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-      <section className="max-w-md mx-auto px-4 py-20">
+      <section className="max-w-md mx-auto px-4 py-20 pt-[104px]">
         <div className="flex flex-col items-center mb-8">
           <img src={cloverGreen} alt="rePhyl" className="w-20 h-20 mb-2" />
           <img src={logoBlack} alt="rePhyl" className="h-28 w-auto -my-6" />

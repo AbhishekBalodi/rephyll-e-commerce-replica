@@ -2,57 +2,158 @@ import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useCart } from "@/contexts/CartContext";
-import { previewCheckout, startPaymentSession } from "@/services/checkoutApi";
+import { previewCheckout, startPaymentSession, confirmPaymentSession } from "@/services/checkoutApi";
 import addressesApi from "@/services/addressesApi";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import RequireAuth from "@/components/RequireAuth";
+import { AlertCircle, CheckCircle, Loader2 } from "lucide-react";
 
-const CheckoutPage = () => {
+interface StockValidationResult {
+  valid: boolean;
+  invalidItems: Array<{
+    productName: string;
+    orderedQty: number;
+    availableQty: number;
+    message: string;
+  }>;
+}
+
+const CheckoutPageContent = () => {
   const { items, totalItems, totalPrice, clearCart } = useCart();
+  const { user } = useAuth();
   const [addressId, setAddressId] = useState<number | "">("");
   const [loading, setLoading] = useState(false);
+  const [validating, setValidating] = useState(false);
   const [preview, setPreview] = useState<any | null>(null);
+  const [stockValidation, setStockValidation] = useState<StockValidationResult | null>(null);
   const [addresses, setAddresses] = useState<any[]>([]);
   const [newAddress, setNewAddress] = useState<{ addressType?: string; contactName?: string; mobile?: string; line1?: string; city?: string; postalCode?: string }>({ addressType: 'HOME' });
   const navigate = useNavigate();
 
   const buildPreviewRequest = () => {
+    // CRITICAL: Validate all items have variantId before checkout
+    const invalidItems = items.filter((i) => !i.variantId);
+    
+    if (invalidItems.length > 0) {
+      const itemsList = invalidItems.map((i) => `${i.name} (ID: ${i.productId})`).join(', ');
+      const errorMsg = `Invalid cart items without variant information: ${itemsList}. Please clear your browser cache and add items again.`;
+      console.error(errorMsg);
+      throw new Error(errorMsg);
+    }
+
+    // Build request with ONLY variantId, never productId
+    const itemsForCheckout = items.map((i) => ({
+      variantId: i.variantId,
+      quantity: i.quantity
+    }));
+
     return {
       deliveryAddressId: addressId || null,
-      items: items.map((i) => ({ variantId: (i as any).variantId || i.productId, quantity: i.quantity })),
+      items: itemsForCheckout,
     };
   };
 
-  const handlePreview = async () => {
-    setLoading(true);
+  // Pre-checkout stock validation
+  const validateStock = async () => {
+    setValidating(true);
     try {
-      const body = buildPreviewRequest();
+      const body = buildPreviewRequest(); // This will throw if items invalid
       const res = await previewCheckout(body);
-      if (res && typeof res === 'object' && 'success' in res) {
-        if (!res.success) throw new Error(res.message || 'Preview failed');
-        setPreview(res.data || null);
-      } else {
-        setPreview(res || null);
+      const previewData = (res && typeof res === 'object' && 'success' in res) ? (res.data || null) : res;
+      
+      if (!previewData) throw new Error('Failed to validate stock');
+
+      // Check if all items are serviceable
+      const invalidItems = previewData.items?.filter((item: any) => item.serviceable === false) || [];
+      
+      const validation: StockValidationResult = {
+        valid: previewData.serviceable && invalidItems.length === 0,
+        invalidItems: invalidItems.map((item: any) => ({
+          productName: item.productName || item.sku,
+          orderedQty: item.quantity,
+          availableQty: item.stockLabel ? parseInt(item.stockLabel) : 0,
+          message: item.message || 'Item not available',
+        })),
+      };
+
+      setStockValidation(validation);
+      setPreview(previewData);
+      
+      if (!validation.valid) {
+        throw new Error('Some items are out of stock or not serviceable for your location');
       }
+      
+      return validation;
     } catch (err: any) {
-      alert(err.message || "Preview failed");
+      setStockValidation({
+        valid: false,
+        invalidItems: [],
+      });
+      throw err;
     } finally {
-      setLoading(false);
+      setValidating(false);
+    }
+  };
+
+  const handlePreview = async () => {
+    if (!addressId) {
+      alert('Please select or create a delivery address');
+      return;
+    }
+    
+    try {
+      await validateStock();
+    } catch (err: any) {
+      alert(err.message || "Stock validation failed");
     }
   };
 
   const handleStart = async () => {
+    // Verify stock validation has been done and items are valid
+    if (!stockValidation || !stockValidation.valid) {
+      alert('Please validate stock availability first by clicking "Validate & Preview"');
+      return;
+    }
+
+    if (preview && preview.serviceable === false) {
+      alert(preview.message || 'Address is not serviceable');
+      return;
+    }
+
     setLoading(true);
     try {
-      // Ensure preview was called and address is serviceable
-      if (preview && preview.serviceable === false) throw new Error(preview.message || 'Address not serviceable');
       const body = buildPreviewRequest();
       const res = await startPaymentSession(body);
-      if (res && typeof res === 'object' && 'success' in res && res.success === false) throw new Error(res.message || 'Start failed');
-      // For demo: assume success and clear cart, navigate to homepage
+      if (res && typeof res === 'object' && 'success' in res && res.success === false) {
+        throw new Error(res.message || 'Start failed');
+      }
+      
+      // Extract order IDs from the session response
+      const sessionData = (res && typeof res === 'object' && 'success' in res) ? (res.data || res) : res;
+      const orderIds: number[] = sessionData?.orders?.map((order: any) => order.id).filter(Boolean) || [];
+      const paymentMethod = sessionData?.paymentMethod || 'COD';
+      
+      // Confirm the payment session
+      if (orderIds.length > 0) {
+        console.log('💳 Confirming payment session with orders:', orderIds);
+        const confirmRes = await confirmPaymentSession({
+          orderIds,
+          paymentMethod,
+        });
+        console.log('✅ Payment session confirmed:', confirmRes);
+      }
+      
+      // Show success message BEFORE clearing cart and navigating
+      alert("Payment session created and confirmed successfully. Proceeding to orders...");
+      
+      // Small delay to ensure everything is synced
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
       clearCart();
-      navigate("/", { replace: true });
-      alert("Order created (demo): " + JSON.stringify(res));
+      navigate("/orders", { replace: true });
     } catch (err: any) {
+      console.error('❌ Checkout error:', err);
       alert(err.message || "Checkout failed");
     } finally {
       setLoading(false);
@@ -100,18 +201,36 @@ const CheckoutPage = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-      <section className="max-w-4xl mx-auto px-4 md:px-6 py-16">
-        <h1 className="text-2xl font-bold mb-4">Checkout</h1>
+      <section className="max-w-4xl mx-auto px-4 md:px-6 py-16 pt-[104px]">
+        <h1 className="text-2xl font-bold mb-2">Checkout</h1>
+        <p className="text-muted-foreground mb-6">Logged in as: {user?.email}</p>
 
-        {preview && preview.serviceable === false && (
-          <div className="mb-4 p-3 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 rounded">
-            <div className="font-semibold">Delivery not serviceable</div>
-            <div className="text-sm">{preview.message}</div>
-            <div className="mt-2 text-sm">
-              <a
-                href={typeof preview.postalCode !== 'undefined' ? `mailto:care@rephyl.com?subject=${encodeURIComponent(`Serviceability issue for pincode ${preview.postalCode}`)}&body=${encodeURIComponent(preview.message || '')}` : 'mailto:care@rephyl.com'}
-                className="underline"
-              >Contact support</a>
+        {/* Stock Validation Alert */}
+        {stockValidation && !stockValidation.valid && stockValidation.invalidItems.length > 0 && (
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <div className="flex gap-3">
+              <AlertCircle className="text-red-600 flex-shrink-0" size={20} />
+              <div>
+                <h3 className="font-semibold text-red-900 mb-2">Stock Validation Failed</h3>
+                <ul className="text-sm text-red-800 space-y-1">
+                  {stockValidation.invalidItems.map((item, idx) => (
+                    <li key={idx}>• {item.productName}: Ordered {item.orderedQty}, but {item.message}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Stock Validation Success */}
+        {stockValidation && stockValidation.valid && (
+          <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+            <div className="flex gap-3 items-center">
+              <CheckCircle className="text-green-600" size={20} />
+              <div>
+                <h3 className="font-semibold text-green-900">Stock Validated!</h3>
+                <p className="text-sm text-green-800">All items are in stock and your address is serviceable. Ready to proceed to payment.</p>
+              </div>
             </div>
           </div>
         )}
@@ -168,8 +287,22 @@ const CheckoutPage = () => {
         </div>
 
         <div className="flex gap-3">
-          <button onClick={handlePreview} disabled={loading} className="px-4 py-2 bg-primary text-primary-foreground rounded">{loading ? "Working..." : "Validate & Preview"}</button>
-          <button onClick={handleStart} disabled={loading || items.length === 0 || (preview && preview.serviceable === false)} className="px-4 py-2 bg-emerald-700 text-white rounded">{loading ? "Starting..." : "Start Payment Session"}</button>
+          <button 
+            onClick={handlePreview} 
+            disabled={validating || items.length === 0 || !addressId} 
+            className="px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+          >
+            {validating && <Loader2 size={16} className="animate-spin" />}
+            {validating ? "Validating..." : "Validate & Preview"}
+          </button>
+          <button 
+            onClick={handleStart} 
+            disabled={loading || items.length === 0 || !stockValidation?.valid} 
+            className="px-4 py-2 bg-emerald-700 text-white rounded hover:bg-emerald-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+          >
+            {loading && <Loader2 size={16} className="animate-spin" />}
+            {loading ? "Starting..." : "Start Payment Session"}
+          </button>
         </div>
 
         {preview && (
@@ -194,5 +327,11 @@ const CheckoutPage = () => {
     </div>
   );
 };
+
+const CheckoutPage = () => (
+  <RequireAuth>
+    <CheckoutPageContent />
+  </RequireAuth>
+);
 
 export default CheckoutPage;

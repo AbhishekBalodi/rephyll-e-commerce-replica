@@ -5,7 +5,7 @@ import bgAboutHero from "@/assets/bg-about-hero.png";
 
 const HeroSection = () => {
   return (
-    <section className="w-full text-white relative overflow-hidden">
+    <section className="w-full text-white relative overflow-hidden pt-[104px]">
       <img
         src={bgAboutHero}
         alt=""

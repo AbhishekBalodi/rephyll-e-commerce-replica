@@ -34,7 +34,7 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-      <section className="max-w-md mx-auto px-4 py-20">
+      <section className="max-w-md mx-auto px-4 py-20 pt-[104px]">
         <div className="flex flex-col items-center mb-8">
           <img src={cloverGreen} alt="rePhyl" className="w-20 h-20 mb-2" />
           <img src={logoBlack} alt="rePhyl" className="h-[220px] w-auto -my-[75px]" />

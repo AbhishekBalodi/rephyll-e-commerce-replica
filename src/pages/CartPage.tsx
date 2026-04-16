@@ -2,15 +2,27 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useCart } from "@/contexts/CartContext";
 import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 const CartPage = () => {
   const { items, totalItems, totalPrice, bundleOffer, updateQuantity, removeFromCart, clearCart, syncing } = useCart();
+  const { token } = useAuth();
+  const navigate = useNavigate();
+
+  const handleCheckout = () => {
+    if (!token) {
+      alert("Please log in to proceed to checkout");
+      navigate("/login", { state: { from: "/checkout" } });
+      return;
+    }
+    navigate("/checkout");
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-      <section className="max-w-4xl mx-auto px-4 md:px-6 py-16">
+      <section className="max-w-4xl mx-auto px-4 md:px-6 py-16 pt-[104px]">
         <h1 className="text-3xl font-display font-bold text-foreground mb-2">Your Cart</h1>
         <p className="text-muted-foreground mb-10">
           {totalItems === 0 ? "Your cart is empty" : `${totalItems} item${totalItems !== 1 ? "s" : ""} in your cart`}
@@ -87,8 +99,8 @@ const CartPage = () => {
                 >
                   Clear Cart
                 </button>
-                <button onClick={() => window.location.href = '/checkout'} className="flex-1 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors text-sm">
-                  Proceed to Checkout
+                <button onClick={handleCheckout} className="flex-1 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors text-sm">
+                  {token ? "Proceed to Checkout" : "Login to Checkout"}
                 </button>
               </div>
             </div>

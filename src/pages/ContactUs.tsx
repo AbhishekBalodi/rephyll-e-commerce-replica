@@ -68,7 +68,7 @@ const ContactUs = () => {
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
 
-      <section className="max-w-4xl mx-auto px-4 py-16">
+      <section className="max-w-4xl mx-auto px-4 py-16 pt-[104px]">
         <h1 className="text-3xl md:text-4xl font-extrabold text-center mb-2">Contact Us</h1>
         <p className="text-center text-muted-foreground mb-12">
           We'd love to hear from you! Reach out to us through any of the channels below.

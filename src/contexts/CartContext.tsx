@@ -16,20 +16,13 @@ export interface CartItem {
   stockLabel?: string | null;
 }
 
-export interface BundleOffer {
-  targetQty: number;
-  bundlePrice: number;
-}
-
 interface CartContextType {
   items: CartItem[];
   totalItems: number;
   totalPrice: number;
-  bundleOffer: BundleOffer | null;
-  setBundleOffer: (offer: BundleOffer | null) => void;
   addToCart: (item: Omit<CartItem, "quantity">, quantity?: number) => void;
-  removeFromCart: (productId: number) => void;
-  updateQuantity: (productId: number, quantity: number) => void;
+  removeFromCart: (productId: number, variantId?: number) => void;
+  updateQuantity: (productId: number, quantity: number, variantId?: number) => void;
   clearCart: () => void;
   syncing?: boolean;
 }
@@ -42,12 +35,23 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [items, setItems] = useState<CartItem[]>(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      return stored ? JSON.parse(stored) : [];
-    } catch {
+      const parsed = stored ? JSON.parse(stored) : [];
+      
+      // CRITICAL: Remove items without variantId (old/invalid items)
+      const validItems = parsed.filter((item: CartItem) => {
+        if (!item.variantId) {
+          console.warn(`Removing cart item without variantId: ${item.productId} (${item.name})`);
+          return false;
+        }
+        return true;
+      });
+      
+      return validItems;
+    } catch (err) {
+      console.error('Failed to load cart:', err);
       return [];
     }
   });
-  const [bundleOffer, setBundleOffer] = useState<BundleOffer | null>(null);
   const [syncing, setSyncing] = useState(false);
   const { toast } = useToast();
 
@@ -56,44 +60,66 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   }, [items]);
 
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = bundleOffer && totalItems === bundleOffer.targetQty
-    ? bundleOffer.bundlePrice
-    : items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   const addToCart = (item: Omit<CartItem, "quantity">, quantity = 1) => {
+    // CRITICAL: Require variantId to be set
+    if (!item.variantId) {
+      console.error('Cannot add item to cart without variantId:', item);
+      toast({ 
+        title: "Error", 
+        description: "Product variant information is missing",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setItems((prev) => {
-      const existing = prev.find((i) => i.productId === item.productId);
+      // Use BOTH productId AND variantId to find existing item
+      const existing = prev.find((i) => i.productId === item.productId && i.variantId === item.variantId);
+      
       if (existing) {
+        // Same product + same variant: increment quantity
         return prev.map((i) =>
-          i.productId === item.productId ? { ...i, quantity: i.quantity + quantity } : i
+          i.productId === item.productId && i.variantId === item.variantId
+            ? { ...i, quantity: i.quantity + quantity }
+            : i
         );
       }
+      
+      // Different product OR different variant: add as new item
       return [...prev, { ...item, quantity }];
     });
-    setBundleOffer(null);
     toast({ title: "Added to Cart", description: `${item.name} added to your cart.` });
+    
     // Background sync to server when logged in
     (async () => {
       try {
         const token = localStorage.getItem("rephyl_token");
         if (!token) return;
         setSyncing(true);
-        const variant = (item as any).variantId || item.productId;
-        const resp = await cartApi.addItem(variant, quantity);
+        
+        // CRITICAL: Always use variantId, NEVER fall back to productId
+        if (!item.variantId) {
+          throw new Error('Cannot sync cart item without variantId');
+        }
+        
+        const resp = await cartApi.addItem(item.variantId, quantity);
         // handle ApiResponse wrapper
         const payload = (resp && typeof resp === 'object' && 'success' in resp) ? (resp.data || resp) : resp;
         if (resp && typeof resp === "object" && resp.success === false) throw new Error(resp.message || "Add to cart failed");
+        
         // If server returned item metadata, merge into local cart item
         try {
           if (payload && payload.variantId) {
             setItems((prev) => prev.map((it) => {
-              if ((it.variantId && it.variantId === payload.variantId) || it.productId === payload.productId) {
+              if (it.variantId === payload.variantId && it.productId === payload.productId) {
                 return {
                   ...it,
                   itemId: payload.id || it.itemId,
                   maxQuantity: payload.maxQuantity || payload.maxCartQuantity || it.maxQuantity,
                   stockLabel: payload.stockLabel || it.stockLabel || null,
-                  variantId: payload.variantId || it.variantId,
+                  variantId: payload.variantId,
                 };
               }
               return it;
@@ -108,57 +134,77 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     })();
   };
 
-  const removeFromCart = (productId: number) => {
-    setItems((prev) => prev.filter((i) => i.productId !== productId));
+  const removeFromCart = (productId: number, variantId?: number) => {
+    // Find the item to remove
+    const itemToRemove = items.find((i) => 
+      i.productId === productId && (variantId ? i.variantId === variantId : true)
+    );
+
+    if (!itemToRemove?.variantId) {
+      console.error('Cannot remove item without variantId');
+      return;
+    }
+
+    setItems((prev) => prev.filter((i) => 
+      !(i.productId === productId && i.variantId === itemToRemove.variantId)
+    ));
+    
+    // Sync with server
     (async () => {
       try {
         const token = localStorage.getItem("rephyl_token");
-        if (!token) return;
+        if (!token || !itemToRemove.itemId) return;
         setSyncing(true);
-        // Best-effort: server expects itemId; we don't have it locally so call getCart and try to find matching variant/product
-        const server = await cartApi.getCart();
-        const serverItems = (server && server.success) ? (server.data?.items || []) : (server.items || []);
-        const match = serverItems.find((si: any) => si.variantId === productId || si.productId === productId);
-        if (match && match.id) await cartApi.removeItem(match.id);
+        await cartApi.removeItem(itemToRemove.itemId);
       } catch (err) {
-        // ignore
+        console.error('Failed to sync remove:', err);
       } finally { setSyncing(false); }
     })();
   };
 
-  const updateQuantity = (productId: number, quantity: number) => {
+  const updateQuantity = (productId: number, quantity: number, variantId?: number) => {
     if (quantity <= 0) {
-      removeFromCart(productId);
+      removeFromCart(productId, variantId);
       return;
     }
+
+    // Find the item to update
+    const itemToUpdate = items.find((i) => 
+      i.productId === productId && (variantId ? i.variantId === variantId : true)
+    );
+
+    if (!itemToUpdate?.variantId) {
+      console.error('Cannot update item without variantId');
+      return;
+    }
+
     setItems((prev) => prev.map((i) => {
-      if (i.productId !== productId) return i;
+      if (i.productId !== productId || i.variantId !== itemToUpdate.variantId) {
+        return i;
+      }
       const maxQ = i.maxQuantity ?? null;
       const newQ = (maxQ && quantity > maxQ) ? maxQ : quantity;
       return { ...i, quantity: newQ };
     }));
-    setBundleOffer(null);
+
+    // Sync with server
     (async () => {
       try {
         const token = localStorage.getItem("rephyl_token");
-        if (!token) return;
+        if (!token || !itemToUpdate.itemId) return;
         setSyncing(true);
-        const server = await cartApi.getCart();
-        const serverItems = (server && server.success) ? (server.data?.items || []) : (server.items || []);
-        const match = serverItems.find((si: any) => si.variantId === productId || si.productId === productId || si.id === productId);
-        if (match && match.id) {
-          const resp = await cartApi.updateItem(match.id, quantity);
-          if (resp && typeof resp === 'object' && resp.success === false) throw new Error(resp.message || 'Update failed');
+        const resp = await cartApi.updateItem(itemToUpdate.itemId, quantity);
+        if (resp && typeof resp === 'object' && resp.success === false) {
+          throw new Error(resp.message || 'Update failed');
         }
       } catch (err) {
-        // ignore
+        console.error('Failed to sync update:', err);
       } finally { setSyncing(false); }
     })();
   };
 
   const clearCart = () => {
     setItems([]);
-    setBundleOffer(null);
     (async () => {
       try {
         const token = localStorage.getItem("rephyl_token");
@@ -198,7 +244,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   }, [token]);
 
   return (
-    <CartContext.Provider value={{ items, totalItems, totalPrice, bundleOffer, setBundleOffer, addToCart, removeFromCart, updateQuantity, clearCart, syncing }}>
+    <CartContext.Provider value={{ items, totalItems, totalPrice, addToCart, removeFromCart, updateQuantity, clearCart, syncing }}>
       {children}
     </CartContext.Provider>
   );

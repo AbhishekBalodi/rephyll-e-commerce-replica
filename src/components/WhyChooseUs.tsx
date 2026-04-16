@@ -2,6 +2,7 @@ import { Leaf, Baby, Recycle, PawPrint } from "lucide-react";
 import ifraShield from "@/assets/ifra-shield.png";
 import bgWhyDifferent from "@/assets/bg-why-different.png";
 import bgWhyDifferentMobile from "@/assets/bg-why-different-mobile.png";
+import bgWhyDifferentMobileNew from "@/assets/Frame 2147230343.png";
 import iconReset from "@/assets/icon-reset.png";
 import iconRelief from "@/assets/icon-relief.png";
 import iconSafety from "@/assets/icon-safety.png";
@@ -32,9 +33,9 @@ const WhyChooseUs = ({
   return (
     <section className="relative w-full overflow-hidden">
       {/* Desktop bg */}
-      <img src={bgWhyDifferent} alt="" aria-hidden="true" className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full" style={{ zIndex: 0, width: "100%", height: "100%", objectFit: "fill" }} />
+      <img src={bgWhyDifferent} alt="" aria-hidden="true" className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
       {/* Mobile bg */}
-      <img src={bgWhyDifferentMobile} alt="" aria-hidden="true" className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full" style={{ zIndex: 0, width: "100%", height: "100%", objectFit: "fill" }} />
+      <img src={bgWhyDifferentMobileNew} alt="" aria-hidden="true" className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
 
       <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 md:px-6 text-center text-white pt-12 pb-16 md:pt-16 md:pb-24" style={{ minHeight: "510px" }}>
         <h2

@@ -71,58 +71,145 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [token]);
 
   const login = async (email: string, password: string) => {
-    const res = await fetch(`${API_BASE}/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username: email, password }),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || "Login failed");
-    // Support both direct AuthResponse and wrapped { success, data }
-    const payload = data.token ? data : data.data ? data.data : data;
-    const authToken = payload.token;
-    const authUser: AuthUser = {
-      email,
-      username: payload.username || data.username,
-      role: payload.role,
-      personId: payload.personId,
-      tenantId: payload.tenantId,
-    };
+    console.log('=== [LOGIN] Starting login attempt ===');
+    console.log('[LOGIN] API_BASE:', API_BASE);
+    console.log('[LOGIN] Email:', email);
+    console.log('[LOGIN] Password length:', password.length);
 
-    localStorage.setItem("rephyl_token", authToken);
-    if (authUser.personId) localStorage.setItem("rephyl_personId", String(authUser.personId));
-    if (authUser.tenantId) localStorage.setItem("rephyl_tenantId", String(authUser.tenantId));
-    setToken(authToken);
-    setUser(authUser);
+    try {
+      const res = await fetch(`${API_BASE}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: email, password }),
+      });
+
+      console.log('[LOGIN] Response Status:', res.status, res.statusText);
+
+      const data = await res.json();
+      console.log('[LOGIN] Response Body:', data);
+
+      if (!res.ok) {
+        console.error('[LOGIN] ❌ Login failed - Status:', res.status);
+        console.error('[LOGIN] Error:', data.message || data.error);
+        throw new Error(data.message || "Login failed");
+      }
+
+      // Support both direct AuthResponse and wrapped { success, data }
+      const payload = data.token ? data : data.data ? data.data : data;
+      const authToken = payload.token;
+      console.log('[LOGIN] ✓ Token received');
+
+      const authUser: AuthUser = {
+        email,
+        username: payload.username || data.username,
+        role: payload.role,
+        personId: payload.personId,
+        tenantId: payload.tenantId,
+      };
+
+      console.log('[LOGIN] ✓ Login successful:', { email, username: authUser.username });
+
+      localStorage.setItem("rephyl_token", authToken);
+      if (authUser.personId) localStorage.setItem("rephyl_personId", String(authUser.personId));
+      if (authUser.tenantId) localStorage.setItem("rephyl_tenantId", String(authUser.tenantId));
+      
+      setToken(authToken);
+      setUser(authUser);
+      console.log('=== [LOGIN] Completed Successfully ===');
+    } catch (error: any) {
+      console.error('=== [LOGIN] Error Occurred ===');
+      console.error('[LOGIN] Error:', error.message);
+      throw error;
+    }
   };
 
   const register = async (regData: { email: string; password: string; fullName: string; phone?: string }) => {
-    const res = await fetch(`${API_BASE}/auth/register`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(regData),
+    // API Spec: POST /api/customer-auth/signup
+    // Request body: { name, email, mobile, password }
+    const signupPayload = {
+      name: regData.fullName,
+      email: regData.email,
+      mobile: regData.phone || "",
+      password: regData.password,
+    };
+
+    console.log('=== [SIGNUP] Starting customer signup ===');
+    console.log('[SIGNUP] API_BASE:', API_BASE);
+    console.log('[SIGNUP] Full URL:', `${API_BASE}/customer-auth/signup`);
+    console.log('[SIGNUP] Request Payload:', { 
+      name: signupPayload.name, 
+      email: signupPayload.email, 
+      mobile: signupPayload.mobile,
+      password: '***MASKED***'
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || "Registration failed");
 
-    // If register also returns a token, log them in
-    const payload = data.token ? data : data.data ? data.data : data;
-    if (payload.token) {
-      localStorage.setItem("rephyl_token", payload.token);
-      setToken(payload.token);
-      setUser({
-        email: regData.email,
-        username: payload.username || regData.fullName,
-        role: payload.role || "ROLE_CUSTOMER",
-      });
-      return;
-    }
-
-    // If registration did not return a token, attempt to log in automatically
     try {
-      await login(regData.email, regData.password);
-    } catch (_) {
-      // ignore - user can log in manually
+      const res = await fetch(`${API_BASE}/customer-auth/signup`, {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(signupPayload),
+      });
+
+      console.log('[SIGNUP] Response Status:', res.status, res.statusText);
+      console.log('[SIGNUP] Response Headers:', {
+        contentType: res.headers.get('content-type'),
+        contentLength: res.headers.get('content-length'),
+      });
+
+      const data = await res.json();
+      console.log('[SIGNUP] Response Body:', data);
+
+      if (!res.ok) {
+        console.error('[SIGNUP] ❌ Signup failed');
+        console.error('[SIGNUP] Status:', res.status);
+        console.error('[SIGNUP] Error Data:', data);
+        throw new Error(data.message || data.error || `HTTP ${res.status}: Registration failed`);
+      }
+
+      // Expected response format:
+      // { success: true, message: "...", data: { loginId, personId, customerProfileId, childRoleId, username, name, email, mobile } }
+      const signupData = data.data;
+      console.log('[SIGNUP] ✓ Signup successful');
+      console.log('[SIGNUP] User Data:', { 
+        loginId: signupData.loginId,
+        personId: signupData.personId,
+        customerProfileId: signupData.customerProfileId,
+        username: signupData.username,
+        name: signupData.name,
+        email: signupData.email,
+        mobile: signupData.mobile,
+      });
+
+      // Store signup user info
+      const userData: AuthUser = {
+        email: signupData.email,
+        username: signupData.username || signupData.name,
+        role: "ROLE_CUSTOMER",
+        personId: signupData.personId,
+      };
+      
+      console.log('[SIGNUP] Storing user data:', userData);
+      setUser(userData);
+
+      // After signup, attempt to log in automatically to get token
+      try {
+        console.log('[SIGNUP] Attempting auto-login after signup...');
+        await login(regData.email, regData.password);
+        console.log('[SIGNUP] ✓ Auto-login successful');
+      } catch (loginErr: any) {
+        console.warn('[SIGNUP] ⚠️ Auto-login after signup failed:', loginErr.message);
+        // Don't throw - user can log in manually
+      }
+      
+      console.log('=== [SIGNUP] Completed Successfully ===');
+    } catch (error: any) {
+      console.error('=== [SIGNUP] Error Occurred ===');
+      console.error('[SIGNUP] Error Type:', error.name);
+      console.error('[SIGNUP] Error Message:', error.message);
+      console.error('[SIGNUP] Error Stack:', error.stack);
+      throw error;
     }
   };
 

@@ -10,6 +10,7 @@ const Logger = require('./utils/Logger');
 
 // Route imports
 const authRoutes = require('./routes/authRoutes');
+const customerAuthRoutes = require('./routes/customerAuthRoutes');
 const contactRoutes = require('./routes/contactRoutes');
 const newsletterRoutes = require('./routes/newsletterRoutes');
 const healthRoutes = require('./routes/healthRoutes');
@@ -77,6 +78,7 @@ class App {
 
     this.app.use('/api/health', healthRoutes);
     this.app.use('/api/auth', authRoutes);
+    this.app.use('/api/customer-auth', customerAuthRoutes);
     this.app.use('/api/contact', contactRoutes);
     this.app.use('/api/newsletter', newsletterRoutes);
     this.app.use('/api/reviews', reviewRoutes);

@@ -89,7 +89,7 @@ const AdminAddProduct = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-      <section className="max-w-3xl mx-auto px-4 md:px-6 py-16">
+      <section className="max-w-3xl mx-auto px-4 md:px-6 py-16 pt-[104px]">
         <h1 className="text-3xl font-display font-bold text-foreground mb-2">Add New Product</h1>
         <p className="text-muted-foreground mb-10">Fill in the product details below</p>
 

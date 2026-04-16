@@ -14,7 +14,7 @@ const AboutUs = () => {
       <TrustMarqueeStrip />
 
       {/* ✅ NORMAL SECTION (centered content) */}
-      <section className="w-full bg-[#F1FBD8]">
+      <section className="w-full bg-[#F1FBD8] pt-[104px]">
         <div className="max-w-[1318px] mx-auto px-4 md:px-[68px] py-12 md:py-16">
           <h2
             className="text-[18px] md:text-[40px] leading-[100%] md:leading-[60px] font-semibold mb-6 md:mb-8"
@@ -63,7 +63,7 @@ const AboutUs = () => {
       </section>
 
       {/* ✅ FULL WIDTH SECTION (no constraints) */}
-      <WhyChooseUs heading="Redefine what home care can be: clean, safe, and refreshingly honest." />
+      <WhyChooseUs heading="Redefining what home care can be: clean, safe, and refreshingly honest." />
 
       <Footer />
 

@@ -74,11 +74,11 @@ const BlogPost = () => {
       <Navbar />
 
       {/* Hero image */}
-      <div className="w-full h-[300px] md:h-[460px] overflow-hidden">
+      <div className="w-full h-[300px] md:h-[460px] overflow-hidden bg-gray-100 flex items-center justify-center pt-[104px]">
         <img
           src={getImageUrl(blog.banner)}
           alt={blog.title}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain"
         />
       </div>
 
@@ -108,10 +108,139 @@ const BlogPost = () => {
           </div>
         </div>
 
-        {/* Main Content - HTML provided by backend is safe */}
+        {/* Main Content - Properly formatted with full text justification */}
         <div className="prose prose-invert max-w-none mb-12">
+          <style>{`
+            .blog-content {
+              text-align: justify;
+              text-justify: inter-word;
+              hyphens: auto;
+              word-break: break-word;
+            }
+            .blog-content > * {
+              margin-top: 1.5rem;
+              margin-bottom: 1rem;
+            }
+            .blog-content > *:first-child {
+              margin-top: 0;
+            }
+            .blog-content h1,
+            .blog-content h2,
+            .blog-content h3 {
+              text-align: left;
+              clear: both;
+              display: block;
+              margin-top: 2rem !important;
+              margin-bottom: 1rem !important;
+            }
+            .blog-content h1 {
+              font-size: 2rem;
+              font-weight: 700;
+              line-height: 1.2;
+            }
+            .blog-content h2 {
+              font-size: 1.5rem;
+              font-weight: 700;
+              line-height: 1.3;
+            }
+            .blog-content h3 {
+              font-size: 1.25rem;
+              font-weight: 600;
+              line-height: 1.4;
+            }
+            .blog-content p {
+              text-align: justify;
+              margin: 1rem 0;
+              line-height: 1.8;
+              display: block;
+            }
+            .blog-content ul,
+            .blog-content ol {
+              margin: 1.5rem 0;
+              padding-left: 2.5rem;
+              margin-left: 0;
+              display: block;
+            }
+            .blog-content li {
+              margin: 0.75rem 0;
+              line-height: 1.8;
+              text-align: justify;
+              display: list-item;
+            }
+            .blog-content ul li {
+              list-style-type: disc;
+            }
+            .blog-content ol li {
+              list-style-type: decimal;
+            }
+            .blog-content blockquote {
+              border-left: 4px solid #cef17b;
+              padding-left: 1.5rem;
+              margin: 1.5rem 0;
+              font-style: italic;
+              color: #666;
+              text-align: justify;
+              display: block;
+            }
+            .blog-content strong {
+              font-weight: 700;
+            }
+            .blog-content em {
+              font-style: italic;
+            }
+            .blog-content code {
+              background: #f0f0f0;
+              padding: 0.2rem 0.4rem;
+              border-radius: 0.25rem;
+              font-family: 'Courier New', monospace;
+              color: #c41e3a;
+            }
+            .blog-content pre {
+              background: #f9f9f9;
+              padding: 1rem;
+              border-radius: 0.5rem;
+              overflow-x: auto;
+              margin: 1.5rem 0;
+              text-align: left;
+              display: block;
+            }
+            .blog-content pre code {
+              background: none;
+              padding: 0;
+              color: inherit;
+            }
+            .blog-content a {
+              color: #064734;
+              text-decoration: underline;
+            }
+            .blog-content a:hover {
+              color: #cef17b;
+            }
+            .blog-content img {
+              max-width: 100%;
+              height: auto;
+              margin: 1.5rem 0;
+              border-radius: 0.5rem;
+              display: block;
+              clear: both;
+            }
+            @media (max-width: 768px) {
+              .blog-content {
+                text-align: justify;
+              }
+              .blog-content h1,
+              .blog-content h2,
+              .blog-content h3 {
+                text-align: left;
+              }
+              .blog-content ul,
+              .blog-content ol {
+                padding-left: 1.5rem;
+              }
+            }
+          `}</style>
           <div
-            className="text-base leading-relaxed space-y-4"
+            className="blog-content text-base leading-relaxed"
             dangerouslySetInnerHTML={{
               __html: blog.description,
             }}

@@ -61,7 +61,7 @@ const WhyChooseUsPage = () => {
       <Navbar />
 
       {/* Hero */}
-      <section className="bg-secondary/50 py-16 md:py-24 px-4 md:px-6">
+      <section className="bg-secondary/50 py-16 md:py-24 px-4 md:px-6 pt-[104px]">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-display font-bold text-foreground mb-4">
             Why Choose rePhyl?

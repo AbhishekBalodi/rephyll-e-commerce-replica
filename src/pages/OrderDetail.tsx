@@ -20,7 +20,7 @@ const OrderDetail = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-      <section className="max-w-4xl mx-auto px-4 py-12">
+      <section className="max-w-4xl mx-auto px-4 py-12 pt-[104px]">
         <button onClick={() => navigate(-1)} className="mb-4 text-sm text-primary">Back</button>
         {isLoading ? (
           <p>Loading...</p>

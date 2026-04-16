@@ -35,7 +35,7 @@ const HeroCarousel = () => {
   }, []);
 
   return (
-    <section className="relative w-full overflow-hidden" aria-label="Featured products banner">
+    <section className="relative w-full overflow-hidden pt-[104px]" aria-label="Featured products banner">
       {/* Desktop wrapper */}
       <div
         className="relative w-full hidden md:block overflow-hidden"

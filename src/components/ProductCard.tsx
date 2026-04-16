@@ -1,8 +1,9 @@
 import type { MouseEvent } from "react";
+import { useState, useEffect } from "react";
 import { Star, StarHalf, ShoppingCart, Share2, Heart, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import type { ApiProduct } from "@/types/api";
-import { getProductImage, getSellingPrice, getMrp, getDiscount } from "@/lib/productHelpers";
+import type { ApiProduct, ApiProductDetail } from "@/types/api";
+import { getProductImage, getSellingPrice, getMrp, getDiscount, getProductImages } from "@/lib/productHelpers";
 import { getProductById } from "@/services/productApi";
 import QuantityCapsule from "./QuantityCapsule";
 import { useCart } from "@/contexts/CartContext";
@@ -10,109 +11,107 @@ import { useCart } from "@/contexts/CartContext";
 interface ProductCardProps {
   product: ApiProduct;
   onClick?: (product: ApiProduct) => void;
-  bundleQuantity?: number;
-  bundleSize?: number;
-  totalBundleQuantity?: number;
-  onAdd?: (product: ApiProduct) => void;
-  onIncrement?: (product: ApiProduct) => void;
-  onDecrement?: (product: ApiProduct) => void;
-  buttonLabel?: string;
-  isCartMode?: boolean;
 }
 
-const ProductCard = ({
-  product,
-  onClick,
-  bundleQuantity,
-  bundleSize,
-  totalBundleQuantity,
-  onAdd,
-  onIncrement,
-  onDecrement,
-  buttonLabel,
-  isCartMode,
-}: ProductCardProps) => {
+const ProductCard = ({ product, onClick }: ProductCardProps) => {
   const navigate = useNavigate();
-  const { items, addToCart, updateQuantity, removeFromCart, setBundleOffer } = useCart();
-  const image = getProductImage(product);
+  const { items, addToCart, updateQuantity, removeFromCart } = useCart();
+  const [imageIndex, setImageIndex] = useState(0);
+  const [fullProduct, setFullProduct] = useState<ApiProductDetail | null>(null);
+  const [loading, setLoading] = useState(false);
+  
+  // Load full product details to get all variant images
+  useEffect(() => {
+    const loadProduct = async () => {
+      try {
+        setLoading(true);
+        const detail = await getProductById(product.id);
+        setFullProduct(detail);
+      } catch (err) {
+        console.error('Failed to load product details:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadProduct();
+  }, [product.id]);
+  
+  // Use variant images if available, otherwise fallback to catalog image
+  const images = fullProduct ? getProductImages(fullProduct) : [getProductImage(product)];
+  const currentImage = images[imageIndex] || getProductImage(product);
   const price = getSellingPrice(product);
   const mrp = getMrp(product);
   const discount = getDiscount(product);
 
   const existingCartItem = items.find((item) => item.productId === product.id);
-  const cartQty = existingCartItem?.quantity ?? 0;
-
-  const isBundle = bundleQuantity !== undefined && bundleSize !== undefined;
-  const quantity = isBundle ? bundleQuantity : cartQty;
-  const bundleTotalQty = totalBundleQuantity ?? 0;
-  const maxReached = isBundle ? bundleTotalQty >= (bundleSize ?? 0) : false;
-  const actionLabel = isBundle ? (buttonLabel || "Add to Box") : (buttonLabel || "Add to Cart");
+  const quantity = existingCartItem?.quantity ?? 0;
 
   const handleAddClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    if (isBundle && onAdd) {
-      if (maxReached) return;
-      onAdd(product);
+    
+    if (!fullProduct || !fullProduct.variants || fullProduct.variants.length === 0) {
+      alert('Loading product details... Please try again in a moment.');
       return;
     }
-    if (!isBundle) {
-      (async () => {
-        // Attempt to resolve a variant id from product detail. If not available, fallback to product.id
-        let variantId: number | undefined = undefined;
-        try {
-          if ((product as any).variantCount && (product as any).variantCount > 0) {
-            const detail = await getProductById(product.id);
-            if (detail.variants && detail.variants.length > 0) {
-              variantId = detail.variants[0].id;
-            }
-          }
-        } catch (_) {
-          // ignore and fallback
-        }
 
-        addToCart({ productId: product.id, name: product.name, price, originalPrice: mrp, image, variantId });
-      })();
+    const selectedVariant = fullProduct.variants[0];
+    if (!selectedVariant || !selectedVariant.id) {
+      alert('Product variant information is missing');
+      return;
     }
+
+    addToCart({ 
+      productId: product.id, 
+      name: product.name, 
+      price, 
+      originalPrice: mrp, 
+      image: currentImage, 
+      variantId: selectedVariant.id 
+    });
   };
 
   const handleIncrementClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    if (isBundle && onIncrement) {
-      if (maxReached) return;
-      onIncrement(product);
+    if (!fullProduct?.variants?.[0]?.id) {
+      alert('Product variant not loaded');
       return;
     }
-    if (!isBundle) {
-      const existing = items.find((it) => it.productId === product.id);
-      const maxQ = existing?.maxQuantity ?? null;
-      const newQ = maxQ && (quantity + 1) > maxQ ? maxQ : quantity + 1;
-      updateQuantity(product.id, newQ);
-    }
+    const variantId = fullProduct.variants[0].id;
+    const existing = items.find((it) => it.productId === product.id && it.variantId === variantId);
+    const maxQ = existing?.maxQuantity ?? null;
+    const newQ = maxQ && (quantity + 1) > maxQ ? maxQ : quantity + 1;
+    updateQuantity(product.id, newQ, variantId);
   };
 
   const handleDecrementClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    if (isBundle && onDecrement) {
-      onDecrement(product);
+    if (!fullProduct?.variants?.[0]?.id) {
+      alert('Product variant not loaded');
       return;
     }
-    if (!isBundle) {
-      if (quantity <= 1) {
-        removeFromCart(product.id);
-      } else {
-        updateQuantity(product.id, quantity - 1);
-      }
+    const variantId = fullProduct.variants[0].id;
+    if (quantity <= 1) {
+      removeFromCart(product.id, variantId);
+    } else {
+      updateQuantity(product.id, quantity - 1, variantId);
     }
   };
 
-  // Mock rating/review data
-  const rating = 4.5 + Math.random() * 0.4;
-  const reviewCount = 30 + Math.floor(Math.random() * 100);
+  const handleNextImage = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (images.length > 1) {
+      setImageIndex((prev) => (prev + 1) % images.length);
+    }
+  };
+
+  // Fixed: Use product data for rating instead of random generation
+  const rating = (product as any).rating || 4.2;
+  const reviewCount = (product as any).reviewCount || 42;
 
 
   return (
     <div
-      className="bg-white rounded-2xl shadow-md overflow-hidden w-full max-w-[270px] cursor-pointer"
+      className="bg-white rounded-2xl shadow-md overflow-hidden w-full max-w-[320px] cursor-pointer mx-auto"
       onClick={() => {
         onClick?.(product);
         navigate(`/product/${product.id}`);
@@ -128,11 +127,14 @@ const ProductCard = ({
           </div>
         </div>
 
-        <img src={image} alt={product.name} className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg"; }} />
+        <img src={currentImage} alt={product.name} className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg"; }} />
 
-        <div className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-white rounded-full flex items-center justify-center shadow z-10">
+        <button 
+          onClick={handleNextImage}
+          className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-white rounded-full flex items-center justify-center shadow z-10 hover:bg-gray-100" 
+        >
           <ChevronRight size={16} color="#364153" />
-        </div>
+        </button>
 
         <div className="absolute bottom-3 flex gap-1 z-10">
           <div className="w-6 h-1 bg-[#00301D] rounded-full"></div>
@@ -180,11 +182,10 @@ const ProductCard = ({
           ) : (
             <button
               onClick={handleAddClick}
-              disabled={isBundle ? maxReached : false}
-              className={`w-full rounded-xl py-3 text-sm font-semibold text-white flex items-center justify-center gap-2 ${isBundle && maxReached ? "bg-gray-400" : "bg-[#064734] hover:bg-[#05412E]"}`}
+              className="w-full rounded-xl py-3 text-sm font-semibold text-white flex items-center justify-center gap-2 bg-[#064734] hover:bg-[#05412E]"
             >
               <ShoppingCart size={16} />
-              {actionLabel}
+              Add to Cart
             </button>
           )}
         </div>

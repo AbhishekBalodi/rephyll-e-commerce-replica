@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useBlogList } from "@/hooks/useBlogList";
 import { useBlogCategories } from "@/hooks/useBlogCategories";
-import { Loader2, Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { useBlogSearchSuggestions } from "@/hooks/useBlogSearchSuggestions";
+import { Loader2, Search, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { CustomerBlogCatalogDto } from "@/types/api";
 
 const BlogCard = ({ post }: { post: CustomerBlogCatalogDto }) => {
@@ -31,7 +32,7 @@ const BlogCard = ({ post }: { post: CustomerBlogCatalogDto }) => {
       <img
         src={getImageUrl(post.banner)}
         alt={post.title}
-        className="w-full h-[180px] object-cover"
+        className="w-full h-[180px] object-contain bg-gray-100"
         loading="lazy"
       />
       <div className="p-5">
@@ -63,6 +64,8 @@ const BlogCard = ({ post }: { post: CustomerBlogCatalogDto }) => {
 const BlogsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [localSearch, setLocalSearch] = useState("");
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const page = parseInt(searchParams.get("page") || "0");
   const search = searchParams.get("search") || "";
@@ -78,17 +81,33 @@ const BlogsPage = () => {
   });
 
   const { categories } = useBlogCategories();
+  
+  // Fetch search suggestions based on local search input
+  const { suggestions, loading: suggestionsLoading } = useBlogSearchSuggestions(localSearch);
 
   useEffect(() => {
     setLocalSearch(search);
   }, [search]);
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = (e: React.FormEvent, selectedSuggestion?: string) => {
     e.preventDefault();
+    const searchTerm = selectedSuggestion || localSearch;
+    if (!searchTerm.trim()) return;
+    
     const params = new URLSearchParams();
-    if (localSearch) params.set("search", localSearch);
+    params.set("search", searchTerm);
     params.set("page", "0");
     setSearchParams(params);
+    setShowSuggestions(false);
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setLocalSearch(suggestion);
+    const params = new URLSearchParams();
+    params.set("search", suggestion);
+    params.set("page", "0");
+    setSearchParams(params);
+    setShowSuggestions(false);
   };
 
   const handleCategoryFilter = (id: number | null) => {
@@ -112,7 +131,7 @@ const BlogsPage = () => {
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
 
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-12">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-12 pt-[104px]">
         <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-2">
           Our Blog
         </h1>
@@ -122,21 +141,65 @@ const BlogsPage = () => {
 
         {/* Search and Filter Section */}
         <div className="mb-10 space-y-4">
-          {/* Search Bar */}
+          {/* Search Bar with Autocomplete */}
           <form onSubmit={handleSearch} className="flex gap-2">
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
+                ref={searchInputRef}
                 type="text"
                 placeholder="Search blogs..."
                 value={localSearch}
-                onChange={(e) => setLocalSearch(e.target.value)}
+                onChange={(e) => {
+                  setLocalSearch(e.target.value);
+                  setShowSuggestions(true);
+                }}
+                onFocus={() => setShowSuggestions(true)}
+                onBlur={() => {
+                  // Delay hiding to allow suggestion click
+                  setTimeout(() => setShowSuggestions(false), 100);
+                }}
                 className="w-full pl-10 pr-4 py-2 bg-card border border-border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
               />
+              
+              {/* Search Suggestions Dropdown */}
+              {showSuggestions && localSearch.length >= 2 && suggestions.length > 0 && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-card border border-border rounded-lg shadow-md z-50">
+                  {suggestions.map((suggestion, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      onClick={() => handleSuggestionClick(suggestion)}
+                      className="w-full text-left px-4 py-2 hover:bg-secondary text-foreground text-sm border-b border-border last:border-b-0 transition-colors"
+                    >
+                      <Search className="inline w-3 h-3 mr-2 text-muted-foreground" />
+                      {suggestion}
+                    </button>
+                  ))}
+                </div>
+              )}
+              
+              {/* No Suggestions Message */}
+              {showSuggestions && localSearch.length >= 2 && suggestions.length === 0 && !suggestionsLoading && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-card border border-border rounded-lg shadow-md z-50 p-3">
+                  <p className="text-sm text-muted-foreground text-center">No suggestions found</p>
+                </div>
+              )}
+              
+              {/* Loading State */}
+              {showSuggestions && suggestionsLoading && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-card border border-border rounded-lg shadow-md z-50 p-3">
+                  <div className="flex items-center gap-2 justify-center">
+                    <Loader2 className="w-3 h-3 animate-spin text-primary" />
+                    <p className="text-sm text-muted-foreground">Loading suggestions...</p>
+                  </div>
+                </div>
+              )}
             </div>
             <button
               type="submit"
-              className="px-6 py-2 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors"
+              className="px-6 py-2 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
+              disabled={!localSearch.trim()}
             >
               Search
             </button>

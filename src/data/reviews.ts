@@ -58,12 +58,4 @@ export const DUMMY_REVIEWS: Review[] = [
     content: "Finally found a cleaning product that actually works and is safe for my family. The floor cleaner leaves such a fresh scent. Highly recommend to anyone looking for green alternatives.",
     date: "09/28/2025",
   },
-  {
-    id: "7",
-    name: "Rahul Mehta",
-    rating: 4.5,
-    title: "Great glass cleaner",
-    content: "The glass cleaner works amazingly well. No streaks at all, and my windows have never looked this clear. Will definitely be buying more.",
-    date: "09/22/2025",
-  },
 ];
