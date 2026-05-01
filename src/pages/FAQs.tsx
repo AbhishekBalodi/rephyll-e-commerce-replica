@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import { useWebsitePageByPath } from "@/hooks/useWebsitePage";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Search, Leaf, SprayCan, Droplets, ShowerHead, CookingPot, Headphones, ArrowRight } from "lucide-react";
+import faqsHero from "@/assets/faqs-hero.jpg";
 
 type FaqCategory = "all" | "general" | "all-surface" | "toilet" | "dishwash" | "kitchen";
 
@@ -99,7 +100,7 @@ const FAQs = () => {
 
   const heroImage = pageData?.metaImg
     ? `${import.meta.env.VITE_BASE_URL || "https://www.rephyl.com"}${pageData.metaImg}`
-    : "/placeholder.svg";
+    : faqsHero;
 
   const visibleFaqs = useMemo(() => {
     const byCategory = activeCategory === "all"
@@ -128,10 +129,8 @@ const FAQs = () => {
       <Navbar />
 
       <main className="w-full pt-[104px] pb-14">
-        <section className="relative w-full h-[340px] md:h-[430px] lg:h-[500px] overflow-hidden">
-          <img src={heroImage} alt="FAQ hero" className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#F3F8EE]/95 via-[#F3F8EE]/75 to-transparent" />
-          <div className="relative z-10 h-full flex items-center px-4 md:px-8 lg:px-12">
+        <section className="relative w-full overflow-hidden bg-[#F3F8EE]">
+          <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-12 md:py-16 grid lg:grid-cols-[1fr_1fr] gap-8 items-center">
             <div className="max-w-[640px]">
               <p className="text-sm tracking-[0.08em] uppercase text-[#648273] font-semibold">FAQs</p>
               <h1 className="mt-2 text-[42px] md:text-[64px] leading-[0.95] font-semibold text-[#0E1F17]">
@@ -151,10 +150,13 @@ const FAQs = () => {
                 />
               </div>
             </div>
+            <div className="relative h-[340px] md:h-[420px] lg:h-[480px] rounded-2xl overflow-hidden">
+              <img src={heroImage} alt="FAQ hero" className="w-full h-full object-cover" />
+            </div>
           </div>
         </section>
 
-        <section className="w-full px-2 md:px-6 -mt-7 relative z-20">
+        <section className="w-full max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 -mt-7 relative z-20">
           <div className="rounded-2xl border border-[#E6EDE2] bg-white px-4 md:px-8 py-5 shadow-[0_6px_24px_rgba(0,0,0,0.04)]">
             <div className="flex gap-2 overflow-x-auto scrollbar-hide">
               {FAQ_CATEGORIES.map((category) => {
@@ -180,7 +182,7 @@ const FAQs = () => {
           </div>
         </section>
 
-        <section className="w-full px-2 md:px-6 grid lg:grid-cols-[360px_minmax(0,1fr)] gap-10 mt-8">
+        <section className="w-full max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 grid lg:grid-cols-[320px_minmax(0,1fr)] gap-8 mt-8">
           <aside className="rounded-2xl border border-[#E4EADF] bg-white p-4">
             <div className="space-y-2">
               {FAQ_CATEGORIES.slice(1).map((category) => {
@@ -218,7 +220,7 @@ const FAQs = () => {
             </div>
           </aside>
 
-          <div className="rounded-2xl border border-[#E4EADF] bg-white p-5 md:p-6">
+          <div className="rounded-2xl border border-[#E4EADF] bg-white p-6 md:p-8 min-h-[600px]">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-12 h-12 rounded-full bg-[#EAF5D7] flex items-center justify-center text-[#064734]">
                 {FAQ_CATEGORY_META[activeCategory].icon}
@@ -229,13 +231,13 @@ const FAQs = () => {
               </div>
             </div>
 
-            <Accordion type="single" collapsible className="space-y-2">
+            <Accordion type="single" collapsible className="space-y-3 mt-5">
               {visibleFaqs.map((faq, idx) => (
-                <AccordionItem key={`${faq.question}-${idx}`} value={`faq-${idx}`} className="border border-[#E9EFE5] rounded-xl px-4">
-                  <AccordionTrigger className="text-left font-semibold text-[#173428]">
+                <AccordionItem key={`${faq.question}-${idx}`} value={`faq-${idx}`} className="border border-[#E9EFE5] rounded-xl px-5">
+                  <AccordionTrigger className="text-left font-semibold text-[#173428] text-[16px] py-5">
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-[#5A6E63] leading-relaxed">
+                  <AccordionContent className="text-[#5A6E63] leading-relaxed text-[15px] pb-5">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>
@@ -248,7 +250,7 @@ const FAQs = () => {
           </div>
         </section>
 
-        <section className="w-full px-2 md:px-6 mt-8">
+        <section className="w-full max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 mt-8">
           <div className="relative overflow-hidden rounded-2xl border border-[#E4EADF] bg-white px-4 md:px-8 py-6 md:py-8 flex flex-wrap items-center justify-between gap-4">
             <img src="/placeholder.svg" alt="support" className="absolute left-0 bottom-0 w-28 h-28 object-cover opacity-25" />
             <div className="relative z-10">
