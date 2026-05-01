@@ -10,6 +10,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { getProductImages } from "@/lib/productHelpers";
 import { getCanonicalProductPath } from "@/lib/routeHelpers";
 import { ArrowLeft, CalendarDays, Clock3, Leaf, Loader2, ShieldCheck } from "lucide-react";
+import blogPetHero from "@/assets/blog-pet-hero.jpg";
 
 const BLOG_FAQS = [
   {
@@ -81,7 +82,7 @@ const BlogPost = () => {
     ? getImageUrl(pageData.metaImg)
     : blog?.banner
       ? getImageUrl(blog.banner)
-      : "/placeholder.svg";
+      : blogPetHero;
 
   const relatedBlogs = useMemo(
     () => allBlogs.filter((item) => item.slug !== slug).slice(0, 3),
@@ -132,7 +133,7 @@ const BlogPost = () => {
     <div className="min-h-screen bg-[#F8FAF7] text-foreground">
       <Navbar />
 
-      <main className="w-full px-2 md:px-6 lg:px-8 pt-[118px] pb-14">
+      <main className="w-full max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 pt-[118px] pb-14">
         <div className="text-sm text-muted-foreground mb-5">
           <Link to="/" className="hover:text-foreground">Home</Link>
           <span className="mx-2">›</span>
@@ -141,34 +142,34 @@ const BlogPost = () => {
           <span className="text-foreground/80">{blog.title}</span>
         </div>
 
-        <section className="grid lg:grid-cols-[1.05fr_1.35fr] gap-6 items-stretch mb-8">
-          <div className="bg-white rounded-2xl border border-[#E4EADF] p-6 md:p-8">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#EAF5D7] text-[#064734] text-xs font-semibold mb-4">
+        <section className="grid lg:grid-cols-2 gap-8 items-center mb-10">
+          <div className="bg-transparent p-0 md:p-2 flex flex-col justify-center">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#EAF5D7] text-[#064734] text-xs font-semibold mb-5 self-start">
               <Leaf size={13} />
               {blog.categoryName || "Pet Care & Cleaning"}
             </div>
 
-            <h1 className="text-[34px] md:text-[50px] leading-[1.08] font-semibold text-[#0E1F17]">
+            <h1 className="text-[40px] md:text-[56px] lg:text-[60px] leading-[1.05] font-bold text-[#0E1F17]">
               {blog.title}
             </h1>
 
-            <p className="mt-4 text-[#4C5B54] text-[16px] md:text-[18px] leading-relaxed max-w-[62ch]">
+            <p className="mt-5 text-[#4C5B54] text-[17px] md:text-[19px] leading-relaxed max-w-[62ch]">
               {blog.shortDescription}
             </p>
 
-            <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-[#5D6B64]">
+            <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-[#5D6B64]">
               <span className="font-medium text-[#243D32]">By {blog.author || "Rephyl Team"}</span>
               <span className="inline-flex items-center gap-1.5"><CalendarDays size={14} />{formatDate(blog.createdDate)}</span>
               <span className="inline-flex items-center gap-1.5"><Clock3 size={14} />{blog.readingTime || 8} min read</span>
             </div>
           </div>
 
-          <div className="rounded-2xl overflow-hidden border border-[#E4EADF] bg-[#EFF3EA] min-h-[320px] md:min-h-[420px]">
+          <div className="rounded-2xl overflow-hidden border border-[#E4EADF] bg-[#EFF3EA] h-[360px] md:h-[440px] lg:h-[480px]">
             <img src={heroImage} alt={blog.title} className="w-full h-full object-cover" />
           </div>
         </section>
 
-        <section className="grid lg:grid-cols-[minmax(0,0.8fr)_460px] gap-10">
+        <section className="grid lg:grid-cols-[minmax(0,1fr)_380px] gap-8">
           <article className="space-y-6">
             <div className="rounded-2xl border border-[#E4EADF] bg-white p-5 flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-start gap-3">
