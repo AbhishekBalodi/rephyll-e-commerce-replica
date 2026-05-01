@@ -101,5 +101,64 @@ export function isVariantInStock(variant: ApiVariant): boolean {
 
 /** Get total stock for a variant. */
 export function getVariantStock(variant: ApiVariant): number {
-  return variant.inventory.totalStock;
+  return variant.inventory.totalStock ?? 0;
+}
+
+/** Parse a quantity from labels like "Pack of 2" or "2 Pack". */
+export function parsePackQuantity(value: string): number | null {
+  if (!value) return null;
+
+  const packOfMatch = value.match(/pack\s*of\s*(\d+)/i);
+  if (packOfMatch) return Number(packOfMatch[1]);
+
+  const suffixMatch = value.match(/(\d+)\s*pack/i);
+  if (suffixMatch) return Number(suffixMatch[1]);
+
+  const firstNumber = value.match(/(\d+)/);
+  return firstNumber ? Number(firstNumber[1]) : null;
+}
+
+/** Detect whether an attribute behaves like a pack selector. */
+export function isPackAttribute(attributeName: string): boolean {
+  return /pack|quantity|size/i.test(attributeName);
+}
+
+/** Infer the MRP for a variant from the product base price and pack quantity. */
+export function getVariantMrp(product: ApiProduct, variant: ApiVariant): number {
+  const attrs = parseAttrsCombo(variant.attrsCombo);
+  const packValue = Object.entries(attrs).find(([key]) => isPackAttribute(key))?.[1];
+  const packQuantity = parsePackQuantity(packValue ?? "");
+
+  if (packQuantity && packQuantity > 1) {
+    return product.basePrice * packQuantity;
+  }
+
+  return product.basePrice;
+}
+
+/** Calculate a discount percentage for a variant compared with inferred MRP. */
+export function getVariantDiscountPercent(product: ApiProduct, variant: ApiVariant): number {
+  const mrp = getVariantMrp(product, variant);
+  if (!mrp || variant.price >= mrp) return 0;
+  return Math.round(((mrp - variant.price) / mrp) * 100);
+}
+
+/** Calculate per-pack price when a pack quantity is present. */
+export function getVariantUnitPrice(variant: ApiVariant): number | null {
+  const attrs = parseAttrsCombo(variant.attrsCombo);
+  const packValue = Object.entries(attrs).find(([key]) => isPackAttribute(key))?.[1];
+  const packQuantity = parsePackQuantity(packValue ?? "");
+
+  if (!packQuantity || packQuantity <= 1) return null;
+  return Number((variant.price / packQuantity).toFixed(2));
+}
+
+/** Get a user-friendly stock label for a variant. */
+export function getVariantStockLabel(variant: ApiVariant): string {
+  if (!variant.inventory.available) return "Out of stock";
+  if (variant.inventory.stockLabel) return variant.inventory.stockLabel;
+  if (typeof variant.inventory.totalStock === "number") {
+    return `${variant.inventory.totalStock} in stock`;
+  }
+  return "In stock";
 }

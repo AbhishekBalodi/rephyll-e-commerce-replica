@@ -1,18 +1,19 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useCart } from "@/contexts/CartContext";
-import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
+import { Minus, Plus, ShoppingBag } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useWishlist } from "@/contexts/WishlistContext";
 
 const CartPage = () => {
-  const { items, totalItems, totalPrice, bundleOffer, updateQuantity, removeFromCart, clearCart, syncing } = useCart();
+  const { items, totalItems, totalPrice, updateQuantity, removeFromCart, clearCart, syncing } = useCart();
   const { token } = useAuth();
+  const { addToWishlist } = useWishlist();
   const navigate = useNavigate();
 
   const handleCheckout = () => {
     if (!token) {
-      alert("Please log in to proceed to checkout");
       navigate("/login", { state: { from: "/checkout" } });
       return;
     }
@@ -43,40 +44,65 @@ const CartPage = () => {
           <>
             <div className="space-y-4 mb-8">
               {items.map((item) => (
-                <div key={item.productId} className="flex items-center gap-4 bg-card border border-border rounded-xl p-4">
-                  <img src={item.image} alt={item.name} className="w-20 h-20 rounded-lg object-cover flex-shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-sm font-bold text-foreground truncate">{item.name}</h3>
-                    <p className="text-sm text-foreground font-bold mt-1">
-                      ₹{item.price}
-                      {item.originalPrice > item.price && (
-                        <span className="text-xs line-through text-muted-foreground ml-2">₹{item.originalPrice}</span>
-                      )}
-                    </p>
-                    <div className="text-xs text-muted-foreground mt-1">
-                      {item.stockLabel ? <span>{item.stockLabel}</span> : null}
-                      {item.maxQuantity ? <span className="ml-2">• Max {item.maxQuantity}</span> : null}
+                <div key={`${item.productId}-${item.variantId || "default"}`} className="bg-card border border-border rounded-xl overflow-hidden">
+                  <div className="flex items-center gap-4 p-4">
+                    <img src={item.image} alt={item.name} className="w-20 h-20 rounded-lg object-cover flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-sm font-bold text-foreground truncate">{item.name}</h3>
+                      <p className="text-sm text-foreground font-bold mt-1">
+                        ₹{item.price}
+                        {item.originalPrice > item.price && (
+                          <span className="text-xs line-through text-muted-foreground ml-2">₹{item.originalPrice}</span>
+                        )}
+                      </p>
+                      <div className="text-xs text-muted-foreground mt-1">
+                        {item.stockLabel ? <span>{item.stockLabel}</span> : null}
+                        {item.maxQuantity ? <span className="ml-2">• Max {item.maxQuantity}</span> : null}
+                      </div>
                     </div>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => updateQuantity(item.productId, item.quantity - 1, item.variantId)}
+                        className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:bg-accent transition-colors"
+                      >
+                        <Minus size={14} />
+                      </button>
+                      <span className="text-sm font-bold w-6 text-center">{item.quantity}</span>
+                      <button
+                        onClick={() => updateQuantity(item.productId, item.quantity + 1, item.variantId)}
+                        className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:bg-accent transition-colors"
+                      >
+                        <Plus size={14} />
+                      </button>
+                    </div>
+
+                    <p className="text-sm font-bold text-foreground w-20 text-right">₹{item.price * item.quantity}</p>
                   </div>
-                  <div className="flex items-center gap-2">
+
+                  <div className="border-t border-border px-4 py-3 flex items-center gap-5 text-sm font-semibold">
                     <button
-                      onClick={() => updateQuantity(item.productId, item.quantity - 1)}
-                      className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:bg-accent transition-colors"
+                      onClick={() => removeFromCart(item.productId, item.variantId)}
+                      className="text-foreground hover:text-destructive transition-colors"
                     >
-                      <Minus size={14} />
+                      Remove
                     </button>
-                    <span className="text-sm font-bold w-6 text-center">{item.quantity}</span>
                     <button
-                      onClick={() => updateQuantity(item.productId, item.quantity + 1)}
-                      className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:bg-accent transition-colors"
+                      onClick={() =>
+                        addToWishlist({
+                          productId: item.productId,
+                          name: item.name,
+                          price: item.price,
+                          originalPrice: item.originalPrice,
+                          image: item.image,
+                          variantId: item.variantId,
+                        })
+                      }
+                      className="text-foreground hover:text-primary transition-colors"
                     >
-                      <Plus size={14} />
+                      Add to Wishlist
                     </button>
                   </div>
-                  <p className="text-sm font-bold text-foreground w-20 text-right">₹{item.price * item.quantity}</p>
-                  <button onClick={() => removeFromCart(item.productId)} className="text-muted-foreground hover:text-destructive transition-colors">
-                    <Trash2 size={18} />
-                  </button>
                 </div>
               ))}
             </div>
@@ -89,9 +115,6 @@ const CartPage = () => {
                 <span className="text-sm text-muted-foreground">Subtotal ({totalItems} items)</span>
                 <span className="text-lg font-bold text-foreground">₹{totalPrice}</span>
               </div>
-              {bundleOffer && totalItems === bundleOffer.targetQty && (
-                <p className="text-sm text-primary-foreground font-medium mb-4">Bundle pricing applied: ₹{bundleOffer.bundlePrice} for {bundleOffer.targetQty} items</p>
-              )}
               <div className="flex gap-3">
                 <button
                   onClick={clearCart}

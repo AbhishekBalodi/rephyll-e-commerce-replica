@@ -30,6 +30,7 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 const STORAGE_KEY = "rephyl_cart";
+const FRONTEND_MAX_PER_ITEM = 10;
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [items, setItems] = useState<CartItem[]>(() => {
@@ -74,6 +75,20 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
 
+    const existingItem = items.find(
+      (i) => i.productId === item.productId && i.variantId === item.variantId
+    );
+    const maxAllowed = Math.min(
+      FRONTEND_MAX_PER_ITEM,
+      existingItem?.maxQuantity ?? item.maxQuantity ?? Number.POSITIVE_INFINITY
+    );
+    const currentQty = existingItem?.quantity ?? 0;
+    const allowedIncrement = Math.max(0, Math.min(quantity, maxAllowed - currentQty));
+
+    if (allowedIncrement <= 0) {
+      return;
+    }
+
     setItems((prev) => {
       // Use BOTH productId AND variantId to find existing item
       const existing = prev.find((i) => i.productId === item.productId && i.variantId === item.variantId);
@@ -82,13 +97,26 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         // Same product + same variant: increment quantity
         return prev.map((i) =>
           i.productId === item.productId && i.variantId === item.variantId
-            ? { ...i, quantity: i.quantity + quantity }
+            ? {
+                ...i,
+                quantity: Math.min(
+                  i.quantity + allowedIncrement,
+                  Math.min(FRONTEND_MAX_PER_ITEM, i.maxQuantity ?? Number.POSITIVE_INFINITY)
+                ),
+              }
             : i
         );
       }
       
       // Different product OR different variant: add as new item
-      return [...prev, { ...item, quantity }];
+      return [
+        ...prev,
+        {
+          ...item,
+          quantity: Math.min(allowedIncrement, Math.min(FRONTEND_MAX_PER_ITEM, item.maxQuantity ?? Number.POSITIVE_INFINITY)),
+          maxQuantity: Math.min(FRONTEND_MAX_PER_ITEM, item.maxQuantity ?? Number.POSITIVE_INFINITY),
+        },
+      ];
     });
     toast({ title: "Added to Cart", description: `${item.name} added to your cart.` });
     
@@ -104,7 +132,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
           throw new Error('Cannot sync cart item without variantId');
         }
         
-        const resp = await cartApi.addItem(item.variantId, quantity);
+        const resp = await cartApi.addItem(item.variantId, allowedIncrement);
         // handle ApiResponse wrapper
         const payload = (resp && typeof resp === 'object' && 'success' in resp) ? (resp.data || resp) : resp;
         if (resp && typeof resp === "object" && resp.success === false) throw new Error(resp.message || "Add to cart failed");
@@ -178,12 +206,15 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
 
+    const maxForItem = Math.min(FRONTEND_MAX_PER_ITEM, itemToUpdate.maxQuantity ?? Number.POSITIVE_INFINITY);
+    const normalizedQuantity = Math.min(quantity, maxForItem);
+
     setItems((prev) => prev.map((i) => {
       if (i.productId !== productId || i.variantId !== itemToUpdate.variantId) {
         return i;
       }
-      const maxQ = i.maxQuantity ?? null;
-      const newQ = (maxQ && quantity > maxQ) ? maxQ : quantity;
+      const maxQ = Math.min(FRONTEND_MAX_PER_ITEM, i.maxQuantity ?? Number.POSITIVE_INFINITY);
+      const newQ = Math.min(normalizedQuantity, maxQ);
       return { ...i, quantity: newQ };
     }));
 
@@ -193,7 +224,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         const token = localStorage.getItem("rephyl_token");
         if (!token || !itemToUpdate.itemId) return;
         setSyncing(true);
-        const resp = await cartApi.updateItem(itemToUpdate.itemId, quantity);
+        const resp = await cartApi.updateItem(itemToUpdate.itemId, normalizedQuantity);
         if (resp && typeof resp === 'object' && resp.success === false) {
           throw new Error(resp.message || 'Update failed');
         }
@@ -228,12 +259,16 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         const server = await cartApi.getCart();
         const serverItems = (server && server.success) ? (server.data?.items || []) : (server.items || []);
         const mapped = serverItems.map((si: any) => ({
-          productId: si.productId || si.variantId,
-          name: si.productName || si.productName || "Product",
+          productId: si.productId || si.product?.id || 0,
+          name: si.productName || si.product?.name || "Product",
           price: si.unitPrice || si.price || 0,
           originalPrice: si.mrp || si.originalPrice || si.unitPrice || 0,
           image: si.imagePath || (si.productImage && si.productImage.path) || "/placeholder.svg",
           quantity: si.quantity || si.qty || 1,
+          variantId: si.variantId || si.variant?.id,
+          itemId: si.id,
+          maxQuantity: si.maxQuantity || si.maxCartQuantity || si.variant?.inventory?.maxCartQuantity || null,
+          stockLabel: si.stockLabel || si.variant?.inventory?.stockLabel || null,
         }));
         if (mounted && mapped.length > 0) setItems(mapped);
       } catch (err) {

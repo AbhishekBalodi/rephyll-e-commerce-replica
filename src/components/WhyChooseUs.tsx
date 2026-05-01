@@ -55,24 +55,80 @@ const WhyChooseUs = ({
         )}
         {!subtext && <div className="mb-6 md:mb-12" />}
 
-        {/* 3 Separate white cards */}
-        <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-6 mb-6 md:mb-8">
+        {/* Mobile: all 3 cards in one row */}
+        <div className="md:hidden mb-6 px-1">
+          <div className="flex w-full items-stretch justify-center gap-2">
+            {CARDS.map((item, i) => (
+              <div
+                key={i}
+                className="bg-white rounded-[12px] px-2 py-3 shadow-[0px_8px_24px_rgba(0,38,3,0.08)] flex flex-col items-center text-center gap-1.5 w-[31%] max-w-[118px]"
+              >
+                <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center bg-[#F1FBD8]">
+                  <div className="w-[20px] h-[20px] flex items-center justify-center">{item.icon}</div>
+                </div>
+                <p
+                  className="text-[13px] font-semibold text-[#064734] leading-tight"
+                  style={{ fontFamily: "'Poppins', sans-serif" }}
+                >
+                  {item.title}
+                </p>
+                <p
+                  className="text-[10px] text-[#064734] leading-tight"
+                  style={{ fontFamily: "'Poppins', sans-serif" }}
+                >
+                  {item.subtitle}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* iPad: horizontal row with scroll */}
+        <div className="hidden md:block lg:hidden mb-8 -mx-6 px-6">
+          <div className="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory justify-start">
+            {CARDS.map((item, i) => (
+              <div
+                key={i}
+                className="bg-white rounded-[24px] px-8 py-8 shadow-[0px_8px_40px_rgba(0,38,3,0.08)] flex flex-col items-center text-center gap-2 min-w-[220px] w-[220px] snap-start flex-shrink-0"
+              >
+                <div className="w-[68px] h-[68px] rounded-full flex items-center justify-center bg-[#F1FBD8]">
+                  <div className="w-[32px] h-[32px] flex items-center justify-center">{item.icon}</div>
+                </div>
+                <p
+                  className="text-[18px] font-semibold text-[#064734]"
+                  style={{ fontFamily: "'Poppins', sans-serif" }}
+                >
+                  {item.title}
+                </p>
+                <p
+                  className="text-[14px] text-[#064734]"
+                  style={{ fontFamily: "'Poppins', sans-serif" }}
+                >
+                  {item.subtitle}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop: fixed row */}
+        <div className="hidden lg:flex justify-center items-center gap-6 mb-8">
           {CARDS.map((item, i) => (
             <div
               key={i}
-              className="bg-white rounded-[16px] md:rounded-[24px] px-6 py-6 md:px-8 md:py-8 shadow-[0px_8px_40px_rgba(0,38,3,0.08)] flex flex-col items-center text-center gap-2 w-[200px] md:w-[220px]"
+              className="bg-white rounded-[24px] px-8 py-8 shadow-[0px_8px_40px_rgba(0,38,3,0.08)] flex flex-col items-center text-center gap-2 w-[220px]"
             >
-              <div className="w-[52px] h-[52px] md:w-[68px] md:h-[68px] rounded-full flex items-center justify-center bg-[#F1FBD8]">
-                <div className="w-[24px] h-[24px] md:w-[32px] md:h-[32px] flex items-center justify-center">{item.icon}</div>
+              <div className="w-[68px] h-[68px] rounded-full flex items-center justify-center bg-[#F1FBD8]">
+                <div className="w-[32px] h-[32px] flex items-center justify-center">{item.icon}</div>
               </div>
               <p
-                className="text-[14px] md:text-[18px] font-semibold text-[#064734]"
+                className="text-[18px] font-semibold text-[#064734]"
                 style={{ fontFamily: "'Poppins', sans-serif" }}
               >
                 {item.title}
               </p>
               <p
-                className="text-[12px] md:text-[14px] text-[#064734]"
+                className="text-[14px] text-[#064734]"
                 style={{ fontFamily: "'Poppins', sans-serif" }}
               >
                 {item.subtitle}

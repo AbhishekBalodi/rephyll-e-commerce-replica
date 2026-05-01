@@ -1,14 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import WebsitePageHero from "@/components/WebsitePageHero";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { apiService } from "@/services/apiService";
+import { useWebsitePageByPath } from "@/hooks/useWebsitePage";
 
 const ContactUs = () => {
+  const { data: pageData } = useWebsitePageByPath("/contact");
   const { toast } = useToast();
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (!pageData) return;
+    document.title = pageData.metaTitle || pageData.title || "Contact Us - rePhyl";
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute("content", pageData.metaDescription || "");
+    }
+
+    const metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (metaKeywords) {
+      metaKeywords.setAttribute("content", pageData.metaKeywords || "");
+    }
+  }, [pageData]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -68,8 +85,14 @@ const ContactUs = () => {
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
 
-      <section className="max-w-4xl mx-auto px-4 py-16 pt-[104px]">
-        <h1 className="text-3xl md:text-4xl font-extrabold text-center mb-2">Contact Us</h1>
+      <WebsitePageHero
+        page={pageData}
+        fallbackTitle="Contact Us"
+        fallbackDescription="Get in touch with our team for support, orders, or product questions."
+      />
+
+      <section className="max-w-4xl mx-auto px-4 py-16">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-center mb-2">{pageData?.title || "Contact Us"}</h1>
         <p className="text-center text-muted-foreground mb-12">
           We'd love to hear from you! Reach out to us through any of the channels below.
         </p>

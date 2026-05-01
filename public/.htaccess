@@ -1,0 +1,26 @@
+# Apache SPA + static asset rules for rephyl.com
+
+Options -MultiViews
+RewriteEngine On
+RewriteBase /
+
+# Serve existing files and directories directly.
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Never rewrite core crawl/icon endpoints.
+RewriteRule ^(robots\.txt|sitemap\.xml|favicon\.ico|clover-icon\.png|apple-touch-icon\.png)$ - [L,NC]
+
+# Route everything else to SPA entry.
+RewriteRule . /index.html [L]
+
+# Explicit MIME types for icons/sitemap.
+AddType image/x-icon .ico
+AddType image/png .png
+AddType application/xml .xml
+
+# Keep these files cacheable but refreshable.
+<FilesMatch "^(favicon\.ico|clover-icon\.png|apple-touch-icon\.png|robots\.txt|sitemap\.xml)$">
+  Header set Cache-Control "public, max-age=86400"
+</FilesMatch>

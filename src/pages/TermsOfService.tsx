@@ -1,13 +1,39 @@
+import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import WebsitePageHero from "@/components/WebsitePageHero";
+import { useWebsitePageByPath } from "@/hooks/useWebsitePage";
 
 const TermsOfService = () => {
+  const { data: pageData } = useWebsitePageByPath("/terms");
+
+  useEffect(() => {
+    if (!pageData) return;
+    document.title = pageData.metaTitle || pageData.title || "Terms of Service - rePhyl";
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute("content", pageData.metaDescription || "");
+    }
+
+    const metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (metaKeywords) {
+      metaKeywords.setAttribute("content", pageData.metaKeywords || "");
+    }
+  }, [pageData]);
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-      <section className="max-w-4xl mx-auto px-4 md:px-6 py-16 pt-[104px]">
+
+      <WebsitePageHero
+        page={pageData}
+        fallbackTitle="Terms of Service"
+        fallbackDescription="Terms and conditions that govern the use of rePhyl website and services."
+      />
+
+      <section className="max-w-4xl mx-auto px-4 md:px-6 py-16">
         <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-8">
-          Terms of Service
+          {pageData?.title || "Terms of Service"}
         </h1>
 
         <div className="space-y-8 text-foreground/80 leading-relaxed">

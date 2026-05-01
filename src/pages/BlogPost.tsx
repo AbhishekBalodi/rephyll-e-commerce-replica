@@ -1,13 +1,40 @@
+import { useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useBlogDetail } from "@/hooks/useBlogDetail";
 import { useBlogList } from "@/hooks/useBlogList";
-import { ArrowLeft, Loader2, Share2 } from "lucide-react";
+import { useProductDetail } from "@/hooks/useProducts";
+import { useWebsitePageByPath } from "@/hooks/useWebsitePage";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { getProductImages } from "@/lib/productHelpers";
+import { getCanonicalProductPath } from "@/lib/routeHelpers";
+import { ArrowLeft, CalendarDays, Clock3, Leaf, Loader2, ShieldCheck } from "lucide-react";
+
+const BLOG_FAQS = [
+  {
+    q: "Is this cleaning routine safe for pets?",
+    a: "Yes, when you choose plant-based formulas and rinse high-contact zones properly, it remains safe for pets and family use.",
+  },
+  {
+    q: "How often should I deep clean floors?",
+    a: "For most homes, one deep clean per week and quick daily spot cleaning works well.",
+  },
+  {
+    q: "Can I use one cleaner for all rooms?",
+    a: "Use a multi-surface cleaner for everyday areas and dedicated formulas for toilets, kitchen grease, and dish cleaning.",
+  },
+  {
+    q: "How do I avoid strong chemical smell in home?",
+    a: "Pick low-residue plant-based cleaners, ventilate during cleaning, and avoid over-dosing products.",
+  },
+];
 
 const BlogPost = () => {
   const { slug } = useParams();
+  const { data: pageData } = useWebsitePageByPath(`/blog/${slug || ""}`);
   const { blog, loading, error } = useBlogDetail(slug);
+
   const { blogs: allBlogs } = useBlogList({
     page: 0,
     size: 100,
@@ -15,35 +42,67 @@ const BlogPost = () => {
     direction: "DESC",
   });
 
+  const recommendedProductSlug = useMemo(() => {
+    const searchable = `${blog?.slug || ""} ${blog?.title || ""} ${blog?.metaKeywords || ""}`.toLowerCase();
+
+    if (searchable.includes("toilet") || searchable.includes("bathroom") || searchable.includes("washroom")) {
+      return "plant-powered-toilet-bathroom-cleaner";
+    }
+    if (searchable.includes("dish")) {
+      return "plant-powered-dishwash-liquid";
+    }
+    if (searchable.includes("kitchen") || searchable.includes("degreaser")) {
+      return "plant-powered-kitchen-degreaser";
+    }
+    return "plant-powered-all-surface-cleaner";
+  }, [blog?.metaKeywords, blog?.slug, blog?.title]);
+
+  const { data: recommendedProduct } = useProductDetail(recommendedProductSlug);
+
   const getImageUrl = (relativePath: string): string => {
-    const baseUrl = import.meta.env.VITE_BASE_URL || 'https://www.rephyl.com';
+    const baseUrl = import.meta.env.VITE_BASE_URL || "https://www.rephyl.com";
     return `${baseUrl}${relativePath}`;
   };
 
   const formatDate = (dateString: string): string => {
     try {
       const date = new Date(dateString);
-      return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
+      return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
       });
     } catch {
       return dateString;
     }
   };
 
-  // Find current blog index and adjacent blogs
-  const currentIndex = allBlogs.findIndex((b) => b.slug === slug);
-  const olderPost = currentIndex < allBlogs.length - 1 ? allBlogs[currentIndex + 1] : null;
-  const newerPost = currentIndex > 0 ? allBlogs[currentIndex - 1] : null;
+  const heroImage = pageData?.metaImg
+    ? getImageUrl(pageData.metaImg)
+    : blog?.banner
+      ? getImageUrl(blog.banner)
+      : "/placeholder.svg";
+
+  const relatedBlogs = useMemo(
+    () => allBlogs.filter((item) => item.slug !== slug).slice(0, 3),
+    [allBlogs, slug]
+  );
+
+  const contentBlocks = useMemo(() => {
+    if (!blog?.description) return [];
+
+    return blog.description
+      .split(/\n{2,}/)
+      .map((block) => block.trim())
+      .filter(Boolean);
+  }, [blog?.description]);
 
   if (loading) {
     return (
       <div className="min-h-screen bg-background text-foreground">
         <Navbar />
         <div className="max-w-3xl mx-auto px-4 py-20 text-center">
-          <div className="flex flex-col items-center gap-2">
+          <div className="flex flex-col items-center gap-3">
             <Loader2 className="w-8 h-8 animate-spin text-primary" />
             <p className="text-muted-foreground">Loading blog post...</p>
           </div>
@@ -60,8 +119,8 @@ const BlogPost = () => {
         <div className="max-w-3xl mx-auto px-4 py-20 text-center">
           <h1 className="text-2xl font-bold mb-4">Blog post not found</h1>
           {error && <p className="text-destructive mb-4">{error.message}</p>}
-          <Link to="/" className="text-primary underline hover:no-underline">
-            Go back home
+          <Link to="/blogs" className="text-primary underline">
+            Go back to blogs
           </Link>
         </div>
         <Footer />
@@ -70,270 +129,170 @@ const BlogPost = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-[#F8FAF7] text-foreground">
       <Navbar />
 
-      {/* Hero image */}
-      <div className="w-full h-[300px] md:h-[460px] overflow-hidden bg-gray-100 flex items-center justify-center pt-[104px]">
-        <img
-          src={getImageUrl(blog.banner)}
-          alt={blog.title}
-          className="w-full h-full object-contain"
-        />
-      </div>
+      <main className="w-full px-2 md:px-6 lg:px-8 pt-[118px] pb-14">
+        <div className="text-sm text-muted-foreground mb-5">
+          <Link to="/" className="hover:text-foreground">Home</Link>
+          <span className="mx-2">›</span>
+          <Link to="/blogs" className="hover:text-foreground">Blog</Link>
+          <span className="mx-2">›</span>
+          <span className="text-foreground/80">{blog.title}</span>
+        </div>
 
-      {/* Content */}
-      <article className="max-w-3xl mx-auto px-4 md:px-6 py-12">
-        <Link
-          to="/blogs"
-          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors"
-        >
-          <ArrowLeft size={16} /> Back to Blog
-        </Link>
-
-        <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-4 leading-tight">
-            {blog.title}
-          </h1>
-
-          <div className="flex items-center justify-between text-sm text-muted-foreground mb-6 flex-wrap gap-4">
-            <div className="flex items-center gap-4">
-              <span>Posted on {formatDate(blog.createdDate)}</span>
-              <span>By {blog.author}</span>
-              <span>{blog.readingTime} min read</span>
+        <section className="grid lg:grid-cols-[1.05fr_1.35fr] gap-6 items-stretch mb-8">
+          <div className="bg-white rounded-2xl border border-[#E4EADF] p-6 md:p-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#EAF5D7] text-[#064734] text-xs font-semibold mb-4">
+              <Leaf size={13} />
+              {blog.categoryName || "Pet Care & Cleaning"}
             </div>
-            {blog.updatedDate && (
-              <span className="text-xs">Updated {formatDate(blog.updatedDate)}</span>
-            )}
-          </div>
-        </div>
 
-        {/* Main Content - Properly formatted with full text justification */}
-        <div className="prose prose-invert max-w-none mb-12">
-          <style>{`
-            .blog-content {
-              text-align: justify;
-              text-justify: inter-word;
-              hyphens: auto;
-              word-break: break-word;
-            }
-            .blog-content > * {
-              margin-top: 1.5rem;
-              margin-bottom: 1rem;
-            }
-            .blog-content > *:first-child {
-              margin-top: 0;
-            }
-            .blog-content h1,
-            .blog-content h2,
-            .blog-content h3 {
-              text-align: left;
-              clear: both;
-              display: block;
-              margin-top: 2rem !important;
-              margin-bottom: 1rem !important;
-            }
-            .blog-content h1 {
-              font-size: 2rem;
-              font-weight: 700;
-              line-height: 1.2;
-            }
-            .blog-content h2 {
-              font-size: 1.5rem;
-              font-weight: 700;
-              line-height: 1.3;
-            }
-            .blog-content h3 {
-              font-size: 1.25rem;
-              font-weight: 600;
-              line-height: 1.4;
-            }
-            .blog-content p {
-              text-align: justify;
-              margin: 1rem 0;
-              line-height: 1.8;
-              display: block;
-            }
-            .blog-content ul,
-            .blog-content ol {
-              margin: 1.5rem 0;
-              padding-left: 2.5rem;
-              margin-left: 0;
-              display: block;
-            }
-            .blog-content li {
-              margin: 0.75rem 0;
-              line-height: 1.8;
-              text-align: justify;
-              display: list-item;
-            }
-            .blog-content ul li {
-              list-style-type: disc;
-            }
-            .blog-content ol li {
-              list-style-type: decimal;
-            }
-            .blog-content blockquote {
-              border-left: 4px solid #cef17b;
-              padding-left: 1.5rem;
-              margin: 1.5rem 0;
-              font-style: italic;
-              color: #666;
-              text-align: justify;
-              display: block;
-            }
-            .blog-content strong {
-              font-weight: 700;
-            }
-            .blog-content em {
-              font-style: italic;
-            }
-            .blog-content code {
-              background: #f0f0f0;
-              padding: 0.2rem 0.4rem;
-              border-radius: 0.25rem;
-              font-family: 'Courier New', monospace;
-              color: #c41e3a;
-            }
-            .blog-content pre {
-              background: #f9f9f9;
-              padding: 1rem;
-              border-radius: 0.5rem;
-              overflow-x: auto;
-              margin: 1.5rem 0;
-              text-align: left;
-              display: block;
-            }
-            .blog-content pre code {
-              background: none;
-              padding: 0;
-              color: inherit;
-            }
-            .blog-content a {
-              color: #064734;
-              text-decoration: underline;
-            }
-            .blog-content a:hover {
-              color: #cef17b;
-            }
-            .blog-content img {
-              max-width: 100%;
-              height: auto;
-              margin: 1.5rem 0;
-              border-radius: 0.5rem;
-              display: block;
-              clear: both;
-            }
-            @media (max-width: 768px) {
-              .blog-content {
-                text-align: justify;
-              }
-              .blog-content h1,
-              .blog-content h2,
-              .blog-content h3 {
-                text-align: left;
-              }
-              .blog-content ul,
-              .blog-content ol {
-                padding-left: 1.5rem;
-              }
-            }
-          `}</style>
-          <div
-            className="blog-content text-base leading-relaxed"
-            dangerouslySetInnerHTML={{
-              __html: blog.description,
-            }}
-          />
-        </div>
+            <h1 className="text-[34px] md:text-[50px] leading-[1.08] font-semibold text-[#0E1F17]">
+              {blog.title}
+            </h1>
 
-        {/* SEO Meta Info (optional display) */}
-        {blog.metaKeywords && (
-          <div className="mt-8 pt-8 border-t border-border">
-            <p className="text-xs text-muted-foreground">
-              <strong>Keywords:</strong> {blog.metaKeywords}
+            <p className="mt-4 text-[#4C5B54] text-[16px] md:text-[18px] leading-relaxed max-w-[62ch]">
+              {blog.shortDescription}
             </p>
-          </div>
-        )}
 
-        {/* Navigation */}
-        <div className="flex items-center justify-between mt-16 pt-8 border-t border-border gap-4 flex-wrap">
-          <div className="flex-1 min-w-[120px]">
-            {olderPost ? (
-              <Link
-                to={`/blog/${olderPost.slug}`}
-                className="text-sm font-semibold text-foreground underline hover:text-primary transition-colors flex items-center gap-1"
-              >
-                ← Older Post
+            <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-[#5D6B64]">
+              <span className="font-medium text-[#243D32]">By {blog.author || "Rephyl Team"}</span>
+              <span className="inline-flex items-center gap-1.5"><CalendarDays size={14} />{formatDate(blog.createdDate)}</span>
+              <span className="inline-flex items-center gap-1.5"><Clock3 size={14} />{blog.readingTime || 8} min read</span>
+            </div>
+          </div>
+
+          <div className="rounded-2xl overflow-hidden border border-[#E4EADF] bg-[#EFF3EA] min-h-[320px] md:min-h-[420px]">
+            <img src={heroImage} alt={blog.title} className="w-full h-full object-cover" />
+          </div>
+        </section>
+
+        <section className="grid lg:grid-cols-[minmax(0,0.8fr)_460px] gap-10">
+          <article className="space-y-6">
+            <div className="rounded-2xl border border-[#E4EADF] bg-white p-5 flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#EAF5D7] flex items-center justify-center shrink-0">
+                  <ShieldCheck size={18} className="text-[#064734]" />
+                </div>
+                <div>
+                  <p className="font-semibold text-[#113326]">A clean home should be safe for every family member.</p>
+                  <p className="text-sm text-[#5A6A62]">Choose plant-powered cleaning that is tough on dirt and gentle on your home.</p>
+                </div>
+              </div>
+              <Link to="/shop" className="px-4 py-2 rounded-lg bg-[#064734] text-white text-sm font-semibold hover:bg-[#053a29]">
+                Explore Rephyl Cleaners
               </Link>
-            ) : (
-              <span />
-            )}
-          </div>
+            </div>
 
-          <Link
-            to="/blogs"
-            className="text-sm font-semibold text-foreground underline hover:text-primary transition-colors"
-          >
-            All Posts
+            <div className="rounded-2xl border border-[#E4EADF] bg-white p-6 md:p-7 space-y-5">
+              {contentBlocks.length > 0 ? (
+                contentBlocks.map((block, idx) => (
+                  <p key={idx} className="text-[17px] leading-[1.95] text-[#1A362B]">
+                    {block}
+                  </p>
+                ))
+              ) : (
+                <p className="text-[17px] leading-[1.95] text-[#1A362B]">{blog.description}</p>
+              )}
+            </div>
+
+            <div className="rounded-2xl border border-[#E4EADF] bg-white p-6 md:p-7">
+              <h2 className="text-2xl font-semibold text-[#0F2A1F] mb-4">How to Clean Homes With Pets Safely</h2>
+              <div className="space-y-4 text-[#1A362B]">
+                <div>
+                  <p className="font-semibold">1. Choose the right cleaning products</p>
+                  <p className="text-sm text-[#587066] mt-1">Use low-residue, plant-powered formulas for daily cleaning zones.</p>
+                </div>
+                <div>
+                  <p className="font-semibold">2. Try simple DIY non-toxic recipes</p>
+                  <p className="text-sm text-[#587066] mt-1">Use mild vinegar + water for glass and tiles; avoid mixing harsh chemicals.</p>
+                </div>
+                <div>
+                  <p className="font-semibold">3. Build a daily pet prep routine</p>
+                  <p className="text-sm text-[#587066] mt-1">Brush regularly, wipe paws after walks, and isolate muddy shoes at entry points.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <aside className="space-y-5">
+            <div className="rounded-2xl border border-[#E4EADF] bg-white p-5">
+              <h3 className="text-xl font-semibold text-[#0F2A1F] mb-4">You may also like</h3>
+              <div className="space-y-3">
+                {relatedBlogs.map((item) => {
+                  const cardImage = item.banner ? getImageUrl(item.banner) : "/placeholder.svg";
+                  return (
+                    <Link key={item.id} to={`/blog/${item.slug}`} className="flex gap-3 group">
+                      <img src={cardImage} alt={item.title} className="w-[88px] h-[72px] rounded-lg object-cover shrink-0" />
+                      <div>
+                        <p className="text-sm font-semibold text-[#193428] group-hover:text-[#064734] line-clamp-2">{item.title}</p>
+                        <p className="text-xs text-[#6B7E74] mt-1">{item.readingTime || 7} min read</p>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+              <Link to="/blogs" className="inline-flex mt-4 text-sm font-semibold text-[#064734] hover:underline">
+                View all articles
+              </Link>
+            </div>
+
+            <div className="rounded-2xl border border-[#E4EADF] bg-[#F1F7E7] p-5">
+              <h3 className="text-xl font-semibold text-[#0F2A1F] mb-3">Our Recommendation</h3>
+              <img
+                src={recommendedProduct ? getProductImages(recommendedProduct)[0] : "/placeholder.svg"}
+                alt={recommendedProduct?.name || "Rephyl recommendation"}
+                className="w-full h-[220px] object-cover rounded-lg mb-3"
+              />
+              <p className="font-semibold text-[#193428]">{recommendedProduct?.name || "Rephyl Plant-Powered All Surface Cleaner"}</p>
+              <ul className="mt-2 space-y-1 text-sm text-[#52695F]">
+                {(recommendedProduct?.featureBadges?.slice(0, 3) || ["Enzyme powered cleaning", "Plant-based ingredients", "Safe for pets and kids"]).map((feature) => (
+                  <li key={feature}>• {feature}</li>
+                ))}
+              </ul>
+              <Link
+                to={recommendedProduct ? getCanonicalProductPath(recommendedProduct) : "/surface-care/plant-powered-all-surface-cleaner"}
+                className="inline-block mt-4 px-4 py-2 rounded-lg bg-[#064734] text-white text-sm font-semibold hover:bg-[#053a29]"
+              >
+                Shop Now
+              </Link>
+            </div>
+
+            <div className="rounded-2xl border border-[#E4EADF] bg-white p-5">
+              <h3 className="text-xl font-semibold text-[#0F2A1F] mb-3">FAQs</h3>
+              <Accordion type="single" collapsible className="space-y-1">
+                {BLOG_FAQS.map((faq, idx) => (
+                  <AccordionItem key={idx} value={`blog-faq-${idx}`} className="border-b border-[#ECF1E8]">
+                    <AccordionTrigger className="text-left text-sm text-[#193428]">{faq.q}</AccordionTrigger>
+                    <AccordionContent className="text-sm text-[#5A6A62]">{faq.a}</AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+              <Link to="/faqs" className="inline-flex mt-4 text-sm font-semibold text-[#064734] hover:underline">
+                View all FAQs
+              </Link>
+            </div>
+          </aside>
+        </section>
+
+        <div className="mt-10 rounded-2xl border border-[#E4EADF] bg-[#F1F7E7] p-6 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <p className="text-2xl font-semibold text-[#0F2A1F]">Your Pet Deserves a Safe Space, Not Just a Clean One</p>
+            <p className="text-[#556A60] mt-1">Choose cleaner air, cleaner floors, and safer routines every day.</p>
+          </div>
+          <Link to="/shop" className="px-5 py-3 rounded-lg bg-[#064734] text-white font-semibold hover:bg-[#053a29]">
+            Shop Rephyl Cleaners
           </Link>
-
-          <div className="flex-1 min-w-[120px] text-right">
-            {newerPost ? (
-              <Link
-                to={`/blog/${newerPost.slug}`}
-                className="text-sm font-semibold text-foreground underline hover:text-primary transition-colors flex items-center gap-1 justify-end"
-              >
-                Newer Post →
-              </Link>
-            ) : (
-              <span />
-            )}
-          </div>
         </div>
 
-        {/* Share Section */}
-        <div className="mt-12 pt-8 border-t border-border">
-          <p className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
-            <Share2 size={16} /> Share this post
-          </p>
-          <div className="flex gap-3 flex-wrap">
-            <a
-              href={`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors"
-            >
-              Facebook
-            </a>
-            <a
-              href={`https://twitter.com/intent/tweet?url=${window.location.href}&text=${encodeURIComponent(blog.title)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-semibold hover:bg-blue-600 transition-colors"
-            >
-              Twitter
-            </a>
-            <a
-              href={`https://www.linkedin.com/sharing/share-offsite/?url=${window.location.href}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2 bg-blue-700 text-white rounded-lg text-sm font-semibold hover:bg-blue-800 transition-colors"
-            >
-              LinkedIn
-            </a>
-            <button
-              onClick={() => {
-                navigator.clipboard.writeText(window.location.href);
-                alert('Link copied to clipboard!');
-              }}
-              className="px-4 py-2 bg-secondary text-foreground rounded-lg text-sm font-semibold hover:bg-secondary/80 transition-colors"
-            >
-              Copy Link
-            </button>
-          </div>
+        <div className="mt-8">
+          <Link to="/blogs" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <ArrowLeft size={16} />
+            Back to Blog
+          </Link>
         </div>
-      </article>
+      </main>
 
       <Footer />
     </div>

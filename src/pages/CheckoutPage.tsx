@@ -2,12 +2,24 @@ import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useCart } from "@/contexts/CartContext";
-import { previewCheckout, startPaymentSession, confirmPaymentSession } from "@/services/checkoutApi";
+import { previewCheckout, startPaymentSession, verifyPaymentSession } from "@/services/checkoutApi";
 import addressesApi from "@/services/addressesApi";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import RequireAuth from "@/components/RequireAuth";
 import { AlertCircle, CheckCircle, Loader2 } from "lucide-react";
+
+const CASHFREE_JS_URL = "https://sdk.cashfree.com/js/v3/cashfree.js";
+
+type CashfreeFactory = (config: { mode: string }) => {
+  checkout: (options: { paymentSessionId: string; redirectTarget?: "_self" | "_blank" | "_modal" }) => Promise<unknown>;
+};
+
+declare global {
+  interface Window {
+    Cashfree?: CashfreeFactory;
+  }
+}
 
 interface StockValidationResult {
   valid: boolean;
@@ -20,7 +32,7 @@ interface StockValidationResult {
 }
 
 const CheckoutPageContent = () => {
-  const { items, totalItems, totalPrice, clearCart } = useCart();
+  const { items, totalItems, totalPrice } = useCart();
   const { user } = useAuth();
   const [addressId, setAddressId] = useState<number | "">("");
   const [loading, setLoading] = useState(false);
@@ -29,7 +41,67 @@ const CheckoutPageContent = () => {
   const [stockValidation, setStockValidation] = useState<StockValidationResult | null>(null);
   const [addresses, setAddresses] = useState<any[]>([]);
   const [newAddress, setNewAddress] = useState<{ addressType?: string; contactName?: string; mobile?: string; line1?: string; city?: string; postalCode?: string }>({ addressType: 'HOME' });
+  const [retryMessage, setRetryMessage] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const loadCashfreeScript = () => {
+    return new Promise<void>((resolve, reject) => {
+      if (window.Cashfree) {
+        resolve();
+        return;
+      }
+
+      const existingScript = document.querySelector(`script[src="${CASHFREE_JS_URL}"]`) as HTMLScriptElement | null;
+      if (existingScript) {
+        if (window.Cashfree) {
+          resolve();
+          return;
+        }
+
+        if (existingScript.dataset.loaded === "true") {
+          reject(new Error("Cashfree SDK was loaded but is unavailable in this page context"));
+          return;
+        }
+
+        existingScript.addEventListener("load", () => resolve(), { once: true });
+        existingScript.addEventListener("error", () => reject(new Error("Failed to load Cashfree SDK")), { once: true });
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.src = CASHFREE_JS_URL;
+      script.async = true;
+      script.onload = () => {
+        script.dataset.loaded = "true";
+        resolve();
+      };
+      script.onerror = () => reject(new Error("Failed to load Cashfree SDK"));
+      document.body.appendChild(script);
+    });
+  };
+
+  const launchCashfreeCheckout = async (paymentSessionId: string, cashfreeMode?: string) => {
+    const mode = (cashfreeMode || "sandbox").toLowerCase();
+    const isLocal = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+
+    // Live mode generally requires HTTPS + whitelisted production domain.
+    if (mode === "production" && isLocal) {
+      throw new Error("Live Cashfree mode is blocked on localhost. Use sandbox locally or test on your whitelisted HTTPS domain.");
+    }
+
+    await loadCashfreeScript();
+
+    if (!window.Cashfree) {
+      throw new Error("Cashfree SDK is not available");
+    }
+
+    const instance = window.Cashfree({ mode: cashfreeMode || "sandbox" });
+    await instance.checkout({
+      paymentSessionId,
+      redirectTarget: "_modal",
+    });
+  };
 
   const buildPreviewRequest = () => {
     // CRITICAL: Validate all items have variantId before checkout
@@ -50,6 +122,7 @@ const CheckoutPageContent = () => {
 
     return {
       deliveryAddressId: addressId || null,
+      paymentMethod: "CASHFREE",
       items: itemsForCheckout,
     };
   };
@@ -96,62 +169,68 @@ const CheckoutPageContent = () => {
     }
   };
 
-  const handlePreview = async () => {
+  const handleStart = async () => {
     if (!addressId) {
       alert('Please select or create a delivery address');
-      return;
-    }
-    
-    try {
-      await validateStock();
-    } catch (err: any) {
-      alert(err.message || "Stock validation failed");
-    }
-  };
-
-  const handleStart = async () => {
-    // Verify stock validation has been done and items are valid
-    if (!stockValidation || !stockValidation.valid) {
-      alert('Please validate stock availability first by clicking "Validate & Preview"');
-      return;
-    }
-
-    if (preview && preview.serviceable === false) {
-      alert(preview.message || 'Address is not serviceable');
       return;
     }
 
     setLoading(true);
     try {
+      const validation = await validateStock();
+      if (!validation.valid) {
+        alert('Some items are out of stock or not serviceable for your location');
+        return;
+      }
+
       const body = buildPreviewRequest();
       const res = await startPaymentSession(body);
       if (res && typeof res === 'object' && 'success' in res && res.success === false) {
         throw new Error(res.message || 'Start failed');
       }
       
-      // Extract order IDs from the session response
       const sessionData = (res && typeof res === 'object' && 'success' in res) ? (res.data || res) : res;
-      const orderIds: number[] = sessionData?.orders?.map((order: any) => order.id).filter(Boolean) || [];
-      const paymentMethod = sessionData?.paymentMethod || 'COD';
-      
-      // Confirm the payment session
-      if (orderIds.length > 0) {
-        console.log('💳 Confirming payment session with orders:', orderIds);
-        const confirmRes = await confirmPaymentSession({
-          orderIds,
-          paymentMethod,
-        });
-        console.log('✅ Payment session confirmed:', confirmRes);
+      const merchantOrderId: string | undefined = sessionData?.merchantOrderId;
+      const paymentSessionId: string | undefined = sessionData?.paymentSessionId;
+      const paymentMethod: string | undefined = sessionData?.paymentMethod;
+      const backendMessage: string | undefined =
+        (res && typeof res === "object" && "message" in res && typeof res.message === "string" ? res.message : undefined) ||
+        (sessionData && typeof sessionData === "object" && "message" in sessionData && typeof sessionData.message === "string" ? sessionData.message : undefined);
+
+      if (paymentMethod && paymentMethod !== "CASHFREE") {
+        throw new Error(backendMessage || `Online payment is currently unavailable. Backend returned payment method: ${paymentMethod}`);
       }
-      
-      // Show success message BEFORE clearing cart and navigating
-      alert("Payment session created and confirmed successfully. Proceeding to orders...");
-      
-      // Small delay to ensure everything is synced
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      clearCart();
-      navigate("/orders", { replace: true });
+
+      if (!merchantOrderId || !paymentSessionId) {
+        throw new Error(backendMessage || "Online payment session was not created. Please try again later.");
+      }
+
+      await launchCashfreeCheckout(paymentSessionId, sessionData?.cashfreeMode);
+
+      const verificationResponse = await verifyPaymentSession(merchantOrderId);
+      const verificationData =
+        verificationResponse && typeof verificationResponse === "object" && "success" in verificationResponse
+          ? ((verificationResponse as any).data || null)
+          : verificationResponse;
+      const paymentStatus = verificationData?.paymentStatus || "PENDING";
+      const retryAllowed = verificationData?.expiresAt
+        ? new Date(verificationData.expiresAt).getTime() > Date.now()
+        : true;
+
+      if (paymentStatus === "PAID") {
+        navigate(`/payment/confirmation?merchantOrderId=${encodeURIComponent(merchantOrderId)}`);
+        return;
+      }
+
+      navigate("/checkout", {
+        replace: true,
+        state: {
+          paymentRetry: true,
+          merchantOrderId,
+          paymentStatus,
+          retryAllowed,
+        },
+      });
     } catch (err: any) {
       console.error('❌ Checkout error:', err);
       alert(err.message || "Checkout failed");
@@ -173,6 +252,19 @@ const CheckoutPageContent = () => {
     })();
     return () => { mounted = false; };
   }, []);
+
+  useEffect(() => {
+    const state = location.state as { paymentRetry?: boolean; paymentStatus?: string; retryAllowed?: boolean } | null;
+    if (!state?.paymentRetry) return;
+
+    if (state.retryAllowed === false) {
+      setRetryMessage("Previous payment attempt failed and the payment window may have expired. Please start a new payment session.");
+    } else {
+      setRetryMessage(`Previous payment attempt was not successful (${state.paymentStatus || "UNKNOWN"}). Please retry payment.`);
+    }
+
+    navigate(location.pathname, { replace: true, state: null });
+  }, [location.pathname, location.state, navigate]);
 
   // auto-select default address when addresses are loaded
   useEffect(() => {
@@ -204,6 +296,12 @@ const CheckoutPageContent = () => {
       <section className="max-w-4xl mx-auto px-4 md:px-6 py-16 pt-[104px]">
         <h1 className="text-2xl font-bold mb-2">Checkout</h1>
         <p className="text-muted-foreground mb-6">Logged in as: {user?.email}</p>
+
+        {retryMessage && (
+          <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-900">
+            {retryMessage}
+          </div>
+        )}
 
         {/* Stock Validation Alert */}
         {stockValidation && !stockValidation.valid && stockValidation.invalidItems.length > 0 && (
@@ -288,20 +386,12 @@ const CheckoutPageContent = () => {
 
         <div className="flex gap-3">
           <button 
-            onClick={handlePreview} 
-            disabled={validating || items.length === 0 || !addressId} 
-            className="px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-          >
-            {validating && <Loader2 size={16} className="animate-spin" />}
-            {validating ? "Validating..." : "Validate & Preview"}
-          </button>
-          <button 
             onClick={handleStart} 
-            disabled={loading || items.length === 0 || !stockValidation?.valid} 
+            disabled={loading || validating || items.length === 0 || !addressId} 
             className="px-4 py-2 bg-emerald-700 text-white rounded hover:bg-emerald-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           >
-            {loading && <Loader2 size={16} className="animate-spin" />}
-            {loading ? "Starting..." : "Start Payment Session"}
+            {(loading || validating) && <Loader2 size={16} className="animate-spin" />}
+            {loading ? "Starting..." : validating ? "Validating..." : "Pay Securely"}
           </button>
         </div>
 

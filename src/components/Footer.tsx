@@ -1,13 +1,12 @@
 import { Instagram, Facebook, Youtube, ArrowRight, ChevronDown } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { apiService } from "@/services/apiService";
 import { useToast } from "@/hooks/use-toast";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
   const { toast } = useToast();
 
   // Mobile accordion state
@@ -39,11 +38,6 @@ const Footer = () => {
     lineHeight: "150%",
     color: "rgba(255,255,255,0.6)",
   } as const;
-
-  const handleNav = (path: string) => {
-    navigate(path);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,9 +81,9 @@ const Footer = () => {
             <h3 style={{ ...sectionHeadingStyle, marginBottom: "20px" }}>Quick Links</h3>
             <div className="flex flex-col gap-[15px]">
               {quickLinks.map((link) => (
-                <button key={link.label} onClick={() => handleNav(link.path)} className="text-left hover:text-white transition" style={sectionLinkStyle}>
+                <Link key={link.label} to={link.path} className="text-left hover:text-white transition" style={sectionLinkStyle}>
                   {link.label}
-                </button>
+                </Link>
               ))}
             </div>
           </div>
@@ -98,9 +92,9 @@ const Footer = () => {
             <h3 style={{ ...sectionHeadingStyle, marginBottom: "20px" }}>Policies</h3>
             <div className="flex flex-col gap-[15px]">
               {policyLinks.map((link) => (
-                <button key={link.label} onClick={() => handleNav(link.path)} className="text-left hover:text-white transition" style={sectionLinkStyle}>
+                <Link key={link.label} to={link.path} className="text-left hover:text-white transition" style={sectionLinkStyle}>
                   {link.label}
-                </button>
+                </Link>
               ))}
             </div>
           </div>
@@ -143,7 +137,7 @@ const Footer = () => {
             {openSection === "quick" && (
               <div className="flex flex-col gap-3 pb-4">
                 {quickLinks.map((link) => (
-                  <button key={link.label} onClick={() => handleNav(link.path)} className="text-left text-[14px]" style={sectionLinkStyle}>{link.label}</button>
+                  <Link key={link.label} to={link.path} className="text-left text-[14px]" style={sectionLinkStyle}>{link.label}</Link>
                 ))}
               </div>
             )}
@@ -158,7 +152,7 @@ const Footer = () => {
             {openSection === "policies" && (
               <div className="flex flex-col gap-3 pb-4">
                 {policyLinks.map((link) => (
-                  <button key={link.label} onClick={() => handleNav(link.path)} className="text-left text-[14px]" style={sectionLinkStyle}>{link.label}</button>
+                  <Link key={link.label} to={link.path} className="text-left text-[14px]" style={sectionLinkStyle}>{link.label}</Link>
                 ))}
               </div>
             )}

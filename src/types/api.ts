@@ -66,8 +66,11 @@ export interface ApiWarehouseDetail {
 
 export interface ApiVariantInventory {
   available: boolean;
-  totalStock: number;
-  warehouseDetails: ApiWarehouseDetail[];
+  totalStock?: number | null;
+  stockLabel?: string | null;
+  lowStockRemaining?: number | null;
+  maxCartQuantity?: number | null;
+  warehouseDetails?: ApiWarehouseDetail[] | null;
 }
 
 export interface ApiVariant {
@@ -88,10 +91,19 @@ export interface ApiProductAttribute {
 /** Product as returned from GET /api/customer/products/slug/{slug} (detail view). */
 export interface ApiProductDetail extends ApiProduct {
   description: string;
+
+  // ✅ newly added backend fields
+  keyFeatures?: string | null;
+  whatsInside?: string | null;
+  howToUse?: string | null;
+  featureBadges?: string[];
+
   seoTitle: string;
   seoDescription: string;
+
   attrs: ApiProductAttribute[];
   variants: ApiVariant[];
+
   updatedDate: string | null;
 }
 

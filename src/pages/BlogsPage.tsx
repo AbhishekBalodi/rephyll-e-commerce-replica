@@ -2,9 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import WebsitePageHero from "@/components/WebsitePageHero";
 import { useBlogList } from "@/hooks/useBlogList";
 import { useBlogCategories } from "@/hooks/useBlogCategories";
 import { useBlogSearchSuggestions } from "@/hooks/useBlogSearchSuggestions";
+import { useWebsitePageByPath } from "@/hooks/useWebsitePage";
 import { Loader2, Search, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { CustomerBlogCatalogDto } from "@/types/api";
 
@@ -28,11 +30,15 @@ const BlogCard = ({ post }: { post: CustomerBlogCatalogDto }) => {
   };
 
   return (
-    <div className="bg-card border border-border rounded-lg overflow-hidden break-inside-avoid mb-4">
+    <Link
+      to={`/blog/${post.slug}`}
+      className="group block bg-card border border-border rounded-lg overflow-hidden break-inside-avoid mb-4 hover:border-primary/40 transition-colors"
+      aria-label={`Read blog: ${post.title}`}
+    >
       <img
         src={getImageUrl(post.banner)}
         alt={post.title}
-        className="w-full h-[180px] object-contain bg-gray-100"
+        className="w-full aspect-square object-cover bg-gray-100"
         loading="lazy"
       />
       <div className="p-5">
@@ -50,18 +56,16 @@ const BlogCard = ({ post }: { post: CustomerBlogCatalogDto }) => {
         <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3 mb-3">
           {post.shortDescription}
         </p>
-        <Link
-          to={`/blog/${post.slug}`}
-          className="text-sm font-semibold text-foreground underline underline-offset-4 hover:text-primary transition-colors"
-        >
+        <span className="text-sm font-semibold text-foreground underline underline-offset-4 group-hover:text-primary transition-colors">
           Read More →
-        </Link>
+        </span>
       </div>
-    </div>
+    </Link>
   );
 };
 
 const BlogsPage = () => {
+  const { data: pageData } = useWebsitePageByPath("/blogs");
   const [searchParams, setSearchParams] = useSearchParams();
   const [localSearch, setLocalSearch] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -88,6 +92,20 @@ const BlogsPage = () => {
   useEffect(() => {
     setLocalSearch(search);
   }, [search]);
+
+  useEffect(() => {
+    if (!pageData) return;
+    document.title = pageData.metaTitle || pageData.title || "Our Blog - rePhyl";
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute("content", pageData.metaDescription || "");
+    }
+
+    const metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (metaKeywords) {
+      metaKeywords.setAttribute("content", pageData.metaKeywords || "");
+    }
+  }, [pageData]);
 
   const handleSearch = (e: React.FormEvent, selectedSuggestion?: string) => {
     e.preventDefault();
@@ -131,7 +149,13 @@ const BlogsPage = () => {
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
 
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-12 pt-[104px]">
+      <WebsitePageHero
+        page={pageData}
+        fallbackTitle="Our Blog"
+        fallbackDescription="Tips, guides, and insights on eco-friendly cleaning for Indian homes"
+      />
+
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-12">
         <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-2">
           Our Blog
         </h1>

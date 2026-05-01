@@ -5,7 +5,7 @@ import TrustMarqueeStrip from "@/components/TrustMarqueeStrip";
 import HomecareKitsSection from "@/components/HomecareKitsSection";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import TrustStrips from "@/components/TrustStrips";
-import BlogsSection from "@/components/BlogsSection";
+// import BlogsSection from "@/components/BlogsSection";
 import VideoReelsSection from "@/components/VideoReelsSection";
 import Footer from "@/components/Footer";
 
@@ -20,7 +20,7 @@ const Index = () => {
       <WhyChooseUs heading="Bring home the feeling of reset, the ease of relief, and the confidence of safety." />
       <TrustStrips />
       {/* <VideoReelsSection /> */}
-      <BlogsSection />
+      {/* <BlogsSection /> */}
       <Footer />
     </div>
   );

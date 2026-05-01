@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ChevronDown, ChevronUp, ArrowUpRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-import faqBg from "@/assets/image 3652.png";
+import faqBg from "@/assets/3651.png";
 
 const FAQ_ITEMS = [
   {
@@ -28,13 +28,13 @@ const FAQ_ITEMS = [
 ];
 
 const FAQSection = () => {
-  const [openIndex, setOpenIndex] = useState(0);
+  const [openIndex, setOpenIndex] = useState(-1);
   const navigate = useNavigate();
 
   return (
     <section
       className="relative w-full flex justify-center"
-      style={{ height: "818px" }}
+      style={{ minHeight: "818px" }}
     >
       {/* Background */}
       <img
@@ -45,22 +45,19 @@ const FAQSection = () => {
 
       {/* Container */}
       <div
-        className="relative w-full flex items-center"
+        className="relative w-full flex items-center justify-center md:justify-start px-3 md:px-0"
         style={{
           maxWidth: "1440px",
-          height: "818px",
+          minHeight: "818px",
         }}
       >
         {/* FAQ CARD */}
         <div
-          className="flex flex-col"
+          className="flex flex-col w-full max-w-[636px] md:ml-[52px]"
           style={{
-            width: "636px",
-            marginLeft: "52px",
-            
             background: "#064734",
             borderRadius: "20px",
-            padding: "36px 32px",
+            padding: "clamp(18px, 3vw, 36px) clamp(16px, 3vw, 32px)",
           }}
         >
           {/* Heading */}
@@ -68,24 +65,24 @@ const FAQSection = () => {
             style={{
               fontFamily: "'Nunito Sans', sans-serif",
               fontWeight: 700,
-              fontSize: "42px",
+              fontSize: "clamp(32px, 8vw, 42px)",
               lineHeight: "100%",
               letterSpacing: "1%",
               color: "#FAFAFA",
-              marginBottom: "28px",
+              marginBottom: "20px",
             }}
           >
             Do you have questions?
           </h2>
 
           {/* Questions */}
-          <div className="flex flex-col gap-12">
+          <div className="flex flex-col gap-7 md:gap-12">
             {FAQ_ITEMS.map((item, i) => (
               <div
                 key={i}
                 style={{
                   borderBottom: "1.5px solid rgba(235,235,235,0.25)",
-                  paddingBottom: "14px",
+                  paddingBottom: "12px",
                   cursor: "pointer",
                 }}
                 onClick={() =>
@@ -97,7 +94,7 @@ const FAQSection = () => {
                     style={{
                       fontFamily: "'Nunito Sans', sans-serif",
                       fontWeight: 600,
-                      fontSize: "20px",
+                      fontSize: "clamp(16px, 4vw, 20px)",
                       lineHeight: "100%",
                       letterSpacing: "0%",
                       color: "#FAFAFA",
@@ -119,8 +116,8 @@ const FAQSection = () => {
                       marginTop: "30px",
                       fontFamily: "'Nunito Sans', sans-serif",
                       fontWeight: 600,
-                      fontSize: "16px",
-                      lineHeight: "100%",
+                      fontSize: "clamp(13px, 3.5vw, 16px)",
+                      lineHeight: "120%",
                       color: "#FAFAFA",
                     }}
                   >
@@ -147,7 +144,7 @@ const FAQSection = () => {
             <button
               onClick={() => navigate("/contact")}
               style={{
-                padding: "10px 20px",
+                padding: "8px 14px",
                 background: "#FAFAFA",
                 borderRadius: "8px",
                 border: "none",
@@ -160,7 +157,7 @@ const FAQSection = () => {
               <span
                 style={{
                   fontWeight: 600,
-                  fontSize: "15px",
+                  fontSize: "clamp(12px, 2.5vw, 15px)",
                   color: "#1B242C",
                 }}
               >

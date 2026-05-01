@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -9,11 +10,24 @@ import FormulaSection from "@/components/FormulaSection";
 import WeAreAvailableOnSection from "@/components/WeAreAvailableOnSection";
 import TrustStrips from "@/components/TrustStrips";
 import { useProductDetail } from "@/hooks/useProducts";
+import { getCanonicalProductPath, slugifySegment } from "@/lib/routeHelpers";
 
 const ProductPage = () => {
-  const { slug } = useParams<{ slug: string }>();
+  const { slug, categorySlug } = useParams<{ slug: string; categorySlug?: string }>();
   const navigate = useNavigate();
   const { data: product, isLoading } = useProductDetail(slug || null);
+
+  useEffect(() => {
+    if (!product || !slug) return;
+
+    const canonicalPath = getCanonicalProductPath(product);
+    const currentCategorySlug = slugifySegment(categorySlug || "");
+    const expectedCategorySlug = slugifySegment(product.categoryName || "products");
+
+    if (!currentCategorySlug || currentCategorySlug !== expectedCategorySlug) {
+      navigate(canonicalPath, { replace: true });
+    }
+  }, [categorySlug, navigate, product, slug]);
 
   const handleBack = () => {
     navigate("/");
@@ -32,8 +46,9 @@ const ProductPage = () => {
           <SimilarItemsSection currentProductId={product.id} categoryId={product.categoryId} />
           <CertifiedProductsSection />
           <FormulaSection />
-          <WeAreAvailableOnSection />
+          
           <FAQSection />
+          <WeAreAvailableOnSection />
           
           <TrustStrips />
         </>

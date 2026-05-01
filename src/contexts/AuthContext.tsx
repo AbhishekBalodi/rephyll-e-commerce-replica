@@ -23,6 +23,17 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const API_BASE = (import.meta.env.VITE_BASE_URL || "https://www.rephyl.com") + "/api";
 
+async function parseApiResponse(res: Response): Promise<any> {
+  const raw = await res.text();
+  if (!raw) return {};
+
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return { message: raw };
+  }
+}
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<AuthUser | null>(() => {
     try {
@@ -85,13 +96,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       console.log('[LOGIN] Response Status:', res.status, res.statusText);
 
-      const data = await res.json();
+      const data = await parseApiResponse(res);
       console.log('[LOGIN] Response Body:', data);
 
       if (!res.ok) {
         console.error('[LOGIN] ❌ Login failed - Status:', res.status);
         console.error('[LOGIN] Error:', data.message || data.error);
-        throw new Error(data.message || "Login failed");
+        throw new Error(data.message || data.error || `Login failed (${res.status})`);
       }
 
       // Support both direct AuthResponse and wrapped { success, data }
@@ -158,7 +169,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         contentLength: res.headers.get('content-length'),
       });
 
-      const data = await res.json();
+      const data = await parseApiResponse(res);
       console.log('[SIGNUP] Response Body:', data);
 
       if (!res.ok) {

@@ -1,8 +1,6 @@
 /**
  * Checkout / Orders API (frontend wrappers)
  */
-import type { ApiResponse } from "@/types/api";
-
 const BASE_URL = import.meta.env.VITE_BASE_URL || "https://www.rephyl.com";
 
 function authHeaders() {
@@ -37,17 +35,16 @@ export async function startPaymentSession(body: any) {
   return res.json();
 }
 
-export async function confirmPaymentSession(body: any) {
-  const res = await fetch(`${BASE_URL}/api/customer-account/orders/payment-session/confirm`, {
+export async function verifyPaymentSession(merchantOrderId: string) {
+  const res = await fetch(`${BASE_URL}/api/customer-account/orders/payment-session/${merchantOrderId}/verify`, {
     method: "POST",
     headers: authHeaders(),
-    body: JSON.stringify(body),
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err.message || `Confirm failed: ${res.status}`);
+    throw new Error(err.message || `Verify failed: ${res.status}`);
   }
   return res.json();
 }
 
-export default { previewCheckout, startPaymentSession, confirmPaymentSession };
+export default { previewCheckout, startPaymentSession, verifyPaymentSession };

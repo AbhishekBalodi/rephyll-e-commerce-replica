@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -15,7 +15,14 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
+
+  const from =
+    (location.state as { from?: string } | null)?.from &&
+    typeof (location.state as { from?: string }).from === "string"
+      ? (location.state as { from?: string }).from!
+      : "/";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +30,7 @@ const LoginPage = () => {
     try {
       await login(email, password);
       toast({ title: "Welcome back!", description: "You've logged in successfully." });
-      navigate("/", { replace: true });
+      navigate(from, { replace: true });
     } catch (err: any) {
       toast({ title: "Login Failed", description: err.message, variant: "destructive" });
     } finally {

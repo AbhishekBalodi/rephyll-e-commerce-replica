@@ -44,10 +44,10 @@ const TrustStrips = () => {
         </p>
 
         {/* CARDS - Desktop (NO arrows) */}
-        <div className="relative mt-16 hidden md:block">
-          <div className="flex justify-center gap-[24px]">
+        <div className="relative mt-20 hidden md:block">
+          <div className="grid grid-cols-2 xl:grid-cols-4 gap-x-[24px] gap-y-[72px] justify-items-center">
             {TOP_REVIEWS.slice(0, 4).map((review) => (
-              <div key={review.id} className="relative w-[313px] bg-white rounded-[24px] shadow-md pt-[90px] pb-6 px-6 flex flex-col items-center">
+              <div key={review.id} className="relative w-full max-w-[313px] bg-white rounded-[24px] shadow-md pt-[90px] pb-6 px-6 flex flex-col items-center">
                 <div className="absolute -top-[60px] w-[120px] h-[120px] rounded-full border-[8px] border-white overflow-hidden shadow-md">
                   <img src={AVATAR_MAP[review.name] || avatarGarima} alt={review.name} className="w-full h-full object-cover rounded-full" loading="lazy" />
                 </div>
@@ -66,7 +66,17 @@ const TrustStrips = () => {
         </div>
 
         {/* CARDS - Mobile */}
-        <div className="relative mt-10 md:hidden">
+        <div className="relative mt-[45px] md:hidden">
+          {TOP_REVIEWS.length > 1 && (
+            <>
+              <button onClick={() => setMobileIndex((p) => (p > 0 ? p - 1 : TOP_REVIEWS.length - 1))} className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white rounded-full shadow flex items-center justify-center">
+                <ChevronLeft size={18} />
+              </button>
+              <button onClick={() => setMobileIndex((p) => (p < TOP_REVIEWS.length - 1 ? p + 1 : 0))} className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white rounded-full shadow flex items-center justify-center">
+                <ChevronRight size={18} />
+              </button>
+            </>
+          )}
           <div className="flex justify-center">
             <div className="relative w-full max-w-[300px] bg-white rounded-[24px] shadow-md pt-[70px] pb-5 px-5 flex flex-col items-center">
               <div className="absolute -top-[50px] w-[100px] h-[100px] rounded-full border-[6px] border-white overflow-hidden shadow-md">
@@ -81,16 +91,6 @@ const TrustStrips = () => {
                 "{mobileReview.content}"
               </p>
               <h4 className="text-[16px] font-semibold text-[#2C2C2C]" style={{ fontFamily: "'Poppins', sans-serif" }}>{mobileReview.name}</h4>
-              {TOP_REVIEWS.length > 1 && (
-                <>
-                  <button onClick={() => setMobileIndex((p) => (p > 0 ? p - 1 : TOP_REVIEWS.length - 1))} className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white rounded-full shadow flex items-center justify-center md:hidden">
-                    <ChevronLeft size={18} />
-                  </button>
-                  <button onClick={() => setMobileIndex((p) => (p < TOP_REVIEWS.length - 1 ? p + 1 : 0))} className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white rounded-full shadow flex items-center justify-center md:hidden">
-                    <ChevronRight size={18} />
-                  </button>
-                </>
-              )}
             </div>
           </div>
         </div>

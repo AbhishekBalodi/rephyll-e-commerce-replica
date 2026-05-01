@@ -2,7 +2,8 @@
  * API Service - Handles all HTTP requests to the Express backend.
  */
 
-const API_BASE_URL = (import.meta.env.VITE_BASE_URL || 'https://www.rephyl.com') + '/api';
+const API_HOST = (import.meta.env.VITE_BASE_URL || '').replace(/\/+$/, '');
+const API_BASE_URL = API_HOST ? `${API_HOST}/api` : '/api';
 
 interface ApiResponse<T = unknown> {
   success: boolean;
@@ -63,17 +64,23 @@ class ApiService {
         },
       });
 
-      const data: ApiResponse<T> = await response.json();
+      const isJson = response.headers.get('content-type')?.includes('application/json');
+      const data: ApiResponse<T> = isJson
+        ? await response.json()
+        : { success: response.ok, message: await response.text() };
       console.log(`[ApiService] Response ${response.status}:`, data);
 
       if (!response.ok) {
         console.error(`[ApiService] Request failed:`, data.message);
-        throw new Error(data.message || 'Request failed');
+        throw new Error(data.message || `Request failed with status ${response.status}`);
       }
 
       return data;
     } catch (error) {
       console.error(`[ApiService] Network error on ${endpoint}:`, error);
+      if (error instanceof TypeError) {
+        throw new Error('Unable to reach API. Please check backend connectivity and API URL.');
+      }
       throw error;
     }
   }
@@ -223,6 +230,30 @@ class ApiService {
 
     console.log('[ApiService] Fetching blog search suggestions:', query);
     return this.request(`/customer/blogs/search-suggestions?${queryParams}`);
+  }
+
+  /**
+   * Get home slider images and links.
+   */
+  async getHomeSlider(): Promise<ApiResponse> {
+    console.log('[ApiService] Fetching home slider');
+    return this.request('/customer/website/home-slider');
+  }
+
+  /**
+   * Get home top bar labels.
+   */
+  async getHomeTopBar(): Promise<ApiResponse> {
+    console.log('[ApiService] Fetching home top bar');
+    return this.request('/customer/website/home-top-bar');
+  }
+
+  /**
+   * Get website page by link (e.g., 'about-us', 'privacy-policy').
+   */
+  async getWebsitePage(link: string): Promise<ApiResponse> {
+    console.log('[ApiService] Fetching website page:', link);
+    return this.request(`/customer/website/pages/${link}`);
   }
 }
 

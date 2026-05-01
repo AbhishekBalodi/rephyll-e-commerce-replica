@@ -1,13 +1,16 @@
 import { Search, Heart, User, ShoppingBag, Menu, X, ChevronDown, ChevronRight, LogOut } from "lucide-react";
 import { useState, useRef, useEffect, useMemo } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import logoBlack from "@/assets/logo-green-cropped.png";
 import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/contexts/WishlistContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSearchSuggestions, useCategories } from "@/hooks/useProducts";
+import { useHomeTopBar } from "@/hooks/useWebsiteAssets";
 import { listProducts } from "@/services/productApi";
 import type { ApiProduct } from "@/types/api";
 import { getProductImage } from "@/lib/productHelpers";
+import { buildProductPath } from "@/lib/routeHelpers";
 import {
   Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger,
 } from "@/components/ui/sheet";
@@ -34,18 +37,18 @@ const NAV_CATEGORIES: NavCategory[] = [
   { label: "Blogs", path: "/blogs" },
 ];
 
-const ANNOUNCEMENT_SEGMENTS = [
+const DEFAULT_ANNOUNCEMENT_SEGMENTS = [
   "🌿 Flat 20% Off on Bundles | Code: CLEAN20",
   "Free Shipping ₹499+",
   "Non-Toxic • Plant-Based • Family Safe",
+  "24x7 Support",
 ];
-const SEPARATOR = "          ✦          ";
-const ANNOUNCEMENT_TEXT = ANNOUNCEMENT_SEGMENTS.join(SEPARATOR);
 
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { totalItems } = useCart();
+  const { items } = useCart();
+  const { totalItems: wishlistItems } = useWishlist();
   const { user, logout, isAdmin } = useAuth();
   const [sheetOpen, setSheetOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
@@ -62,6 +65,15 @@ const Navbar = () => {
 
   const { data: suggestions } = useSearchSuggestions(searchQuery);
   const { data: backendCategories } = useCategories();
+  const { labels: announcementSegments, loading: announcementLoading } = useHomeTopBar();
+  const announcementItems = announcementSegments.length > 0
+    ? announcementSegments
+    : (announcementLoading ? [] : DEFAULT_ANNOUNCEMENT_SEGMENTS);
+
+  const distinctCartCount = useMemo(
+    () => new Set(items.map((item) => item.productId)).size,
+    [items]
+  );
 
   const slugifyCategory = (name: string) =>
     name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -152,20 +164,35 @@ const Navbar = () => {
         style={{ height: "40px", background: "#CEF17B", display: "flex", alignItems: "center" }}
       >
         <div className="flex animate-marquee-slow whitespace-nowrap">
-          {[0, 1, 2, 3].map((i) => (
-            <span
-              key={i}
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontWeight: 400,
-                fontSize: "14px",
-                lineHeight: "20px",
-                color: "#064734",
-                paddingRight: "80px",
-              }}
-            >
-              {ANNOUNCEMENT_TEXT}
-            </span>
+          {[...Array(8)].map((_, repeatIndex) => (
+            <div key={repeatIndex} className="flex items-center">
+              {announcementItems.map((item, itemIndex) => (
+                <span
+                  key={`${repeatIndex}-${itemIndex}`}
+                  className="flex items-center"
+                  style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontWeight: 400,
+                    fontSize: "14px",
+                    lineHeight: "20px",
+                    color: "#064734",
+                    paddingRight: "48px",
+                  }}
+                >
+                  {item}
+                  <span
+                    style={{
+                      width: "6px",
+                      height: "6px",
+                      background: "#064734",
+                      borderRadius: "50%",
+                      marginLeft: "48px",
+                      flexShrink: 0,
+                    }}
+                  />
+                </span>
+              ))}
+            </div>
           ))}
         </div>
       </div>
@@ -197,9 +224,22 @@ const Navbar = () => {
                       return (
                         <Collapsible open={mobileExpanded === cat.label} onOpenChange={() => toggleMobileExpand(cat.label)}>
                           <div className="flex items-center justify-between w-full">
-                            <button onClick={() => cat.path && handleNav(cat.path)} className="flex-1 px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider text-foreground hover:bg-accent/50 transition-colors">
+                            <Link
+                              to={cat.path || "#"}
+                              onClick={(e) => {
+                                if (!cat.path) {
+                                  e.preventDefault();
+                                  return;
+                                }
+                                setSheetOpen(false);
+                                setActiveMenu(null);
+                                setSearchFocused(false);
+                                window.scrollTo({ top: 0, behavior: "smooth" });
+                              }}
+                              className="flex-1 px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider text-foreground hover:bg-accent/50 transition-colors"
+                            >
                               <span>{cat.label}</span>
-                            </button>
+                            </Link>
                             <CollapsibleTrigger className="flex items-center justify-center px-3 py-3 text-foreground hover:bg-accent/50 transition-colors" onClick={(e) => e.stopPropagation()}>
                               <ChevronRight size={16} className={`text-muted-foreground transition-transform ${mobileExpanded === cat.label ? "rotate-90" : ""}`} />
                             </CollapsibleTrigger>
@@ -207,9 +247,19 @@ const Navbar = () => {
                           <CollapsibleContent>
                             <div className="bg-accent/30">
                               {subs.map((sub) => (
-                                <button key={sub.label} onClick={() => handleNav(sub.path)} className="block w-full text-left pl-10 pr-6 py-2.5 text-sm text-foreground hover:bg-accent/50 transition-colors">
+                                <Link
+                                  key={sub.label}
+                                  to={sub.path}
+                                  onClick={() => {
+                                    setSheetOpen(false);
+                                    setActiveMenu(null);
+                                    setSearchFocused(false);
+                                    window.scrollTo({ top: 0, behavior: "smooth" });
+                                  }}
+                                  className="block w-full text-left pl-10 pr-6 py-2.5 text-sm text-foreground hover:bg-accent/50 transition-colors"
+                                >
                                   {sub.label}
-                                </button>
+                                </Link>
                               ))}
                             </div>
                           </CollapsibleContent>
@@ -217,9 +267,22 @@ const Navbar = () => {
                       );
                     }
                     return (
-                      <button onClick={() => cat.path && handleNav(cat.path)} className="flex items-center justify-between w-full px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider text-foreground hover:bg-accent/50 transition-colors">
+                      <Link
+                        to={cat.path || "#"}
+                        onClick={(e) => {
+                          if (!cat.path) {
+                            e.preventDefault();
+                            return;
+                          }
+                          setSheetOpen(false);
+                          setActiveMenu(null);
+                          setSearchFocused(false);
+                          window.scrollTo({ top: 0, behavior: "smooth" });
+                        }}
+                        className="flex items-center justify-between w-full px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider text-foreground hover:bg-accent/50 transition-colors"
+                      >
                         <span>{cat.label}</span>
-                      </button>
+                      </Link>
                     );
                   })()}
                       </div>
@@ -228,12 +291,13 @@ const Navbar = () => {
                 </SheetContent>
               </Sheet>
 
-              <img
-                src={logoBlack}
-                alt="rePhyl"
-                className="h-[48px] md:h-[56px] w-auto cursor-pointer"
-                onClick={() => handleNav("/")}
-              />
+              <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+                <img
+                  src={logoBlack}
+                  alt="rePhyl"
+                  className="h-[48px] md:h-[56px] w-auto cursor-pointer"
+                />
+              </Link>
             </div>
 
             {/* Center: nav links (desktop) - Poppins 500 14px */}
@@ -247,8 +311,8 @@ const Navbar = () => {
                     onMouseEnter={() => subcats.length > 0 && handleMouseEnter(cat.label)}
                     onMouseLeave={handleMouseLeave}
                   >
-                    <button
-                      onClick={() => cat.path && handleNav(cat.path)}
+                    <Link
+                      to={cat.path || "#"}
                       className="relative pb-1"
                       style={{
                         fontFamily: "'Poppins', sans-serif",
@@ -261,6 +325,13 @@ const Navbar = () => {
                       }}
                       onMouseOver={(e) => (e.currentTarget.style.color = "#064734")}
                       onMouseOut={(e) => { if (!isActive(cat)) e.currentTarget.style.color = "#6B7280"; }}
+                      onClick={(e) => {
+                        if (!cat.path) {
+                          e.preventDefault();
+                          return;
+                        }
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
                     >
                       {cat.label}
                       {/* Active underline */}
@@ -270,7 +341,7 @@ const Navbar = () => {
                           style={{ height: "2px", background: "#064734", borderRadius: "1px" }}
                         />
                       )}
-                    </button>
+                    </Link>
 
                   </div>
                 );
@@ -317,17 +388,24 @@ const Navbar = () => {
                 <div style={{ width: "1px", height: "20px", background: "#D1D5DB" }} />
 
                 {/* 🛒 */}
-                <div className="relative cursor-pointer" onClick={() => handleNav("/cart")}>
+                <Link className="relative cursor-pointer" to="/cart" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
                   <ShoppingBag size={20} className="text-[#064734]" />
-                  {totalItems > 0 && (
+                  {distinctCartCount > 0 && (
                     <span className="absolute -top-2 -right-2 bg-[#064734] text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
-                      {totalItems > 99 ? "99+" : totalItems}
+                      {distinctCartCount > 99 ? "99+" : distinctCartCount}
                     </span>
                   )}
-                </div>
+                </Link>
 
                 {/* ❤️ */}
-                <Heart size={20} className="text-[#064734]" />
+                <Link className="relative cursor-pointer" to="/wishlist" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+                  <Heart size={20} className="text-[#064734]" />
+                  {wishlistItems > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-[#064734] text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                      {wishlistItems > 99 ? "99+" : wishlistItems}
+                    </span>
+                  )}
+                </Link>
 
                 {/* 👤 User Menu */}
                 {user ? (
@@ -386,7 +464,7 @@ const Navbar = () => {
                             onClick={() => {
                               setSearchQuery("");
                               setSearchFocused(false);
-                              navigate(`/product/${product.id}`);
+                              navigate(buildProductPath(product));
                             }}
                             className="flex items-center gap-3 w-full px-4 py-3 hover:bg-gray-50 transition-colors text-left border-b border-gray-100 last:border-0"
                           >
@@ -417,14 +495,23 @@ const Navbar = () => {
                   <Search size={18} />
                 </button>
 
-                <div className="relative cursor-pointer" onClick={() => handleNav("/cart")}>
-                  <ShoppingBag size={18} />
-                  {totalItems > 0 && (
+                <Link className="relative cursor-pointer" to="/wishlist" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+                  <Heart size={18} />
+                  {wishlistItems > 0 && (
                     <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
-                      {totalItems > 99 ? "99+" : totalItems}
+                      {wishlistItems > 99 ? "99+" : wishlistItems}
                     </span>
                   )}
-                </div>
+                </Link>
+
+                <Link className="relative cursor-pointer" to="/cart" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+                  <ShoppingBag size={18} />
+                  {distinctCartCount > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                      {distinctCartCount > 99 ? "99+" : distinctCartCount}
+                    </span>
+                  )}
+                </Link>
               </div>
 
             </div>
@@ -437,13 +524,14 @@ const Navbar = () => {
             <div className="max-w-[1440px] mx-auto px-6 py-3">
               <div className="flex flex-wrap items-center justify-center gap-2 text-foreground">
                 {activeSubcategories.map((sub) => (
-                  <button
+                  <Link
                     key={sub.label}
                     className="px-4 py-2 text-sm font-medium text-foreground hover:bg-accent/25 rounded"
-                    onClick={() => handleNav(sub.path)}
+                    to={sub.path}
+                    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                   >
                     {sub.label}
-                  </button>
+                  </Link>
                 ))}
               </div>
             </div>

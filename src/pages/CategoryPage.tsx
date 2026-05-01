@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useParams, useLocation, Link } from "react-router-dom";
 import { ChevronDown, ChevronUp, SlidersHorizontal } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -65,6 +65,24 @@ const CategoryPage = () => {
 
     return result;
   }, [products, sortBy]);
+
+  useEffect(() => {
+    const nonIndexableCategorySlugs = new Set(["laundry-care", "personal-care"]);
+    const robotsValue = nonIndexableCategorySlugs.has(slug || "") ? "noindex,nofollow" : "index,follow";
+
+    const upsertMeta = (name: string, content: string) => {
+      let tag = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null;
+      if (!tag) {
+        tag = document.createElement("meta");
+        tag.setAttribute("name", name);
+        document.head.appendChild(tag);
+      }
+      tag.setAttribute("content", content);
+    };
+
+    upsertMeta("robots", robotsValue);
+    upsertMeta("googlebot", robotsValue);
+  }, [slug]);
 
 
 

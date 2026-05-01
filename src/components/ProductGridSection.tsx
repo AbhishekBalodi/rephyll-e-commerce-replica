@@ -12,7 +12,7 @@ const ProductGridSection = () => {
 
   return (
     <section className="w-full flex justify-center py-16 relative pt-[104px]">
-      <div className="max-w-[1194px] w-full px-4">
+      <div className="max-w-[1380px] w-full px-4 md:px-6">
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-[#064734]">Explore Products</h2>
           <p className="text-[#464646]">Shop our selection of plant-based cleaners and home care products.</p>
@@ -20,7 +20,7 @@ const ProductGridSection = () => {
 
         {isLoading ? (
           <div className="flex justify-center">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[30px]">
+            <div className="grid w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6 lg:gap-7">
               {Array.from({ length: 8 }).map((_, i) => (
                 <div key={i} className="animate-pulse">
                   <div className="h-[200px] rounded-t-2xl bg-muted" />
@@ -36,7 +36,7 @@ const ProductGridSection = () => {
         ) : products.length > 0 ? (
           <>
             <div className="flex justify-center">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-[30px]">
+              <div className="grid w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6 lg:gap-7 items-start">
               {products.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
