@@ -133,7 +133,7 @@ const CouponsPage = () => {
                   <div className="flex flex-wrap items-center gap-3">
                     <h2 className="font-semibold text-xl tracking-tight">{coupon.code}</h2>
                     <span className="rounded-full bg-[#e6f4ea] px-2 py-1 text-[11px] font-semibold uppercase text-[#064734]">
-                      {coupon.discountType ?? coupon.type ?? "Coupon"}
+                      {coupon.discountType ?? "Coupon"}
                     </span>
                   </div>
                   <p className="mt-2 text-sm text-muted-foreground">{coupon.description || "No additional description available."}</p>
