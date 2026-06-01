@@ -63,7 +63,7 @@ export async function getOrderInvoice(orderId: number) {
   }
 
   const byteArray = decodeBase64ToUint8Array(base64Data);
-  const blob = new Blob([byteArray], { type: 'application/pdf' });
+  const blob = new Blob([byteArray as BlobPart], { type: 'application/pdf' });
 
   return {
     blob,
