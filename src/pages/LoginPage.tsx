@@ -41,6 +41,7 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
+      <main className="flex-1">
       <section className="max-w-md mx-auto px-4 py-20 pt-[130px]">
         <div className="flex flex-col items-center mb-8 ">
           <p className="w-20 h-20 mb-2" />
@@ -90,6 +91,7 @@ const LoginPage = () => {
           <Link to="/signup" className="text-primary font-semibold hover:underline">Sign Up</Link>
         </p>
       </section>
+      </main>
       <Footer />
     </div>
   );

@@ -1,102 +1,28 @@
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useWebsitePageByPath } from "@/hooks/useWebsitePage";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Search, Leaf, SprayCan, Droplets, ShowerHead, CookingPot, Headphones, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import faqsHero from "@/assets/faqs-hero.jpg";
+import { MAIN_FAQ_CATEGORIES, MAIN_FAQ_ITEMS, type MainFaqCategory } from "@/data/faqs";
 
-type FaqCategory = "all" | "general" | "all-surface" | "toilet" | "dishwash" | "kitchen";
-
-type FaqItem = {
-  category: FaqCategory;
-  question: string;
-  answer: string;
-};
-
-const FAQ_ITEMS: FaqItem[] = [
-  {
-    category: "general",
-    question: "What is Rephyl?",
-    answer: "Rephyl is a plant-powered home care brand focused on effective cleaning with low-tox formulas designed for everyday family use.",
-  },
-  {
-    category: "general",
-    question: "Are Rephyl products eco-friendly?",
-    answer: "Yes. Our formulas are designed to be gentler on the environment and reduce harsh chemical residue at home.",
-  },
-  {
-    category: "all-surface",
-    question: "Can all-surface cleaner be used on marble and granite?",
-    answer: "Yes, it is suitable for sealed marble and granite. For delicate finishes, always test on a small hidden patch first.",
-  },
-  {
-    category: "all-surface",
-    question: "Will it leave residue after mopping?",
-    answer: "When diluted correctly, it dries clean with low residue and no sticky feel.",
-  },
-  {
-    category: "toilet",
-    question: "Is toilet cleaner safe for pets?",
-    answer: "Yes, when used as directed and after proper rinsing/ventilation. Keep pets away while cleaning wet surfaces.",
-  },
-  {
-    category: "toilet",
-    question: "How often should I deep clean the bathroom?",
-    answer: "A deep clean once weekly plus quick daily wipe-down keeps odors and stains under control.",
-  },
-  {
-    category: "dishwash",
-    question: "Can dishwash liquid remove oily utensils?",
-    answer: "Yes, it is designed to cut grease while being gentle on hands in normal usage.",
-  },
-  {
-    category: "dishwash",
-    question: "Is it safe for baby feeding utensils?",
-    answer: "Yes, wash thoroughly with water after cleaning. Follow standard hygiene practices for feeding products.",
-  },
-  {
-    category: "kitchen",
-    question: "Can kitchen degreaser be used on stovetops?",
-    answer: "Yes, it works well on stovetops, counters, and tiles. Avoid direct use on unsealed natural wood.",
-  },
-  {
-    category: "kitchen",
-    question: "How long should degreaser sit before wiping?",
-    answer: "Let it sit for 2 to 5 minutes on heavy grease, then wipe with a damp microfiber cloth.",
-  },
-];
-
-const FAQ_CATEGORY_META: Record<FaqCategory, { label: string; icon: ReactNode }> = {
+const FAQ_CATEGORY_META: Record<MainFaqCategory, { label: string; icon: ReactNode }> = {
   all: { label: "All FAQs", icon: <Search size={16} /> },
   general: { label: "General", icon: <Leaf size={16} /> },
-  "all-surface": { label: "All Surface Cleaner", icon: <SprayCan size={16} /> },
+  "all-surface": { label: "Refill / All Surface", icon: <SprayCan size={16} /> },
   toilet: { label: "Toilet & Bathroom Cleaner", icon: <ShowerHead size={16} /> },
   dishwash: { label: "Dishwash Liquid", icon: <Droplets size={16} /> },
   kitchen: { label: "Kitchen Degreaser", icon: <CookingPot size={16} /> },
+  additional: { label: "Additional FAQs", icon: <Headphones size={16} /> },
 };
-
-const FAQ_CATEGORIES: FaqCategory[] = ["all", "general", "all-surface", "toilet", "dishwash", "kitchen"];
 
 const FAQs = () => {
   const { data: pageData } = useWebsitePageByPath("/faqs");
-  const [activeCategory, setActiveCategory] = useState<FaqCategory>("all");
+  const navigate = useNavigate();
+  const [activeCategory, setActiveCategory] = useState<MainFaqCategory>("all");
   const [searchText, setSearchText] = useState("");
-
-  useEffect(() => {
-    if (!pageData) return;
-    document.title = pageData.metaTitle || pageData.title || "FAQs - rePhyl";
-
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute("content", pageData.metaDescription || "");
-    }
-
-    const metaKeywords = document.querySelector('meta[name="keywords"]');
-    if (metaKeywords) {
-      metaKeywords.setAttribute("content", pageData.metaKeywords || "");
-    }
-  }, [pageData]);
 
   const heroImage = pageData?.metaImg
     ? `${import.meta.env.VITE_BASE_URL || "https://www.rephyl.com"}${pageData.metaImg}`
@@ -104,8 +30,8 @@ const FAQs = () => {
 
   const visibleFaqs = useMemo(() => {
     const byCategory = activeCategory === "all"
-      ? FAQ_ITEMS
-      : FAQ_ITEMS.filter((item) => item.category === activeCategory);
+      ? MAIN_FAQ_ITEMS
+      : MAIN_FAQ_ITEMS.filter((item) => item.category === activeCategory);
 
     if (!searchText.trim()) return byCategory;
 
@@ -116,12 +42,12 @@ const FAQs = () => {
   }, [activeCategory, searchText]);
 
   const groupedCount = useMemo(() => {
-    return FAQ_CATEGORIES.reduce((acc, category) => {
+    return MAIN_FAQ_CATEGORIES.reduce((acc, category) => {
       acc[category] = category === "all"
-        ? FAQ_ITEMS.length
-        : FAQ_ITEMS.filter((item) => item.category === category).length;
+        ? MAIN_FAQ_ITEMS.length
+        : MAIN_FAQ_ITEMS.filter((item) => item.category === category).length;
       return acc;
-    }, {} as Record<FaqCategory, number>);
+    }, {} as Record<MainFaqCategory, number>);
   }, []);
 
   return (
@@ -144,7 +70,10 @@ const FAQs = () => {
                 <Search size={18} className="text-[#648273]" />
                 <input
                   value={searchText}
-                  onChange={(e) => setSearchText(e.target.value)}
+                  onChange={(e) => {
+                    setSearchText(e.target.value);
+                    if (e.target.value.trim()) setActiveCategory("all");
+                  }}
                   placeholder="Search for a question..."
                   className="w-full bg-transparent outline-none text-sm text-[#173428] placeholder:text-[#8DA094]"
                 />
@@ -159,7 +88,7 @@ const FAQs = () => {
         <section className="w-full max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 -mt-7 relative z-20">
           <div className="rounded-2xl border border-[#E6EDE2] bg-white px-4 md:px-8 py-5 shadow-[0_6px_24px_rgba(0,0,0,0.04)]">
             <div className="flex gap-2 overflow-x-auto scrollbar-hide">
-              {FAQ_CATEGORIES.map((category) => {
+              {MAIN_FAQ_CATEGORIES.map((category) => {
                 const meta = FAQ_CATEGORY_META[category];
                 const isActive = activeCategory === category;
 
@@ -185,7 +114,7 @@ const FAQs = () => {
         <section className="w-full max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 grid lg:grid-cols-[320px_minmax(0,1fr)] gap-8 mt-8">
           <aside className="rounded-2xl border border-[#E4EADF] bg-white p-4">
             <div className="space-y-2">
-              {FAQ_CATEGORIES.slice(1).map((category) => {
+              {MAIN_FAQ_CATEGORIES.slice(1).map((category) => {
                 const meta = FAQ_CATEGORY_META[category];
                 const isActive = activeCategory === category;
 
@@ -213,7 +142,10 @@ const FAQs = () => {
               </div>
               <p className="font-semibold text-[#153528]">Still need help?</p>
               <p className="text-sm text-[#5A6E63] mt-1">Our support team is ready to assist you.</p>
-              <button className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#064734] text-white text-sm font-semibold hover:bg-[#053a29]">
+              <button
+                onClick={() => navigate("/b2b-orders")}
+                className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#064734] text-white text-sm font-semibold hover:bg-[#053a29]"
+              >
                 Contact Support
                 <ArrowRight size={14} />
               </button>
@@ -257,7 +189,10 @@ const FAQs = () => {
               <p className="text-[30px] md:text-[38px] leading-[1] font-semibold text-[#102A20]">Can&apos;t find what you&apos;re looking for?</p>
               <p className="text-[#60756A] mt-2">We&apos;re here to help.</p>
             </div>
-            <button className="relative z-10 inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#064734] text-white font-semibold hover:bg-[#053a29]">
+            <button
+              onClick={() => navigate("/b2b-orders")}
+              className="relative z-10 inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#064734] text-white font-semibold hover:bg-[#053a29]"
+            >
               Contact Support
               <ArrowRight size={14} />
             </button>

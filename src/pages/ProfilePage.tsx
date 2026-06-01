@@ -3,14 +3,23 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import profileApi from '@/services/profileApi';
 import RequireAuth from '@/components/RequireAuth';
-import { User, LogOut, Save } from 'lucide-react';
+import { User, LogOut, Save, Leaf } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const ProfilePageContent = () => {
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState<any>(null);
-  const [form, setForm] = useState<any>({});
+  const [form, setForm] = useState<any>({
+    displayName: "",
+    email: "",
+    mobile: "",
+    gstin: "",
+    pan: "",
+    creditLimit: 0,
+    paymentTermsDays: 0,
+    notes: "",
+  });
   const { logout, user } = useAuth();
   const navigate = useNavigate();
 
@@ -73,6 +82,7 @@ const ProfilePageContent = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
+      <main className="flex-1">
       <section className="max-w-3xl mx-auto px-4 md:px-6 py-16 pt-[104px]">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
@@ -92,6 +102,24 @@ const ProfilePageContent = () => {
             Logout
           </button>
         </div>
+
+        <Link
+          to="/rewards"
+          className="mb-6 block rounded-xl border border-[#bfe0c8] bg-[#f2fbf4] px-5 py-4 hover:bg-[#eaf8ee] transition-colors"
+        >
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#388e3c]/15 text-[#388e3c]">
+                <Leaf size={18} />
+              </span>
+              <div>
+                <p className="text-sm font-semibold text-foreground">Green Rewards</p>
+                <p className="text-xs text-muted-foreground">View your points balance, expiry, and transactions</p>
+              </div>
+            </div>
+            <span className="text-sm font-semibold text-primary">Open</span>
+          </div>
+        </Link>
 
         <div className="bg-card border border-border rounded-lg p-6 md:p-8">
           <h2 className="text-lg font-semibold mb-6">Account Information</h2>
@@ -212,6 +240,7 @@ const ProfilePageContent = () => {
           </div>
         )}
       </section>
+      </main>
       <Footer />
     </div>
   );

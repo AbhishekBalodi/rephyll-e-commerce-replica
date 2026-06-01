@@ -44,7 +44,7 @@ const ProductDetailAccordion = ({
   );
 
   return (
-    <div className="mt-6 space-y-3">
+    <div className="space-y-3">
       {sections.map((section) => {
         const isOpen =
           openSection === section.id;

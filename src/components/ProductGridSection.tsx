@@ -20,14 +20,14 @@ const ProductGridSection = () => {
 
         {isLoading ? (
           <div className="flex justify-center">
-            <div className="grid w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6 lg:gap-7">
+            <div className="grid w-full grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 lg:gap-7">
               {Array.from({ length: 8 }).map((_, i) => (
                 <div key={i} className="animate-pulse">
-                  <div className="h-[200px] rounded-t-2xl bg-muted" />
-                  <div className="p-4 space-y-3">
-                    <div className="h-4 w-3/4 rounded bg-muted" />
-                    <div className="h-4 w-1/2 rounded bg-muted" />
-                    <div className="h-8 w-1/3 rounded bg-muted" />
+                  <div className="h-[140px] md:h-[180px] rounded-t-2xl bg-muted" />
+                  <div className="p-3 md:p-4 space-y-2">
+                    <div className="h-3 w-3/4 rounded bg-muted" />
+                    <div className="h-3 w-1/2 rounded bg-muted" />
+                    <div className="h-7 w-1/2 rounded bg-muted" />
                   </div>
                 </div>
               ))}
@@ -36,7 +36,7 @@ const ProductGridSection = () => {
         ) : products.length > 0 ? (
           <>
             <div className="flex justify-center">
-              <div className="grid w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6 lg:gap-7 items-start">
+              <div className="grid w-full grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 lg:gap-7 items-start">
               {products.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}

@@ -14,8 +14,9 @@ const ShopSection = () => {
   return (
     <div className="min-h-screen">
       <Navbar />
-
+      <main className="flex-1">
       <ProductGridSection />
+      </main>
       <Footer />
     </div>
   );

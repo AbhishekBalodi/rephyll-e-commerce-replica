@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment Return</title>
+  </head>
+  <body>
+    <script>
+      (function () {
+        try {
+          var url = new URL(window.location.href);
+          var orderId =
+            url.searchParams.get("merchantOrderId") ||
+            url.searchParams.get("order_id") ||
+            url.searchParams.get("orderId") ||
+            "";
+
+          if (orderId) {
+            window.location.replace(
+              "/payment/confirmation?merchantOrderId=" + encodeURIComponent(orderId)
+            );
+            return;
+          }
+
+          window.location.replace("/checkout");
+        } catch (e) {
+          window.location.replace("/");
+        }
+      })();
+    </script>
+  </body>
+</html>

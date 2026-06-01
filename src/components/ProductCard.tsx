@@ -13,6 +13,7 @@ import {
 import { buildProductPath } from "@/lib/routeHelpers";
 import { getProductById } from "@/services/productApi";
 import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/contexts/WishlistContext";
 
 interface ProductCardProps {
   product: ApiProduct;
@@ -23,6 +24,7 @@ interface ProductCardProps {
 const ProductCard = ({ product, onClick, className }: ProductCardProps) => {
   const navigate = useNavigate();
   const { items, addToCart } = useCart();
+  const { addToWishlist, removeFromWishlist, isWishlisted } = useWishlist();
   const [imageIndex, setImageIndex] = useState(0);
   const [fullProduct, setFullProduct] = useState<ApiProductDetail | null>(null);
 
@@ -67,6 +69,9 @@ const ProductCard = ({ product, onClick, className }: ProductCardProps) => {
           inventoryMax ?? Number.POSITIVE_INFINITY,
           existingCartItem?.maxQuantity ?? Number.POSITIVE_INFINITY
         );
+  const productPath = buildProductPath(product);
+  const shareUrl = `${window.location.origin}${productPath}`;
+  const isItemWishlisted = isWishlisted(product.id, defaultVariant?.id);
 
   const handleAddClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -104,22 +109,82 @@ const ProductCard = ({ product, onClick, className }: ProductCardProps) => {
     }
   };
 
+  const handleShareClick = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: product.name,
+          text: `Check out ${product.name}`,
+          url: shareUrl,
+        });
+        return;
+      } catch {
+        // If the share sheet is dismissed or fails, continue to fallback.
+      }
+    }
+
+    const webShareUrl = `https://wa.me/?text=${encodeURIComponent(`Check out ${product.name}: ${shareUrl}`)}`;
+    window.open(webShareUrl, "_blank", "noopener,noreferrer");
+  };
+
+  const handleWishlistClick = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+
+    if (isItemWishlisted) {
+      removeFromWishlist(product.id, defaultVariant?.id);
+      return;
+    }
+
+    addToWishlist({
+      productId: product.id,
+      name: product.name,
+      price,
+      originalPrice: mrp,
+      image: currentImage,
+      variantId: defaultVariant?.id,
+      categoryName: product.categoryName,
+      slug: product.slug || product.urlHandle,
+    });
+  };
+
   return (
     <div
-      className={`bg-white rounded-2xl shadow-md overflow-hidden w-full max-w-[340px] md:max-w-[300px] lg:max-w-none cursor-pointer mx-auto ${className ?? ""}`}
+      className={`bg-white rounded-xl md:rounded-2xl shadow-md overflow-hidden w-full max-w-none md:max-w-[300px] lg:max-w-none cursor-pointer mx-auto ${className ?? ""}`}
       onClick={() => {
         onClick?.(product);
-        navigate(buildProductPath(product));
+        navigate(productPath);
       }}
     >
-      <div className="relative aspect-square rounded-t-2xl overflow-hidden bg-[#F3F4F6] flex items-center justify-center">
-        <div className="absolute top-3 right-3 flex gap-2 z-10">
-          <div className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow">
-            <Share2 size={16} />
-          </div>
-          <div className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow">
-            <Heart size={16} />
-          </div>
+      <div className="relative aspect-square rounded-t-xl md:rounded-t-2xl overflow-hidden bg-[#F3F4F6] flex items-center justify-center">
+        <div className="absolute top-2 right-2 md:top-3 md:right-3 flex gap-1.5 md:gap-2 z-10">
+          <button
+            type="button"
+            onClick={handleShareClick}
+            aria-label={`Share ${product.name}`}
+            className="w-7 h-7 md:w-9 md:h-9 bg-white rounded-full flex items-center justify-center shadow hover:bg-gray-50"
+          >
+            <Share2 size={14} className="md:hidden" />
+            <Share2 size={16} className="hidden md:block" />
+          </button>
+          <button
+            type="button"
+            onClick={handleWishlistClick}
+            aria-label={isItemWishlisted ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`}
+            className={`w-7 h-7 md:w-9 md:h-9 rounded-full flex items-center justify-center shadow transition-colors ${
+              isItemWishlisted ? "bg-[#064734]" : "bg-white hover:bg-gray-50"
+            }`}
+          >
+            <Heart
+              size={14}
+              className={`md:hidden ${isItemWishlisted ? "text-white fill-white" : "text-[#364153]"}`}
+            />
+            <Heart
+              size={16}
+              className={`hidden md:block ${isItemWishlisted ? "text-white fill-white" : "text-[#364153]"}`}
+            />
+          </button>
         </div>
 
         <img
@@ -133,48 +198,49 @@ const ProductCard = ({ product, onClick, className }: ProductCardProps) => {
 
         <button
           onClick={handleNextImage}
-          className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-white rounded-full flex items-center justify-center shadow z-10 hover:bg-gray-100"
+          className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 w-7 h-7 md:w-9 md:h-9 bg-white rounded-full flex items-center justify-center shadow z-10 hover:bg-gray-100"
         >
-          <ChevronRight size={16} color="#364153" />
+          <ChevronRight size={14} className="md:hidden" color="#364153" />
+          <ChevronRight size={16} className="hidden md:block" color="#364153" />
         </button>
 
-        <div className="absolute bottom-3 flex gap-1 z-10">
-          <div className="w-6 h-1 bg-[#00301D] rounded-full" />
-          <div className="w-2 h-2 bg-gray-300 rounded-full" />
-          <div className="w-2 h-2 bg-gray-300 rounded-full" />
+        <div className="absolute bottom-2 md:bottom-3 flex gap-1 z-10">
+          <div className="w-5 md:w-6 h-1 bg-[#00301D] rounded-full" />
+          <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-gray-300 rounded-full" />
+          <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-gray-300 rounded-full" />
         </div>
       </div>
 
-      <div className="p-4 md:p-4 lg:p-5">
-        <h3 className="font-poppins font-semibold text-[17px] md:text-[16px] lg:text-[18px] leading-[24px] md:leading-[22px] lg:leading-[26px] text-[#464646] line-clamp-2 min-h-[48px] md:min-h-[44px] lg:min-h-[52px]">
+      <div className="p-2.5 md:p-4 lg:p-5">
+        <h3 className="font-poppins font-semibold text-[11px] md:text-[16px] lg:text-[18px] leading-[15px] md:leading-[22px] lg:leading-[26px] text-[#464646] line-clamp-2 min-h-[30px] md:min-h-[44px] lg:min-h-[52px]">
           {product.name}
         </h3>
 
-        <div className="flex items-end gap-2 mt-2">
-          <span className="font-poppins font-bold text-[24px] md:text-[22px] lg:text-[28px] text-[#064734] leading-none">
+        <div className="flex items-end gap-1.5 md:gap-2 mt-1.5 md:mt-2">
+          <span className="font-poppins font-bold text-[17px] md:text-[22px] lg:text-[28px] text-[#064734] leading-none">
             {"\u20B9"}{price.toFixed(0)}
           </span>
           {showOriginalPrice && (
-            <span className="text-sm text-[#8E939C] line-through">
+            <span className="text-[10px] md:text-sm text-[#8E939C] line-through">
               {"\u20B9"}{mrp.toFixed(0)}
             </span>
           )}
           {discount > 0 && (
-            <span className="rounded-full bg-[#E2F3AF] px-2 py-1 text-[11px] font-semibold text-[#064734]">
+            <span className="rounded-full bg-[#E2F3AF] px-1.5 md:px-2 py-0.5 md:py-1 text-[9px] md:text-[11px] font-semibold text-[#064734]">
               Save {discount}%
             </span>
           )}
         </div>
 
-        <div className="flex items-center gap-1 mt-2 min-h-[20px]">
-          <div className="flex items-center gap-[2px]">
+        <div className="flex items-center gap-1 mt-1.5 md:mt-2 min-h-[16px] md:min-h-[20px]">
+          <div className="flex items-center gap-[1px] md:gap-[2px]">
             {Array.from({ length: 5 }).map((_, i) => {
               const filled = i < Math.floor(rating);
               return (
                 <svg
                   key={i}
-                  width="13.33"
-                  height="12.71"
+                  width="10"
+                  height="9.5"
                   viewBox="0 0 14 13"
                   fill="#FBC700"
                   opacity={filled ? 1 : 0.35}
@@ -187,17 +253,18 @@ const ProductCard = ({ product, onClick, className }: ProductCardProps) => {
               );
             })}
           </div>
-          <span className="text-sm font-semibold text-[#464646]">{rating.toFixed(1)}</span>
-          <span className="text-xs text-[#8E939C]">({reviewCount} reviews)</span>
+          <span className="text-[10px] md:text-sm font-semibold text-[#464646]">{rating.toFixed(1)}</span>
+          <span className="hidden md:inline text-xs text-[#8E939C]">({reviewCount} reviews)</span>
         </div>
 
-        <div className="mt-3 md:mt-2.5 lg:mt-3">
+        <div className="mt-2 md:mt-2.5 lg:mt-3">
           <button
             onClick={handleAddClick}
             disabled={!defaultVariant?.id || maxAllowedQuantity <= 0 || quantity >= maxAllowedQuantity}
-            className="w-full rounded-xl py-3 text-sm font-semibold text-white flex items-center justify-center gap-2 bg-[#064734] hover:bg-[#05412E] disabled:cursor-not-allowed disabled:opacity-70"
+            className="w-full rounded-lg md:rounded-xl py-2 md:py-3 text-[11px] md:text-sm font-semibold text-white flex items-center justify-center gap-1.5 md:gap-2 bg-[#064734] hover:bg-[#05412E] disabled:cursor-not-allowed disabled:opacity-70"
           >
-            <ShoppingCart size={16} />
+            <ShoppingCart size={13} className="md:hidden" />
+            <ShoppingCart size={16} className="hidden md:block" />
             Add to Cart
           </button>
         </div>

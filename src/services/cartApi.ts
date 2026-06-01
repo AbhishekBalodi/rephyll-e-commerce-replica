@@ -1,7 +1,10 @@
+import { handleAuthExpired } from "@/lib/authSession";
+
 /**
  * Cart API wrapper for server-backed cart endpoints.
  */
-const BASE_URL = import.meta.env.VITE_BASE_URL || "https://www.rephyl.com";
+const BASE_URL =
+  (import.meta.env.VITE_BASE_URL as string | undefined)?.trim().replace(/\/+$/, "") || "";
 
 function authHeaders() {
   const token = localStorage.getItem("rephyl_token");
@@ -10,6 +13,10 @@ function authHeaders() {
 
 async function fetchJson(res: Response) {
   if (!res.ok) {
+    if (res.status === 401) {
+      handleAuthExpired();
+      throw new Error("Session expired. Please log in again.");
+    }
     const err = await res.json().catch(() => ({}));
     throw new Error(err.message || `API error ${res.status}`);
   }

@@ -145,7 +145,7 @@ Example request:
 
 ```json
 {
-  "username": "customer01",
+  "username": "vc@example.com",
   "password": "secret123"
 }
 ```

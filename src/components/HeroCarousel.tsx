@@ -40,7 +40,22 @@ const HeroCarousel = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [index, setIndex] = useState(0);
+  const [viewportWidth, setViewportWidth] = useState(
+    typeof window !== "undefined"
+      ? window.innerWidth
+      : 1440
+  );
   const { websiteSlides, mobileSlides } = useHomepageSlider();
+
+  const DESKTOP_HERO_WIDTH =
+    1440;
+  const DESKTOP_HERO_HEIGHT =
+    575;
+  const isTabletViewport =
+    viewportWidth >= 768 &&
+    viewportWidth < 1280;
+  const desktopLikeTabletHeight =
+    `calc(100vw * ${DESKTOP_HERO_HEIGHT} / ${DESKTOP_HERO_WIDTH})`;
 
   const deviceSlides = isMobile ? (mobileSlides.length > 0 ? mobileSlides : websiteSlides) : websiteSlides;
   const slides: SlideData[] = deviceSlides.length > 0 ? deviceSlides.map((slide) => ({ ...slide })) : DEFAULT_SLIDES;
@@ -57,6 +72,25 @@ const HeroCarousel = () => {
     return () => window.clearInterval(timer);
   }, [slides]);
 
+  useEffect(() => {
+    const onResize = () => {
+      setViewportWidth(
+        window.innerWidth
+      );
+    };
+
+    window.addEventListener(
+      "resize",
+      onResize
+    );
+
+    return () =>
+      window.removeEventListener(
+        "resize",
+        onResize
+      );
+  }, []);
+
   const activeSlide = slides[index];
   const activeImage = activeSlide?.imagePath ? getWebsiteAssetUrl(activeSlide.imagePath) : "";
   const hasApiImage = Boolean(activeImage);
@@ -67,7 +101,10 @@ const HeroCarousel = () => {
       <div
         className="relative w-full hidden md:block overflow-hidden cursor-pointer"
         style={{
-          height: "575px",
+          height:
+            isTabletViewport
+              ? desktopLikeTabletHeight
+              : `${DESKTOP_HERO_HEIGHT}px`,
           backgroundImage: hasApiImage ? "none" : `url(${bgHeroCarousel})`,
           backgroundSize: hasApiImage ? undefined : "100% 100%",
           backgroundPosition: hasApiImage ? undefined : "center",
@@ -79,7 +116,11 @@ const HeroCarousel = () => {
           <img
             src={activeImage}
             alt="rePhyl banner"
-            className="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0 h-full w-full"
+            // @ts-ignore - fetchpriority is a valid HTML attribute
+            fetchpriority="high"
+            loading="eager"
+            decoding="async"
           />
         )}
         {!hasApiImage && <div className="absolute inset-0 bg-black/25" />}
@@ -102,7 +143,7 @@ const HeroCarousel = () => {
                       type="button"
                       aria-label={`Go to slide ${slideIndex + 1}`}
                       onClick={() => setIndex(slideIndex)}
-                      className="h-[10px] w-[10px] rounded-full transition-all"
+                      className="h-8 w-8 rounded-full transition-all flex items-center justify-center"
                       style={{
                         background: slideIndex === index ? "hsl(var(--primary-foreground))" : "hsl(var(--primary-foreground) / 0.3)",
                       }}
@@ -126,6 +167,8 @@ const HeroCarousel = () => {
                     alt="rePhyl cleaning products"
                     draggable={false}
                     className="select-none object-contain"
+                    loading="eager"
+                    decoding="async"
                     style={{
                       height: "460px",
                       width: "auto",
@@ -157,6 +200,10 @@ const HeroCarousel = () => {
             src={activeImage}
             alt="rePhyl banner"
             className="block w-full h-auto object-contain"
+            // @ts-ignore - fetchpriority is a valid HTML attribute
+            fetchpriority="high"
+            loading="eager"
+            decoding="async"
           />
         )}
         {!hasApiImage && <div className="absolute inset-0 bg-black/30" />}
@@ -202,6 +249,8 @@ const HeroCarousel = () => {
                     alt="rePhyl cleaning products"
                     draggable={false}
                     className="select-none object-contain h-[140px]"
+                    loading="eager"
+                    decoding="async"
                     style={{ filter: "drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.2))" }}
                   />
                 </motion.div>

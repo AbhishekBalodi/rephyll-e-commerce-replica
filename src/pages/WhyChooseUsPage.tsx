@@ -59,6 +59,7 @@ const WhyChooseUsPage = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
+      <main className="flex-1">
 
       {/* Hero */}
       <section className="bg-secondary/50 py-16 md:py-24 px-4 md:px-6 pt-[104px]">
@@ -96,6 +97,7 @@ const WhyChooseUsPage = () => {
         </a>
       </section>
 
+      </main>
       <Footer />
     </div>
   );

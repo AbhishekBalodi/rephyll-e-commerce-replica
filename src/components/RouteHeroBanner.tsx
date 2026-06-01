@@ -24,6 +24,10 @@ const RouteHeroBanner = ({ pathname, title, description, fallbackImage }: RouteH
             src={imageSrc}
             alt={title}
             className="absolute inset-0 h-full w-full object-cover"
+            // @ts-ignore - fetchpriority is a valid HTML attribute
+            fetchpriority="high"
+            loading="eager"
+            decoding="async"
           />
         )}
 

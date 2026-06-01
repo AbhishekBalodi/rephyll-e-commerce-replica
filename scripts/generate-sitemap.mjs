@@ -8,6 +8,7 @@ const OUTPUT_PATH = path.join(process.cwd(), "public", "sitemap.xml");
 const STATIC_ROUTES = [
   "/",
   "/shop",
+  "/search",
   "/about",
   "/our-story",
   "/homecare-kits",
@@ -59,7 +60,7 @@ const getRouteFromCategory = (name) => {
   }
 
   const slug = slugify(name);
-  return slug ? `/category/${slug}` : null;
+  return slug ? `/${slug}` : null;
 };
 
 const fetchAllProducts = async () => {
@@ -100,6 +101,9 @@ const fetchCategoryRoutes = async () => {
   if (!Array.isArray(categories)) return routes;
 
   for (const category of categories) {
+    if ((category?.productCount ?? 0) <= 0) {
+      continue;
+    }
     const route = getRouteFromCategory(category?.name);
     if (route) routes.add(route);
   }
@@ -134,14 +138,14 @@ const fetchAllBlogs = async () => {
   return routes;
 };
 
-const buildXml = (routes) => {
+const buildXml = (routes, categoryRoutesSet = new Set()) => {
   const today = new Date().toISOString().split("T")[0];
   const staticRouteSet = new Set(STATIC_ROUTES);
   const entries = Array.from(routes)
     .sort((a, b) => a.localeCompare(b))
     .map((route) => {
       const isBlogDetail = route.startsWith("/blog/");
-      const isCategoryPage = route.startsWith("/category/");
+      const isCategoryPage = categoryRoutesSet.has(route);
       const pathSegments = route.split("/").filter(Boolean);
       const isProductDetail = !isCategoryPage && !isBlogDetail && pathSegments.length === 2 && !staticRouteSet.has(route);
 
@@ -181,6 +185,11 @@ const main = async () => {
     for (const route of productRoutes) routes.add(route);
     for (const route of categoryRoutes) routes.add(route);
     for (const route of blogRoutes) routes.add(route);
+
+    const xml = buildXml(routes, categoryRoutes);
+    await writeFile(OUTPUT_PATH, xml, "utf8");
+    console.log(`[sitemap] Generated ${routes.size} URLs at ${OUTPUT_PATH}`);
+    return;
   } catch (error) {
     console.warn("[sitemap] Dynamic route fetch failed, using static routes only:", error.message);
   }

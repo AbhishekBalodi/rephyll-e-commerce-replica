@@ -1,7 +1,10 @@
 /**
  * Checkout / Orders API (frontend wrappers)
  */
-const BASE_URL = import.meta.env.VITE_BASE_URL || "https://www.rephyl.com";
+import { handleAuthExpired } from "@/lib/authSession";
+
+const BASE_URL =
+  (import.meta.env.VITE_BASE_URL as string | undefined)?.trim().replace(/\/+$/, "") || "";
 
 function authHeaders() {
   const token = localStorage.getItem("rephyl_token");
@@ -15,6 +18,10 @@ export async function previewCheckout(body: any) {
     body: JSON.stringify(body),
   });
   if (!res.ok) {
+    if (res.status === 401) {
+      handleAuthExpired();
+      throw new Error("Session expired. Please log in again.");
+    }
     const err = await res.json().catch(() => ({}));
     throw new Error(err.message || `Preview failed: ${res.status}`);
   }
@@ -29,6 +36,10 @@ export async function startPaymentSession(body: any) {
     body: JSON.stringify(body),
   });
   if (!res.ok) {
+    if (res.status === 401) {
+      handleAuthExpired();
+      throw new Error("Session expired. Please log in again.");
+    }
     const err = await res.json().catch(() => ({}));
     throw new Error(err.message || `Start payment session failed: ${res.status}`);
   }
@@ -41,10 +52,31 @@ export async function verifyPaymentSession(merchantOrderId: string) {
     headers: authHeaders(),
   });
   if (!res.ok) {
+    if (res.status === 401) {
+      handleAuthExpired();
+      throw new Error("Session expired. Please log in again.");
+    }
     const err = await res.json().catch(() => ({}));
     throw new Error(err.message || `Verify failed: ${res.status}`);
   }
   return res.json();
 }
 
-export default { previewCheckout, startPaymentSession, verifyPaymentSession };
+export async function confirmPaymentSession(body: { orderIds: number[]; paymentMethod: string }) {
+  const res = await fetch(`${BASE_URL}/api/customer-account/orders/payment-session/confirm`, {
+    method: "POST",
+    headers: authHeaders(),
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    if (res.status === 401) {
+      handleAuthExpired();
+      throw new Error("Session expired. Please log in again.");
+    }
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || `Confirm payment failed: ${res.status}`);
+  }
+  return res.json();
+}
+
+export default { previewCheckout, startPaymentSession, verifyPaymentSession, confirmPaymentSession };

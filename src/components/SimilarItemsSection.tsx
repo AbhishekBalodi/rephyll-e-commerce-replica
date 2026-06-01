@@ -7,10 +7,82 @@ import { ChevronLeft, ChevronRight, Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import { useProductList, useRelatedProducts } from "@/hooks/useProducts";
-import { getProductImage, getSellingPrice } from "@/lib/productHelpers";
+import { getProductImage, getVariantMrp } from "@/lib/productHelpers";
 import { buildProductPath } from "@/lib/routeHelpers";
-import type { ApiProduct } from "@/types/api";
+import { getProductById } from "@/services/productApi";
+import type { ApiProduct, ApiProductDetail } from "@/types/api";
 import bgSimilar from "@/assets/bg-similar-items.png";
+
+// ─── local card component ───────────────────────────────────────────────────
+interface SimilarProductCardProps {
+  product: ApiProduct;
+  onClick: () => void;
+}
+
+const SimilarProductCard = ({ product, onClick }: SimilarProductCardProps) => {
+  const [detail, setDetail] = useState<ApiProductDetail | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    getProductById(product.id)
+      .then((d) => { if (!cancelled) setDetail(d); })
+      .catch(() => {/* non-critical */});
+    return () => { cancelled = true; };
+  }, [product.id]);
+
+  const defaultVariant = detail?.variants?.[0];
+  // selling price = first variant price, fallback to basePrice while loading
+  const sellingPrice = defaultVariant?.price ?? product.basePrice;
+  // MRP / slash price = basePrice (what the backend calls basePrice)
+  const mrp = defaultVariant ? getVariantMrp(product, defaultVariant) : product.basePrice;
+  const showSlash = mrp > sellingPrice;
+  const image = getProductImage(product);
+  const variantCount = product.variantCount ?? 0;
+
+  return (
+    <div
+      onClick={onClick}
+      className="w-full max-w-[320px] sm:max-w-[280px] md:w-[220px] lg:w-[240px] xl:w-[260px] flex-shrink-0 cursor-pointer bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+    >
+      <div className="relative aspect-square" style={{ background: "#f5f5f5" }}>
+        <img
+          src={image}
+          alt={product.name}
+          className="w-full h-full object-cover"
+          onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg"; }}
+        />
+        <button
+          className="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <Heart size={16} className="text-gray-500" />
+        </button>
+      </div>
+
+      <div className="p-3">
+        <p className="text-sm font-medium truncate" style={{ color: "#464646" }}>
+          {product.name}
+        </p>
+        <div className="flex items-baseline gap-1.5 mt-1">
+          <span className="text-lg font-bold" style={{ color: "#064734" }}>
+            ₹ {sellingPrice.toFixed(2)}
+          </span>
+          {showSlash && (
+            <span className="text-xs line-through" style={{ color: "#8E939C" }}>
+              ₹{mrp.toFixed(2)}
+            </span>
+          )}
+        </div>
+        {variantCount > 0 ? (
+          <p className="text-xs mt-0.5" style={{ color: "#8E939C" }}>
+            {variantCount} variant{variantCount === 1 ? "" : "s"} available
+          </p>
+        ) : null}
+      </div>
+    </div>
+  );
+};
+// ─────────────────────────────────────────────────────────────────────────────
 
 interface SimilarItemsSectionProps {
   currentProductId?: number;
@@ -167,46 +239,13 @@ const SimilarItemsSection = ({
           )}
 
           <div className="flex justify-center gap-3 md:gap-4 lg:gap-5 overflow-hidden">
-            {orderedVisibleProducts.map((product: ApiProduct) => {
-              const image = getProductImage(product);
-              const price = getSellingPrice(product);
-              const variantCount = product.variantCount ?? 0;
-              return (
-                <div
-                  key={product.id}
-                  onClick={() => navigate(buildProductPath(product))}
-                  className="w-full max-w-[320px] sm:max-w-[280px] md:w-[220px] lg:w-[240px] xl:w-[260px] flex-shrink-0 cursor-pointer bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
-                >
-                  <div className="relative aspect-square" style={{ background: "#f5f5f5" }}>
-                    <img
-                      src={image}
-                      alt={product.name}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = "/placeholder.svg";
-                      }}
-                    />
-                    <button className="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center">
-                      <Heart size={16} className="text-gray-500" />
-                    </button>
-                  </div>
-
-                  <div className="p-3">
-                    <p className="text-sm font-medium truncate" style={{ color: "#464646" }}>
-                      {product.name}
-                    </p>
-                    <p className="text-lg font-bold mt-1" style={{ color: "#064734" }}>
-                      ₹ {price.toFixed(2)}
-                    </p>
-                    {variantCount > 0 ? (
-                      <p className="text-xs mt-0.5" style={{ color: "#8E939C" }}>
-                        {variantCount} variant{variantCount === 1 ? "" : "s"} available
-                      </p>
-                    ) : null}
-                  </div>
-                </div>
-              );
-            })}
+            {orderedVisibleProducts.map((product: ApiProduct) => (
+              <SimilarProductCard
+                key={product.id}
+                product={product}
+                onClick={() => navigate(buildProductPath(product))}
+              />
+            ))}
           </div>
         </div>
       </div>

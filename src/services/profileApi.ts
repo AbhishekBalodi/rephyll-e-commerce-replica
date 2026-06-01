@@ -1,4 +1,5 @@
-const BASE_URL = import.meta.env.VITE_BASE_URL || "https://www.rephyl.com";
+const BASE_URL =
+  (import.meta.env.VITE_BASE_URL as string | undefined)?.trim().replace(/\/+$/, "") || "";
 
 function authHeaders() {
   const token = localStorage.getItem("rephyl_token");

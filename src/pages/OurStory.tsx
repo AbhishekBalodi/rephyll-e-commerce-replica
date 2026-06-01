@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WebsitePageHero from "@/components/WebsitePageHero";
@@ -8,26 +7,10 @@ import { useWebsitePageByPath } from "@/hooks/useWebsitePage";
 const OurStory = () => {
   const { data: pageData, loading } = useWebsitePageByPath("/our-story");
 
-  useEffect(() => {
-    if (pageData) {
-      document.title = pageData.metaTitle || "Our Story - rePhyl";
-      
-      const metaDescription = document.querySelector('meta[name="description"]');
-      if (metaDescription) {
-        metaDescription.setAttribute("content", pageData.metaDescription);
-      }
-
-      const metaKeywords = document.querySelector('meta[name="keywords"]');
-      if (metaKeywords) {
-        metaKeywords.setAttribute("content", pageData.metaKeywords || "");
-      }
-    }
-  }, [pageData]);
-
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-
+      <main className="flex-1">
       <WebsitePageHero
         page={pageData}
         fallbackTitle="Our Story"

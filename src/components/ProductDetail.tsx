@@ -9,10 +9,9 @@ import {
   ChevronRight,
   Check,
   Heart,
-  Bookmark,
   Share2,
-  Star,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 import type {
   ApiProductAttribute,
@@ -30,6 +29,7 @@ import {
 } from "@/lib/productHelpers";
 
 import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/contexts/WishlistContext";
 
 import ProductDetailAccordion from "./ProductDetailAccordion";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -48,6 +48,7 @@ type AttributeOption = {
 const ProductDetail = ({
   product,
 }: ProductDetailProps) => {
+  const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [activeImg, setActiveImg] =
     useState(0);
@@ -91,12 +92,20 @@ const ProductDetail = ({
     items,
     addToCart,
   } = useCart();
+  const {
+    addToWishlist,
+    removeFromWishlist,
+    isWishlisted,
+  } = useWishlist();
 
   const FEATURES =
     product.featureBadges ?? [];
 
   const DESCRIPTION =
     product.description ?? "";
+
+  const OVERVIEW =
+    product.overview?.trim() ?? "";
 
   const orderedAttributes =
     useMemo(
@@ -340,6 +349,11 @@ const ProductDetail = ({
             Number.POSITIVE_INFINITY
         );
 
+  const isItemWishlisted = isWishlisted(
+    product.id,
+    selectedVariant?.id
+  );
+
   const prevImg = () =>
     setActiveImg((p) =>
       p > 0
@@ -453,6 +467,20 @@ const ProductDetail = ({
       );
     };
 
+  const handleBuyNow = () => {
+    if (!selectedVariant?.id) {
+      alert("Please select a variant");
+      return;
+    }
+
+    // Ensure selected variant is in cart before navigating to checkout.
+    if (cartQty < maxAllowedQty) {
+      handleAddToCart();
+    }
+
+    navigate("/checkout");
+  };
+
   const handleAttributeSelect =
     (
       attributeName: string,
@@ -520,6 +548,47 @@ const ProductDetail = ({
           fallback
         );
     };
+
+  const handleShareProduct = async () => {
+    const shareUrl = window.location.href;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: product.name,
+          text: `Check out ${product.name}`,
+          url: shareUrl,
+        });
+        return;
+      } catch {
+        // If share sheet is dismissed or fails, fallback to web URL.
+      }
+    }
+
+    const webShareUrl = `https://wa.me/?text=${encodeURIComponent(`Check out ${product.name}: ${shareUrl}`)}`;
+    window.open(webShareUrl, "_blank", "noopener,noreferrer");
+  };
+
+  const handleWishlistToggle = () => {
+    if (isItemWishlisted) {
+      removeFromWishlist(
+        product.id,
+        selectedVariant?.id
+      );
+      return;
+    }
+
+    addToWishlist({
+      productId: product.id,
+      name: product.name,
+      price: activePrice,
+      originalPrice: activeMrp,
+      image: images[activeImg] || images[0] || "/placeholder.svg",
+      variantId: selectedVariant?.id,
+      categoryName: product.categoryName,
+      slug: product.slug || product.urlHandle,
+    });
+  };
 
   const renderAttributeCard =
     (
@@ -710,7 +779,7 @@ const ProductDetail = ({
     };
 
   return (
-    <div className="max-w-[1240px] mx-auto px-3 sm:px-4 md:px-6 pt-[112px] md:pt-[140px] lg:pt-[155px] pb-8 md:pb-10">
+    <div className="max-w-[1240px] mx-auto px-3 sm:px-4 md:px-6 pt-[112px] md:pt-[140px] lg:pt-[155px] pb-28 md:pb-10">
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1fr)] gap-5 md:gap-6 lg:gap-10 items-start">
         {/* LEFT */}
         <div className="flex flex-col md:flex-row gap-3 h-full lg:h-[500px] w-full max-w-[430px] md:max-w-[760px] lg:max-w-none mx-auto justify-center items-start">
@@ -755,7 +824,7 @@ const ProductDetail = ({
                   >
                     <img
                       src={img}
-                      className="w-14 h-14 md:w-16 md:h-16 object-cover"
+                      className="w-14 h-14 md:w-16 md:h-16"
                       alt={`${product.name}-${index}`}
                     />
                   </button>
@@ -821,10 +890,10 @@ const ProductDetail = ({
                   type="button"
                   onClick={() => setActiveImg(index)}
                   aria-label={`Go to image ${index + 1}`}
-                  className={`rounded-full transition-all ${
+                  className={`rounded-full transition-all h-6 w-6 flex items-center justify-center ${
                     activeImg === index
-                      ? "h-2.5 w-6 bg-[#064734]"
-                      : "h-2.5 w-2.5 bg-[#C7D2D9]"
+                      ? "bg-[#064734]"
+                      : "bg-[#C7D2D9]"
                   }`}
                 />
               ))}
@@ -833,7 +902,7 @@ const ProductDetail = ({
         </div>
 
         {/* RIGHT */}
-        <div className="flex flex-col gap-5 justify-start lg:min-h-[500px]">
+        <div className="flex flex-col justify-start lg:min-h-[500px]">
           <div>
             {/* heading */}
             <div className="flex justify-between items-start gap-3">
@@ -970,27 +1039,32 @@ const ProductDetail = ({
 
               <div className="inline-flex flex-col items-end gap-2 shrink-0 ml-auto">
                 <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-1 px-2 py-1 bg-[#E2F3AF] rounded-full text-xs">
+                  <button
+                    type="button"
+                    onClick={handleWishlistToggle}
+                    aria-label={isItemWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+                    className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs transition-colors ${
+                      isItemWishlisted ? "bg-[#064734] text-white" : "bg-[#E2F3AF] text-[#064734]"
+                    }`}
+                  >
                     <Heart
                       size={12}
-                      className="text-[#064734]"
+                      className={isItemWishlisted ? "text-white fill-white" : "text-[#064734]"}
                     />
                     109
-                  </div>
+                  </button>
 
-                  {/* <div className="w-[34px] h-[34px] rounded-full bg-[#0647341A] flex items-center justify-center">
-                    <Bookmark
-                      size={14}
-                      className="text-[#064734]"
-                    />
-                  </div> */}
-
-                  {/* <div className="w-[34px] h-[34px] rounded-full bg-[#0647341A] flex items-center justify-center">
+                  <button
+                    type="button"
+                    onClick={handleShareProduct}
+                    aria-label="Share product"
+                    className="w-[34px] h-[34px] rounded-full bg-[#0647341A] flex items-center justify-center hover:bg-[#06473426]"
+                  >
                     <Share2
                       size={14}
                       className="text-[#064734]"
                     />
-                  </div> */}
+                  </button>
                 </div>
 
                 {/* <div className="flex items-center gap-2">
@@ -1108,7 +1182,7 @@ const ProductDetail = ({
             ) : null}
 
             {/* cart */}
-            <div className="flex gap-3 mb-5">
+            <div className={`flex gap-3 ${isMobile ? "hidden" : "mb-5"}`}>
               <button
                 type="button"
                 onClick={
@@ -1126,9 +1200,15 @@ const ProductDetail = ({
                 Add To Cart
               </button>
             </div>
+
+            {OVERVIEW ? (
+              <p className="mb-3 whitespace-pre-line text-[14px] font-medium leading-snug text-[#464646] md:text-[15px]">
+                {OVERVIEW}
+              </p>
+            ) : null}
           </div>
 
-          <div className="text-[15px] font-semibold text-[#064734]">
+          <div className={`text-[15px] font-semibold text-[#064734] ${OVERVIEW ? "mt-0" : "mt-2"}`}>
             <ProductDetailAccordion
               product={
                 product
@@ -1137,6 +1217,42 @@ const ProductDetail = ({
           </div>
         </div>
       </div>
+
+      {isMobile ? (
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[#E5E7EB] bg-white/95 px-3 pt-3 pb-[calc(env(safe-area-inset-bottom)+12px)] backdrop-blur supports-[backdrop-filter]:bg-white/80">
+          <button
+            type="button"
+            onClick={
+              handleAddToCart
+            }
+            disabled={
+              !selectedVariant?.id ||
+              maxAllowedQty <=
+                0 ||
+              cartQty >=
+                maxAllowedQty
+            }
+            className="w-full bg-[#064734] text-white py-3 rounded-xl text-[15px] disabled:cursor-not-allowed disabled:opacity-70"
+          >
+            Add To Cart
+          </button>
+
+          <button
+            type="button"
+            onClick={
+              handleBuyNow
+            }
+            disabled={
+              !selectedVariant?.id ||
+              maxAllowedQty <=
+                0
+            }
+            className="mt-2 w-full bg-white text-[#064734] border border-[#064734] py-3 rounded-xl text-[15px] font-semibold disabled:cursor-not-allowed disabled:opacity-70"
+          >
+            Buy Now
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 };

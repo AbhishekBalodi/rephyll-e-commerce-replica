@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WebsitePageHero from "@/components/WebsitePageHero";
@@ -7,24 +6,10 @@ import { useWebsitePageByPath } from "@/hooks/useWebsitePage";
 const TermsOfService = () => {
   const { data: pageData } = useWebsitePageByPath("/terms");
 
-  useEffect(() => {
-    if (!pageData) return;
-    document.title = pageData.metaTitle || pageData.title || "Terms of Service - rePhyl";
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute("content", pageData.metaDescription || "");
-    }
-
-    const metaKeywords = document.querySelector('meta[name="keywords"]');
-    if (metaKeywords) {
-      metaKeywords.setAttribute("content", pageData.metaKeywords || "");
-    }
-  }, [pageData]);
-
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-
+      <main className="flex-1">
       <WebsitePageHero
         page={pageData}
         fallbackTitle="Terms of Service"
@@ -196,6 +181,7 @@ const TermsOfService = () => {
           </div>
         </div>
       </section>
+      </main>
       <Footer />
     </div>
   );

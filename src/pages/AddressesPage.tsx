@@ -114,6 +114,7 @@ const AddressesPageContent = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
+      <main className="flex-1">
       <section className="max-w-4xl mx-auto px-4 md:px-6 py-16 pt-[104px]">
         <h1 className="text-3xl font-bold mb-2">My Addresses</h1>
         <p className="text-muted-foreground mb-8">Manage your delivery and billing addresses</p>
@@ -280,6 +281,7 @@ const AddressesPageContent = () => {
           </div>
         </div>
       </section>
+      </main>
       <Footer />
     </div>
   );

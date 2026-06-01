@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import TrustMarqueeStrip from "@/components/TrustMarqueeStrip";
@@ -10,23 +10,6 @@ const AboutUs = () => {
   const { data: pageData, loading, error } = useWebsitePageByPath("/about");
   const contentRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    // Update meta tags
-    if (pageData) {
-      document.title = pageData.metaTitle || "About Us - rePhyl";
-      
-      const metaDescription = document.querySelector('meta[name="description"]');
-      if (metaDescription) {
-        metaDescription.setAttribute("content", pageData.metaDescription);
-      }
-      
-      const metaKeywords = document.querySelector('meta[name="keywords"]');
-      if (metaKeywords) {
-        metaKeywords.setAttribute("content", pageData.metaKeywords);
-      }
-    }
-  }, [pageData]);
-
   const handleReadMore = () => {
     contentRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -35,6 +18,7 @@ const AboutUs = () => {
     <div className="w-full">
 
       <Navbar />
+      <main className="flex-1">
 
       <WebsitePageHero
         page={pageData}
@@ -109,6 +93,7 @@ const AboutUs = () => {
       {/* ✅ FULL WIDTH SECTION (no constraints) */}
       <WhyChooseUs heading="Redefining what home care can be: clean, safe, and refreshingly honest." />
 
+      </main>
       <Footer />
 
     </div>

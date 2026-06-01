@@ -1,7 +1,10 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useCallback, useContext, useState, useEffect, useRef, ReactNode } from "react";
 import { useAuth } from "./AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import * as cartApi from "@/services/cartApi";
+import { getProductImages, getVariantMrp, resolveImageUrl } from "@/lib/productHelpers";
+import { getProductById } from "@/services/productApi";
+import { handleAuthExpired, isUnauthorizedError } from "@/lib/authSession";
 
 export interface CartItem {
   productId: number;
@@ -24,6 +27,7 @@ interface CartContextType {
   removeFromCart: (productId: number, variantId?: number) => void;
   updateQuantity: (productId: number, quantity: number, variantId?: number) => void;
   clearCart: () => void;
+  refreshCart: () => Promise<void>;
   syncing?: boolean;
 }
 
@@ -31,6 +35,76 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 const STORAGE_KEY = "rephyl_cart";
 const FRONTEND_MAX_PER_ITEM = 10;
+
+const parseImageCandidate = (value: unknown): string | null => {
+  if (!value) return null;
+
+  if (typeof value === "object") {
+    const maybePath = (value as { path?: unknown }).path;
+    return parseImageCandidate(maybePath);
+  }
+
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+
+  try {
+    const parsed = JSON.parse(trimmed) as { path?: unknown };
+    if (parsed && typeof parsed === "object" && "path" in parsed) {
+      return parseImageCandidate(parsed.path);
+    }
+  } catch {
+    // normal string path
+  }
+
+  return trimmed;
+};
+
+const resolveCartImage = (item: any): string => {
+  const candidates = [
+    item?.product?.imagePath?.path,
+    item?.product?.imagePath,
+    item?.productImage?.path,
+    item?.productImage,
+    item?.imagePath,
+  ];
+
+  for (const candidate of candidates) {
+    const parsed = parseImageCandidate(candidate);
+    if (parsed) return resolveImageUrl(parsed);
+  }
+
+  return "/placeholder.svg";
+};
+
+const enrichCartItemsWithProductData = async (baseItems: CartItem[]): Promise<CartItem[]> => {
+  const detailPromiseCache = new Map<number, Promise<any>>();
+  const getDetailCached = (productId: number) => {
+    if (!detailPromiseCache.has(productId)) {
+      detailPromiseCache.set(productId, getProductById(productId));
+    }
+    return detailPromiseCache.get(productId)!;
+  };
+
+  return Promise.all(baseItems.map(async (item) => {
+    if (!item.productId) return item;
+
+    try {
+      const detail = await getDetailCached(item.productId);
+      const primaryImage = getProductImages(detail)[0] || item.image;
+      const variant = detail.variants?.find((v: any) => v.id === item.variantId);
+      const inferredMrp = variant ? getVariantMrp(detail, variant) : item.originalPrice;
+
+      return {
+        ...item,
+        image: primaryImage || item.image,
+        originalPrice: inferredMrp > item.price ? inferredMrp : item.originalPrice,
+      };
+    } catch {
+      return item;
+    }
+  }));
+};
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [items, setItems] = useState<CartItem[]>(() => {
@@ -54,7 +128,9 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   });
   const [syncing, setSyncing] = useState(false);
+  const loginSyncTokenRef = useRef<string | null>(null);
   const { toast } = useToast();
+  const { token } = useAuth();
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
@@ -155,6 +231,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
           }
         } catch (_) { /* ignore */ }
       } catch (err: any) {
+        if (isUnauthorizedError(err)) {
+          handleAuthExpired();
+          toast({ title: "Session expired", description: "Please log in again to continue.", variant: "destructive" });
+          return;
+        }
         toast({ title: "Sync failed", description: err.message || "Could not sync cart", variant: "destructive" });
       } finally {
         setSyncing(false);
@@ -185,6 +266,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         setSyncing(true);
         await cartApi.removeItem(itemToRemove.itemId);
       } catch (err) {
+        if (isUnauthorizedError(err)) {
+          handleAuthExpired();
+          toast({ title: "Session expired", description: "Please log in again to continue.", variant: "destructive" });
+          return;
+        }
         console.error('Failed to sync remove:', err);
       } finally { setSyncing(false); }
     })();
@@ -229,6 +315,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
           throw new Error(resp.message || 'Update failed');
         }
       } catch (err) {
+        if (isUnauthorizedError(err)) {
+          handleAuthExpired();
+          toast({ title: "Session expired", description: "Please log in again to continue.", variant: "destructive" });
+          return;
+        }
         console.error('Failed to sync update:', err);
       } finally { setSyncing(false); }
     })();
@@ -244,42 +335,155 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         const resp = await cartApi.clearCart();
         if (resp && typeof resp === 'object' && resp.success === false) throw new Error(resp.message || 'Clear cart failed');
       } catch (err) {
-        // ignore
+        if (isUnauthorizedError(err)) {
+          handleAuthExpired();
+          toast({ title: "Session expired", description: "Please log in again to continue.", variant: "destructive" });
+        }
       } finally { setSyncing(false); }
     })();
   };
 
-  // When the user logs in (token present), try to fetch server cart and replace local cart
-  const { token } = useAuth();
+  const refreshCart = useCallback(async () => {
+    try {
+      if (!token) return;
+      const server = await cartApi.getCart();
+      const serverItems = (server && server.success) ? (server.data?.items || []) : (server.items || []);
+      const mapped = serverItems.map((si: any) => ({
+        productId: si.productId || si.product?.id || 0,
+        name: si.productName || si.product?.name || "Product",
+        price: si.unitPrice || si.price || 0,
+        originalPrice: si.mrp || si.originalPrice || si.unitPrice || 0,
+        image: resolveCartImage(si),
+        quantity: si.quantity || si.qty || 1,
+        variantId: si.variantId || si.variant?.id,
+        itemId: si.id,
+        maxQuantity: si.maxQuantity || si.maxCartQuantity || si.variant?.inventory?.maxCartQuantity || null,
+        stockLabel: si.stockLabel || si.variant?.inventory?.stockLabel || null,
+      }));
+
+      const enriched = await enrichCartItemsWithProductData(mapped);
+
+      setItems((prev) => enriched.map((item) => {
+        const existing = prev.find((p) => p.productId === item.productId && p.variantId === item.variantId);
+        const stableMrp = Math.max(
+          item.originalPrice || 0,
+          existing?.originalPrice && existing.originalPrice > item.price ? existing.originalPrice : 0
+        );
+
+        return {
+          ...item,
+          image: item.image,
+          originalPrice: stableMrp > item.price ? stableMrp : item.price,
+        };
+      }));
+    } catch (err) {
+      if (isUnauthorizedError(err)) {
+        handleAuthExpired();
+        toast({ title: "Session expired", description: "Please log in again to continue.", variant: "destructive" });
+      }
+    }
+  }, [token, toast]);
+
+  // Normalize guest/local cart on app start so old entries also use primary image + MRP logic.
   useEffect(() => {
     let mounted = true;
     (async () => {
       try {
-        if (!token) return;
-        const server = await cartApi.getCart();
-        const serverItems = (server && server.success) ? (server.data?.items || []) : (server.items || []);
-        const mapped = serverItems.map((si: any) => ({
-          productId: si.productId || si.product?.id || 0,
-          name: si.productName || si.product?.name || "Product",
-          price: si.unitPrice || si.price || 0,
-          originalPrice: si.mrp || si.originalPrice || si.unitPrice || 0,
-          image: si.imagePath || (si.productImage && si.productImage.path) || "/placeholder.svg",
-          quantity: si.quantity || si.qty || 1,
-          variantId: si.variantId || si.variant?.id,
-          itemId: si.id,
-          maxQuantity: si.maxQuantity || si.maxCartQuantity || si.variant?.inventory?.maxCartQuantity || null,
-          stockLabel: si.stockLabel || si.variant?.inventory?.stockLabel || null,
-        }));
-        if (mounted && mapped.length > 0) setItems(mapped);
-      } catch (err) {
+        if (token || items.length === 0) return;
+        const enriched = await enrichCartItemsWithProductData(items);
+        if (!mounted) return;
+
+        setItems((prev) => {
+          let changed = false;
+          const next = prev.map((item) => {
+            const match = enriched.find((e) => e.productId === item.productId && e.variantId === item.variantId);
+            if (!match) return item;
+
+            const merged = {
+              ...item,
+              image: match.image,
+              originalPrice: Math.max(item.originalPrice, match.originalPrice, item.price),
+            };
+
+            if (merged.image !== item.image || merged.originalPrice !== item.originalPrice) {
+              changed = true;
+            }
+
+            return merged;
+          });
+
+          return changed ? next : prev;
+        });
+      } catch {
         // ignore
       }
     })();
-    return () => { mounted = false; };
+
+    return () => {
+      mounted = false;
+    };
   }, [token]);
 
+  // When the user logs in, fetch server cart and replace local cart.
+  // When the user logs out, clear the local cart so the next user starts clean.
+  useEffect(() => {
+    if (!token) {
+      loginSyncTokenRef.current = null;
+      // Clear cart on logout — prevents User A's cart from leaking to User B
+      setItems([]);
+      return;
+    }
+
+    // Run login cart sync only once per auth token to avoid request loops.
+    if (loginSyncTokenRef.current === token) {
+      return;
+    }
+    loginSyncTokenRef.current = token;
+
+    // Snapshot guest items at the moment of login — items with no server itemId
+    // are pure guest additions. After logout, items is [] so this will be empty
+    // for a different user logging in (preventing cross-account cart leakage).
+    const unsyncedGuestItems = items.filter((item) => !item.itemId && item.variantId);
+    if (unsyncedGuestItems.length === 0) {
+      void refreshCart();
+      return;
+    }
+
+    let mounted = true;
+
+    const syncGuestCartToServer = async () => {
+      try {
+        setSyncing(true);
+        for (const item of unsyncedGuestItems) {
+          await cartApi.addItem(item.variantId!, item.quantity);
+        }
+        if (mounted) {
+          await refreshCart();
+        }
+      } catch (err) {
+        if (isUnauthorizedError(err)) {
+          handleAuthExpired();
+          toast({ title: "Session expired", description: "Please log in again to continue.", variant: "destructive" });
+          return;
+        }
+
+        toast({ title: "Cart sync failed", description: "Could not sync saved cart items.", variant: "destructive" });
+      } finally {
+        if (mounted) {
+          setSyncing(false);
+        }
+      }
+    };
+
+    void syncGuestCartToServer();
+
+    return () => {
+      mounted = false;
+    };
+  }, [token, refreshCart]);
+
   return (
-    <CartContext.Provider value={{ items, totalItems, totalPrice, addToCart, removeFromCart, updateQuantity, clearCart, syncing }}>
+    <CartContext.Provider value={{ items, totalItems, totalPrice, addToCart, removeFromCart, updateQuantity, clearCart, refreshCart, syncing }}>
       {children}
     </CartContext.Provider>
   );

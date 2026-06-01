@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 
 export interface WishlistItem {
   productId: number;
@@ -20,22 +21,42 @@ interface WishlistContextType {
   clearWishlist: () => void;
 }
 
-const STORAGE_KEY = "rephyl_wishlist";
+const STORAGE_KEY_PREFIX = "rephyl_wishlist";
 const WishlistContext = createContext<WishlistContextType | undefined>(undefined);
 
+function getWishlistStorageKey(user: { personId?: number; tenantId?: number; email?: string } | null) {
+  if (user?.personId) return `${STORAGE_KEY_PREFIX}:person:${user.personId}`;
+  if (user?.tenantId) return `${STORAGE_KEY_PREFIX}:tenant:${user.tenantId}`;
+  if (user?.email) return `${STORAGE_KEY_PREFIX}:email:${user.email.toLowerCase()}`;
+  return `${STORAGE_KEY_PREFIX}:guest`;
+}
+
 export const WishlistProvider = ({ children }: { children: ReactNode }) => {
-  const [items, setItems] = useState<WishlistItem[]>(() => {
+  const { user } = useAuth();
+  const storageKey = useMemo(
+    () => getWishlistStorageKey(user),
+    [user?.personId, user?.tenantId, user?.email]
+  );
+
+  const [items, setItems] = useState<WishlistItem[]>([]);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  // Load wishlist for current account when auth identity changes.
+  useEffect(() => {
     try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      return stored ? JSON.parse(stored) : [];
+      const stored = localStorage.getItem(storageKey);
+      setItems(stored ? JSON.parse(stored) : []);
     } catch {
-      return [];
+      setItems([]);
+    } finally {
+      setIsHydrated(true);
     }
-  });
+  }, [storageKey]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-  }, [items]);
+    if (!isHydrated) return;
+    localStorage.setItem(storageKey, JSON.stringify(items));
+  }, [items, storageKey, isHydrated]);
 
   const addToWishlist = (item: WishlistItem) => {
     setItems((prev) => {

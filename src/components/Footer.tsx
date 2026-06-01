@@ -112,7 +112,7 @@ const Footer = () => {
             <div className="flex flex-col gap-[15px]">
               <form onSubmit={handleSubscribe} className="relative">
                 <input type="email" placeholder="Email address" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full bg-transparent border border-[#CEF17B66] px-4 py-3 rounded-md text-sm placeholder:text-white/50 outline-none" required />
-                <button type="submit" disabled={loading} className="absolute right-0 top-0 h-full px-4 bg-[#CEF17B] rounded-r-md flex items-center justify-center">
+                <button type="submit" disabled={loading} aria-label="Subscribe" className="absolute right-0 top-0 h-full px-4 bg-[#CEF17B] rounded-r-md flex items-center justify-center">
                   <ArrowRight className="text-[#064734]" size={18} />
                 </button>
               </form>
@@ -182,7 +182,7 @@ const Footer = () => {
               <div className="flex flex-col gap-3 pb-4">
                 <form onSubmit={handleSubscribe} className="relative">
                   <input type="email" placeholder="Email address" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full bg-transparent border border-[#CEF17B66] px-4 py-3 rounded-md text-sm placeholder:text-white/50 outline-none" required />
-                  <button type="submit" disabled={loading} className="absolute right-0 top-0 h-full px-4 bg-[#CEF17B] rounded-r-md flex items-center justify-center">
+                  <button type="submit" disabled={loading} aria-label="Subscribe" className="absolute right-0 top-0 h-full px-4 bg-[#CEF17B] rounded-r-md flex items-center justify-center">
                     <ArrowRight className="text-[#064734]" size={18} />
                   </button>
                 </form>
@@ -192,9 +192,9 @@ const Footer = () => {
 
           {/* Social + Copyright */}
           <div className="flex justify-center gap-4 mt-6">
-            <a href="https://www.instagram.com/rephyl.life" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center"><Instagram size={16} /></a>
-            <a href="https://www.facebook.com/people/rePhyl/61583757478743/" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center"><Facebook size={16} /></a>
-            <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center"><Youtube size={16} /></a>
+            <a href="https://www.instagram.com/rephyl.life" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center"><Instagram size={16} /></a>
+            <a href="https://www.facebook.com/people/rePhyl/61583757478743/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center"><Facebook size={16} /></a>
+            <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center"><Youtube size={16} /></a>
           </div>
           <p className="text-center text-xs text-white/60 mt-4">©2026 rePhyl. All rights reserved.</p>
         </div>
@@ -206,9 +206,9 @@ const Footer = () => {
             <h2 className="text-2xl font-bold">rePhyl</h2>
             <p className="text-sm text-white/60">©2026 rePhyl. All rights reserved.</p>
             <div className="flex gap-4">
-              <a href="https://www.instagram.com/rephyl.life" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#064734] transition"><Instagram size={16} /></a>
-              <a href="https://www.facebook.com/people/rePhyl/61583757478743/" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#064734] transition"><Facebook size={16} /></a>
-              <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#064734] transition"><Youtube size={16} /></a>
+              <a href="https://www.instagram.com/rephyl.life" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#064734] transition"><Instagram size={16} /></a>
+              <a href="https://www.facebook.com/people/rePhyl/61583757478743/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#064734] transition"><Facebook size={16} /></a>
+              <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#064734] transition"><Youtube size={16} /></a>
             </div>
           </div>
         </div>

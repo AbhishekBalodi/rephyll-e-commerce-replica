@@ -1,0 +1,120 @@
+1. GET /api/customer-account/rewards/balance
+Response
+{
+  "success": true,
+  "message": "Green Rewards balance retrieved successfully",
+  "data": {
+    "pointsBalance": 2500,
+    "redeemableValue": 250.00,
+    "pointsToNextRedemption": 0,
+    "minPointsForRedemption": 100,
+    "nearestExpiry": "2026-06-15T10:30:00",
+    "expiringPoints": [
+      {
+        "id": 1,
+        "points": 500,
+        "remainingPoints": 500,
+        "sourceType": "ORDER",
+        "sourceId": 101,
+        "expiresAt": "2026-06-15T10:30:00",
+        "status": "ACTIVE"
+      }
+    ],
+    "recentTransactions": [
+      {
+        "id": 5,
+        "transactionNumber": "RWD-2026-001",
+        "transactionType": "EARN",
+        "direction": "CREDIT",
+        "points": 150,
+        "rupeeValue": null,
+        "referenceType": "ORDER",
+        "referenceId": 101,
+        "createdAt": "2026-05-09T10:35:00",
+        "remarks": "Earned 150 points on order SO-2026-001"
+      },
+      {
+        "id": 3,
+        "transactionNumber": "RWD-2026-002",
+        "transactionType": "REDEEM",
+        "direction": "DEBIT",
+        "points": 500,
+        "rupeeValue": 50.00,
+        "referenceType": "REDEMPTION_FOR_ORDER",
+        "referenceId": 102,
+        "createdAt": "2026-05-08T14:20:00",
+        "remarks": "Redeemed 500 Green Points = ₹50.00 INR"
+      }
+    ]
+  }
+}
+Field Descriptions
+Field	Type	Description
+pointsBalance	Long	Total available points
+redeemableValue	BigDecimal	INR value of points (1 point = ₹0.10)
+pointsToNextRedemption	Long	Points needed to reach next redemption tier
+minPointsForRedemption	Long	Minimum points required to redeem (100)
+nearestExpiry	LocalDateTime	Nearest expiration date of any points
+expiringPoints[]	List	Points expiring soon (within 30 days)
+recentTransactions[]	List	Last 10 transactions
+---
+2. POST /api/customer/coupons/validate
+Request Payload
+{
+  "code": "SAVE10",
+  "items": [
+    {
+      "variantId": 101,
+      "quantity": 2
+    },
+    {
+      "variantId": 102,
+      "quantity": 1
+    }
+  ],
+  "appliedCouponCodes": ["FIRST20"]
+}
+Response
+{
+  "success": true,
+  "message": "Coupon validated",
+  "data": {
+    "valid": true,
+    "couponCode": "SAVE10",
+    "discountAmount": 100.00,
+    "applicableAmount": 1000.00,
+    "message": "Coupon applied successfully!",
+    "allowStackable": true
+  }
+}
+When Invalid
+{
+  "success": true,
+  "message": "Coupon validated",
+  "data": {
+    "valid": false,
+    "couponCode": "EXPIRED",
+    "discountAmount": null,
+    "applicableAmount": 1000.00,
+    "message": "This coupon has expired",
+    "allowStackable": false
+  }
+}
+Field Descriptions
+Field	Type	Description
+valid	Boolean	Whether coupon can be applied
+couponCode	String	The validated coupon code
+discountAmount	BigDecimal	Discount value in INR
+applicableAmount	BigDecimal	Amount the discount applies to
+message	String	Validation message
+allowStackable	Boolean	Can be combined with other coupons
+---
+Summary of Customer-Facing Green Points & Coupon APIs
+API	Method	Purpose
+/api/customer-account/rewards/balance	GET	Get points balance, expiring points, transactions
+/api/customer/coupons/validate	POST	Validate a coupon code before checkout
+Notes:
+- Green Points Conversion: 1 point = ₹0.10 (10 points = ₹1)
+- Minimum Redemption: 100 points required to redeem
+- Points Expiry: Points expire after 90 days from earning
+- Coupon Stackable: Some coupons can be combined, others cannot

@@ -91,6 +91,7 @@ export interface ApiProductAttribute {
 /** Product as returned from GET /api/customer/products/slug/{slug} (detail view). */
 export interface ApiProductDetail extends ApiProduct {
   description: string;
+  overview?: string | null;
 
   // ✅ newly added backend fields
   keyFeatures?: string | null;

@@ -101,6 +101,67 @@ class ApiService {
   }
 
   /**
+   * Submit customer contact query (multipart/form-data).
+   */
+  async submitCustomerContactQuery(data: {
+    name: string;
+    email: string;
+    mobile?: string;
+    message: string;
+    attachment?: File | null;
+  }): Promise<ApiResponse> {
+    const url = `${this.baseUrl}/customer/contact`;
+    const formData = new FormData();
+
+    formData.append("name", data.name);
+    formData.append("email", data.email);
+    if (data.mobile?.trim()) {
+      formData.append("mobile", data.mobile.trim());
+    }
+    formData.append("message", data.message);
+    if (data.attachment) {
+      formData.append("attachment", data.attachment);
+    }
+
+    console.log("[ApiService] POST", url, "(multipart)");
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        body: formData,
+      });
+
+      const isJson = response.headers
+        .get("content-type")
+        ?.includes("application/json");
+
+      const payload: ApiResponse = isJson
+        ? await response.json()
+        : {
+            success: response.ok,
+            message: await response.text(),
+          };
+
+      if (!response.ok) {
+        throw new Error(
+          payload.message ||
+            `Request failed with status ${response.status}`
+        );
+      }
+
+      return payload;
+    } catch (error) {
+      if (error instanceof TypeError) {
+        throw new Error(
+          "Unable to reach API. Please check backend connectivity and API URL."
+        );
+      }
+
+      throw error;
+    }
+  }
+
+  /**
    * Subscribe to newsletter.
    */
   async subscribeNewsletter(email: string): Promise<ApiResponse> {

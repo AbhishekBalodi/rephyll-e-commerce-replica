@@ -10,16 +10,16 @@ const WhyWeExist = () => {
       <div className="absolute inset-0 bg-[rgba(206,241,123,0.3)]" />
 
       {/* CLOVERS - desktop only */}
-      <img src={cloverLime} className="absolute opacity-60 hidden md:block" style={{ width: 153, height: 153, left: 10, top: 24 }} />
-      <img src={cloverLime} className="absolute opacity-60 hidden md:block" style={{ width: 153, height: 153, left: 780, top: 10 }} />
-      <img src={cloverLime} className="absolute opacity-60 hidden md:block" style={{ width: 153, height: 153, left: 416, top: 19 }} />
-      <img src={cloverLime} className="absolute opacity-60 hidden md:block" style={{ width: 153, height: 153, left: 1079, top: 10 }} />
-      <img src={cloverLime} className="absolute opacity-60 hidden md:block" style={{ width: 153, height: 153, left: 10, top: 340 }} />
-      <img src={cloverLime} className="absolute opacity-60 hidden md:block" style={{ width: 153, height: 153, left: 334, top: 656 }} />
-      <img src={cloverLime} className="absolute opacity-60 hidden md:block" style={{ width: 153, height: 153, left: 10, top: 580 }} />
-      <img src={cloverLime} className="absolute opacity-60 hidden md:block" style={{ width: 153, height: 153, left: 1370, top: 580 }} />
-      <img src={cloverLime} className="absolute opacity-60 hidden md:block" style={{ width: 153, height: 153, left: 1370, top: 20 }} />
-      <img src={cloverLime} className="absolute opacity-60 hidden md:block" style={{ width: 153, height: 153, left: 1340, top: 340 }} />
+      <img src={cloverLime} alt="" aria-hidden="true" loading="lazy" decoding="async" width={153} height={153} className="absolute opacity-60 hidden md:block" style={{ width: 153, height: 153, left: 10, top: 24 }} />
+      <img src={cloverLime} alt="" aria-hidden="true" loading="lazy" decoding="async" width={153} height={153} className="absolute opacity-60 hidden md:block" style={{ width: 153, height: 153, left: 780, top: 10 }} />
+      <img src={cloverLime} alt="" aria-hidden="true" loading="lazy" decoding="async" width={153} height={153} className="absolute opacity-60 hidden md:block" style={{ width: 153, height: 153, left: 416, top: 19 }} />
+      <img src={cloverLime} alt="" aria-hidden="true" loading="lazy" decoding="async" width={153} height={153} className="absolute opacity-60 hidden md:block" style={{ width: 153, height: 153, left: 1079, top: 10 }} />
+      <img src={cloverLime} alt="" aria-hidden="true" loading="lazy" decoding="async" width={153} height={153} className="absolute opacity-60 hidden md:block" style={{ width: 153, height: 153, left: 10, top: 340 }} />
+      <img src={cloverLime} alt="" aria-hidden="true" loading="lazy" decoding="async" width={153} height={153} className="absolute opacity-60 hidden md:block" style={{ width: 153, height: 153, left: 334, top: 656 }} />
+      <img src={cloverLime} alt="" aria-hidden="true" loading="lazy" decoding="async" width={153} height={153} className="absolute opacity-60 hidden md:block" style={{ width: 153, height: 153, left: 10, top: 580 }} />
+      <img src={cloverLime} alt="" aria-hidden="true" loading="lazy" decoding="async" width={153} height={153} className="absolute opacity-60 hidden md:block" style={{ width: 153, height: 153, left: 1370, top: 580 }} />
+      <img src={cloverLime} alt="" aria-hidden="true" loading="lazy" decoding="async" width={153} height={153} className="absolute opacity-60 hidden md:block" style={{ width: 153, height: 153, left: 1370, top: 20 }} />
+      <img src={cloverLime} alt="" aria-hidden="true" loading="lazy" decoding="async" width={153} height={153} className="absolute opacity-60 hidden md:block" style={{ width: 153, height: 153, left: 1340, top: 340 }} />
 
       {/* MAIN CONTAINER */}
       <div className="relative max-w-[1280px] mx-auto px-4 md:px-0 md:pt-[80px] flex flex-col items-center gap-4 md:gap-6">
@@ -33,7 +33,7 @@ const WhyWeExist = () => {
           {/* LEFT CARD */}
           <div className="w-full md:w-[575px] h-auto md:h-[195px] bg-[#E2F5B2] rounded-[16px] md:rounded-[20px] px-5 md:px-[32px] py-5 md:py-[20px] shadow-[0px_10px_15px_-3px_rgba(0,0,0,0.1)] flex flex-col items-center justify-center">
             <div className="w-[52px] h-[52px] md:w-[66px] md:h-[66px] bg-[#CEF17B] rounded-full flex items-center justify-center mb-2 md:mb-3">
-              <img src={powerIcon} className="w-[16px] h-[16px] md:w-[20px] md:h-[20px] object-contain" />
+              <img src={powerIcon} alt="Power icon" loading="lazy" decoding="async" className="w-[16px] h-[16px] md:w-[20px] md:h-[20px] object-contain" />
             </div>
             <h3 className="text-[20px] md:text-[24px] leading-[32px] md:leading-[48px] font-semibold text-[#064734] text-center">
               Choose Power
@@ -51,7 +51,7 @@ const WhyWeExist = () => {
           {/* RIGHT CARD */}
           <div className="w-full md:w-[610px] h-auto md:h-[195px] bg-[#E2F5B2] rounded-[16px] md:rounded-[20px] px-5 md:px-[32px] py-5 md:py-[20px] shadow-[0px_10px_15px_-3px_rgba(0,0,0,0.1)] flex flex-col items-center justify-center">
             <div className="w-[56px] h-[56px] md:w-[77px] md:h-[77px] bg-[#CEF17B] rounded-full flex items-center justify-center mb-2 md:mb-3">
-              <img src={safetyIcon} className="w-[18px] h-[18px] md:w-[24px] md:h-[24px] object-contain" />
+              <img src={safetyIcon} alt="Safety icon" loading="lazy" decoding="async" className="w-[18px] h-[18px] md:w-[24px] md:h-[24px] object-contain" />
             </div>
             <h3 className="text-[20px] md:text-[24px] leading-[32px] md:leading-[48px] font-semibold text-[#064734] text-center">
               Choose safety

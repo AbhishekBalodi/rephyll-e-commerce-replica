@@ -1,4 +1,17 @@
-const BASE_URL = import.meta.env.VITE_BASE_URL || "https://www.rephyl.com";
+const BASE_URL =
+  (import.meta.env.VITE_BASE_URL as string | undefined)?.trim().replace(/\/+$/, "") || "";
+
+function decodeBase64ToUint8Array(base64: string): Uint8Array {
+  const normalized = base64.includes(',') ? base64.split(',').pop() || '' : base64;
+  const binary = atob(normalized);
+  const bytes = new Uint8Array(binary.length);
+
+  for (let i = 0; i < binary.length; i += 1) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+
+  return bytes;
+}
 
 function authHeaders() {
   const token = localStorage.getItem("rephyl_token");
@@ -29,4 +42,33 @@ export async function getOrderById(orderId: number) {
   return fetchJson(res);
 }
 
-export default { listOrders, getOrderById };
+export async function cancelOrder(orderId: number) {
+  const res = await fetch(`${BASE_URL}/api/customer-account/orders/${orderId}/cancel`, {
+    method: "POST",
+    headers: authHeaders(),
+  });
+  return fetchJson(res);
+}
+
+export async function getOrderInvoice(orderId: number) {
+  const res = await fetch(`${BASE_URL}/api/customer-account/orders/${orderId}/invoice`, {
+    headers: authHeaders(),
+  });
+
+  const json = await fetchJson(res);
+  const base64Data = typeof json?.data === 'string' ? json.data : '';
+
+  if (!base64Data) {
+    throw new Error('Invoice data is empty.');
+  }
+
+  const byteArray = decodeBase64ToUint8Array(base64Data);
+  const blob = new Blob([byteArray], { type: 'application/pdf' });
+
+  return {
+    blob,
+    fileName: `invoice-order-${orderId}.pdf`,
+  };
+}
+
+export default { listOrders, getOrderById, cancelOrder, getOrderInvoice };

@@ -52,7 +52,7 @@ const ReviewCard = ({ review }: { review: Review }) => (
         <span className="text-[10px] font-bold bg-primary text-primary-foreground px-1.5 py-0.5 rounded">Verified</span>
       )}
     </div>
-    <h4 className="text-sm font-bold text-foreground mb-2">{review.title}</h4>
+    <p className="text-sm font-bold text-foreground mb-2">{review.title}</p>
     <p className="text-sm text-muted-foreground leading-relaxed">{review.content}</p>
   </div>
 );
@@ -101,7 +101,7 @@ const TestimonialsPage = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-
+      <main className="flex-1">
       <section className="max-w-7xl mx-auto px-4 md:px-6 py-16 pt-[104px]">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-4">
           <div>
@@ -180,7 +180,7 @@ const TestimonialsPage = () => {
           ))}
         </div>
       </section>
-
+      </main>
       <Footer />
     </div>
   );

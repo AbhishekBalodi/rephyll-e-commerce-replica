@@ -1,6 +1,6 @@
-﻿import { useState, useEffect, useRef, useCallback } from "react";
+﻿import { useState, useEffect } from "react";
 
-import { ShoppingCart, Heart, Share2, Check, ChevronRight, ChevronLeft, Sparkles, TrendingDown } from "lucide-react";
+import { ShoppingCart, Heart, Share2, Check, ChevronRight, Sparkles, TrendingDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
 import ProductCard from "./ProductCard";
@@ -8,10 +8,13 @@ import { useProductList } from "@/hooks/useProducts";
 import QuantityCapsule from "./QuantityCapsule";
 import type { ApiProduct } from "@/types/api";
 import bgSingleProducts from "@/assets/bg-home-kits.png";
+import bgSingleProductsWebp from "@/assets/bg-home-kits.webp";
+import bgSingleProductsAvif from "@/assets/bg-home-kits.avif";
 import bgStopBuyingOne from "@/assets/bg-stop-buying-one.png";
-import bgMegaSaver from "@/assets/bg-mega-saver.png";
 import bgHomeKits from "@/assets/bg-home-kits.png";
 import bgHomeKitsMobile from "@/assets/bg-home-kits-mobile.png";
+import bgHomeKitsMobileWebp from "@/assets/bg-home-kits-mobile.webp";
+import bgHomeKitsMobileAvif from "@/assets/bg-home-kits-mobile.avif";
 import ascFront2 from "@/assets/ASC_Front-2.png";
 import bottleSurface from "@/assets/bottle-surface-cleaner.png";
 import bottleDegreaser from "@/assets/bottle-kitchen-degreaser.png";
@@ -36,8 +39,8 @@ const KITS = [
 const KitCard = ({ kit, cartQty, onAdd, onIncrement, onDecrement }: { kit: typeof KITS[0]; cartQty: number; onAdd: () => void; onIncrement: () => void; onDecrement: () => void }) => (
   <div className="flex flex-col items-center" style={{ width: "276px", background: "#FFFFFF", boxShadow: "0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1)", borderRadius: "24px", overflow: "hidden" }}>
     <div className="relative flex-shrink-0" style={{ width: "276px", height: "162px", borderRadius: "24px 24px 0 0", overflow: "hidden" }}>
-      <img src={kitCardBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
-      <img src={kitBottles} alt="Kit bottles" className="absolute object-contain" style={{ width: "178px", height: "141px", left: "49px", top: "11px" }} />
+      <img src={kitCardBg} alt="" className="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async" />
+      <img src={kitBottles} alt="Kit bottles" width={178} height={141} className="absolute object-contain" style={{ width: "178px", height: "141px", left: "49px", top: "11px" }} loading="lazy" decoding="async" />
     </div>
     <div className="flex flex-col items-start" style={{ width: "238px", padding: "16px 0 12px 0", gap: "12px" }}>
       <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "18px", lineHeight: "24px", color: "#064734" }}>{kit.name}</span>
@@ -68,30 +71,9 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<"bundles" | "single" | "kits">("single");
   const [mobileKitIndex, setMobileKitIndex] = useState(0);
-  const [activeCardIndex, setActiveCardIndex] = useState(0);
-  const scrollRef = useRef<HTMLDivElement | null>(null);
   const { items, addToCart, updateQuantity, removeFromCart } = useCart();
   const { data, isLoading } = useProductList({ page: 0, size: 40 });
   const singleProducts = data?.content ?? [];
-
-  const handleScroll = useCallback(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const cardWidth = el.firstElementChild
-      ? (el.firstElementChild as HTMLElement).offsetWidth
-      : el.scrollWidth / Math.max(singleProducts.length, 1);
-    const index = Math.round(el.scrollLeft / (cardWidth + 16));
-    setActiveCardIndex(Math.min(index, singleProducts.length - 1));
-  }, [singleProducts.length]);
-
-  const scrollToCard = (index: number) => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const cardWidth = el.firstElementChild
-      ? (el.firstElementChild as HTMLElement).offsetWidth
-      : el.scrollWidth / Math.max(singleProducts.length, 1);
-    el.scrollTo({ left: index * (cardWidth + 16), behavior: "smooth" });
-  };
 
   const handleAddBundle = (bundle: typeof BUNDLES[0]) => {
     addToCart({ productId: bundle.id, name: bundle.name, price: bundle.price, originalPrice: bundle.originalPrice, image: "/placeholder.svg" });
@@ -105,8 +87,16 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
     <div id="homecare-kits-section">
       {/* ===== SECTION 1: Smart Bundles / Single Products (height: 727px) ===== */}
       <section className="relative w-full overflow-hidden" style={{ minHeight: "auto" }}>
-        <img src={bgSingleProducts} alt="bg" className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
-        <img src={bgHomeKitsMobile} alt="bg" className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
+        <picture className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full" style={{ zIndex: 0 }}>
+          <source type="image/avif" srcSet={bgSingleProductsAvif} />
+          <source type="image/webp" srcSet={bgSingleProductsWebp} />
+          <img src={bgSingleProducts} alt="" aria-hidden="true" className="w-full h-full object-cover" loading="lazy" decoding="async" />
+        </picture>
+        <picture className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full" style={{ zIndex: 0 }}>
+          <source type="image/avif" srcSet={bgHomeKitsMobileAvif} />
+          <source type="image/webp" srcSet={bgHomeKitsMobileWebp} />
+          <img src={bgHomeKitsMobile} alt="" aria-hidden="true" className="w-full h-full object-cover" loading="lazy" decoding="async" />
+        </picture>
 
         <div className="relative z-[1] mx-auto max-w-[1440px] px-4 md:px-6 py-8 md:py-16 flex flex-col justify-center">
           {/* TABS */}
@@ -129,14 +119,14 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
                       <div className="absolute flex items-center justify-center" style={{ width: "89px", height: "32px", left: "16px", top: "12px", background: "#E2FF9C", borderRadius: "9999px" }}>
                         <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "14px", color: "#064734" }}>{bundle.discount}% Off</span>
                       </div>
-                      <button className="absolute flex items-center justify-center" style={{ width: "36px", height: "36px", right: "56px", top: "12px", background: "#FFFFFF", borderRadius: "9999px" }}>
+                      <button type="button" aria-label="Share bundle" className="absolute flex items-center justify-center" style={{ width: "36px", height: "36px", right: "56px", top: "12px", background: "#FFFFFF", borderRadius: "9999px" }}>
                         <Share2 size={16} color="#364153" />
                       </button>
-                      <button className="absolute flex items-center justify-center" style={{ width: "36px", height: "36px", right: "12px", top: "12px", background: "#FFFFFF", borderRadius: "9999px" }}>
+                      <button type="button" aria-label="Add bundle to wishlist" className="absolute flex items-center justify-center" style={{ width: "36px", height: "36px", right: "12px", top: "12px", background: "#FFFFFF", borderRadius: "9999px" }}>
                         <Heart size={16} color="#364153" />
                       </button>
-                      <img src={ascFront2} alt={bundle.name} className="absolute object-contain" style={{ width: "190px", height: "210px", top: "35px", left: "50%", transform: "translateX(-50%)" }} />
-                      <button className="absolute flex items-center justify-center" style={{ width: "32px", height: "32px", right: "10px", top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.9)", borderRadius: "9999px" }}>
+                      <img src={ascFront2} alt={bundle.name} width={190} height={210} className="absolute object-contain" style={{ width: "190px", height: "210px", top: "35px", left: "50%", transform: "translateX(-50%)" }} loading="lazy" decoding="async" />
+                      <button type="button" aria-label="View collection" className="absolute flex items-center justify-center" style={{ width: "32px", height: "32px", right: "10px", top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.9)", borderRadius: "9999px" }}>
                         <ChevronRight size={18} color="#364153" />
                       </button>
                     </div>
@@ -187,9 +177,9 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
                       <div className="absolute flex items-center justify-center" style={{ width: "89px", height: "32px", left: "16px", top: "12px", background: "#E2FF9C", borderRadius: "9999px" }}>
                         <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "14px", color: "#064734" }}>{product.discount}% Off</span>
                       </div>
-                      <button className="absolute flex items-center justify-center" style={{ width: "36px", height: "36px", right: "56px", top: "12px", background: "#FFFFFF", borderRadius: "9999px" }}><Share2 size={16} /></button>
-                      <button className="absolute flex items-center justify-center" style={{ width: "36px", height: "36px", right: "12px", top: "12px", background: "#FFFFFF", borderRadius: "9999px" }}><Heart size={16} /></button>
-                      <img src={product.image} alt={product.name} className="absolute object-contain" style={{ width: "141px", height: "155px", top: "57px", left: "50%", transform: "translateX(-50%)" }} />
+                      <button type="button" aria-label="Share bundle" className="absolute flex items-center justify-center" style={{ width: "36px", height: "36px", right: "56px", top: "12px", background: "#FFFFFF", borderRadius: "9999px" }}><Share2 size={16} /></button>
+                      <button type="button" aria-label="Add bundle to wishlist" className="absolute flex items-center justify-center" style={{ width: "36px", height: "36px", right: "12px", top: "12px", background: "#FFFFFF", borderRadius: "9999px" }}><Heart size={16} /></button>
+                      <img src={product.image} alt={product.name} width={141} height={155} className="absolute object-contain" style={{ width: "141px", height: "155px", top: "57px", left: "50%", transform: "translateX(-50%)" }} loading="lazy" decoding="async" />
                     </div>
                     <div className="flex flex-col justify-between flex-1 p-4">
                       <div>
@@ -220,17 +210,17 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
             <div className="flex flex-col items-center gap-10">
               {isLoading ? (
                 <>
-                  <div className="flex w-full gap-4 overflow-x-auto pb-2 scrollbar-hide xl:hidden snap-x snap-mandatory">
+                  <div className="grid w-full grid-cols-2 gap-3 md:gap-4 xl:hidden items-start">
                     {Array.from({ length: 4 }).map((_, i) => (
                       <div
                         key={i}
-                        className="w-full min-w-full flex-shrink-0 animate-pulse snap-start sm:min-w-[calc((100%-1rem)/2)] sm:max-w-[calc((100%-1rem)/2)]"
+                        className="w-full animate-pulse"
                       >
-                        <div className="h-[220px] md:h-[232px] rounded-t-2xl bg-muted" />
-                        <div className="p-4 space-y-3 rounded-b-2xl bg-white">
-                          <div className="h-4 w-3/4 rounded bg-muted" />
-                          <div className="h-4 w-1/2 rounded bg-muted" />
-                          <div className="h-8 w-1/3 rounded bg-muted" />
+                        <div className="h-[140px] md:h-[180px] rounded-t-2xl bg-muted" />
+                        <div className="p-3 md:p-4 space-y-2 rounded-b-2xl bg-white">
+                          <div className="h-3 w-3/4 rounded bg-muted" />
+                          <div className="h-3 w-1/2 rounded bg-muted" />
+                          <div className="h-7 w-1/2 rounded bg-muted" />
                         </div>
                       </div>
                     ))}
@@ -251,62 +241,12 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
                 </>
               ) : singleProducts.length > 0 ? (
                 <>
-                  {/* Mobile + tablet horizontal scroll strip */}
-                  <div className="relative w-full xl:hidden">
-                    {/* Left arrow (tablet only, hidden on mobile) */}
-                    {activeCardIndex > 0 && (
-                      <button
-                        onClick={() => scrollToCard(activeCardIndex - 1)}
-                        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 hidden sm:flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md hover:bg-gray-50 transition"
-                        aria-label="Previous product"
-                      >
-                        <ChevronLeft size={20} color="#064734" />
-                      </button>
-                    )}
-
-                    {/* Right arrow (tablet only, hidden on mobile) */}
-                    {activeCardIndex < singleProducts.length - 1 && (
-                      <button
-                        onClick={() => scrollToCard(activeCardIndex + 1)}
-                        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 hidden sm:flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md hover:bg-gray-50 transition"
-                        aria-label="Next product"
-                      >
-                        <ChevronRight size={20} color="#064734" />
-                      </button>
-                    )}
-
-                    <div
-                      ref={scrollRef}
-                      onScroll={handleScroll}
-                      className="flex w-full gap-4 overflow-x-auto pb-2 scrollbar-hide snap-x snap-mandatory sm:px-12"
-                    >
-                      {singleProducts.map((product: ApiProduct) => (
-                        <div
-                          key={product.id}
-                          className="w-full min-w-full flex-shrink-0 snap-start sm:min-w-[calc((100%-1rem)/2)] sm:max-w-[calc((100%-1rem)/2)]"
-                        >
-                          <ProductCard product={product} className="max-w-none md:max-w-none" />
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Dot indicators (mobile only) */}
-                    {singleProducts.length > 1 && (
-                      <div className="flex sm:hidden justify-center gap-2 mt-4">
-                        {singleProducts.map((_: ApiProduct, i: number) => (
-                          <button
-                            key={i}
-                            onClick={() => scrollToCard(i)}
-                            aria-label={`Go to product ${i + 1}`}
-                            className={`rounded-full transition-all duration-300 ${
-                              i === activeCardIndex
-                                ? "w-6 h-2.5 bg-[#064734]"
-                                : "w-2.5 h-2.5 bg-[#064734]/30"
-                            }`}
-                          />
-                        ))}
+                  <div className="grid w-full grid-cols-2 gap-3 md:gap-4 xl:hidden items-start">
+                    {singleProducts.map((product: ApiProduct) => (
+                      <div key={product.id} className="min-w-0">
+                        <ProductCard product={product} className="max-w-none" />
                       </div>
-                    )}
+                    ))}
                   </div>
 
                   <div className="hidden xl:grid xl:grid-cols-4 gap-7 w-full max-w-[1440px] mx-auto items-start">
@@ -355,7 +295,7 @@ const HomecareKitsSection = ({ showKitsTab = true }: { showKitsTab?: boolean }) 
                       <div className="absolute flex items-center justify-center" style={{ width: "89px", height: "32px", left: "16px", top: "12px", background: "#E2FF9C", borderRadius: "9999px" }}>
                         <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "14px", color: "#064734" }}>Kit</span>
                       </div>
-                      <img src={kitBottles} alt={kit.name} className="absolute object-contain" style={{ width: "190px", height: "210px", top: "35px", left: "50%", transform: "translateX(-50%)" }} />
+                      <img src={kitBottles} alt={kit.name} width={190} height={210} className="absolute object-contain" style={{ width: "190px", height: "210px", top: "35px", left: "50%", transform: "translateX(-50%)" }} loading="lazy" decoding="async" />
                     </div>
                     <div className="flex flex-col justify-between flex-1 p-4">
                       <div className="flex flex-col gap-1">

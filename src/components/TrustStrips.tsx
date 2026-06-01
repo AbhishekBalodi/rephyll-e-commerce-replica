@@ -5,7 +5,11 @@ import avatarAkanksha from "@/assets/avatar-akanksha.jpg";
 import avatarRenu from "@/assets/avatar-renu.jpg";
 import avatarKetan from "@/assets/avatar-ketan.jpg";
 import bgTestimonials from "@/assets/bg-testimonials.png";
+import bgTestimonialsWebp from "@/assets/bg-testimonials.webp";
+import bgTestimonialsAvif from "@/assets/bg-testimonials.avif";
 import bgTestimonialsMobile from "@/assets/bg-testimonials-mobile.png";
+import bgTestimonialsMobileWebp from "@/assets/bg-testimonials-mobile.webp";
+import bgTestimonialsMobileAvif from "@/assets/bg-testimonials-mobile.avif";
 import { useState } from "react";
 
 const AVATAR_MAP: Record<string, string> = {
@@ -24,9 +28,17 @@ const TrustStrips = () => {
   return (
     <section className="relative w-full overflow-hidden" style={{ minHeight: "360px" }}>
       {/* Desktop bg */}
-      <img src={bgTestimonials} alt="" aria-hidden="true" className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
+      <picture className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full" style={{ zIndex: 0 }}>
+        <source type="image/avif" srcSet={bgTestimonialsAvif} />
+        <source type="image/webp" srcSet={bgTestimonialsWebp} />
+        <img src={bgTestimonials} alt="" aria-hidden="true" className="w-full h-full object-cover" loading="lazy" decoding="async" />
+      </picture>
       {/* Mobile bg */}
-      <img src={bgTestimonialsMobile} alt="" aria-hidden="true" className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
+      <picture className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full" style={{ zIndex: 0 }}>
+        <source type="image/avif" srcSet={bgTestimonialsMobileAvif} />
+        <source type="image/webp" srcSet={bgTestimonialsMobileWebp} />
+        <img src={bgTestimonialsMobile} alt="" aria-hidden="true" className="w-full h-full object-cover" loading="lazy" decoding="async" />
+      </picture>
 
       <div className="relative max-w-[1440px] mx-auto text-center px-4 pt-8 pb-16 md:pt-10 md:pb-24" style={{ zIndex: 1 }}>
         <h2
@@ -59,7 +71,7 @@ const TrustStrips = () => {
                 <p style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, fontSize: "16px", lineHeight: "136%", color: "#2C2C2C", width: "249px" }} className="text-center mb-4 line-clamp-4">
                   "{review.content}"
                 </p>
-                <h4 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "18px", color: "#2C2C2C" }}>{review.name}</h4>
+                <p style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: "18px", color: "#2C2C2C" }}>{review.name}</p>
               </div>
             ))}
           </div>
@@ -69,10 +81,10 @@ const TrustStrips = () => {
         <div className="relative mt-[45px] md:hidden">
           {TOP_REVIEWS.length > 1 && (
             <>
-              <button onClick={() => setMobileIndex((p) => (p > 0 ? p - 1 : TOP_REVIEWS.length - 1))} className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white rounded-full shadow flex items-center justify-center">
+              <button type="button" onClick={() => setMobileIndex((p) => (p > 0 ? p - 1 : TOP_REVIEWS.length - 1))} aria-label="Previous testimonial" className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white rounded-full shadow flex items-center justify-center">
                 <ChevronLeft size={18} />
               </button>
-              <button onClick={() => setMobileIndex((p) => (p < TOP_REVIEWS.length - 1 ? p + 1 : 0))} className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white rounded-full shadow flex items-center justify-center">
+              <button type="button" onClick={() => setMobileIndex((p) => (p < TOP_REVIEWS.length - 1 ? p + 1 : 0))} aria-label="Next testimonial" className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white rounded-full shadow flex items-center justify-center">
                 <ChevronRight size={18} />
               </button>
             </>
@@ -90,7 +102,7 @@ const TrustStrips = () => {
               <p className="text-center mb-3 text-[14px] leading-[140%] text-[#2C2C2C] line-clamp-4" style={{ fontFamily: "'Poppins', sans-serif" }}>
                 "{mobileReview.content}"
               </p>
-              <h4 className="text-[16px] font-semibold text-[#2C2C2C]" style={{ fontFamily: "'Poppins', sans-serif" }}>{mobileReview.name}</h4>
+              <p className="text-[16px] font-semibold text-[#2C2C2C]" style={{ fontFamily: "'Poppins', sans-serif" }}>{mobileReview.name}</p>
             </div>
           </div>
         </div>

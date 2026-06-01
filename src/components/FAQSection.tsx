@@ -1,41 +1,22 @@
 import { useState } from "react";
 import { ChevronDown, ChevronUp, ArrowUpRight } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import faqBg from "@/assets/3651.png";
+import { getProductFaqs } from "@/data/faqs";
 
-const FAQ_ITEMS = [
-  {
-    question: "What is your return policy?",
-    answer:
-      "We offer a 15-day return window for all unused or unopened items. Returns must include original packaging and proof of purchase for processing.",
-  },
-  {
-    question: "Do you offer international shipping?",
-    answer:
-      "Currently, we ship across India. International shipping is coming soon. Stay tuned for updates!",
-  },
-  {
-    question: "What if I receive a damaged or defective product?",
-    answer:
-      "If you receive a damaged product, please contact our support team within 48 hours with photos. We'll arrange a replacement or refund.",
-  },
-  {
-    question: "Are the product colors on the website accurate?",
-    answer:
-      "We try to display colors as accurately as possible. However, slight variations may occur due to screen settings and lighting conditions.",
-  },
-];
+interface FAQSectionProps {
+  productName?: string;
+  productSlug?: string;
+}
 
-const FAQSection = () => {
+const FAQSection = ({ productName = "", productSlug = "" }: FAQSectionProps) => {
   const [openIndex, setOpenIndex] = useState(-1);
   const navigate = useNavigate();
+  const faqItems = getProductFaqs(productName, productSlug);
 
   return (
-    <section
-      className="relative w-full flex justify-center"
-      style={{ minHeight: "818px" }}
-    >
+    <section className="relative w-full flex justify-center overflow-hidden py-10 md:py-14">
       {/* Background */}
       <img
         src={faqBg}
@@ -44,83 +25,40 @@ const FAQSection = () => {
       />
 
       {/* Container */}
-      <div
-        className="relative w-full flex items-center justify-center md:justify-start px-3 md:px-0"
-        style={{
-          maxWidth: "1440px",
-          minHeight: "818px",
-        }}
-      >
+      <div className="relative w-full max-w-[1440px] flex items-center justify-center md:justify-start px-3 md:px-6 lg:px-8">
         {/* FAQ CARD */}
-        <div
-          className="flex flex-col w-full max-w-[636px] md:ml-[52px]"
-          style={{
-            background: "#064734",
-            borderRadius: "20px",
-            padding: "clamp(18px, 3vw, 36px) clamp(16px, 3vw, 32px)",
-          }}
-        >
+        <div className="flex flex-col w-full max-w-[720px] md:ml-[52px] bg-[#064734]/95 rounded-2xl md:rounded-3xl border border-white/10 shadow-[0_16px_40px_rgba(0,0,0,0.28)] p-4 sm:p-6 md:p-8">
           {/* Heading */}
-          <h2
-            style={{
-              fontFamily: "'Nunito Sans', sans-serif",
-              fontWeight: 700,
-              fontSize: "clamp(32px, 8vw, 42px)",
-              lineHeight: "100%",
-              letterSpacing: "1%",
-              color: "#FAFAFA",
-              marginBottom: "20px",
-            }}
-          >
+          <h2 className="font-bold text-white text-[28px] sm:text-[34px] md:text-[42px] leading-[1.08] mb-4 sm:mb-6">
             Do you have questions?
           </h2>
 
           {/* Questions */}
-          <div className="flex flex-col gap-7 md:gap-12">
-            {FAQ_ITEMS.map((item, i) => (
+          <div className="flex flex-col gap-4 sm:gap-5">
+            {faqItems.length === 0 ? (
+              <p className="text-white/90 text-sm sm:text-base leading-relaxed">
+                No FAQs are configured for this product yet.
+              </p>
+            ) : faqItems.map((item, i) => (
               <div
                 key={i}
-                style={{
-                  borderBottom: "1.5px solid rgba(235,235,235,0.25)",
-                  paddingBottom: "12px",
-                  cursor: "pointer",
-                }}
-                onClick={() =>
-                  setOpenIndex(openIndex === i ? -1 : i)
-                }
+                className="border-b border-white/25 pb-3 cursor-pointer"
+                onClick={() => setOpenIndex(openIndex === i ? -1 : i)}
               >
-                <div className="flex justify-between items-center">
-                  <span
-                    style={{
-                      fontFamily: "'Nunito Sans', sans-serif",
-                      fontWeight: 600,
-                      fontSize: "clamp(16px, 4vw, 20px)",
-                      lineHeight: "100%",
-                      letterSpacing: "0%",
-                      color: "#FAFAFA",
-                    }}
-                  >
+                <div className="flex justify-between items-start gap-3">
+                  <span className="font-semibold text-[15px] sm:text-[17px] md:text-[19px] leading-snug text-white">
                     {item.question}
                   </span>
 
                   {openIndex === i ? (
-                    <ChevronUp size={16} color="#FAFAFA" />
+                    <ChevronUp size={18} color="#FAFAFA" className="mt-0.5 shrink-0" />
                   ) : (
-                    <ChevronDown size={16} color="#FAFAFA" />
+                    <ChevronDown size={18} color="#FAFAFA" className="mt-0.5 shrink-0" />
                   )}
                 </div>
 
                 {openIndex === i && (
-                  <p
-                    style={{
-                      marginTop: "30px",
-                      fontFamily: "'Nunito Sans', sans-serif",
-                      fontWeight: 600,
-                      fontSize: "clamp(13px, 3.5vw, 16px)",
-                      lineHeight: "120%",
-                      color: "#FAFAFA",
-                    }}
-                  >
+                  <p className="mt-3 sm:mt-4 text-[13px] sm:text-[15px] leading-relaxed text-white/95 whitespace-pre-line">
                     {item.answer}
                   </p>
                 )}
@@ -129,42 +67,27 @@ const FAQSection = () => {
           </div>
 
           {/* CTA */}
-          <div className="flex items-center justify-center gap-4 mt-6">
-            <span
-              style={{
-                fontFamily: "'Nunito Sans', sans-serif",
-                fontWeight: 600,
-                fontSize: "16px",
-                color: "#FAFAFA",
-              }}
-            >
+          <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center sm:justify-between gap-3 mt-6 sm:mt-7">
+            <span className="font-semibold text-sm sm:text-base text-white">
               My question is not here.
             </span>
 
             <button
               onClick={() => navigate("/contact")}
-              style={{
-                padding: "8px 14px",
-                background: "#FAFAFA",
-                borderRadius: "8px",
-                border: "none",
-                display: "flex",
-                alignItems: "center",
-                gap: "4px",
-                cursor: "pointer",
-              }}
+              className="w-fit px-4 py-2 bg-white rounded-lg border-none flex items-center gap-1 cursor-pointer"
             >
-              <span
-                style={{
-                  fontWeight: 600,
-                  fontSize: "clamp(12px, 2.5vw, 15px)",
-                  color: "#1B242C",
-                }}
-              >
+              <span className="font-semibold text-xs sm:text-sm text-[#1B242C]">
                 CONNECT US
               </span>
               <ArrowUpRight size={18} color="#1B242C" />
             </button>
+
+            <Link
+              to="/faqs"
+              className="font-semibold text-xs sm:text-sm text-white underline underline-offset-4"
+            >
+              ALL FAQS
+            </Link>
           </div>
         </div>
       </div>

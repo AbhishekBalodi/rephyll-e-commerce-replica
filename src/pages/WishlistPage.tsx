@@ -9,9 +9,10 @@ const WishlistPage = () => {
   const { addToCart } = useCart();
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen min-h-[100svh] flex flex-col bg-background text-foreground">
       <Navbar />
-      <section className="max-w-5xl mx-auto px-4 md:px-6 py-16 pt-[104px]">
+      <main className="flex-1">
+      <section className="w-full flex-1 max-w-5xl mx-auto px-4 md:px-6 py-16 pt-[104px]">
         <h1 className="text-3xl font-display font-bold text-foreground mb-2">Your Wishlist</h1>
         <p className="text-muted-foreground mb-10">
           {totalItems === 0 ? "No products in wishlist" : `${totalItems} item${totalItems !== 1 ? "s" : ""} saved`}
@@ -83,7 +84,9 @@ const WishlistPage = () => {
           </>
         )}
       </section>
-      <Footer />
+      <div className="mt-auto">
+        <Footer />
+      </div>
     </div>
   );
 };

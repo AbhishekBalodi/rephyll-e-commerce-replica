@@ -31,7 +31,17 @@ const WebsitePageHero = ({ page, fallbackTitle, fallbackDescription, buttonLabel
   return (
     <section className="relative w-full overflow-hidden pt-[104px] text-white">
       <div className="relative h-[260px] sm:h-[320px] md:h-[460px] lg:h-[560px] w-full bg-[#064734]">
-        {image && <img src={image} alt={title} className="absolute inset-0 h-full w-full object-cover" />}
+        {image && (
+          <img
+            src={image}
+            alt={title}
+            className="absolute inset-0 h-full w-full object-cover"
+            // @ts-ignore - fetchpriority is a valid HTML attribute
+            fetchpriority="high"
+            loading="eager"
+            decoding="async"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/25 to-transparent" />
 
         <div className="relative z-10 mx-auto flex h-full max-w-[1440px] items-center px-4 sm:px-6 md:px-16">

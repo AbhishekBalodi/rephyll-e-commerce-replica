@@ -1,4 +1,36 @@
-const BASE_URL = import.meta.env.VITE_BASE_URL || "https://www.rephyl.com";
+import { handleAuthExpired } from "@/lib/authSession";
+
+const ENV_BASE_URL =
+  (import.meta.env.VITE_BASE_URL as string | undefined)?.trim().replace(/\/+$/, "") || "";
+const FALLBACK_BASE_URL = "https://www.rephyl.com";
+
+function buildUrl(path: string, useFallback = false) {
+  const base = useFallback ? FALLBACK_BASE_URL : ENV_BASE_URL;
+  return `${base}${path}`;
+}
+
+function buildRequestInit(url: string, init: RequestInit = {}): RequestInit {
+  const isAbsolute = /^https?:\/\//i.test(url);
+  const credentials: RequestCredentials = isAbsolute ? "omit" : "include";
+  return {
+    ...init,
+    credentials,
+  };
+}
+
+async function fetchWithFallback(path: string, init: RequestInit = {}) {
+  const primaryUrl = buildUrl(path, false);
+
+  try {
+    return await fetch(primaryUrl, buildRequestInit(primaryUrl, init));
+  } catch (primaryErr) {
+    // In dev/proxy failures, retry once against stable absolute API host.
+    if (ENV_BASE_URL) throw primaryErr;
+
+    const fallbackUrl = buildUrl(path, true);
+    return await fetch(fallbackUrl, buildRequestInit(fallbackUrl, init));
+  }
+}
 
 function authHeaders() {
   const token = localStorage.getItem("rephyl_token");
@@ -23,6 +55,10 @@ async function fetchJson(res: Response) {
 
   // Check if response is ok
   if (!res.ok) {
+    if (res.status === 401) {
+      handleAuthExpired();
+      throw new Error("Session expired. Please log in again.");
+    }
     throw new Error(data?.message || `API error ${res.status}`);
   }
 
@@ -31,11 +67,10 @@ async function fetchJson(res: Response) {
 
 export async function getAddresses() {
   try {
-    const url = `${BASE_URL}/api/customer-account/addresses`;
-    console.log('📍 Fetching addresses from:', url);
-    const res = await fetch(url, { 
+    const path = `/api/customer-account/addresses`;
+    console.log('📍 Fetching addresses');
+    const res = await fetchWithFallback(path, {
       headers: authHeaders(),
-      credentials: 'include' 
     });
     const data = await fetchJson(res);
     console.log('✅ Addresses fetched successfully:', data);
@@ -48,15 +83,14 @@ export async function getAddresses() {
 
 export async function createAddress(body: any) {
   try {
-    const url = `${BASE_URL}/api/customer-account/addresses`;
-    console.log('📍 Creating address at:', url);
+    const path = `/api/customer-account/addresses`;
+    console.log('📍 Creating address');
     console.log('📋 Address payload:', body);
     
-    const res = await fetch(url, {
+    const res = await fetchWithFallback(path, {
       method: "POST",
       headers: authHeaders(),
       body: JSON.stringify(body),
-      credentials: 'include'
     });
     
     const data = await fetchJson(res);
@@ -70,13 +104,12 @@ export async function createAddress(body: any) {
 
 export async function deleteAddress(id: number) {
   try {
-    const url = `${BASE_URL}/api/customer-account/addresses/${id}`;
-    console.log('📍 Deleting address:', url);
+    const path = `/api/customer-account/addresses/${id}`;
+    console.log('📍 Deleting address:', id);
     
-    const res = await fetch(url, {
+    const res = await fetchWithFallback(path, {
       method: "DELETE",
       headers: authHeaders(),
-      credentials: 'include'
     });
     
     const data = await fetchJson(res);
@@ -90,14 +123,13 @@ export async function deleteAddress(id: number) {
 
 export async function updateAddress(id: number, body: any) {
   try {
-    const url = `${BASE_URL}/api/customer-account/addresses/${id}`;
-    console.log('📍 Updating address at:', url);
+    const path = `/api/customer-account/addresses/${id}`;
+    console.log('📍 Updating address:', id);
     
-    const res = await fetch(url, {
+    const res = await fetchWithFallback(path, {
       method: "PUT",
       headers: authHeaders(),
       body: JSON.stringify(body),
-      credentials: 'include'
     });
     
     const data = await fetchJson(res);

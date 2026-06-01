@@ -4,6 +4,7 @@ import { CheckCircle2, CircleAlert, Loader2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import RequireAuth from "@/components/RequireAuth";
+import CheckoutProgressBar from "@/components/CheckoutProgressBar";
 import { useCart } from "@/contexts/CartContext";
 import { verifyPaymentSession } from "@/services/checkoutApi";
 
@@ -131,10 +132,38 @@ const PaymentConfirmationPageContent = () => {
       ? "bg-yellow-50 text-yellow-700 border-yellow-200"
       : "bg-red-50 text-red-700 border-red-200";
 
+  const firstOrder = payload?.orders?.[0] || null;
+  const shippingAddress =
+    firstOrder?.shippingAddress ||
+    firstOrder?.deliveryAddress ||
+    firstOrder?.address ||
+    null;
+
+  const shippingName =
+    shippingAddress?.contactName ||
+    shippingAddress?.name ||
+    firstOrder?.contactName ||
+    "";
+
+  const shippingMobile =
+    shippingAddress?.mobile ||
+    shippingAddress?.phone ||
+    firstOrder?.mobile ||
+    "";
+
+  const shippingLine1 = shippingAddress?.line1 || shippingAddress?.addressLine1 || shippingAddress?.street || "";
+  const shippingLine2 = shippingAddress?.line2 || shippingAddress?.addressLine2 || shippingAddress?.landmark || "";
+  const shippingCity = shippingAddress?.city || "";
+  const shippingState = shippingAddress?.state || "";
+  const shippingPostalCode = shippingAddress?.postalCode || shippingAddress?.pincode || "";
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
+      <main className="flex-1">
       <section className="max-w-5xl mx-auto px-4 md:px-6 py-16 pt-[104px]">
+        <CheckoutProgressBar currentStep={3} showCompletedChecks allStepsCompleted />
+
         <div className="mb-8 border border-border rounded-2xl p-6 bg-card">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
@@ -196,6 +225,24 @@ const PaymentConfirmationPageContent = () => {
                   <span className="font-semibold">₹{payload.totalAmount || 0}</span>
                 </div>
               </div>
+            </div>
+          </div>
+        )}
+
+        {(shippingName || shippingMobile || shippingLine1 || shippingCity || shippingState || shippingPostalCode) && (
+          <div className="mb-6 border border-border rounded-xl p-5 bg-card">
+            <h2 className="text-lg font-semibold mb-3">Delivery Address</h2>
+            <div className="space-y-1 text-sm text-muted-foreground">
+              {shippingName && <p className="font-semibold text-foreground">{shippingName}</p>}
+              {shippingMobile && <p>{shippingMobile}</p>}
+              {shippingLine1 && <p>{shippingLine1}</p>}
+              {shippingLine2 && <p>{shippingLine2}</p>}
+              {(shippingCity || shippingState || shippingPostalCode) && (
+                <p>
+                  {[shippingCity, shippingState].filter(Boolean).join(", ")}
+                  {shippingPostalCode ? `${shippingCity || shippingState ? " - " : ""}${shippingPostalCode}` : ""}
+                </p>
+              )}
             </div>
           </div>
         )}

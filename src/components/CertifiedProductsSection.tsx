@@ -123,10 +123,10 @@ const CertifiedProductsSection = () => {
                 type="button"
                 onClick={() => scrollToBadge(index)}
                 aria-label={`Go to badge ${index + 1}`}
-                className={`rounded-full transition-all ${
+                className={`rounded-full transition-all h-6 w-6 flex items-center justify-center ${
                   activeBadge === index
-                    ? "h-2.5 w-6 bg-white"
-                    : "h-2.5 w-2.5 bg-white/50"
+                    ? "h-6 w-6 bg-white"
+                    : "h-6 w-6 bg-white/50"
                 }`}
               />
             ))}

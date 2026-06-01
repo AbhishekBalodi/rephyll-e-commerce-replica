@@ -10,7 +10,8 @@ import type {
   PaginatedData,
 } from "@/types/api";
 
-const BASE_URL = import.meta.env.VITE_BASE_URL || "https://www.rephyl.com";
+const BASE_URL =
+  (import.meta.env.VITE_BASE_URL as string | undefined)?.trim().replace(/\/+$/, "") || "";
 
 async function fetchJson<T>(url: string): Promise<T> {
   const res = await fetch(url);

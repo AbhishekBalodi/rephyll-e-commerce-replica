@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
-import { useParams, useLocation, Link } from "react-router-dom";
+import { useParams, useLocation, Link, Navigate } from "react-router-dom";
 import { ChevronDown, ChevronUp, SlidersHorizontal } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -19,24 +19,31 @@ const CategoryPage = () => {
 
   // Find category by slug or state
   const category = useMemo(() => {
-    if (state?.categoryId && state?.categoryName) {
-      return { id: state.categoryId, name: state.categoryName };
+    if (!categories) return null;
+
+    if (state?.categoryId) {
+      const foundById = categories.find((c) => c.id === state.categoryId);
+      if (foundById) return foundById;
     }
-    if (categories && slug) {
-      const found = categories.find(
+
+    if (slug) {
+      const foundBySlug = categories.find(
         (c) => c.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") === slug
       );
-      if (found) return { id: found.id, name: found.name };
+      if (foundBySlug) return foundBySlug;
     }
+
     return null;
-  }, [categories, slug, state]);
+  }, [categories, slug, state?.categoryId]);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(0);
   const [sortBy, setSortBy] = useState<SortOption>("relevance");
   const pageSize = 12;
 
-  const { data: productsData, isLoading } = useProductsByCategory(category?.id, {
+  const categoryIdForProducts = category && (category.productCount ?? 0) > 0 ? category.id : undefined;
+
+  const { data: productsData, isLoading } = useProductsByCategory(categoryIdForProducts, {
     page,
     size: pageSize,
     search: searchTerm.trim() || undefined,
@@ -67,8 +74,8 @@ const CategoryPage = () => {
   }, [products, sortBy]);
 
   useEffect(() => {
-    const nonIndexableCategorySlugs = new Set(["laundry-care", "personal-care"]);
-    const robotsValue = nonIndexableCategorySlugs.has(slug || "") ? "noindex,nofollow" : "index,follow";
+    const hasNoProducts = category ? (category.productCount ?? 0) <= 0 : false;
+    const robotsValue = hasNoProducts ? "noindex,nofollow" : "index,follow";
 
     const upsertMeta = (name: string, content: string) => {
       let tag = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null;
@@ -82,14 +89,18 @@ const CategoryPage = () => {
 
     upsertMeta("robots", robotsValue);
     upsertMeta("googlebot", robotsValue);
-  }, [slug]);
+  }, [category]);
+
+  if (categories && slug && (!category || (category.productCount ?? 0) <= 0)) {
+    return <Navigate to="/shop" replace />;
+  }
 
 
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar/>
-      
+      <main className="flex-1">
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 pt-[130px]">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 mb-6 text-sm" style={{ fontFamily: "'Poppins', sans-serif" }}>
@@ -219,7 +230,7 @@ const CategoryPage = () => {
           </div>
         )}
       </div>
-
+      </main>
       <Footer />
     </div>
   );

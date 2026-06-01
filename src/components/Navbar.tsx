@@ -24,7 +24,7 @@ import {
 interface NavCategory {
   label: string;
   path?: string;
-  subcategories?: { label: string; path: string; isNew?: boolean }[];
+  subcategories?: { label: string; path: string; isNew?: boolean; disabled?: boolean }[];
 }
 
 const NAV_CATEGORIES: NavCategory[] = [
@@ -89,8 +89,8 @@ const Navbar = () => {
         const lowerName = cat.name.toLowerCase();
         const kitsOrBundlesRegex = /\bkit(s)?\b|\bbundle(s)?\b/;
         const isKitsOrBundles = kitsOrBundlesRegex.test(lowerName);
-        const path = isKitsOrBundles ? "/homecare-kits" : `/category/${normalizedName}`;
-        return { label: cat.name, path };
+        const path = isKitsOrBundles ? "/homecare-kits" : `/${normalizedName}`;
+        return { label: cat.name, path, disabled: (cat.productCount ?? 0) <= 0 };
       });
   }, [backendCategories]);
 
@@ -125,6 +125,14 @@ const Navbar = () => {
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
+
+  const handleSearchSubmit = (e?: React.FormEvent | React.KeyboardEvent) => {
+    if (e) e.preventDefault();
+    const q = searchQuery.trim();
+    if (!q) return;
+    setSearchFocused(false);
+    navigate(`/search?q=${encodeURIComponent(q)}`);
+  };
 
   const handleNav = (path: string) => {
     setSheetOpen(false); setActiveMenu(null); setSearchFocused(false);
@@ -205,7 +213,7 @@ const Navbar = () => {
             <div className=" flex items-center">
               <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
                 <SheetTrigger asChild>
-                  <button className="md:hidden text-foreground mr-3">
+                  <button className="md:hidden text-foreground mr-3" aria-label="Open navigation menu">
                     <Menu size={22} />
                   </button>
                 </SheetTrigger>
@@ -250,13 +258,17 @@ const Navbar = () => {
                                 <Link
                                   key={sub.label}
                                   to={sub.path}
-                                  onClick={() => {
+                                  onClick={(e) => {
+                                    if (sub.disabled) {
+                                      e.preventDefault();
+                                      return;
+                                    }
                                     setSheetOpen(false);
                                     setActiveMenu(null);
                                     setSearchFocused(false);
                                     window.scrollTo({ top: 0, behavior: "smooth" });
                                   }}
-                                  className="block w-full text-left pl-10 pr-6 py-2.5 text-sm text-foreground hover:bg-accent/50 transition-colors"
+                                  className={`block w-full text-left pl-10 pr-6 py-2.5 text-sm transition-colors ${sub.disabled ? "text-foreground cursor-not-allowed" : "text-foreground hover:bg-accent/50"}`}
                                 >
                                   {sub.label}
                                 </Link>
@@ -365,15 +377,16 @@ const Navbar = () => {
                 }}
               >
                 {/* 🔍 Search */}
-                <div className="flex items-center">
+                <form className="flex items-center" onSubmit={handleSearchSubmit}>
                   <Search size={16} className="text-[#6B7280] mr-2" />
                   <input
                     ref={searchInputRef}
-                    type="text"
+                    type="search"
                     placeholder="Search"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onFocus={() => setSearchFocused(true)}
+                    onKeyDown={(e) => { if (e.key === "Enter") handleSearchSubmit(e); }}
                     className="bg-transparent outline-none text-sm"
                     style={{
                       width: "180px",
@@ -382,7 +395,7 @@ const Navbar = () => {
                       color: "#064734",
                     }}
                   />
-                </div>
+                </form>
 
                 {/* Divider */}
                 <div style={{ width: "1px", height: "20px", background: "#D1D5DB" }} />
@@ -411,7 +424,7 @@ const Navbar = () => {
                 {user ? (
                   <Popover>
                     <PopoverTrigger asChild>
-                      <button className="cursor-pointer">
+                      <button className="cursor-pointer" aria-label="Open user menu">
                         <User size={20} className="text-[#064734]" />
                       </button>
                     </PopoverTrigger>
@@ -446,7 +459,7 @@ const Navbar = () => {
                     </PopoverContent>
                   </Popover>
                 ) : (
-                  <button onClick={() => handleNav("/login")} className="cursor-pointer">
+                  <button onClick={() => handleNav("/login")} className="cursor-pointer" aria-label="Go to login">
                     <User size={20} className="text-[#064734]" />
                   </button>
                 )}
@@ -462,9 +475,10 @@ const Navbar = () => {
                           <button
                             key={product.id}
                             onClick={() => {
+                              const q = searchQuery;
                               setSearchQuery("");
                               setSearchFocused(false);
-                              navigate(buildProductPath(product));
+                              navigate(buildProductPath(product) + (q ? `?q=${encodeURIComponent(q)}` : ""));
                             }}
                             className="flex items-center gap-3 w-full px-4 py-3 hover:bg-gray-50 transition-colors text-left border-b border-gray-100 last:border-0"
                           >
@@ -491,7 +505,7 @@ const Navbar = () => {
 
               {/* ✅ MOBILE (below md) */}
               <div className="flex md:hidden items-center gap-3">
-                <button onClick={() => searchInputRef.current?.focus()}>
+                <button onClick={() => searchInputRef.current?.focus()} aria-label="Open search">
                   <Search size={18} />
                 </button>
 
@@ -526,9 +540,15 @@ const Navbar = () => {
                 {activeSubcategories.map((sub) => (
                   <Link
                     key={sub.label}
-                    className="px-4 py-2 text-sm font-medium text-foreground hover:bg-accent/25 rounded"
+                    className={`px-4 py-2 text-sm font-medium rounded ${sub.disabled ? "text-foreground cursor-not-allowed" : "text-foreground hover:bg-accent/25"}`}
                     to={sub.path}
-                    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                    onClick={(e) => {
+                      if (sub.disabled) {
+                        e.preventDefault();
+                        return;
+                      }
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
                   >
                     {sub.label}
                   </Link>

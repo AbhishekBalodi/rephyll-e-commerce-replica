@@ -38,7 +38,7 @@ const BlogCard = ({ post }: { post: CustomerBlogCatalogDto }) => {
       <img
         src={getImageUrl(post.banner)}
         alt={post.title}
-        className="w-full aspect-square object-cover bg-gray-100"
+        className="w-full h-auto object-contain bg-gray-100"
         loading="lazy"
       />
       <div className="p-5">
@@ -93,20 +93,6 @@ const BlogsPage = () => {
     setLocalSearch(search);
   }, [search]);
 
-  useEffect(() => {
-    if (!pageData) return;
-    document.title = pageData.metaTitle || pageData.title || "Our Blog - rePhyl";
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute("content", pageData.metaDescription || "");
-    }
-
-    const metaKeywords = document.querySelector('meta[name="keywords"]');
-    if (metaKeywords) {
-      metaKeywords.setAttribute("content", pageData.metaKeywords || "");
-    }
-  }, [pageData]);
-
   const handleSearch = (e: React.FormEvent, selectedSuggestion?: string) => {
     e.preventDefault();
     const searchTerm = selectedSuggestion || localSearch;
@@ -148,7 +134,7 @@ const BlogsPage = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-
+      <main className="flex-1">
       <WebsitePageHero
         page={pageData}
         fallbackTitle="Our Blog"

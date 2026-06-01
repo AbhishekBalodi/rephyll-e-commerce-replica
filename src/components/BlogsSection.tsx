@@ -2,8 +2,11 @@ import { Link } from "react-router-dom";
 import { useBlogList } from "@/hooks/useBlogList";
 import { Loader2, ArrowRight } from "lucide-react";
 import bgBlogs from "@/assets/bg-blogs.png";
-import bgBlogsMobile from "@/assets/bg-blogs-mobile.png";
-import bgBlogsMobileNew from "@/assets/Group 1707479861.png";
+import bgBlogsWebp from "@/assets/bg-blogs.webp";
+import bgBlogsAvif from "@/assets/bg-blogs.avif";
+import bgBlogsMobile from "@/assets/Group 1707479861.png";
+import bgBlogsMobileWebp from "@/assets/Group 1707479861.webp";
+import bgBlogsMobileAvif from "@/assets/Group 1707479861.avif";
 
 const BlogsSection = () => {
   const { blogs, loading, error } = useBlogList({
@@ -34,8 +37,16 @@ const BlogsSection = () => {
   if (loading) {
     return (
       <section className="relative w-full text-white text-center py-16 md:py-24">
-        <img src={bgBlogs} alt="" aria-hidden="true" className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
-        <img src={bgBlogsMobileNew} alt="" aria-hidden="true" className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
+        <picture className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full" style={{ zIndex: 0 }}>
+          <source type="image/avif" srcSet={bgBlogsAvif} />
+          <source type="image/webp" srcSet={bgBlogsWebp} />
+          <img src={bgBlogs} alt="" aria-hidden="true" loading="lazy" decoding="async" className="w-full h-full" />
+        </picture>
+        <picture className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full" style={{ zIndex: 0 }}>
+          <source type="image/avif" srcSet={bgBlogsMobileAvif} />
+          <source type="image/webp" srcSet={bgBlogsMobileWebp} />
+          <img src={bgBlogsMobile} alt="" aria-hidden="true" loading="lazy" decoding="async" className="w-full h-full" />
+        </picture>
         <Loader2 className="animate-spin mx-auto mb-2 relative z-10" />
         <span className="relative z-10">Loading...</span>
       </section>
@@ -45,8 +56,16 @@ const BlogsSection = () => {
   if (error || !blogs || blogs.length === 0) {
     return (
       <section className="relative w-full text-white text-center py-16 md:py-24">
-        <img src={bgBlogs} alt="" aria-hidden="true" className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
-        <img src={bgBlogsMobileNew} alt="" aria-hidden="true" className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
+        <picture className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full" style={{ zIndex: 0 }}>
+          <source type="image/avif" srcSet={bgBlogsAvif} />
+          <source type="image/webp" srcSet={bgBlogsWebp} />
+          <img src={bgBlogs} alt="" aria-hidden="true" loading="lazy" decoding="async" className="w-full h-full" />
+        </picture>
+        <picture className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full" style={{ zIndex: 0 }}>
+          <source type="image/avif" srcSet={bgBlogsMobileAvif} />
+          <source type="image/webp" srcSet={bgBlogsMobileWebp} />
+          <img src={bgBlogsMobile} alt="" aria-hidden="true" loading="lazy" decoding="async" className="w-full h-full" />
+        </picture>
         <span className="relative z-10">No blogs available.</span>
       </section>
     );
@@ -55,9 +74,17 @@ const BlogsSection = () => {
   return (
     <section className="relative w-full overflow-hidden">
       {/* Desktop bg - different image for desktop */}
-      <img src={bgBlogs} alt="" aria-hidden="true" className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
+      <picture className="pointer-events-none select-none hidden md:block absolute inset-0 w-full h-full" style={{ zIndex: 0 }}>
+        <source type="image/avif" srcSet={bgBlogsAvif} />
+        <source type="image/webp" srcSet={bgBlogsWebp} />
+        <img src={bgBlogs} alt="" aria-hidden="true" loading="lazy" decoding="async" className="w-full h-full" />
+      </picture>
       {/* Mobile bg - different image for mobile */}
-      <img src={bgBlogsMobileNew} alt="" aria-hidden="true" className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
+      <picture className="pointer-events-none select-none md:hidden absolute inset-0 w-full h-full" style={{ zIndex: 0 }}>
+        <source type="image/avif" srcSet={bgBlogsMobileAvif} />
+        <source type="image/webp" srcSet={bgBlogsMobileWebp} />
+        <img src={bgBlogsMobile} alt="" aria-hidden="true" loading="lazy" decoding="async" className="w-full h-full" />
+      </picture>
 
       <div className="relative max-w-[1440px] mx-auto text-center text-white px-4 pt-8 pb-16 md:pt-10 md:pb-28" style={{ zIndex: 1 }}>
         <h2 className="text-[24px] md:text-[40px] font-semibold leading-[36px] md:leading-[60px]">
@@ -71,7 +98,7 @@ const BlogsSection = () => {
         <div className="flex flex-col md:flex-row justify-center gap-5 md:gap-[30px]">
           {blogs.map((post) => (
             <div key={post.id} className="w-full md:w-[380px] bg-white rounded-[20px] md:rounded-[24px] overflow-hidden shadow-md flex flex-col h-full">
-              <img src={getImageUrl(post.banner)} alt={post.title} className="w-full aspect-square object-cover object-top" />
+              <img src={getImageUrl(post.banner)} alt={post.title} width={380} height={280} loading="lazy" decoding="async" className="w-full h-[280px] " />
               <div className="p-4 md:p-5 flex flex-col gap-2 md:gap-3 text-left flex-grow">
                 <p className="text-[12px] md:text-[14px] tracking-widest text-[#AAAAAA]">{formatDate(post.createdDate)}</p>
                 <h3 className="text-[16px] md:text-[18px] font-semibold text-[#121212] leading-[24px] md:leading-[28px] line-clamp-2">{post.title}</h3>

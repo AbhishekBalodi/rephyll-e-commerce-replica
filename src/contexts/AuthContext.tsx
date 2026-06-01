@@ -1,5 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import profileApi from "@/services/profileApi";
+import { getAuthExpiredEventName } from "@/lib/authSession";
+import { clearStoredCheckoutCoupons } from "@/lib/checkoutCoupon";
 
 interface AuthUser {
   email: string;
@@ -21,7 +23,9 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const API_BASE = (import.meta.env.VITE_BASE_URL || "https://www.rephyl.com") + "/api";
+const API_HOST =
+  (import.meta.env.VITE_BASE_URL as string | undefined)?.trim().replace(/\/+$/, "") || "";
+const API_BASE = `${API_HOST}/api`;
 
 async function parseApiResponse(res: Response): Promise<any> {
   const raw = await res.text();
@@ -45,6 +49,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   });
   const [token, setToken] = useState<string | null>(() => localStorage.getItem("rephyl_token"));
   const [isLoading, setIsLoading] = useState(false);
+
+  const clearAuthState = () => {
+    localStorage.removeItem("rephyl_token");
+    localStorage.removeItem("rephyl_user");
+    localStorage.removeItem("rephyl_personId");
+    localStorage.removeItem("rephyl_tenantId");
+    localStorage.removeItem("rephyl_cart"); // clear cart so next user starts fresh
+    clearStoredCheckoutCoupons();
+    setToken(null);
+    setUser(null);
+  };
 
   // Persist user data
   useEffect(() => {
@@ -80,6 +95,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     })();
     return () => { mounted = false; };
   }, [token]);
+
+  useEffect(() => {
+    const eventName = getAuthExpiredEventName();
+    const onAuthExpired = () => clearAuthState();
+
+    window.addEventListener(eventName, onAuthExpired);
+    return () => {
+      window.removeEventListener(eventName, onAuthExpired);
+    };
+  }, []);
 
   const login = async (email: string, password: string) => {
     console.log('=== [LOGIN] Starting login attempt ===');
@@ -120,6 +145,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       console.log('[LOGIN] ✓ Login successful:', { email, username: authUser.username });
 
+      // Clear any leftover checkout state from a previous user
+      clearStoredCheckoutCoupons();
+
       localStorage.setItem("rephyl_token", authToken);
       if (authUser.personId) localStorage.setItem("rephyl_personId", String(authUser.personId));
       if (authUser.tenantId) localStorage.setItem("rephyl_tenantId", String(authUser.tenantId));
@@ -135,7 +163,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const register = async (regData: { email: string; password: string; fullName: string; phone?: string }) => {
-    // API Spec: POST /api/customer-auth/signup
+    // Backend-compatible signup endpoint
     // Request body: { name, email, mobile, password }
     const signupPayload = {
       name: regData.fullName,
@@ -225,10 +253,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem("rephyl_token");
-    localStorage.removeItem("rephyl_user");
-    setToken(null);
-    setUser(null);
+    clearAuthState();
   };
 
   const isAdmin = user?.role === "ROLE_ADMIN";

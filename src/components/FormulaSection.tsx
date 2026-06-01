@@ -1,4 +1,4 @@
-import bottle from "@/assets/bottle.png";
+import bottle from "@/assets/kit-bottles-hero.png";
 import earth from "@/assets/earth.png";
 import cross from "@/assets/cross.png";
 import check from "@/assets/check.png";
@@ -142,16 +142,20 @@ const FormulaSection = () => {
                     </p>
                 </div>
 
-                <div className="relative mt-7 h-[320px] w-full max-w-[320px] mx-auto">
+                <div className="relative mt-7 h-[360px] w-full max-w-[360px] mx-auto">
                     <img
                         src={earth}
                         alt=""
-                        className="absolute left-1/2 bottom-[-10px] h-auto w-[236px] -translate-x-1/2"
+                        className="absolute left-1/2 h-auto w-[296px] -translate-x-1/2"
+                        style={{ bottom: "-30px" }}
                     />
                     <img
                         src={bottle}
                         alt=""
-                        className="absolute left-1/2 bottom-[140px] h-auto w-[86px] -translate-x-1/2"
+                        className="absolute left-1/2  h-auto -translate-x-1/2"
+                        width={80}
+                        height={64}
+                    style={{ width: "280px" , bottom: "150px"}}
                     />
                 </div>
 
@@ -224,18 +228,23 @@ const FormulaSection = () => {
                         </div>
                     ))}
 
-                    <div className="absolute left-1/2 top-[110px] lg:top-[120px] xl:top-[54px] flex h-[430px] w-[320px] lg:w-[340px] xl:w-[360px] -translate-x-1/2 items-end justify-center">
-                        <img
+<div
+  className="absolute left-1/2 flex h-[560px] w-[380px] lg:w-[420px] xl:w-[460px] -translate-x-1/2 items-end justify-center"
+  style={{
+    top: "-40px", // change this value freely
+  }}
+>                        <img
                             src={earth}
                             alt=""
                             aria-hidden="true"
-                            className="h-[250px] w-[292px] lg:h-[262px] lg:w-[308px] xl:h-[272px] xl:w-[319px] object-contain"
+                            className="h-[300px] w-[350px] lg:h-[312px] lg:w-[360px] xl:h-[322px] xl:w-[370px] object-contain"
                         />
                         <img
                             src={bottle}
                             alt=""
                             aria-hidden="true"
-                            className="absolute left-1/2 w-[112px] lg:w-[120px] xl:w-[128px] -translate-x-1/2 object-contain bottom-[214px] lg:bottom-[224px] xl:bottom-[238px]"
+                            className="absolute left-1/2 w-[160px]  xl:w-[300px] -translate-x-1/2 object-contain bottom-[260px] lg:bottom-[270px] xl:bottom-[290px]"
+                            style={{width: "280px"}}
                         />
                     </div>
                 </div>

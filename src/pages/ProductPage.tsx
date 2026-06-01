@@ -36,6 +36,7 @@ const ProductPage = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
+      <main className="flex-1">
       {isLoading ? (
         <div className="flex items-center justify-center py-32">
           <p className="text-muted-foreground">Loading product...</p>
@@ -47,7 +48,7 @@ const ProductPage = () => {
           <CertifiedProductsSection />
           <FormulaSection />
           
-          <FAQSection />
+          <FAQSection productName={product.name} productSlug={product.slug} />
           <WeAreAvailableOnSection />
           
           <TrustStrips />
@@ -57,6 +58,7 @@ const ProductPage = () => {
           <p className="text-muted-foreground">Product not found.</p>
         </div>
       )}
+      </main>
       <Footer />
     </div>
   );

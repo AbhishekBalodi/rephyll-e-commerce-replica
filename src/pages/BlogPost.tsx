@@ -14,20 +14,39 @@ import blogPetHero from "@/assets/blog-pet-hero.jpg";
 
 const BLOG_FAQS = [
   {
+    tags: ["pet", "safe", "family", "non-toxic"],
     q: "Is this cleaning routine safe for pets?",
     a: "Yes, when you choose plant-based formulas and rinse high-contact zones properly, it remains safe for pets and family use.",
   },
   {
+    tags: ["deep clean", "floor", "routine", "weekly"],
     q: "How often should I deep clean floors?",
     a: "For most homes, one deep clean per week and quick daily spot cleaning works well.",
   },
   {
+    tags: ["all surface", "toilet", "kitchen", "dishwash", "cleaner"],
     q: "Can I use one cleaner for all rooms?",
     a: "Use a multi-surface cleaner for everyday areas and dedicated formulas for toilets, kitchen grease, and dish cleaning.",
   },
   {
+    tags: ["chemical", "smell", "odor", "fragrance"],
     q: "How do I avoid strong chemical smell in home?",
     a: "Pick low-residue plant-based cleaners, ventilate during cleaning, and avoid over-dosing products.",
+  },
+  {
+    tags: ["bathroom", "washroom", "toilet", "germ", "odor"],
+    q: "How can I keep my bathroom fresh and odor-free daily?",
+    a: "Use a dedicated toilet and bathroom cleaner once daily on high-contact zones and ventilate the room well after use.",
+  },
+  {
+    tags: ["kitchen", "degreaser", "oil", "stove"],
+    q: "What is the best way to clean heavy kitchen grease?",
+    a: "Spray kitchen degreaser on oily areas, wait 2-5 minutes, then wipe with a damp microfiber cloth.",
+  },
+  {
+    tags: ["dish", "utensils", "dishwash", "grease"],
+    q: "How much dishwash liquid should I use for oily utensils?",
+    a: "Start with a small amount, lather with warm water, and repeat only if needed to avoid excess residue.",
   },
 ];
 
@@ -89,13 +108,31 @@ const BlogPost = () => {
     [allBlogs, slug]
   );
 
-  const contentBlocks = useMemo(() => {
-    if (!blog?.description) return [];
+  const visibleFaqs = useMemo(() => {
+    const searchable = `${blog?.slug || ""} ${blog?.title || ""} ${blog?.metaKeywords || ""}`.toLowerCase();
+    const filtered = BLOG_FAQS.filter((faq) => faq.tags.some((tag) => searchable.includes(tag)));
+    return filtered.length > 0 ? filtered.slice(0, 6) : BLOG_FAQS.slice(0, 4);
+  }, [blog?.metaKeywords, blog?.slug, blog?.title]);
 
-    return blog.description
-      .split(/\n{2,}/)
-      .map((block) => block.trim())
-      .filter(Boolean);
+  const processedDescription = useMemo(() => {
+    if (!blog?.description) return "";
+    
+    // Split by double newlines to identify paragraphs
+    const blocks = blog.description.split(/\n\n+/);
+    
+    return blocks
+      .map((block) => {
+        // Check if block contains HTML tags
+        if (/<[^>]+>/.test(block)) {
+          // Keep HTML blocks as-is but trim whitespace
+          return block.trim();
+        }
+        // For plain text blocks, wrap in <p> and convert newlines to <br>
+        return `<p>${block
+          .trim()
+          .replace(/\n/g, "<br />")}</p>`;
+      })
+      .join("");
   }, [blog?.description]);
 
   if (loading) {
@@ -165,7 +202,7 @@ const BlogPost = () => {
           </div>
 
           <div className="rounded-2xl overflow-hidden border border-[#E4EADF] bg-[#EFF3EA] h-[360px] md:h-[440px] lg:h-[480px]">
-            <img src={heroImage} alt={blog.title} className="w-full h-full object-cover" />
+            <img src={heroImage} alt={blog.title} className="w-full h-full" />
           </div>
         </section>
 
@@ -186,17 +223,10 @@ const BlogPost = () => {
               </Link>
             </div>
 
-            <div className="rounded-2xl border border-[#E4EADF] bg-white p-6 md:p-7 space-y-5">
-              {contentBlocks.length > 0 ? (
-                contentBlocks.map((block, idx) => (
-                  <p key={idx} className="text-[17px] leading-[1.95] text-[#1A362B]">
-                    {block}
-                  </p>
-                ))
-              ) : (
-                <p className="text-[17px] leading-[1.95] text-[#1A362B]">{blog.description}</p>
-              )}
-            </div>
+            <div
+              className="rounded-2xl border border-[#E4EADF] bg-white p-6 md:p-7 prose prose-green max-w-none text-[#1A362B]"
+              dangerouslySetInnerHTML={{ __html: processedDescription }}
+            />
 
             <div className="rounded-2xl border border-[#E4EADF] bg-white p-6 md:p-7">
               <h2 className="text-2xl font-semibold text-[#0F2A1F] mb-4">How to Clean Homes With Pets Safely</h2>
@@ -225,7 +255,7 @@ const BlogPost = () => {
                   const cardImage = item.banner ? getImageUrl(item.banner) : "/placeholder.svg";
                   return (
                     <Link key={item.id} to={`/blog/${item.slug}`} className="flex gap-3 group">
-                      <img src={cardImage} alt={item.title} className="w-[88px] h-[72px] rounded-lg object-cover shrink-0" />
+                      <img src={cardImage} alt={item.title} className="w-[88px] h-[72px] rounded-lg shrink-0" />
                       <div>
                         <p className="text-sm font-semibold text-[#193428] group-hover:text-[#064734] line-clamp-2">{item.title}</p>
                         <p className="text-xs text-[#6B7E74] mt-1">{item.readingTime || 7} min read</p>
@@ -244,7 +274,7 @@ const BlogPost = () => {
               <img
                 src={recommendedProduct ? getProductImages(recommendedProduct)[0] : "/placeholder.svg"}
                 alt={recommendedProduct?.name || "Rephyl recommendation"}
-                className="w-full h-[220px] object-cover rounded-lg mb-3"
+                className="w-full h-auto rounded-lg mb-3"
               />
               <p className="font-semibold text-[#193428]">{recommendedProduct?.name || "Rephyl Plant-Powered All Surface Cleaner"}</p>
               <ul className="mt-2 space-y-1 text-sm text-[#52695F]">
@@ -263,16 +293,13 @@ const BlogPost = () => {
             <div className="rounded-2xl border border-[#E4EADF] bg-white p-5">
               <h3 className="text-xl font-semibold text-[#0F2A1F] mb-3">FAQs</h3>
               <Accordion type="single" collapsible className="space-y-1">
-                {BLOG_FAQS.map((faq, idx) => (
+                {visibleFaqs.map((faq, idx) => (
                   <AccordionItem key={idx} value={`blog-faq-${idx}`} className="border-b border-[#ECF1E8]">
                     <AccordionTrigger className="text-left text-sm text-[#193428]">{faq.q}</AccordionTrigger>
                     <AccordionContent className="text-sm text-[#5A6A62]">{faq.a}</AccordionContent>
                   </AccordionItem>
                 ))}
               </Accordion>
-              <Link to="/faqs" className="inline-flex mt-4 text-sm font-semibold text-[#064734] hover:underline">
-                View all FAQs
-              </Link>
             </div>
           </aside>
         </section>

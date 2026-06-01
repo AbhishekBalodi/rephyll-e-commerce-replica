@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WebsitePageHero from "@/components/WebsitePageHero";
@@ -10,22 +10,12 @@ import { useWebsitePageByPath } from "@/hooks/useWebsitePage";
 const ContactUs = () => {
   const { data: pageData } = useWebsitePageByPath("/contact");
   const { toast } = useToast();
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [formData, setFormData] = useState({ name: "", email: "", mobile: "", message: "" });
+  const [attachment, setAttachment] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useEffect(() => {
-    if (!pageData) return;
-    document.title = pageData.metaTitle || pageData.title || "Contact Us - rePhyl";
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute("content", pageData.metaDescription || "");
-    }
-
-    const metaKeywords = document.querySelector('meta[name="keywords"]');
-    if (metaKeywords) {
-      metaKeywords.setAttribute("content", pageData.metaKeywords || "");
-    }
-  }, [pageData]);
+  const ALLOWED_ATTACHMENT_EXTENSIONS = ["jpg", "jpeg", "png", "gif", "webp", "pdf"];
+  const MAX_ATTACHMENT_BYTES = 10 * 1024 * 1024;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -58,9 +48,46 @@ const ContactUs = () => {
       return;
     }
 
+    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim());
+    if (!isEmailValid) {
+      toast({
+        title: "Validation Error",
+        description: "Please enter a valid email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (attachment) {
+      if (attachment.size > MAX_ATTACHMENT_BYTES) {
+        toast({
+          title: "Validation Error",
+          description: "Attachment must be less than or equal to 10MB.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const extension = attachment.name.split(".").pop()?.toLowerCase() || "";
+      if (!ALLOWED_ATTACHMENT_EXTENSIONS.includes(extension)) {
+        toast({
+          title: "Validation Error",
+          description: "Allowed file types: jpg, jpeg, png, gif, webp, pdf.",
+          variant: "destructive",
+        });
+        return;
+      }
+    }
+
     setIsSubmitting(true);
     try {
-      const response = await apiService.submitContactForm(formData);
+      const response = await apiService.submitCustomerContactQuery({
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        mobile: formData.mobile.trim(),
+        message: formData.message.trim(),
+        attachment,
+      });
       console.log("[ContactUs] Submission successful:", response);
 
       toast({
@@ -68,7 +95,8 @@ const ContactUs = () => {
         description: "Thank you for reaching out. We'll get back to you soon.",
       });
 
-      setFormData({ name: "", email: "", message: "" });
+      setFormData({ name: "", email: "", mobile: "", message: "" });
+      setAttachment(null);
     } catch (error: any) {
       console.error("[ContactUs] Submission failed:", error.message);
       toast({
@@ -84,7 +112,7 @@ const ContactUs = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-
+      <main className="flex-1">
       <WebsitePageHero
         page={pageData}
         fallbackTitle="Contact Us"
@@ -141,6 +169,15 @@ const ContactUs = () => {
               maxLength={255}
               className="w-full border border-border rounded-lg px-4 py-3 bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
             />
+            <input
+              type="tel"
+              name="mobile"
+              placeholder="Your Mobile (optional)"
+              value={formData.mobile}
+              onChange={handleChange}
+              maxLength={20}
+              className="w-full border border-border rounded-lg px-4 py-3 bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+            />
             <textarea
               name="message"
               placeholder="Your Message"
@@ -150,6 +187,21 @@ const ContactUs = () => {
               maxLength={2000}
               className="w-full border border-border rounded-lg px-4 py-3 bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none"
             />
+            <div>
+              <input
+                type="file"
+                name="attachment"
+                accept=".jpg,.jpeg,.png,.gif,.webp,.pdf"
+                onChange={(e) => {
+                  const nextFile = e.target.files?.[0] ?? null;
+                  setAttachment(nextFile);
+                }}
+                className="w-full border border-border rounded-lg px-4 py-3 bg-background text-foreground file:mr-3 file:rounded-md file:border-0 file:bg-primary file:px-3 file:py-1.5 file:text-primary-foreground"
+              />
+              <p className="mt-1 text-xs text-muted-foreground">
+                Optional attachment (max 10MB): jpg, jpeg, png, gif, webp, pdf.
+              </p>
+            </div>
             <button
               type="submit"
               disabled={isSubmitting}

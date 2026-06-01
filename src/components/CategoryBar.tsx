@@ -63,6 +63,10 @@ const CategoryBar = () => {
   }
 
   const handleCategoryClick = (cat: ApiCategory) => {
+    if ((cat.productCount ?? 0) <= 0) {
+      return;
+    }
+
     const normalized = cat.name.trim().toLowerCase();
     if (normalized === "byob" || normalized.includes("byob")) {
       navigate("/homecare-kits");
@@ -79,7 +83,7 @@ const CategoryBar = () => {
     }
 
     const slug = toSlug(cat.name);
-    navigate(`/category/${slug}`, { state: { categoryId: cat.id, categoryName: cat.name } });
+    navigate(`/${slug}`, { state: { categoryId: cat.id, categoryName: cat.name } });
   };
 
   return (
@@ -88,14 +92,19 @@ const CategoryBar = () => {
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           {/* Mobile: horizontal scroll, Desktop: flex wrap center */}
           <div className="flex items-center md:justify-center gap-4 md:gap-[24px] md:flex-wrap py-3 md:py-4 overflow-x-auto md:overflow-x-visible scrollbar-hide">
-            {categories.filter((cat: ApiCategory) => cat.name.trim().toUpperCase() !== "BYOB").map((cat: ApiCategory) => {
+            {categories
+              .filter((cat: ApiCategory) => cat.name.trim().toUpperCase() !== "BYOB")
+              .map((cat: ApiCategory) => {
               const iconSrc = getCategoryIcon(cat);
+              const isDisabled = (cat.productCount ?? 0) <= 0;
 
               return (
                 <button
                   key={cat.id}
                   onClick={() => handleCategoryClick(cat)}
-                  className="flex flex-col items-center cursor-pointer group relative py-2 md:py-5 gap-2 md:gap-4 flex-shrink-0"
+                  disabled={isDisabled}
+                  aria-disabled={isDisabled}
+                  className={`flex flex-col items-center group relative py-2 md:py-5 gap-2 md:gap-4 flex-shrink-0 ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}
                   style={{
                     minWidth: "70px",
                   }}
