@@ -213,6 +213,7 @@ const ContactUs = () => {
         </div>
       </section>
 
+      </main>
       <Footer />
     </div>
   );

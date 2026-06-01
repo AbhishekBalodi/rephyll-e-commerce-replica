@@ -89,6 +89,7 @@ const OurStory = () => {
         subtext="Safe, effective cleaning that resets your space—without the stress or second thoughts."
       />
 
+      </main>
       <Footer />
     </div>
   );
