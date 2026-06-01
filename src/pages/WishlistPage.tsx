@@ -84,8 +84,8 @@ const WishlistPage = () => {
           </>
         )}
       </section>
+      </main>
       <div className="mt-auto">
-        </main>
       <Footer />
       </div>
     </div>
