@@ -7,7 +7,7 @@ import WhyChooseUs from "@/components/WhyChooseUs";
 import { useWebsitePageByPath } from "@/hooks/useWebsitePage";
 
 const AboutUs = () => {
-  const { data: pageData, loading, error } = useWebsitePageByPath("/about");
+  const { data: pageData, loading } = useWebsitePageByPath("/about");
   const contentRef = useRef<HTMLDivElement>(null);
 
   const handleReadMore = () => {
