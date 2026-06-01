@@ -7,7 +7,7 @@ import WhyChooseUs from "@/components/WhyChooseUs";
 import { useWebsitePageByPath } from "@/hooks/useWebsitePage";
 
 const AboutUs = () => {
-  const { data: pageData, loading, error } = useWebsitePageByPath("/about");
+  const { data: pageData, loading } = useWebsitePageByPath("/about");
   const contentRef = useRef<HTMLDivElement>(null);
 
   const handleReadMore = () => {
@@ -35,12 +35,6 @@ const AboutUs = () => {
           {loading ? (
             <div className="text-center py-8">
               <p style={{ fontFamily: "'Poppins', sans-serif", color: "#064734" }}>Loading page content...</p>
-            </div>
-          ) : error ? (
-            <div className="text-center py-8">
-              <p style={{ fontFamily: "'Poppins', sans-serif", color: "#666" }}>
-                Unable to load page content. Using default content.
-              </p>
             </div>
           ) : pageData?.content ? (
             <div

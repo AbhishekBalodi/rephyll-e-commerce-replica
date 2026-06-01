@@ -18,15 +18,10 @@ const getImageUrl = (path?: string) => {
 };
 
 const WebsitePageHero = ({ page, fallbackTitle, fallbackDescription, buttonLabel, onButtonClick }: WebsitePageHeroProps) => {
-  // If the page record is missing from backend, do not render a generic banner.
-  if (!page) {
-    return <div className="pt-[104px]" aria-hidden="true" />;
-  }
-
-  // Banner content should come from the website page API record.
-  const title = page.title || page.metaTitle || fallbackTitle;
-  const description = page.metaDescription || fallbackDescription || "";
-  const image = page.metaImg ? getImageUrl(page.metaImg) : "";
+  // Always render the hero — fall back to provided title/description when the API record is missing.
+  const title = page?.title || page?.metaTitle || fallbackTitle;
+  const description = page?.metaDescription || fallbackDescription || "";
+  const image = page?.metaImg ? getImageUrl(page.metaImg) : "";
 
   return (
     <section className="relative w-full overflow-hidden pt-[104px] text-white">

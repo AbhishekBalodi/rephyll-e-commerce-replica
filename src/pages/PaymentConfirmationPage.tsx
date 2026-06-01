@@ -296,6 +296,7 @@ const PaymentConfirmationPageContent = () => {
           )}
         </div>
       </section>
+      </main>
       <Footer />
     </div>
   );

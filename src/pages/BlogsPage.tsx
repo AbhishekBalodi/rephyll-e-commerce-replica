@@ -334,6 +334,7 @@ const BlogsPage = () => {
         )}
       </div>
 
+      </main>
       <Footer />
     </div>
   );
