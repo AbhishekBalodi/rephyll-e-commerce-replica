@@ -36,12 +36,6 @@ const AboutUs = () => {
             <div className="text-center py-8">
               <p style={{ fontFamily: "'Poppins', sans-serif", color: "#064734" }}>Loading page content...</p>
             </div>
-          ) : error ? (
-            <div className="text-center py-8">
-              <p style={{ fontFamily: "'Poppins', sans-serif", color: "#666" }}>
-                Unable to load page content. Using default content.
-              </p>
-            </div>
           ) : pageData?.content ? (
             <div
               className="space-y-4 md:space-y-5 text-[16px] md:text-[20px] leading-[150%] md:leading-[150%]"
