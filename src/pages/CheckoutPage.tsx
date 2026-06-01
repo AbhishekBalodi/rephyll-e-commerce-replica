@@ -716,7 +716,6 @@ const CheckoutPageContent = () => {
           </aside>
         </div>
       </section>
-      </main>
       <Footer />
     </div>
   );
